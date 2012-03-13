@@ -1,0 +1,10 @@
+# comment
+org.eclipse.sisu.scanners.QualifiedScanningTest$C
+
+some_missing_class
+
+org.eclipse.sisu.scanners.QualifiedScanningTest$D
+
+// comment
+org.eclipse.sisu.scanners.QualifiedScanningTest$C
+

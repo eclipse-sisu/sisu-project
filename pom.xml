@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ ~ Copyright (c) 2010, 2012 Sonatype, Inc.
+ ~ All rights reserved. This program and the accompanying materials
+ ~ are made available under the terms of the Eclipse Public License v1.0
+ ~ which accompanies this distribution, and is available at
+ ~ http://www.eclipse.org/legal/epl-v10.html
+ ~
+ ~ Contributors:
+ ~    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.eclipse.sisu</groupId>
+    <artifactId>sisu-parent</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+  </parent>
+
+  <packaging>bundle</packaging>
+
+  <groupId>org.eclipse.sisu</groupId>
+  <artifactId>sisu-inject</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+
+  <name>Sisu Inject</name>
+
+  <url>http://www.eclipse.org/sisu/</url>
+
+  <scm>
+    <connection>scm:git:git://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.inject.git</connection>
+    <developerConnection>scm:git:ssh://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.inject.git</developerConnection>
+    <url>http://git.eclipse.org/c/sisu/org.eclipse.sisu.inject.git/tree/</url>
+  </scm>
+
+  <dependencies>
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.core</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.compendium</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty.orbit</groupId>
+      <artifactId>org.objectweb.asm</artifactId>
+      <version>3.3.1.v201105211655</version>
+    </dependency>
+    <dependency>
+      <groupId>org.sonatype.sisu</groupId>
+      <artifactId>sisu-guice</artifactId>
+      <version>3.1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.0.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.sonatype.sisu.inject</groupId>
+      <artifactId>guice-assistedinject</artifactId>
+      <version>3.1.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.felix</groupId>
+      <artifactId>org.apache.felix.framework</artifactId>
+      <version>3.2.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-enforcer-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>animal-sniffer-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Main-Class>
+              org.eclipse.sisu.containers.Main
+            </Main-Class>
+            <Bundle-SymbolicName>
+              org.eclipse.sisu.inject;singleton:=true
+            </Bundle-SymbolicName>
+            <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+            <Bundle-Activator>
+              org.eclipse.sisu.containers.SisuActivator
+            </Bundle-Activator>
+            <DynamicImport-Package>
+              org.slf4j
+            </DynamicImport-Package>
+            <Export-Package>
+              <!-- provide these APIs as a convenience -->
+              javax.inject;javax.enterprise.inject;version=1,
+              org.aopalliance.aop;org.aopalliance.intercept;version=1,
+              <!-- our JRS330 extension API -->
+              org.eclipse.sisu.inject;version=${project.version},
+              <!-- our implementation APIs -->
+              org.eclipse.sisu.*;x-internal:=true;version=${project.version}
+            </Export-Package>
+            <Require-Bundle>
+              org.sonatype.sisu.guava,
+              org.sonatype.sisu.guice
+            </Require-Bundle>
+            <Import-Package>
+              <!-- these APIs are substitutable -->
+              javax.inject;javax.enterprise.inject,
+              org.aopalliance.aop;org.aopalliance.intercept,
+              <!-- available via Require-Bundle -->
+              !com.google.*,
+              <!-- optional generated imports -->
+              *;resolution:=optional
+            </Import-Package>
+          </instructions>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>clirr-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
