@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.6"?>
+<target name="org.eclipse.sisu.inject" sequenceNumber="0">
+  <locations>
+    <location includeAllPlatforms="false" includeMode="planner" includeSource="false" type="InstallableUnit">
+      <unit id="javax.inject" version="1.0.0.v20091030"/>
+      <unit id="org.aopalliance" version="1.0.0.v201105210816"/>
+      <unit id="javax.annotation" version="1.0.0.v20101115-0725"/>
+      <unit id="cdi.api" version="1.0.0.v201105160744"/>
+      <unit id="org.slf4j.api" version="1.6.4.v20120130-2120"/>
+      <unit id="org.objectweb.asm" version="3.3.1.v201105211655"/>
+      <unit id="com.google.guava" version="10.0.1.v201203051515"/>
+      <unit id="com.google.inject" version="3.0.0.v201203062045"/>
+      <unit id="org.junit" version="4.10.0.v4_10_0_v20120426-0900"/>
+      <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/"/>
+    </location>
+    <location includeAllPlatforms="false" includeMode="planner" includeSource="false" type="InstallableUnit">
+      <unit id="org.eclipse.equinox.sdk.feature.group" version="3.6.0.v20100601-7H7R-7v8rtGVR34XkO3kfH3DUO07"/>
+      <repository location="http://download.eclipse.org/releases/helios/"/>
+    </location>
+    <location includeAllPlatforms="false" includeMode="planner" includeSource="false" type="InstallableUnit">
+      <unit id="org.testng.eclipse.feature.group" version="6.4.0.20120308_1617"/>
+      <repository location="http://beust.com/eclipse/"/>
+    </location>
+  </locations>
+  <includeBundles>
+    <plugin id="javax.inject"/>
+    <plugin id="org.aopalliance"/>
+    <plugin id="javax.annotation"/>
+    <plugin id="cdi.api"/>
+    <plugin id="org.slf4j.api"/>
+    <plugin id="org.objectweb.asm"/>
+    <plugin id="com.google.guava"/>
+    <plugin id="com.google.inject"/>
+    <plugin id="org.eclipse.osgi"/>
+    <plugin id="org.eclipse.osgi.util"/>
+    <plugin id="org.junit"/>
+    <plugin id="org.testng.eclipse"/>
+  </includeBundles>
+</target>
