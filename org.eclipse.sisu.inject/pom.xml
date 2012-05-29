@@ -23,7 +23,6 @@
 
   <packaging>eclipse-plugin</packaging>
 
-  <groupId>org.eclipse.sisu</groupId>
   <artifactId>org.eclipse.sisu.inject</artifactId>
 
   <build>

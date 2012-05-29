@@ -27,8 +27,8 @@ import org.eclipse.sisu.reflect.ClassSpace;
 import org.eclipse.sisu.reflect.URLClassSpace;
 import org.junit.After;
 import org.junit.Before;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+//FIXME import org.testng.annotations.AfterMethod;
+//FIXME import org.testng.annotations.BeforeMethod;
 
 import com.google.inject.Binder;
 import com.google.inject.Guice;
@@ -56,14 +56,14 @@ public abstract class InjectedTest
     // ----------------------------------------------------------------------
 
     @Before
-    @BeforeMethod
+    // FIXME @BeforeMethod
     public void setUp()
     {
         Guice.createInjector( new WireModule( new SetUpModule(), new SpaceModule( space(), scanning() ) ) );
     }
 
     @After
-    @AfterMethod
+    // FIXME @AfterMethod
     public void tearDown()
     {
         locator.clear();
