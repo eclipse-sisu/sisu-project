@@ -28,6 +28,9 @@ import java.util.zip.ZipFile;
 
 import junit.framework.TestCase;
 
+import org.junit.Ignore;
+
+@Ignore
 public class FileEntryIteratorTest
     extends TestCase
 {

@@ -17,6 +17,9 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+import org.junit.Ignore;
+
+@Ignore
 public class ZipEntryIteratorTest
     extends TestCase
 {

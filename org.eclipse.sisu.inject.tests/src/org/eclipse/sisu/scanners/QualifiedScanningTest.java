@@ -39,10 +39,12 @@ import org.eclipse.sisu.reflect.DeferredClass;
 import org.eclipse.sisu.reflect.URLClassSpace;
 import org.eclipse.sisu.scanners.index.SisuIndexFinder;
 import org.eclipse.sisu.scanners.oops.Handler;
+import org.junit.Ignore;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Type;
 
+@Ignore
 public class QualifiedScanningTest
     extends TestCase
 {

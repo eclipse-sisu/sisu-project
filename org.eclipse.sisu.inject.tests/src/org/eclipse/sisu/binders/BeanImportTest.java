@@ -33,6 +33,7 @@ import org.eclipse.sisu.Nullable;
 import org.eclipse.sisu.reflect.ClassSpace;
 import org.eclipse.sisu.reflect.TypeParameters;
 import org.eclipse.sisu.reflect.URLClassSpace;
+import org.junit.Ignore;
 import org.slf4j.Logger;
 
 import com.google.inject.AbstractModule;
@@ -49,6 +50,7 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
 
+@Ignore
 public class BeanImportTest
     extends TestCase
 {

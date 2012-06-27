@@ -16,8 +16,11 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.junit.Ignore;
+
 import com.google.inject.name.Names;
 
+@Ignore
 public final class ExampleTestCase
     extends InjectedTestCase
 {

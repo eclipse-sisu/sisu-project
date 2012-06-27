@@ -15,10 +15,13 @@ import java.util.Properties;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.junit.Ignore;
+
 import com.google.inject.Binder;
 import com.google.inject.PrivateModule;
 import com.google.inject.name.Names;
 
+@Ignore
 public final class PrivateModuleTestCase
     extends InjectedTestCase
 {

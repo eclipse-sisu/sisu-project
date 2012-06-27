@@ -23,7 +23,9 @@ import java.util.jar.Manifest;
 import junit.framework.TestCase;
 
 import org.eclipse.sisu.reflect.oops.Handler;
+import org.junit.Ignore;
 
+@Ignore
 public class URLClassSpaceTest
     extends TestCase
 {
