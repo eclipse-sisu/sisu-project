@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.6"?>
-
 <target name="org.eclipse.sisu.inject" sequenceNumber="0">
 <locations>
 <location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="javax.inject" version="1.0.0.v20091030"/>
-<unit id="org.aopalliance" version="1.0.0.v201105210816"/>
 <unit id="javax.annotation" version="1.0.0.v20101115-0725"/>
 <unit id="cdi.api" version="1.0.0.v201105160744"/>
 <unit id="javax.servlet" version="2.5.0.v201103041518"/>
@@ -13,9 +11,10 @@
 <unit id="javax.ejb" version="3.0.0.v201203061215"/>
 <unit id="javax.el" version="2.2.0.v201108011116"/>
 <unit id="org.slf4j.api" version="1.6.4.v20120130-2120"/>
-<unit id="org.objectweb.asm" version="3.3.1.v201105211655"/>
+<unit id="org.aopalliance" version="1.0.0.v201105210816"/>
 <unit id="com.google.guava" version="10.0.1.v201203051515"/>
 <unit id="com.google.inject" version="3.0.0.v201203062045"/>
+<unit id="org.objectweb.asm" version="3.3.1.v201105211655"/>
 <unit id="org.junit" version="4.10.0.v4_10_0_v20120426-0900"/>
 <unit id="org.hamcrest.core" version="1.1.0.v20090501071000"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/"/>
