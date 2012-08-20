@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ ~ Copyright (c) 2010, 2012 Sonatype, Inc.
+ ~ All rights reserved. This program and the accompanying materials
+ ~ are made available under the terms of the Eclipse Public License v1.0
+ ~ which accompanies this distribution, and is available at
+ ~ http://www.eclipse.org/legal/epl-v10.html
+ ~
+ ~ Contributors:
+ ~    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.sonatype.forge</groupId>
+    <artifactId>forge-parent</artifactId>
+    <version>12</version>
+  </parent>
+
+  <packaging>pom</packaging>
+
+  <groupId>org.eclipse.sisu</groupId>
+  <artifactId>sisu-plexus</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+
+  <name>Sisu Plexus</name>
+
+  <url>http://www.eclipse.org/sisu/</url>
+  <inceptionYear>2010</inceptionYear>
+
+  <organization>
+    <name>The Eclipse Foundation</name>
+    <url>http://www.eclipse.org/</url>
+  </organization>
+
+  <prerequisites>
+    <maven>3.0</maven>
+  </prerequisites>
+
+  <mailingLists>
+    <mailingList>
+      <name>Sisu Developers List</name>
+      <subscribe>sisu-dev-subscribe@eclipse.org</subscribe>
+      <unsubscribe>sisu-dev-unsubscribe@eclipse.org</unsubscribe>
+      <post>sisu-dev@eclipse.org</post>
+      <archive>http://dev.eclipse.org/mhonarc/lists/sisu-dev/</archive>
+    </mailingList>
+    <mailingList>
+      <name>Sisu Users List</name>
+      <subscribe>sisu-users-subscribe@eclipse.org</subscribe>
+      <unsubscribe>sisu-users-unsubscribe@eclipse.org</unsubscribe>
+      <post>sisu-users@eclipse.org</post>
+      <archive>http://dev.eclipse.org/mhonarc/lists/sisu-users/</archive>
+    </mailingList>
+  </mailingLists>
+
+  <scm>
+    <connection>scm:git:git://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.plexus.git</connection>
+    <developerConnection>scm:git:ssh://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.plexus.git</developerConnection>
+    <url>http://git.eclipse.org/c/sisu/org.eclipse.sisu.plexus.git/tree/</url>
+  </scm>
+
+  <issueManagement>
+    <system>bugzilla</system>
+    <url>https://bugs.eclipse.org/bugs/enter_bug.cgi?product=Sisu&amp;format=guided</url>
+  </issueManagement>
+
+  <ciManagement>
+    <system>Hudson</system>
+    <url>https://hudson.eclipse.org/hudson/job/sisu-nightly/</url>
+  </ciManagement>
+
+  <licenses>
+    <license>
+      <name>Eclipse Public License, Version 1.0</name>
+      <url>http://www.eclipse.org/legal/epl-v10.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <properties>
+    <tycho-version>0.15.0</tycho-version>
+  </properties>
+
+  <modules>
+    <module>org.eclipse.sisu.plexus</module>
+    <module>org.eclipse.sisu.plexus.tests</module>
+  </modules>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-release-plugin</artifactId>
+          <configuration>
+            <autoVersionSubmodules>true</autoVersionSubmodules>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+</project>
