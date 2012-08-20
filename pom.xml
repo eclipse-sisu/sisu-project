@@ -84,7 +84,7 @@
 
   <properties>
     <tycho-version>0.15.0</tycho-version>
-    <surefire-version>2.12.1</surefire-version>
+    <surefire-version>2.12.2</surefire-version>
   </properties>
 
   <modules>

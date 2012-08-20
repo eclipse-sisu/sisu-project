@@ -26,6 +26,7 @@
   <artifactId>org.eclipse.sisu.inject</artifactId>
 
   <build>
+    <sourceDirectory>src</sourceDirectory>
     <plugins>
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
