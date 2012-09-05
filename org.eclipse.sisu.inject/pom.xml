@@ -29,9 +29,42 @@
     <sourceDirectory>src</sourceDirectory>
     <plugins>
       <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>animal-sniffer-maven-plugin</artifactId>
+        <configuration>
+          <signature>
+            <groupId>org.codehaus.mojo.signature</groupId>
+            <artifactId>java15</artifactId>
+            <version>1.0</version>
+          </signature>
+          <ignores>
+            <ignore>javax.annotation.processing.*</ignore>
+            <ignore>javax.lang.model.*</ignore>
+            <ignore>javax.tools.*</ignore>
+          </ignores>
+        </configuration>
+        <executions>
+          <execution>
+            <id>checkJava5</id>
+            <phase>package</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>target-platform-configuration</artifactId>
         <configuration>
+          <executionEnvironment>JavaSE-1.6</executionEnvironment>
           <target>
             <artifact>
               <groupId>${project.groupId}</groupId>

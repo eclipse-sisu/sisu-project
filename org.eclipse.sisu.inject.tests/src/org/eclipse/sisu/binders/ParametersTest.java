@@ -49,7 +49,7 @@ public class ParametersTest
         assertEquals( 0, arguments.length );
     }
 
-    @SuppressWarnings( { "unchecked", "rawtypes", "unused" } )
+    @SuppressWarnings( { "unchecked", "rawtypes" } )
     public void testCustomParameters()
     {
         Guice.createInjector( new WireModule( new AbstractModule()

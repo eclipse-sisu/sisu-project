@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -197,12 +196,13 @@ public class FileEntryIteratorTest
                 {
                     path.getParentFile().mkdirs();
                     final ReadableByteChannel in = Channels.newChannel( zip.getInputStream( entry ) );
-                    final FileChannel out = new FileOutputStream( path ).getChannel();
-                    out.transferFrom( in, 0, entry.getSize() );
-                    out.close();
+                    final FileOutputStream os = new FileOutputStream( path );
+                    os.getChannel().transferFrom( in, 0, entry.getSize() );
+                    os.close();
                     in.close();
                 }
             }
+            zip.close();
         }
         catch ( final IOException e )
         {
