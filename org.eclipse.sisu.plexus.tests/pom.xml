@@ -24,20 +24,27 @@
   <artifactId>org.eclipse.sisu.plexus.tests</artifactId>
 
   <build>
-    <testSourceDirectory>src</testSourceDirectory>
-    <testResources>
-      <testResource>
+    <sourceDirectory>src</sourceDirectory>
+    <resources>
+      <resource>
         <directory>${basedir}/META-INF/plexus</directory>
         <targetPath>META-INF/plexus</targetPath>
-      </testResource>
-    </testResources>
+      </resource>
+    </resources>
     <plugins>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <testSourceDirectory>${project.build.sourceDirectory}</testSourceDirectory>
+          <testClassesDirectory>${project.build.outputDirectory}</testClassesDirectory>
+        </configuration>
+      </plugin>
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
             <id>copy-old-annotations</id>
-            <phase>process-test-resources</phase>
+            <phase>process-resources</phase>
             <goals>
               <goal>copy</goal>
             </goals>
@@ -58,7 +65,7 @@
         <executions>
           <execution>
             <id>remove-missing-class</id>
-            <phase>process-test-classes</phase>
+            <phase>process-classes</phase>
             <goals>
               <goal>clean</goal>
             </goals>
@@ -66,7 +73,7 @@
               <excludeDefaultDirectories>true</excludeDefaultDirectories>
               <filesets>
                 <fileset>
-                  <directory>${project.build.testOutputDirectory}</directory>
+                  <directory>${project.build.outputDirectory}</directory>
                   <includes>
                     <include>**/*MissingClass.class</include>
                   </includes>
@@ -84,25 +91,21 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.10</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>1.0.6</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.sisu</groupId>
       <artifactId>org.eclipse.sisu.inject</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.sisu</groupId>
       <artifactId>org.eclipse.sisu.plexus</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 
