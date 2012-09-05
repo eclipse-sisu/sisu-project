@@ -29,7 +29,7 @@ public final class ExampleTestCase
     String basedir;
 
     @Inject
-    @Named( "${basedir}/target/test-classes/org/eclipse/sisu/containers/inject.properties" )
+    @Named( "${basedir}/target/classes/org/eclipse/sisu/containers/inject.properties" )
     File propertiesFile;
 
     public void testBasedir()
