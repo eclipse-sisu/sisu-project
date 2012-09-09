@@ -64,6 +64,7 @@
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>target-platform-configuration</artifactId>
         <configuration>
+          <pomDependencies>consider</pomDependencies>
           <executionEnvironment>JavaSE-1.6</executionEnvironment>
           <target>
             <artifact>
@@ -82,5 +83,14 @@
       </plugin>
     </plugins>
   </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>6.7</version>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
 
 </project>
