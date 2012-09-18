@@ -128,7 +128,12 @@ final class ElementAnalyzer
     @Override
     public Void visit( final PrivateElements elements )
     {
-        // based on private module introspection code from the Guice SPI
+        // Follows example set by Guice Modules when rewriting private elements:
+        //
+        // 1. create new private binder, using the elements source token
+        // 2. for all elements, apply each element to the private binder
+        // 3. re-expose any exposed keys using their exposed source token
+
         final PrivateBinder privateBinder = binder.withSource( elements.getSource() ).newPrivateBinder();
         final ElementAnalyzer privateAnalyzer = new ElementAnalyzer( privateBinder );
 
