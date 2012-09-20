@@ -52,7 +52,7 @@ public final class SisuActivator
     // Constants
     // ----------------------------------------------------------------------
 
-    static final String CONTAINER_SYMBOLIC_NAME = "org.eclipse.sisu";
+    static final String CONTAINER_SYMBOLIC_NAME = "org.eclipse.sisu.inject";
 
     static final String BUNDLE_INJECTOR_CLASS_NAME = BundleInjector.class.getName();
 
