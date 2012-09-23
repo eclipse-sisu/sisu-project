@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Main-Class: org.eclipse.sisu.containers.Main
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.eclipse.sisu.inject;singleton:=true
-Bundle-Version: 0.0.0.qualifier
+Bundle-Version: 0.0.0.M0
 Bundle-Name: Sisu-Inject
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.sisu.containers.SisuActivator
