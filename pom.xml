@@ -16,9 +16,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.sonatype.forge</groupId>
-    <artifactId>forge-parent</artifactId>
-    <version>12</version>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
   </parent>
 
   <packaging>pom</packaging>
@@ -28,6 +28,8 @@
   <version>0.0.0-SNAPSHOT</version>
 
   <name>Sisu Plexus</name>
+
+  <description>Plexus-JSR330 adapter; adds Plexus support to the Sisu-Inject container</description>
 
   <url>http://www.eclipse.org/sisu/</url>
   <inceptionYear>2010</inceptionYear>
@@ -84,7 +86,6 @@
 
   <properties>
     <tycho-version>0.15.0</tycho-version>
-    <surefire-version>2.12.2</surefire-version>
   </properties>
 
   <modules>
@@ -119,18 +120,38 @@
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-maven-plugin</artifactId>
           <version>${tycho-version}</version>
-          <extensions>true</extensions>
+        </plugin>
+        <plugin>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>2.5</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>2.6</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>2.5.1</version>
+          <configuration>
+            <source>1.5</source>
+            <target>1.5</target>
+          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>${surefire-version}</version>
-          <dependencies>
-            <dependency>
-              <groupId>org.apache.maven.surefire</groupId>
-              <artifactId>surefire-junit47</artifactId>
-              <version>${surefire-version}</version>
-            </dependency>
-          </dependencies>
+          <version>2.12.3</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.4</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>2.4</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>2.7</version>
         </plugin>
         <plugin>
           <artifactId>maven-release-plugin</artifactId>
