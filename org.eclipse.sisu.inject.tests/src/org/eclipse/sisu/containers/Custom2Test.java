@@ -12,7 +12,7 @@ package org.eclipse.sisu.containers;
 
 import javax.inject.Inject;
 
-import org.testng.Assert;
+import org.junit.Assert;
 
 import com.google.inject.Binder;
 
@@ -30,7 +30,7 @@ public final class Custom2Test
     Foo bean;
 
     @org.junit.Test
-    @org.testng.annotations.Test
+    //@org.testng.annotations.Test
     public void testPerTestCaseCustomization()
     {
         Assert.assertTrue( bean instanceof TaggedFoo );
