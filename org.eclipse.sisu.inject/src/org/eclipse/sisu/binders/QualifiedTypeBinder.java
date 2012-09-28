@@ -15,7 +15,6 @@ import java.lang.annotation.IncompleteAnnotationException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import javax.enterprise.inject.Typed;
 import javax.inject.Provider;
 
 import org.eclipse.sisu.EagerSingleton;
@@ -42,10 +41,30 @@ public final class QualifiedTypeBinder
     implements QualifiedTypeListener
 {
     // ----------------------------------------------------------------------
+    // Static initialization
+    // ----------------------------------------------------------------------
+
+    static
+    {
+        boolean hasTyped;
+        try
+        {
+            hasTyped = javax.enterprise.inject.Typed.class.isAnnotation();
+        }
+        catch ( final LinkageError e )
+        {
+            hasTyped = false;
+        }
+        HAS_TYPED = hasTyped;
+    }
+
+    // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
 
     private static final TypeLiteral<?> OBJECT_TYPE_LITERAL = TypeLiteral.get( Object.class );
+
+    private static final boolean HAS_TYPED;
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -327,12 +346,16 @@ public final class QualifiedTypeBinder
 
     private static Class<?>[] getBindingTypes( final Class<?> clazz )
     {
-        for ( Class<?> c = clazz; c != Object.class; c = c.getSuperclass() )
+        if ( HAS_TYPED )
         {
-            final Typed typed = c.getAnnotation( Typed.class );
-            if ( null != typed )
+            javax.enterprise.inject.Typed typed;
+            for ( Class<?> c = clazz; c != Object.class; c = c.getSuperclass() )
             {
-                return typed.value().length > 0 ? typed.value() : c.getInterfaces();
+                typed = c.getAnnotation( javax.enterprise.inject.Typed.class );
+                if ( null != typed )
+                {
+                    return typed.value().length > 0 ? typed.value() : c.getInterfaces();
+                }
             }
         }
         return null;
