@@ -13,6 +13,7 @@ package org.eclipse.sisu.plexus.binders;
 import java.util.Map;
 
 import org.codehaus.plexus.component.annotations.Component;
+import org.eclipse.sisu.BeanScanning;
 import org.eclipse.sisu.binders.SpaceModule;
 import org.eclipse.sisu.plexus.config.PlexusBeanMetadata;
 import org.eclipse.sisu.plexus.config.PlexusBeanModule;
@@ -21,7 +22,6 @@ import org.eclipse.sisu.plexus.scanners.PlexusAnnotatedMetadata;
 import org.eclipse.sisu.plexus.scanners.PlexusTypeVisitor;
 import org.eclipse.sisu.reflect.ClassSpace;
 import org.eclipse.sisu.scanners.ClassSpaceVisitor;
-import org.eclipse.sisu.BeanScanning;
 
 import com.google.inject.Binder;
 

@@ -13,10 +13,10 @@ package org.eclipse.sisu.plexus.locators;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.locators.BeanLocator;
 import org.eclipse.sisu.plexus.config.PlexusBean;
 import org.eclipse.sisu.plexus.config.PlexusBeanLocator;
-import org.eclipse.sisu.BeanEntry;
 
 import com.google.inject.Injector;
 import com.google.inject.Key;

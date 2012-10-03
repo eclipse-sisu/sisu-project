@@ -13,8 +13,8 @@ package org.codehaus.plexus.logging;
 import java.util.Map;
 
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.eclipse.sisu.reflect.Weak;
 import org.eclipse.sisu.plexus.config.Roles;
+import org.eclipse.sisu.reflect.Weak;
 
 public abstract class BaseLoggerManager
     extends AbstractLoggerManager

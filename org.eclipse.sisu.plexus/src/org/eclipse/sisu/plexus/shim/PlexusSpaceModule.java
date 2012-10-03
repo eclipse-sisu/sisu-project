@@ -20,7 +20,7 @@ import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextMapAdapter;
 import org.codehaus.plexus.context.DefaultContext;
 import org.codehaus.plexus.logging.LoggerManager;
-import org.eclipse.sisu.reflect.ClassSpace;
+import org.eclipse.sisu.Parameters;
 import org.eclipse.sisu.plexus.binders.PlexusBeanManager;
 import org.eclipse.sisu.plexus.binders.PlexusBindingModule;
 import org.eclipse.sisu.plexus.binders.PlexusXmlBeanModule;
@@ -30,7 +30,7 @@ import org.eclipse.sisu.plexus.config.PlexusBeanModule;
 import org.eclipse.sisu.plexus.converters.PlexusXmlBeanConverter;
 import org.eclipse.sisu.plexus.lifecycles.PlexusLifecycleManager;
 import org.eclipse.sisu.plexus.locators.DefaultPlexusBeanLocator;
-import org.eclipse.sisu.Parameters;
+import org.eclipse.sisu.reflect.ClassSpace;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
