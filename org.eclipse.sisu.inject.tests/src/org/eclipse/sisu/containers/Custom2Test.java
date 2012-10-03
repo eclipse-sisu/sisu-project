@@ -30,7 +30,7 @@ public final class Custom2Test
     Foo bean;
 
     @org.junit.Test
-    //@org.testng.annotations.Test
+    // @org.testng.annotations.Test
     public void testPerTestCaseCustomization()
     {
         Assert.assertTrue( bean instanceof TaggedFoo );

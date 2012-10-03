@@ -36,7 +36,6 @@ import javax.tools.StandardLocation;
 /**
  * Java 6 Annotation {@link Processor} that generates a qualified class index for the current build.
  */
-@SuppressWarnings( "restriction" )
 public final class SisuIndexAPT6
     extends AbstractSisuIndex
     implements Processor

@@ -6,7 +6,7 @@ Bundle-Version: 0.0.0.qualifier
 Bundle-Name: Sisu-Inject
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.sisu.containers.SisuActivator
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6,J2SE-1.5
 Bundle-Vendor: The Eclipse Foundation
 Bundle-Copyright: Copyright (c) 2010, 2012 Sonatype, Inc. and others
 Bundle-DocURL: http://www.eclipse.org/sisu/
