@@ -133,7 +133,7 @@
                       <pluginExecutionFilter>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-dependency-plugin</artifactId>
-                        <versionRange>[2.2,)</versionRange>
+                        <versionRange>[2.1,)</versionRange>
                         <goals><goal>copy</goal></goals>
                       </pluginExecutionFilter>
                       <action><ignore /></action>
