@@ -20,8 +20,6 @@ import javax.inject.Inject;
 import junit.framework.TestCase;
 
 import org.eclipse.sisu.plexus.config.PlexusBeanConverter;
-import org.eclipse.sisu.plexus.converters.PlexusDateTypeConverter;
-import org.eclipse.sisu.plexus.converters.PlexusXmlBeanConverter;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.ConfigurationException;

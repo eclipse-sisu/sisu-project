@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus.scanners;
 
-import org.eclipse.sisu.plexus.scanners.PlexusXmlScanner;
 import org.eclipse.sisu.reflect.ClassSpace;
 import org.eclipse.sisu.reflect.URLClassSpace;
 

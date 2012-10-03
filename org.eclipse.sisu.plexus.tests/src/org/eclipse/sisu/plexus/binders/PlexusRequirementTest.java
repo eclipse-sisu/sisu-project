@@ -25,8 +25,6 @@ import junit.framework.TestCase;
 
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.eclipse.sisu.plexus.binders.PlexusAnnotatedBeanModule;
-import org.eclipse.sisu.plexus.binders.PlexusBindingModule;
 import org.eclipse.sisu.plexus.config.Hints;
 import org.eclipse.sisu.plexus.config.PlexusBeanConverter;
 import org.eclipse.sisu.plexus.config.PlexusBeanLocator;

@@ -22,7 +22,6 @@ import org.codehaus.plexus.classworlds.realm.NoSuchRealmException;
 import org.eclipse.sisu.locators.DefaultBeanLocator;
 import org.eclipse.sisu.locators.HiddenBinding;
 import org.eclipse.sisu.locators.MutableBeanLocator;
-import org.eclipse.sisu.plexus.locators.DefaultPlexusBeanLocator;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Binder;

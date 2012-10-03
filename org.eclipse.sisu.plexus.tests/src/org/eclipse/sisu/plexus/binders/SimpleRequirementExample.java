@@ -12,8 +12,6 @@ package org.eclipse.sisu.plexus.binders;
 
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.eclipse.sisu.plexus.binders.PlexusAnnotatedBeanModule;
-import org.eclipse.sisu.plexus.binders.PlexusBindingModule;
 import org.eclipse.sisu.plexus.config.PlexusBeanConverter;
 import org.eclipse.sisu.plexus.config.PlexusBeanLocator;
 import org.eclipse.sisu.plexus.converters.PlexusXmlBeanConverter;

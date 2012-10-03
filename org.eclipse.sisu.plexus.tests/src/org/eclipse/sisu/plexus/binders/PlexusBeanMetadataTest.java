@@ -20,8 +20,6 @@ import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.inject.PropertyBinding;
 import org.eclipse.sisu.plexus.annotations.ConfigurationImpl;
 import org.eclipse.sisu.plexus.annotations.RequirementImpl;
-import org.eclipse.sisu.plexus.binders.PlexusBeanManager;
-import org.eclipse.sisu.plexus.binders.PlexusBindingModule;
 import org.eclipse.sisu.plexus.config.PlexusBeanConverter;
 import org.eclipse.sisu.plexus.config.PlexusBeanLocator;
 import org.eclipse.sisu.plexus.config.PlexusBeanMetadata;

@@ -16,7 +16,6 @@ import java.util.HashSet;
 import junit.framework.TestCase;
 
 import org.codehaus.plexus.component.annotations.Configuration;
-import org.eclipse.sisu.plexus.annotations.ConfigurationImpl;
 
 public class ConfigurationAnnotationTest
     extends TestCase

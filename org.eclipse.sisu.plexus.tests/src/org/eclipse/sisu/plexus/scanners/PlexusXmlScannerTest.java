@@ -31,7 +31,6 @@ import org.eclipse.sisu.plexus.annotations.RequirementImpl;
 import org.eclipse.sisu.plexus.config.Hints;
 import org.eclipse.sisu.plexus.config.PlexusBeanMetadata;
 import org.eclipse.sisu.plexus.config.Strategies;
-import org.eclipse.sisu.plexus.scanners.PlexusXmlScanner;
 import org.eclipse.sisu.reflect.BeanProperty;
 import org.eclipse.sisu.reflect.ClassSpace;
 import org.eclipse.sisu.reflect.DeferredClass;

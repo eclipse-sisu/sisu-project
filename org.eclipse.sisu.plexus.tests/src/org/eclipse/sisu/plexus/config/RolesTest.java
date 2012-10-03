@@ -19,8 +19,6 @@ import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.plexus.annotations.ComponentImpl;
 import org.eclipse.sisu.plexus.annotations.RequirementImpl;
-import org.eclipse.sisu.plexus.config.Roles;
-import org.eclipse.sisu.plexus.config.Strategies;
 
 import com.google.inject.Key;
 import com.google.inject.ProvisionException;

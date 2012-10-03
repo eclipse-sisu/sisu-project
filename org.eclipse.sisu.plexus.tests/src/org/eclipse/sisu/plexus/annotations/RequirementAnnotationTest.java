@@ -19,7 +19,6 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.eclipse.sisu.plexus.annotations.RequirementImpl;
 
 public class RequirementAnnotationTest
     extends TestCase

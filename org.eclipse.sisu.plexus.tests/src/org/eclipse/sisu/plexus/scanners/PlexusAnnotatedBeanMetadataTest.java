@@ -22,7 +22,6 @@ import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.plexus.annotations.ConfigurationImpl;
 import org.eclipse.sisu.plexus.annotations.RequirementImpl;
 import org.eclipse.sisu.plexus.config.PlexusBeanMetadata;
-import org.eclipse.sisu.plexus.scanners.PlexusAnnotatedMetadata;
 import org.eclipse.sisu.reflect.BeanProperties;
 import org.eclipse.sisu.reflect.BeanProperty;
 

@@ -16,8 +16,6 @@ import java.util.Date;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.eclipse.sisu.plexus.converters.PlexusDateTypeConverter;
-
 import junit.framework.TestCase;
 
 import com.google.inject.AbstractModule;

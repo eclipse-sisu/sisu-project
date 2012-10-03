@@ -16,18 +16,15 @@ import junit.framework.TestCase;
 
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.eclipse.sisu.inject.PropertyBinding;
-import org.eclipse.sisu.plexus.binders.PlexusAnnotatedBeanModule;
-import org.eclipse.sisu.plexus.binders.PlexusBeanManager;
-import org.eclipse.sisu.plexus.binders.PlexusBindingModule;
 import org.eclipse.sisu.plexus.config.PlexusBeanConverter;
 import org.eclipse.sisu.plexus.config.PlexusBeanLocator;
 import org.eclipse.sisu.plexus.converters.PlexusDateTypeConverter;
 import org.eclipse.sisu.plexus.converters.PlexusXmlBeanConverter;
 import org.eclipse.sisu.plexus.locators.DefaultPlexusBeanLocator;
 import org.eclipse.sisu.reflect.BeanProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;

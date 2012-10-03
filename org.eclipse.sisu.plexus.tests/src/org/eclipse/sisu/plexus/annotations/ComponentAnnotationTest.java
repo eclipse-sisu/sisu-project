@@ -16,7 +16,6 @@ import java.util.HashSet;
 import junit.framework.TestCase;
 
 import org.codehaus.plexus.component.annotations.Component;
-import org.eclipse.sisu.plexus.annotations.ComponentImpl;
 import org.eclipse.sisu.plexus.config.Strategies;
 
 public class ComponentAnnotationTest

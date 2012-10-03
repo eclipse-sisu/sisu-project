@@ -17,7 +17,6 @@ import junit.framework.TestCase;
 
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.plexus.annotations.RequirementImpl;
-import org.eclipse.sisu.plexus.config.Hints;
 
 public class HintsTest
     extends TestCase
