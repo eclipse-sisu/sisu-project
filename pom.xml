@@ -85,6 +85,8 @@
   </licenses>
 
   <properties>
+    <maven.compiler.source>1.5</maven.compiler.source>
+    <maven.compiler.target>1.5</maven.compiler.target>
     <tycho-version>0.15.0</tycho-version>
   </properties>
 
@@ -100,10 +102,6 @@
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-compiler-plugin</artifactId>
           <version>${tycho-version}</version>
-          <configuration>
-            <source>1.5</source>
-            <target>1.5</target>
-          </configuration>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
@@ -136,10 +134,6 @@
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>2.5.1</version>
-          <configuration>
-            <source>1.5</source>
-            <target>1.5</target>
-          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
