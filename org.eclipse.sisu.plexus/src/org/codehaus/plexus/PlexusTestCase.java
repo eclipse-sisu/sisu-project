@@ -57,12 +57,12 @@ public abstract class PlexusTestCase
 
     public static String getTestPath( final String path )
     {
-        throw new UnsupportedOperationException();
+        return getTestFile( path ).getAbsolutePath();
     }
 
     public static String getTestPath( final String basedir, final String path )
     {
-        throw new UnsupportedOperationException();
+        return getTestFile( basedir, path ).getAbsolutePath();
     }
 
     public static String getTestConfiguration( final Class<?> clazz )
