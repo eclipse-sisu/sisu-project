@@ -52,7 +52,11 @@ public abstract class PlexusTestCase
 
     public static String getTestConfiguration( final Class<?> clazz )
     {
-        throw new UnsupportedOperationException();
+        // always use outermost class name
+        final String name = clazz.getName();
+        final int i = name.indexOf( '$' );
+
+        return ( i < 0 ? name : name.substring( 0, i ) ).replace( '.', '/' ) + ".xml";
     }
 
     // ----------------------------------------------------------------------
@@ -111,9 +115,9 @@ public abstract class PlexusTestCase
     // Shared methods
     // ----------------------------------------------------------------------
 
-    protected final String getConfigurationName( final String name )
+    protected final String getConfigurationName( @SuppressWarnings( "unused" ) final String name )
     {
-        throw new UnsupportedOperationException();
+        return getTestConfiguration();
     }
 
     protected final ClassLoader getClassLoader()
