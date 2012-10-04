@@ -21,7 +21,7 @@ import junit.framework.TestCase;
 
 import org.junit.Ignore;
 
-@Ignore
+@Ignore( "Need to replace some test archives" )
 public class ResourceEnumerationTest
     extends TestCase
 {

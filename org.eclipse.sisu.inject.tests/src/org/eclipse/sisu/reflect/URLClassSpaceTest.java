@@ -25,7 +25,7 @@ import junit.framework.TestCase;
 import org.eclipse.sisu.reflect.oops.Handler;
 import org.junit.Ignore;
 
-@Ignore
+@Ignore( "Need to replace some test archives" )
 public class URLClassSpaceTest
     extends TestCase
 {

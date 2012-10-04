@@ -19,7 +19,7 @@ import junit.framework.TestCase;
 
 import org.junit.Ignore;
 
-@Ignore
+@Ignore( "Need to replace some test archives" )
 public class ZipEntryIteratorTest
     extends TestCase
 {

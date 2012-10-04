@@ -23,7 +23,7 @@ import com.google.inject.Key;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
-@Ignore
+@Ignore( "Need to fix test properties" )
 public final class AssistedTestCase
     extends InjectedTestCase
 {

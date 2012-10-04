@@ -32,7 +32,7 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.framework.Version;
 import org.osgi.framework.launch.Framework;
 
-@Ignore
+@Ignore( "Need to replace some test archives" )
 public class BundleClassSpaceTest
     extends TestCase
 {

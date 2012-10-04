@@ -17,7 +17,7 @@ import javax.inject.Named;
 
 import org.junit.Ignore;
 
-@Ignore
+@Ignore( "Need to fix test properties" )
 public final class Custom3TestCase
     extends InjectedTestCase
 {

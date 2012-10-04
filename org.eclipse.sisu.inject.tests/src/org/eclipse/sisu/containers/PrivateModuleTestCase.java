@@ -21,7 +21,7 @@ import com.google.inject.Binder;
 import com.google.inject.PrivateModule;
 import com.google.inject.name.Names;
 
-@Ignore
+@Ignore( "Need to fix test properties" )
 public final class PrivateModuleTestCase
     extends InjectedTestCase
 {

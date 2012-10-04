@@ -20,7 +20,7 @@ import org.junit.Ignore;
 
 import com.google.inject.name.Names;
 
-@Ignore
+@Ignore( "Need to fix test properties" )
 public final class ExampleTestCase
     extends InjectedTestCase
 {
