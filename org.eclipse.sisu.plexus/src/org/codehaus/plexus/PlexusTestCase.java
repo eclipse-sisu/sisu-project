@@ -22,12 +22,27 @@ public abstract class PlexusTestCase
     extends TestCase
 {
     // ----------------------------------------------------------------------
+    // Initialization-on-demand
+    // ----------------------------------------------------------------------
+
+    private static final class Lazy
+    {
+        static
+        {
+            final String path = System.getProperty( "basedir" );
+            BASEDIR = null != path ? path : new File( "" ).getAbsolutePath();
+        }
+
+        static final String BASEDIR;
+    }
+
+    // ----------------------------------------------------------------------
     // Utility methods
     // ----------------------------------------------------------------------
 
     public static String getBasedir()
     {
-        throw new UnsupportedOperationException();
+        return Lazy.BASEDIR;
     }
 
     public static File getTestFile( final String path )
