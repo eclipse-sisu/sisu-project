@@ -80,6 +80,12 @@ public abstract class PlexusTestCase
     }
 
     // ----------------------------------------------------------------------
+    // Implementation fields
+    // ----------------------------------------------------------------------
+
+    private volatile PlexusContainer container;
+
+    // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
 
@@ -96,39 +102,58 @@ public abstract class PlexusTestCase
     protected void setUp()
         throws Exception
     {
-        throw new UnsupportedOperationException();
+        // place-holder for tests to customize
     }
 
-    protected void customizeContext( final Context context )
+    protected void customizeContext( @SuppressWarnings( "unused" ) final Context context )
     {
-        throw new UnsupportedOperationException();
+        // place-holder for tests to customize
     }
 
     protected String getCustomConfigurationName()
     {
-        throw new UnsupportedOperationException();
+        return null; // place-holder for tests to customize
     }
 
-    protected void customizeContainerConfiguration( final ContainerConfiguration configuration )
+    protected void customizeContainerConfiguration( @SuppressWarnings( "unused" ) final ContainerConfiguration configuration )
     {
-        throw new UnsupportedOperationException();
+        // place-holder for tests to customize
     }
 
-    protected void setupContainer()
+    protected synchronized void setupContainer()
     {
-        throw new UnsupportedOperationException();
+        if ( null == container )
+        {
+            // FIXME!
+        }
+    }
+
+    protected synchronized void teardownContainer()
+    {
+        if ( null != container )
+        {
+            container.dispose();
+            container = null;
+        }
     }
 
     protected PlexusContainer getContainer()
     {
-        throw new UnsupportedOperationException();
+        if ( null == container )
+        {
+            setupContainer();
+        }
+        return container;
     }
 
     @Override
     protected void tearDown()
         throws Exception
     {
-        throw new UnsupportedOperationException();
+        if ( null != container )
+        {
+            teardownContainer();
+        }
     }
 
     // ----------------------------------------------------------------------
