@@ -47,12 +47,17 @@ public abstract class PlexusTestCase
 
     public static File getTestFile( final String path )
     {
-        throw new UnsupportedOperationException();
+        return getTestFile( getBasedir(), path );
     }
 
     public static File getTestFile( final String basedir, final String path )
     {
-        throw new UnsupportedOperationException();
+        File root = new File( basedir );
+        if ( !root.isAbsolute() )
+        {
+            root = new File( getBasedir(), basedir );
+        }
+        return new File( root, path );
     }
 
     public static String getTestPath( final String path )
