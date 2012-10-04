@@ -16,6 +16,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,8 +34,6 @@ import org.eclipse.sisu.Nullable;
 import org.eclipse.sisu.reflect.ClassSpace;
 import org.eclipse.sisu.reflect.TypeParameters;
 import org.eclipse.sisu.reflect.URLClassSpace;
-import org.junit.Ignore;
-import org.slf4j.Logger;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.BindingAnnotation;
@@ -50,7 +49,6 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
 
-@Ignore
 public class BeanImportTest
     extends TestCase
 {
@@ -140,8 +138,8 @@ public class BeanImportTest
         @Inject
         Injector injector;
 
-        @Inject
-        Logger logger;
+        // @Inject
+        // Logger logger;
 
         @Inject
         ImplicitX implicitX;
@@ -189,6 +187,9 @@ public class BeanImportTest
     {
         @Inject
         List<Y> list;
+
+        @Inject
+        Collection<Y> coll;
 
         @Inject
         Iterable<Y> iterable;
@@ -413,6 +414,13 @@ public class BeanImportTest
         assertSame( unrestrictedList.fuzzy, unrestrictedList.list.get( 2 ) );
 
         assertNotSame( unrestrictedList.list.get( 0 ), unrestrictedList.list.get( 2 ) );
+
+        final Object[] listArray = unrestrictedList.list.toArray();
+        final Object[] collArray = unrestrictedList.coll.toArray();
+
+        assertSame( listArray[0], collArray[0] );
+        assertNotSame( listArray[1], collArray[1] );
+        assertSame( listArray[2], collArray[2] );
 
         final Iterator<?> iterator = unrestrictedList.iterable.iterator();
 

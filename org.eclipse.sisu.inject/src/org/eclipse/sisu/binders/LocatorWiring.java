@@ -13,6 +13,7 @@ package org.eclipse.sisu.binders;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -79,7 +80,7 @@ final class LocatorWiring
         {
             bindMapImport( key );
         }
-        else if ( List.class == clazz || Iterable.class == clazz )
+        else if ( List.class == clazz || Collection.class == clazz || Iterable.class == clazz )
         {
             bindListImport( key );
         }
