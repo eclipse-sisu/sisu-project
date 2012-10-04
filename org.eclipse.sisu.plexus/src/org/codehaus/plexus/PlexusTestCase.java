@@ -61,7 +61,7 @@ public abstract class PlexusTestCase
 
     public final String getTestConfiguration()
     {
-        throw new UnsupportedOperationException();
+        return getTestConfiguration( getClass() );
     }
 
     // ----------------------------------------------------------------------
@@ -118,36 +118,36 @@ public abstract class PlexusTestCase
 
     protected final ClassLoader getClassLoader()
     {
-        throw new UnsupportedOperationException();
+        return getClass().getClassLoader();
     }
 
     protected final Object lookup( final String role )
         throws ComponentLookupException
     {
-        throw new UnsupportedOperationException();
+        return getContainer().lookup( role );
     }
 
     protected final Object lookup( final String role, final String hint )
         throws ComponentLookupException
     {
-        throw new UnsupportedOperationException();
+        return getContainer().lookup( role, hint );
     }
 
     protected final <T> T lookup( final Class<T> role )
         throws ComponentLookupException
     {
-        throw new UnsupportedOperationException();
+        return getContainer().lookup( role );
     }
 
     protected final <T> T lookup( final Class<T> role, final String hint )
         throws ComponentLookupException
     {
-        throw new UnsupportedOperationException();
+        return getContainer().lookup( role, hint );
     }
 
     protected final void release( final Object component )
         throws ComponentLifecycleException
     {
-        throw new UnsupportedOperationException();
+        getContainer().release( component );
     }
 }
