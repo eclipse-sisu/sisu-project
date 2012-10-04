@@ -10,16 +10,19 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus.binders;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.inject.Provider;
 
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.locators.EntryListAdapter;
 import org.eclipse.sisu.locators.EntryMapAdapter;
+import org.eclipse.sisu.locators.EntrySetAdapter;
 import org.eclipse.sisu.plexus.config.Hints;
 import org.eclipse.sisu.plexus.config.PlexusBeanLocator;
 import org.eclipse.sisu.plexus.config.Roles;
@@ -76,9 +79,13 @@ final class PlexusRequirements
             {
                 return new RequirementMapProvider( locatorProvider, roleType, hints );
             }
-            else if ( List.class == rawType )
+            else if ( List.class == rawType || Collection.class == rawType || Iterable.class == rawType )
             {
                 return new RequirementListProvider( locatorProvider, roleType, hints );
+            }
+            else if ( Set.class == rawType )
+            {
+                return new RequirementSetProvider( locatorProvider, roleType, hints );
             }
 
             return new RequirementProvider( locatorProvider, roleType, hints );
@@ -188,6 +195,32 @@ final class PlexusRequirements
         public List<T> get()
         {
             return new EntryListAdapter<String, T>( locate() );
+        }
+    }
+
+    /**
+     * {@link Provider} of Plexus requirement sets.
+     */
+    private static final class RequirementSetProvider<T>
+        extends AbstractRequirementProvider<Set<T>, T>
+    {
+        // ----------------------------------------------------------------------
+        // Constructors
+        // ----------------------------------------------------------------------
+
+        RequirementSetProvider( final Provider<PlexusBeanLocator> locatorProvider, final TypeLiteral<T> type,
+                                final String[] hints )
+        {
+            super( locatorProvider, type, hints );
+        }
+
+        // ----------------------------------------------------------------------
+        // Public methods
+        // ----------------------------------------------------------------------
+
+        public Set<T> get()
+        {
+            return new EntrySetAdapter<String, T>( locate() );
         }
     }
 
