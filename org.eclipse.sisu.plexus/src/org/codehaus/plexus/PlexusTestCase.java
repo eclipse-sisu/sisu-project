@@ -11,16 +11,24 @@
 package org.codehaus.plexus;
 
 import java.io.File;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
 import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.DefaultContext;
 
 public abstract class PlexusTestCase
     extends TestCase
 {
+    // ----------------------------------------------------------------------
+    // Constants
+    // ----------------------------------------------------------------------
+
+    private static final String PLEXUS_HOME = "plexus.home";
+
     // ----------------------------------------------------------------------
     // Initialization-on-demand
     // ----------------------------------------------------------------------
@@ -98,13 +106,6 @@ public abstract class PlexusTestCase
     // Customizable methods
     // ----------------------------------------------------------------------
 
-    @Override
-    protected void setUp()
-        throws Exception
-    {
-        // place-holder for tests to customize
-    }
-
     protected void customizeContext( @SuppressWarnings( "unused" ) final Context context )
     {
         // place-holder for tests to customize
@@ -120,11 +121,34 @@ public abstract class PlexusTestCase
         // place-holder for tests to customize
     }
 
+    @Override
+    protected void setUp()
+        throws Exception
+    {
+        // place-holder for tests to customize
+    }
+
+    protected PlexusContainer getContainer()
+    {
+        if ( null == container )
+        {
+            setupContainer();
+        }
+        return container;
+    }
+
     protected synchronized void setupContainer()
     {
         if ( null == container )
         {
-            // FIXME!
+            try
+            {
+                container = new DefaultPlexusContainer( config() );
+            }
+            catch ( final PlexusContainerException e )
+            {
+                throw new IllegalArgumentException( e );
+            }
         }
     }
 
@@ -135,15 +159,6 @@ public abstract class PlexusTestCase
             container.dispose();
             container = null;
         }
-    }
-
-    protected PlexusContainer getContainer()
-    {
-        if ( null == container )
-        {
-            setupContainer();
-        }
-        return container;
     }
 
     @Override
@@ -198,5 +213,63 @@ public abstract class PlexusTestCase
         throws ComponentLifecycleException
     {
         getContainer().release( component );
+    }
+
+    // ----------------------------------------------------------------------
+    // Implementation methods
+    // ----------------------------------------------------------------------
+
+    private final ContainerConfiguration config()
+    {
+        final ContainerConfiguration config = new DefaultContainerConfiguration();
+
+        // Apply current test context
+
+        config.setName( "test" ).setContext( context() );
+
+        // Find per-test components XML
+
+        String path = getCustomConfigurationName();
+        if ( null == path )
+        {
+            path = getConfigurationName( null );
+        }
+
+        config.setContainerConfiguration( path );
+
+        // Per-test config customization
+
+        customizeContainerConfiguration( config );
+
+        return config;
+    }
+
+    private final Map<Object, Object> context()
+    {
+        final Context context = new DefaultContext();
+        context.put( "basedir", getBasedir() );
+
+        // Per-test context customization
+
+        customizeContext( context );
+
+        // Provide 'plexus.home' fall-back
+
+        if ( !context.contains( PLEXUS_HOME ) )
+        {
+            context.put( PLEXUS_HOME, plexusHome() );
+        }
+
+        return context.getContextData();
+    }
+
+    private static String plexusHome()
+    {
+        final File home = getTestFile( "target/plexus-home" );
+        if ( !home.isDirectory() )
+        {
+            home.mkdirs();
+        }
+        return home.getAbsolutePath();
     }
 }
