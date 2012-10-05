@@ -15,6 +15,7 @@ import java.util.Map;
 
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
+import org.codehaus.plexus.context.Context;
 
 public interface ContainerConfiguration
 {
@@ -51,4 +52,8 @@ public interface ContainerConfiguration
     ContainerConfiguration setClassPathScanning( String scanning );
 
     String getClassPathScanning();
+
+    ContainerConfiguration setContextComponent( Context context );
+
+    Context getContextComponent();
 }

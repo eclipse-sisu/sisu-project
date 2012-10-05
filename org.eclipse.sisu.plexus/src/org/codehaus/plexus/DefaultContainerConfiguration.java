@@ -15,6 +15,7 @@ import java.util.Map;
 
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
+import org.codehaus.plexus.context.Context;
 
 public final class DefaultContainerConfiguration
     implements ContainerConfiguration
@@ -38,6 +39,8 @@ public final class DefaultContainerConfiguration
     private String classPathScanning = PlexusConstants.SCANNING_OFF;
 
     private boolean autoWiring;
+
+    private Context contextComponent;
 
     // ----------------------------------------------------------------------
     // Public methods
@@ -138,5 +141,16 @@ public final class DefaultContainerConfiguration
     public boolean getAutoWiring()
     {
         return autoWiring;
+    }
+
+    public ContainerConfiguration setContextComponent( final Context contextComponent )
+    {
+        this.contextComponent = contextComponent;
+        return this;
+    }
+
+    public Context getContextComponent()
+    {
+        return contextComponent;
     }
 }

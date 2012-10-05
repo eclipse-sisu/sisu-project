@@ -169,7 +169,7 @@ public final class DefaultPlexusContainer
     {
         final URL plexusXml = lookupPlexusXml( configuration );
 
-        context = new DefaultContext( configuration.getContext() );
+        context = getContextComponent( configuration );
         context.put( PlexusConstants.PLEXUS_KEY, this );
         variables = new ContextMapAdapter( context );
 
@@ -682,6 +682,12 @@ public final class DefaultPlexusContainer
             }
         }
         return url;
+    }
+
+    private static Context getContextComponent( final ContainerConfiguration configuration )
+    {
+        final Context ctx = configuration.getContextComponent();
+        return null != ctx ? ctx : new DefaultContext( configuration.getContext() );
     }
 
     private <T> Iterable<PlexusBean<T>> locate( final String role, final Class<T> type, final String... hints )
