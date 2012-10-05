@@ -23,6 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -686,8 +687,20 @@ public final class DefaultPlexusContainer
 
     private static Context getContextComponent( final ContainerConfiguration configuration )
     {
-        final Context ctx = configuration.getContextComponent();
-        return null != ctx ? ctx : new DefaultContext( configuration.getContext() );
+        final Map<?, ?> contextData = configuration.getContext();
+        final Context contextComponent = configuration.getContextComponent();
+        if ( null == contextComponent )
+        {
+            return new DefaultContext( contextData );
+        }
+        if ( null != contextData )
+        {
+            for ( final Entry<?, ?> entry : contextData.entrySet() )
+            {
+                contextComponent.put( entry.getKey(), entry.getValue() );
+            }
+        }
+        return contextComponent;
     }
 
     private <T> Iterable<PlexusBean<T>> locate( final String role, final Class<T> type, final String... hints )
