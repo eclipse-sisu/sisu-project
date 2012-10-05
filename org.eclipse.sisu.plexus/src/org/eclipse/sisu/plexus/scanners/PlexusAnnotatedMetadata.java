@@ -10,11 +10,15 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus.scanners;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.Map;
 
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.InterpolationFilterReader;
 import org.eclipse.sisu.plexus.annotations.ConfigurationImpl;
 import org.eclipse.sisu.plexus.config.PlexusBeanMetadata;
 import org.eclipse.sisu.reflect.BeanProperty;
@@ -61,7 +65,7 @@ public final class PlexusAnnotatedMetadata
         {
             // support runtime interpolation of @Configuration values
             final String uninterpolatedValue = configuration.value();
-            final String value = StringUtils.interpolate( uninterpolatedValue, variables );
+            final String value = interpolate( uninterpolatedValue );
             if ( !value.equals( uninterpolatedValue ) )
             {
                 return new ConfigurationImpl( configuration.name(), value );
@@ -73,5 +77,31 @@ public final class PlexusAnnotatedMetadata
     public Requirement getRequirement( final BeanProperty<?> property )
     {
         return property.getAnnotation( Requirement.class );
+    }
+
+    // ----------------------------------------------------------------------
+    // Implementation methods
+    // ----------------------------------------------------------------------
+
+    private String interpolate( final String text )
+    {
+        if ( null == text || !text.contains( "${" ) )
+        {
+            return text;
+        }
+        // use same interpolation method as XML for sake of consistency
+        final Reader r = new InterpolationFilterReader( new StringReader( text ), variables );
+        try
+        {
+            return IOUtil.toString( r );
+        }
+        catch ( IOException e )
+        {
+            return text; // should never actually happen, as no actual I/O involved
+        }
+        finally
+        {
+            IOUtil.close( r );
+        }
     }
 }
