@@ -10,13 +10,12 @@
  *******************************************************************************/
 package org.codehaus.plexus.context;
 
-import java.util.AbstractMap;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
 public final class ContextMapAdapter
-    extends AbstractMap<Object, Object>
+    implements Map<Object, Object>
 {
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -37,13 +36,9 @@ public final class ContextMapAdapter
     // Public methods
     // ----------------------------------------------------------------------
 
-    @Override
-    public boolean containsKey( final Object key )
-    {
-        return get( key ) != null;
-    }
-
-    @Override
+    /*
+     * Only method used when interpolating Plexus configuration
+     */
     public Object get( final Object key )
     {
         final Object value = contextData.get( key );
@@ -51,20 +46,61 @@ public final class ContextMapAdapter
     }
 
     // ----------------------------------------------------------------------
-    // Implementation helpers
+    // Unsupported methods
     // ----------------------------------------------------------------------
 
-    @Override
+    public int size()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    public boolean isEmpty()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    public boolean containsKey( Object key )
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    public boolean containsValue( Object value )
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    public Object put( Object key, Object value )
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    public void putAll( Map<?, ?> map )
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    public Object remove( Object key )
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    public void clear()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    public Set<Object> keySet()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    public Collection<Object> values()
+    {
+        throw new UnsupportedOperationException();
+    }
+
     public Set<Entry<Object, Object>> entrySet()
     {
-        final Set<Entry<Object, Object>> tempSet = new HashSet<Entry<Object, Object>>();
-        for ( final Entry<Object, Object> entry : contextData.entrySet() )
-        {
-            if ( entry.getValue() instanceof String )
-            {
-                tempSet.add( entry );
-            }
-        }
-        return tempSet;
+        throw new UnsupportedOperationException();
     }
 }

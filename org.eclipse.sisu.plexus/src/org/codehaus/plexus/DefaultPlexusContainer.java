@@ -801,7 +801,7 @@ public final class DefaultPlexusContainer
         public void configure( final Binder binder )
         {
             binder.bind( Context.class ).toInstance( context );
-            binder.bind( ParameterKeys.PROPERTIES ).toInstance( variables );
+            binder.bind( ParameterKeys.PROPERTIES ).toInstance( context.getContextData() );
 
             binder.bind( MutableBeanLocator.class ).toInstance( qualifiedBeanLocator );
             binder.bind( PlexusBeanLocator.class ).toInstance( plexusBeanLocator );
