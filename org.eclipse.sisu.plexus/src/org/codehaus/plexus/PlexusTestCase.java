@@ -11,6 +11,7 @@
 package org.codehaus.plexus;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.Map;
 
 import junit.framework.TestCase;
@@ -183,6 +184,11 @@ public abstract class PlexusTestCase
     protected final ClassLoader getClassLoader()
     {
         return getClass().getClassLoader();
+    }
+
+    protected final InputStream getResourceAsStream( final String name )
+    {
+        return getClass().getResourceAsStream( name );
     }
 
     protected final Object lookup( final String role )
