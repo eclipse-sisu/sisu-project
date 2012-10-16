@@ -19,10 +19,12 @@ import junit.framework.TestCase;
 import org.eclipse.sisu.BeanScanning;
 import org.eclipse.sisu.reflect.ClassSpace;
 import org.eclipse.sisu.reflect.URLClassSpace;
+import org.junit.Ignore;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 
+@Ignore
 public class CachingModuleTest
     extends TestCase
 {
