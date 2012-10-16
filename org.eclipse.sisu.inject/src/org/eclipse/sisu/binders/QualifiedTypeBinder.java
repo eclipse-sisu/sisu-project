@@ -348,10 +348,9 @@ public final class QualifiedTypeBinder
     {
         if ( HAS_TYPED )
         {
-            javax.enterprise.inject.Typed typed;
             for ( Class<?> c = clazz; c != Object.class; c = c.getSuperclass() )
             {
-                typed = c.getAnnotation( javax.enterprise.inject.Typed.class );
+                final javax.enterprise.inject.Typed typed = c.getAnnotation( javax.enterprise.inject.Typed.class );
                 if ( null != typed )
                 {
                     return typed.value().length > 0 ? typed.value() : c.getInterfaces();
