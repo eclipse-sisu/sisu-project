@@ -24,7 +24,7 @@ import org.junit.Ignore;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 
-@Ignore
+@Ignore( "Fails on grid" )
 public class CachingModuleTest
     extends TestCase
 {
