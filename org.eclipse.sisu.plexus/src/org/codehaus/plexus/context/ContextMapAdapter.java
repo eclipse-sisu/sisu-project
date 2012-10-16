@@ -59,27 +59,27 @@ public final class ContextMapAdapter
         throw new UnsupportedOperationException();
     }
 
-    public boolean containsKey( Object key )
+    public boolean containsKey( final Object key )
     {
         throw new UnsupportedOperationException();
     }
 
-    public boolean containsValue( Object value )
+    public boolean containsValue( final Object value )
     {
         throw new UnsupportedOperationException();
     }
 
-    public Object put( Object key, Object value )
+    public Object put( final Object key, final Object value )
     {
         throw new UnsupportedOperationException();
     }
 
-    public void putAll( Map<?, ?> map )
+    public void putAll( final Map<?, ?> map )
     {
         throw new UnsupportedOperationException();
     }
 
-    public Object remove( Object key )
+    public Object remove( final Object key )
     {
         throw new UnsupportedOperationException();
     }

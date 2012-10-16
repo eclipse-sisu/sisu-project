@@ -95,7 +95,7 @@ public final class PlexusAnnotatedMetadata
         {
             return IOUtil.toString( r );
         }
-        catch ( IOException e )
+        catch ( final IOException e )
         {
             return text; // should never actually happen, as no actual I/O involved
         }
