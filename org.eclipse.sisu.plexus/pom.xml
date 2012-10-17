@@ -24,6 +24,15 @@
   <artifactId>org.eclipse.sisu.plexus</artifactId>
 
   <build>
+    <resources>
+      <resource>
+        <directory>${basedir}</directory>
+        <includes>
+          <include>META-INF/</include>
+          <include>about.html</include>
+        </includes>
+      </resource>
+    </resources>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
       <plugin>
