@@ -10,19 +10,28 @@
  *******************************************************************************/
 package org.codehaus.plexus.component.configurator.converters;
 
-import java.lang.reflect.Type;
-
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ConfigurationListener;
 import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
-public interface ParameterizedConfigurationConverter
-    extends ConfigurationConverter
+public abstract class AbstractConfigurationConverter
+    implements ConfigurationConverter
 {
-    Object fromConfiguration( ConverterLookup lookup, PlexusConfiguration configuration, Class<?> type,
-                              Type[] parameterTypes, Class<?> elementType, ClassLoader loader,
-                              ExpressionEvaluator evaluator, ConfigurationListener listener )
-        throws ComponentConfigurationException;
+    public Object fromConfiguration( final ConverterLookup lookup, final PlexusConfiguration configuration,
+                                     final Class<?> type, final Class<?> baseType, final ClassLoader loader,
+                                     final ExpressionEvaluator evaluator )
+        throws ComponentConfigurationException
+    {
+        return fromConfiguration( lookup, configuration, type, baseType, loader, evaluator, null );
+    }
+
+    public Object fromConfiguration( final ConverterLookup lookup, final PlexusConfiguration configuration,
+                                     final Class<?> type, final Class<?> baseType, final ClassLoader loader,
+                                     final ExpressionEvaluator evaluator, final ConfigurationListener listener )
+        throws ComponentConfigurationException
+    {
+        throw new UnsupportedOperationException();
+    }
 }
