@@ -10,7 +10,22 @@
  *******************************************************************************/
 package org.codehaus.plexus.component.configurator.converters;
 
+import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
+import org.codehaus.plexus.component.configurator.ConfigurationListener;
+import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
+import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+
 public interface ConfigurationConverter
-    extends GenericConfigurationConverter<Class<?>>
 {
+    boolean canConvert( Class<?> type );
+
+    Object fromConfiguration( ConverterLookup lookup, PlexusConfiguration configuration, Class<?> type,
+                              Class<?> contextType, ClassLoader loader, ExpressionEvaluator evaluator )
+        throws ComponentConfigurationException;
+
+    Object fromConfiguration( ConverterLookup lookup, PlexusConfiguration configuration, Class<?> type,
+                              Class<?> contextType, ClassLoader loader, ExpressionEvaluator evaluator,
+                              ConfigurationListener listener )
+        throws ComponentConfigurationException;
 }
