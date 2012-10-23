@@ -10,28 +10,23 @@
  *******************************************************************************/
 package org.codehaus.plexus.component.configurator.converters;
 
+import java.lang.reflect.Type;
+
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ConfigurationListener;
 import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
-public abstract class AbstractConfigurationConverter
-    implements ConfigurationConverter
+public interface GenericConfigurationConverter<T extends Type>
 {
-    public Object fromConfiguration( final ConverterLookup lookup, final PlexusConfiguration configuration,
-                                     final Class<?> type, final Class<?> contextType, final ClassLoader loader,
-                                     final ExpressionEvaluator evaluator )
-        throws ComponentConfigurationException
-    {
-        return fromConfiguration( lookup, configuration, type, contextType, loader, evaluator, null );
-    }
+    boolean canConvert( T type );
 
-    public Object fromConfiguration( final ConverterLookup lookup, final PlexusConfiguration configuration,
-                                     final Class<?> type, final Class<?> contextType, final ClassLoader loader,
-                                     final ExpressionEvaluator evaluator, final ConfigurationListener listener )
-        throws ComponentConfigurationException
-    {
-        throw new UnsupportedOperationException();
-    }
+    Object fromConfiguration( ConverterLookup lookup, PlexusConfiguration configuration, T type, Class<?> contextType,
+                              ClassLoader loader, ExpressionEvaluator evaluator )
+        throws ComponentConfigurationException;
+
+    Object fromConfiguration( ConverterLookup lookup, PlexusConfiguration configuration, T type, Class<?> contextType,
+                              ClassLoader loader, ExpressionEvaluator evaluator, ConfigurationListener listener )
+        throws ComponentConfigurationException;
 }
