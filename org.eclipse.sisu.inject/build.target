@@ -20,6 +20,10 @@
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
+<unit id="org.testng" version="6.7.0"/>
+<repository location="http://git.eclipse.org/c/sisu/org.eclipse.sisu.inject.git/plain/org.eclipse.sisu.inject/build.extra?id=567103a544cb97541f5af583b1dc392d1928883e"/>
+</location>
+<location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="org.eclipse.osgi" version="3.6.2.R36x_v20110210"/>
 <unit id="org.eclipse.jdt.apt.core" version="3.3.402.R36_v20110120-1000"/>
 <repository location="http://download.eclipse.org/releases/helios/"/>
