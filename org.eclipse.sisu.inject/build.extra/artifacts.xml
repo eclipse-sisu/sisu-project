@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?artifactRepository version='1.1.0'?>
+<repository name='org.eclipse.sisu.inject.extra' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='1'>
+  <properties size='2'>
+    <property name='p2.timestamp' value='1351285171319'/>
+    <property name='p2.compressed' value='false'/>
+  </properties>
+  <mappings size='1'>
+    <rule filter='(&amp; (id=org.testng))' output='http://central.maven.org/maven2/org/testng/testng/6.7/testng-6.7.jar'/>
+  </mappings>
+  <artifacts size='1'>
+    <artifact classifier='osgi.bundle' id='org.testng' version='6.7.0'>
+      <properties size='3'>
+        <property name='artifact.size' value='753341'/>
+        <property name='download.size' value='753341'/>
+        <property name='download.md5' value='3ba37617cc6f2ff33abc850fa2d60349'/>
+      </properties>
+    </artifact>
+  </artifacts>
+</repository>
