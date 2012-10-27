@@ -39,6 +39,7 @@ import com.google.inject.name.Names;
 /**
  * Abstract TestNG/JUnit4 test that automatically binds and injects itself.
  */
+@SuppressWarnings( "unused" )
 public abstract class InjectedTest
     implements Module
 {
@@ -58,6 +59,7 @@ public abstract class InjectedTest
     @Before
     @BeforeMethod
     public void setUp()
+        throws Exception
     {
         Guice.createInjector( new WireModule( new SetUpModule(), new SpaceModule( space(), scanning() ) ) );
     }
@@ -65,6 +67,7 @@ public abstract class InjectedTest
     @After
     @AfterMethod
     public void tearDown()
+        throws Exception
     {
         locator.clear();
     }
