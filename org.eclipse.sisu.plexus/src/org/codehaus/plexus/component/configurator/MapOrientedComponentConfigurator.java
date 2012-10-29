@@ -10,7 +10,33 @@
  *******************************************************************************/
 package org.codehaus.plexus.component.configurator;
 
+import java.util.Map;
+
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
+import org.codehaus.plexus.component.MapOrientedComponent;
+import org.codehaus.plexus.component.configurator.converters.composite.MapConverter;
+import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+
 public class MapOrientedComponentConfigurator
     extends AbstractComponentConfigurator
 {
+    @Override
+    public void configureComponent( final Object component, final PlexusConfiguration configuration,
+                                    final ExpressionEvaluator evaluator, final ClassRealm realm,
+                                    final ConfigurationListener listener )
+        throws ComponentConfigurationException
+    {
+        if ( component instanceof MapOrientedComponent )
+        {
+            ( (MapOrientedComponent) component ).setComponentConfiguration(
+            /* <--- */(Map<?, ?>) new MapConverter().fromConfiguration( converterLookup, configuration, Map.class,
+                                                                        component.getClass(), realm, evaluator,
+                                                                        listener ) );
+        }
+        else
+        {
+            throw new ComponentConfigurationException( "Component does not implement " + MapOrientedComponent.class );
+        }
+    }
 }
