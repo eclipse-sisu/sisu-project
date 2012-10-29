@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.codehaus.plexus.component.configurator.converters.composite;
 
+import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ConfigurationListener;
@@ -34,6 +36,38 @@ public class MapConverter
                                      final ExpressionEvaluator evaluator, final ConfigurationListener listener )
         throws ComponentConfigurationException
     {
-        throw new UnsupportedOperationException();
+        Object result = fromExpression( configuration, evaluator, type );
+        if ( null == result )
+        {
+            final Class<?> implType = getClassForImplementationHint( type, configuration, loader );
+            if ( null == implType || Modifier.isAbstract( implType.getModifiers() ) )
+            {
+                result = new TreeMap<Object, Object>();
+            }
+            else
+            {
+                try
+                {
+                    result = instantiateObject( implType );
+                }
+                catch ( final ComponentConfigurationException e )
+                {
+                    if ( e.getFailedConfiguration() == null )
+                    {
+                        e.setFailedConfiguration( configuration );
+                    }
+                    throw e;
+                }
+                failIfNotTypeCompatible( result, type, configuration );
+            }
+
+            @SuppressWarnings( { "rawtypes", "unchecked" } )
+            final Map<Object, Object> map = (Map) result;
+            for ( final PlexusConfiguration child : configuration.getChildren() )
+            {
+                map.put( child.getName(), fromExpression( child, evaluator ) );
+            }
+        }
+        return result;
     }
 }
