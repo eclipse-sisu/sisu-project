@@ -10,7 +10,13 @@
  *******************************************************************************/
 package org.codehaus.plexus.component.configurator;
 
+import java.lang.reflect.InvocationTargetException;
+
+import org.codehaus.classworlds.ClassRealmAdapter;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
+import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
+import org.codehaus.plexus.component.configurator.converters.lookup.DefaultConverterLookup;
 import org.codehaus.plexus.component.configurator.expression.DefaultExpressionEvaluator;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
@@ -19,6 +25,9 @@ public abstract class AbstractComponentConfigurator
     implements ComponentConfigurator
 {
     private static final ExpressionEvaluator DEFAULT_EXPRESSION_EVALUATOR = new DefaultExpressionEvaluator();
+
+    @Requirement
+    protected ConverterLookup converterLookup = new DefaultConverterLookup();
 
     public void configureComponent( final Object component, final PlexusConfiguration configuration,
                                     final ClassRealm realm )
@@ -39,6 +48,44 @@ public abstract class AbstractComponentConfigurator
                                     final ConfigurationListener listener )
         throws ComponentConfigurationException
     {
-        throw new UnsupportedOperationException();
+        final org.codehaus.classworlds.ClassRealm legacyRealm = ClassRealmAdapter.getInstance( realm );
+        final Class<?> clazz = getClass();
+        try
+        {
+            try
+            {
+                clazz.getMethod( "configureComponent", Object.class, PlexusConfiguration.class,
+                                 ExpressionEvaluator.class, org.codehaus.classworlds.ClassRealm.class,
+                                 ConfigurationListener.class )
+                /* ---> */.invoke( this, component, configuration, evaluator, legacyRealm, listener );
+            }
+            catch ( final NoSuchMethodException ignore )
+            {
+                clazz.getMethod( "configureComponent", Object.class, PlexusConfiguration.class,
+                                 ExpressionEvaluator.class, org.codehaus.classworlds.ClassRealm.class )
+                /* ---> */.invoke( this, component, configuration, evaluator, legacyRealm );
+            }
+        }
+        catch ( final InvocationTargetException e )
+        {
+            final Throwable result = e.getCause();
+            if ( result instanceof ComponentConfigurationException )
+            {
+                throw (ComponentConfigurationException) result;
+            }
+            if ( result instanceof RuntimeException )
+            {
+                throw (RuntimeException) result;
+            }
+            if ( result instanceof Error )
+            {
+                throw (Error) result;
+            }
+            throw new ComponentConfigurationException( "Incompatible configurator " + clazz.getName(), result );
+        }
+        catch ( final Exception e )
+        {
+            throw new ComponentConfigurationException( "Incompatible configurator " + clazz.getName(), e );
+        }
     }
 }

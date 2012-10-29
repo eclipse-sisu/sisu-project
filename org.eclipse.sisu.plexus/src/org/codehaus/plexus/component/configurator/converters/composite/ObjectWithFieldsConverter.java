@@ -32,6 +32,7 @@ public final class ObjectWithFieldsConverter
         processConfiguration( lookup, component, loader, configuration, evaluator, null );
     }
 
+    @SuppressWarnings( { "unused", "static-method" } )
     public void processConfiguration( final ConverterLookup lookup, final Object component, final ClassLoader loader,
                                       final PlexusConfiguration configuration, final ExpressionEvaluator evaluator,
                                       final ConfigurationListener listener )
