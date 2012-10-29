@@ -34,4 +34,51 @@ public abstract class AbstractConfigurationConverter
     {
         throw new UnsupportedOperationException();
     }
+
+    // ----------------------------------------------------------------------
+    // Customizable methods
+    // ----------------------------------------------------------------------
+
+    protected Object fromExpression( final PlexusConfiguration configuration, final ExpressionEvaluator evaluator )
+        throws ComponentConfigurationException
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    protected Object fromExpression( final PlexusConfiguration configuration, final ExpressionEvaluator evaluator,
+                                     final Class<?> type )
+        throws ComponentConfigurationException
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    // ----------------------------------------------------------------------
+    // Shared methods
+    // ----------------------------------------------------------------------
+
+    protected final String fromXML( final String name )
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    protected final void failIfNotTypeCompatible( final Object value, final Class<?> type,
+                                                  final PlexusConfiguration configuration )
+        throws ComponentConfigurationException
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    protected final Class<?> getClassForImplementationHint( final Class<?> type,
+                                                            final PlexusConfiguration configuration,
+                                                            final ClassLoader classLoader )
+        throws ComponentConfigurationException
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    protected final Object instantiateObject( final Class<?> type )
+        throws ComponentConfigurationException
+    {
+        throw new UnsupportedOperationException();
+    }
 }
