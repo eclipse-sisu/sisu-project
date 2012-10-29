@@ -10,7 +10,21 @@
  *******************************************************************************/
 package org.codehaus.plexus.component.configurator;
 
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
+import org.codehaus.plexus.component.configurator.converters.composite.ObjectWithFieldsConverter;
+import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+
 public class BasicComponentConfigurator
     extends AbstractComponentConfigurator
 {
+    @Override
+    public void configureComponent( final Object component, final PlexusConfiguration configuration,
+                                    final ExpressionEvaluator evaluator, final ClassRealm realm,
+                                    final ConfigurationListener listener )
+        throws ComponentConfigurationException
+    {
+        new ObjectWithFieldsConverter().processConfiguration( converterLookup, component, realm, configuration,
+                                                              evaluator, listener );
+    }
 }
