@@ -41,10 +41,15 @@ public final class ClassRealmConverter
                                      final ExpressionEvaluator evaluator, final ConfigurationListener listener )
         throws ComponentConfigurationException
     {
-        if ( ClassRealm.class.isAssignableFrom( type ) )
+        Object result = fromExpression( configuration, evaluator, type );
+        if ( null == result )
         {
-            return realm;
+            result = realm;
         }
-        return ClassRealmAdapter.getInstance( realm );
+        if ( !ClassRealm.class.isAssignableFrom( type ) && result instanceof ClassRealm )
+        {
+            result = ClassRealmAdapter.getInstance( (ClassRealm) result );
+        }
+        return result;
     }
 }
