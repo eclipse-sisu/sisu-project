@@ -12,6 +12,7 @@ package org.codehaus.plexus.component.configurator;
 
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.configurator.converters.composite.ObjectWithFieldsConverter;
+import org.codehaus.plexus.component.configurator.converters.special.ClassRealmConverter;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
@@ -24,6 +25,8 @@ public class BasicComponentConfigurator
                                     final ConfigurationListener listener )
         throws ComponentConfigurationException
     {
+        converterLookup.registerConverter( new ClassRealmConverter( realm ) );
+
         new ObjectWithFieldsConverter().processConfiguration( converterLookup, component, realm, configuration,
                                                               evaluator, listener );
     }

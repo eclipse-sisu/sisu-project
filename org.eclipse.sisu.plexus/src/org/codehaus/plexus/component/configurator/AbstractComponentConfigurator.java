@@ -14,7 +14,6 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.codehaus.classworlds.ClassRealmAdapter;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
 import org.codehaus.plexus.component.configurator.converters.lookup.DefaultConverterLookup;
 import org.codehaus.plexus.component.configurator.expression.DefaultExpressionEvaluator;
@@ -26,7 +25,6 @@ public abstract class AbstractComponentConfigurator
 {
     private static final ExpressionEvaluator DEFAULT_EXPRESSION_EVALUATOR = new DefaultExpressionEvaluator();
 
-    @Requirement
     protected ConverterLookup converterLookup = new DefaultConverterLookup();
 
     public void configureComponent( final Object component, final PlexusConfiguration configuration,
