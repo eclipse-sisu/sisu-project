@@ -61,9 +61,9 @@
   </mailingLists>
 
   <scm>
-    <connection>scm:git:git://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.inject.git</connection>
-    <developerConnection>scm:git:ssh://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.inject.git</developerConnection>
-    <url>http://git.eclipse.org/c/sisu/org.eclipse.sisu.inject.git/tree/</url>
+    <connection>scm:git:git://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.mojos.git</connection>
+    <developerConnection>scm:git:ssh://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.mojos.git</developerConnection>
+    <url>http://git.eclipse.org/c/sisu/org.eclipse.sisu.mojos.git/tree/</url>
   </scm>
 
   <issueManagement>
@@ -73,7 +73,7 @@
 
   <ciManagement>
     <system>Hudson</system>
-    <url>https://hudson.eclipse.org/hudson/job/sisu-inject-nightly/</url>
+    <url>https://hudson.eclipse.org/hudson/job/sisu-mojos-nightly/</url>
   </ciManagement>
 
   <licenses>
