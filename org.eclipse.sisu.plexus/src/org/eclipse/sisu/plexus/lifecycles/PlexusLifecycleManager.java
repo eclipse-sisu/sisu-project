@@ -50,14 +50,7 @@ public final class PlexusLifecycleManager
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private static final ThreadLocal<List<?>[]> pendingHolder = new ThreadLocal<List<?>[]>()
-    {
-        @Override
-        protected List<?>[] initialValue()
-        {
-            return new List[1];
-        }
-    };
+    private final ThreadLocal<List<?>[]> pendingHolder = new ThreadLocal<List<?>[]>();
 
     private final List<Startable> startableBeans = new ArrayList<Startable>();
 
@@ -131,7 +124,11 @@ public final class PlexusLifecycleManager
 
     public <T> void onProvision( final ProvisionInvocation<T> pi )
     {
-        final List<?>[] holder = pendingHolder.get();
+        List<?>[] holder = pendingHolder.get();
+        if ( null == holder )
+        {
+            pendingHolder.set( holder = new List[1] );
+        }
         if ( null == holder[0] )
         {
             List<?> beans;
