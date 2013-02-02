@@ -124,11 +124,7 @@ public final class PlexusLifecycleManager
 
     public <T> void onProvision( final ProvisionInvocation<T> pi )
     {
-        List<?>[] holder = pendingHolder.get();
-        if ( null == holder )
-        {
-            pendingHolder.set( holder = new List[1] );
-        }
+        final List<?>[] holder = getPendingHolder();
         if ( null == holder[0] )
         {
             List<?> beans;
@@ -163,7 +159,7 @@ public final class PlexusLifecycleManager
         }
         if ( bean instanceof Contextualizable || bean instanceof Initializable || bean instanceof Startable )
         {
-            final List<?>[] holder = pendingHolder.get();
+            final List<?>[] holder = getPendingHolder();
             List beans = holder[0];
             if ( null == beans || beans.isEmpty() )
             {
@@ -239,6 +235,16 @@ public final class PlexusLifecycleManager
     // ----------------------------------------------------------------------
     // Implementation methods
     // ----------------------------------------------------------------------
+
+    private List<?>[] getPendingHolder()
+    {
+        List<?>[] holder = pendingHolder.get();
+        if ( null == holder )
+        {
+            pendingHolder.set( holder = new List[1] );
+        }
+        return holder;
+    }
 
     private static <T> boolean synchronizedAdd( final List<T> list, final T element )
     {
