@@ -30,7 +30,6 @@ public class MapConverter
         return Map.class.isAssignableFrom( type ) && !Properties.class.isAssignableFrom( type );
     }
 
-    @Override
     public Object fromConfiguration( final ConverterLookup lookup, final PlexusConfiguration configuration,
                                      final Class<?> type, final Class<?> contextType, final ClassLoader loader,
                                      final ExpressionEvaluator evaluator, final ConfigurationListener listener )

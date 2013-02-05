@@ -35,7 +35,6 @@ public final class ClassRealmConverter
             || org.codehaus.classworlds.ClassRealm.class.isAssignableFrom( type );
     }
 
-    @Override
     public Object fromConfiguration( final ConverterLookup lookup, final PlexusConfiguration configuration,
                                      final Class<?> type, final Class<?> contextType, final ClassLoader loader,
                                      final ExpressionEvaluator evaluator, final ConfigurationListener listener )

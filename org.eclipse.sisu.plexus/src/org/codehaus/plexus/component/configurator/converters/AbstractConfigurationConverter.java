@@ -11,7 +11,6 @@
 package org.codehaus.plexus.component.configurator.converters;
 
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
-import org.codehaus.plexus.component.configurator.ConfigurationListener;
 import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
@@ -25,14 +24,6 @@ public abstract class AbstractConfigurationConverter
         throws ComponentConfigurationException
     {
         return fromConfiguration( lookup, configuration, type, contextType, loader, evaluator, null );
-    }
-
-    public Object fromConfiguration( final ConverterLookup lookup, final PlexusConfiguration configuration,
-                                     final Class<?> type, final Class<?> contextType, final ClassLoader loader,
-                                     final ExpressionEvaluator evaluator, final ConfigurationListener listener )
-        throws ComponentConfigurationException
-    {
-        throw new UnsupportedOperationException();
     }
 
     // ----------------------------------------------------------------------

@@ -25,6 +25,14 @@ public final class ObjectWithFieldsConverter
         throw new UnsupportedOperationException();
     }
 
+    public Object fromConfiguration( final ConverterLookup lookup, final PlexusConfiguration configuration,
+                                     final Class<?> type, final Class<?> contextType, final ClassLoader loader,
+                                     final ExpressionEvaluator evaluator, final ConfigurationListener listener )
+        throws ComponentConfigurationException
+    {
+        throw new UnsupportedOperationException();
+    }
+
     public void processConfiguration( final ConverterLookup lookup, final Object component, final ClassLoader loader,
                                       final PlexusConfiguration configuration, final ExpressionEvaluator evaluator )
         throws ComponentConfigurationException
