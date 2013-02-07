@@ -9,9 +9,9 @@
         per-lookup
       </instantiation-strategy>
       <configuration>
-        <some-field.name>
+        <some-field-name>
           <item>PRIMARY</item>
-        </some-field.name>
+        </some-field-name>
       </configuration>
     </component>
     <component>
@@ -34,10 +34,10 @@
         org.eclipse.sisu.plexus.scanners.PlexusXmlScannerTest$DefaultBean
       </implementation>
       <configuration>
-        <foo/><simple >value</simple  ><value with="attribute"></value><empty.value1 with="attribute" /><empty.value2/><foo/>
-        <some-field.name>
+        <foo/><simple >value</simple  ><value with="attribute"></value><empty-value1 with="attribute" /><empty-value2/><foo/>
+        <some-field-name>
           <item>SECONDARY</item>
-        </some-field.name>
+        </some-field-name>
       </configuration>
       <requirements>
         <requirement>

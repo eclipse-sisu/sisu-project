@@ -157,7 +157,7 @@ public final class Roles
     }
 
     /**
-     * Removes any non-Java identifiers from the name and converts it to camelCase.
+     * Removes any dashes from the name and converts it to camelCase.
      * 
      * @param name The element name
      * @return CamelCased name with no dashes
@@ -169,7 +169,7 @@ public final class Roles
         final int length = name.length();
         for ( int i = 0; i < length; i++ )
         {
-            if ( !Character.isJavaIdentifierPart( name.charAt( i ) ) )
+            if ( '-' == name.charAt( i ) )
             {
                 buf = new StringBuilder( name.substring( 0, i ) );
                 break;
@@ -185,13 +185,13 @@ public final class Roles
         for ( int i = buf.length() + 1; i < length; i++ )
         {
             final char c = name.charAt( i );
-            if ( !Character.isJavaIdentifierPart( c ) )
+            if ( '-' == c )
             {
                 capitalize = true;
             }
             else if ( capitalize )
             {
-                buf.append( Character.toUpperCase( c ) );
+                buf.append( Character.toTitleCase( c ) );
                 capitalize = false;
             }
             else
