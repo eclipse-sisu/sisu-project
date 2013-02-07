@@ -10,11 +10,16 @@
  *******************************************************************************/
 package org.codehaus.plexus.component.configurator.converters;
 
+import java.lang.reflect.Array;
+
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
+import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluationException;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.eclipse.sisu.plexus.config.Roles;
 
+@SuppressWarnings( "static-method" )
 public abstract class AbstractConfigurationConverter
     implements ConfigurationConverter
 {
@@ -33,14 +38,41 @@ public abstract class AbstractConfigurationConverter
     protected Object fromExpression( final PlexusConfiguration configuration, final ExpressionEvaluator evaluator )
         throws ComponentConfigurationException
     {
-        throw new UnsupportedOperationException();
+        String value = configuration.getValue();
+        try
+        {
+            Object result = null;
+            if ( null != value && value.length() > 0 )
+            {
+                result = evaluator.evaluate( value );
+            }
+            if ( null == result )
+            {
+                value = configuration.getAttribute( "default-value" );
+                if ( null != value && value.length() > 0 )
+                {
+                    result = evaluator.evaluate( value );
+                }
+            }
+            return result;
+        }
+        catch ( final ExpressionEvaluationException e )
+        {
+            final String reason =
+                String.format( "Cannot evaluate expression '%s' for configuration entry '%s'", value,
+                               configuration.getName() );
+
+            throw new ComponentConfigurationException( configuration, reason, e );
+        }
     }
 
     protected Object fromExpression( final PlexusConfiguration configuration, final ExpressionEvaluator evaluator,
                                      final Class<?> type )
         throws ComponentConfigurationException
     {
-        throw new UnsupportedOperationException();
+        final Object result = fromExpression( configuration, evaluator );
+        failIfNotTypeCompatible( result, type, configuration );
+        return result;
     }
 
     // ----------------------------------------------------------------------
@@ -49,14 +81,22 @@ public abstract class AbstractConfigurationConverter
 
     protected final String fromXML( final String name )
     {
-        throw new UnsupportedOperationException();
+        return Roles.camelizeName( name );
     }
 
     protected final void failIfNotTypeCompatible( final Object value, final Class<?> type,
                                                   final PlexusConfiguration configuration )
         throws ComponentConfigurationException
     {
-        throw new UnsupportedOperationException();
+        if ( null != value && null != type && !type.isInstance( value ) )
+        {
+            final String reason =
+                String.format( "Cannot assign configuration entry '%s' with value '%s' of type %s to property of type %s",
+                               configuration.getName(), configuration.getValue(), value.getClass().getCanonicalName(),
+                               type.getCanonicalName() );
+
+            throw new ComponentConfigurationException( configuration, reason );
+        }
     }
 
     protected final Class<?> getClassForImplementationHint( final Class<?> type,
@@ -64,12 +104,49 @@ public abstract class AbstractConfigurationConverter
                                                             final ClassLoader classLoader )
         throws ComponentConfigurationException
     {
-        throw new UnsupportedOperationException();
+        String hint = configuration.getAttribute( "implementation" );
+        if ( null == hint )
+        {
+            return type;
+        }
+        try
+        {
+            int dims = 0;
+            for ( ; hint.endsWith( "[]" ); dims++ )
+            {
+                hint = hint.substring( 0, hint.length() - 2 );
+            }
+            Class<?> implType = classLoader.loadClass( hint );
+            for ( ; dims > 0; dims-- )
+            {
+                implType = Array.newInstance( implType, dims ).getClass();
+            }
+            return implType;
+        }
+        catch ( final Exception e )
+        {
+            throw new ComponentConfigurationException( "Cannot load implementation hint '" + hint + "'", e );
+        }
+        catch ( final LinkageError e )
+        {
+            throw new ComponentConfigurationException( "Cannot load implementation hint '" + hint + "'", e );
+        }
     }
 
     protected final Object instantiateObject( final Class<?> type )
         throws ComponentConfigurationException
     {
-        throw new UnsupportedOperationException();
+        try
+        {
+            return type.newInstance();
+        }
+        catch ( final Exception e )
+        {
+            throw new ComponentConfigurationException( "Cannot create instance of " + type, e );
+        }
+        catch ( final LinkageError e )
+        {
+            throw new ComponentConfigurationException( "Cannot create instance of " + type, e );
+        }
     }
 }
