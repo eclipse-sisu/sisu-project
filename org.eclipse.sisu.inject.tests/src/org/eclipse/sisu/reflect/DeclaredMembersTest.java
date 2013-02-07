@@ -12,7 +12,6 @@ package org.eclipse.sisu.reflect;
 
 import java.lang.reflect.Member;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import junit.framework.TestCase;
@@ -82,22 +81,6 @@ public class DeclaredMembersTest
         }
     }
 
-    public void testJavaClass()
-    {
-        final Iterator<Member> i = new DeclaredMembers( List.class ).iterator();
-
-        assertFalse( i.hasNext() );
-
-        try
-        {
-            i.next();
-            fail( "Expected NoSuchElementException" );
-        }
-        catch ( final NoSuchElementException e )
-        {
-        }
-    }
-
     public void testReadOnlyIterator()
     {
         final Iterator<Member> i = new DeclaredMembers( D.class ).iterator();
@@ -135,6 +118,10 @@ public class DeclaredMembersTest
         int i = 0;
         for ( final Member e : new DeclaredMembers( D.class ) )
         {
+            if ( e.getDeclaringClass() == Object.class )
+            {
+                break; // stop at java.lang.Object as its members vary according to JDK
+            }
             assertEquals( elements[i++], e );
         }
         assertEquals( 6, i );

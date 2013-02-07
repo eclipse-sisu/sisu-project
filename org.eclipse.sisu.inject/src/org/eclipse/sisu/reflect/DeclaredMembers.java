@@ -83,7 +83,7 @@ public final class DeclaredMembers
 
         MemberIterator( final Class<?> clazz, final View[] views )
         {
-            this.clazz = filterClass( clazz );
+            this.clazz = clazz;
             this.views = views;
         }
 
@@ -97,8 +97,8 @@ public final class DeclaredMembers
             {
                 if ( viewIndex >= views.length )
                 {
-                    // no more views, time to move up hierarchy
-                    clazz = filterClass( clazz.getSuperclass() );
+                    // reset view
+                    clazz = clazz.getSuperclass();
                     viewIndex = 0;
                 }
 
@@ -128,16 +128,6 @@ public final class DeclaredMembers
         public void remove()
         {
             throw new UnsupportedOperationException();
-        }
-
-        // ----------------------------------------------------------------------
-        // Implementation methods
-        // ----------------------------------------------------------------------
-
-        private static Class<?> filterClass( final Class<?> clazz )
-        {
-            // deliberately ignore all java.* classes because we won't be injecting them
-            return null == clazz || clazz.getName().startsWith( "java." ) ? null : clazz;
         }
     }
 
