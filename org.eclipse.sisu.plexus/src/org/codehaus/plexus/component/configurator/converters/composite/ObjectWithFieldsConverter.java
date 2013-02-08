@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.codehaus.plexus.component.configurator.converters.composite;
 
+import java.util.Collection;
+import java.util.Dictionary;
+import java.util.Map;
+
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ConfigurationListener;
 import org.codehaus.plexus.component.configurator.converters.AbstractConfigurationConverter;
@@ -22,7 +26,9 @@ public final class ObjectWithFieldsConverter
 {
     public boolean canConvert( final Class<?> type )
     {
-        throw new UnsupportedOperationException();
+        return !Map.class.isAssignableFrom( type ) //
+            && !Collection.class.isAssignableFrom( type ) //
+            && !Dictionary.class.isAssignableFrom( type );
     }
 
     public Object fromConfiguration( final ConverterLookup lookup, final PlexusConfiguration configuration,
@@ -30,7 +36,37 @@ public final class ObjectWithFieldsConverter
                                      final ExpressionEvaluator evaluator, final ConfigurationListener listener )
         throws ComponentConfigurationException
     {
-        throw new UnsupportedOperationException();
+        try
+        {
+            final Object value = fromExpression( configuration, evaluator );
+            if ( type.isInstance( value ) )
+            {
+                return value;
+            }
+            final Class<?> implType = getClassForImplementationHint( type, configuration, loader );
+            if ( null == value && implType.isInterface() && configuration.getChildCount() <= 0 )
+            {
+                return null; // nothing to process
+            }
+            final Object result = instantiateObject( implType );
+            if ( null == value )
+            {
+                processConfiguration( lookup, result, loader, configuration, evaluator, listener );
+            }
+            else
+            {
+                // TODO: set value as property
+            }
+            return result;
+        }
+        catch ( final ComponentConfigurationException e )
+        {
+            if ( null == e.getFailedConfiguration() )
+            {
+                e.setFailedConfiguration( configuration );
+            }
+            throw e;
+        }
     }
 
     public void processConfiguration( final ConverterLookup lookup, final Object component, final ClassLoader loader,
@@ -40,12 +76,26 @@ public final class ObjectWithFieldsConverter
         processConfiguration( lookup, component, loader, configuration, evaluator, null );
     }
 
-    @SuppressWarnings( { "unused", "static-method" } )
     public void processConfiguration( final ConverterLookup lookup, final Object component, final ClassLoader loader,
                                       final PlexusConfiguration configuration, final ExpressionEvaluator evaluator,
                                       final ConfigurationListener listener )
         throws ComponentConfigurationException
     {
-        throw new UnsupportedOperationException();
+        for ( int i = 0, size = configuration.getChildCount(); i < size; i++ )
+        {
+            final PlexusConfiguration element = configuration.getChild( i );
+            final String propertyName = fromXML( element.getName() );
+            Class<?> implType;
+            try
+            {
+                implType = getClassForImplementationHint( null, element, loader );
+            }
+            catch ( final Exception e )
+            {
+                implType = null;
+            }
+
+            // TODO: evaluate element and set as property
+        }
     }
 }
