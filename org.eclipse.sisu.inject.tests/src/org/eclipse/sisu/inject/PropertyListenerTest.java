@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.sisu.inject;
 
+import javax.inject.Named;
+
 import junit.framework.TestCase;
 
 import org.eclipse.sisu.reflect.BeanProperty;
@@ -21,6 +23,7 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.AbstractMatcher;
+import com.google.inject.name.Names;
 import com.google.inject.spi.TypeEncounter;
 
 public class PropertyListenerTest
@@ -55,6 +58,14 @@ public class PropertyListenerTest
         String c;
 
         String ignore;
+
+        @Named( "injected" )
+        @javax.inject.Inject
+        int jsr330;
+
+        @Named( "injected" )
+        @com.google.inject.Inject
+        int guice;
 
         String d;
     }
@@ -143,6 +154,8 @@ public class PropertyListenerTest
                         return type.getRawType().getName().contains( "Bean" ) ? namedPropertyBinder : null;
                     }
                 } ) );
+
+                bindConstant().annotatedWith( Names.named( "injected" ) ).to( 42 );
             }
         } );
     }
@@ -170,6 +183,8 @@ public class PropertyListenerTest
     {
         final Bean2 bean2 = injector.getInstance( Bean2.class );
         assertEquals( "dValue", bean2.d );
+        assertEquals( 42, bean2.guice );
+        assertEquals( 42, bean2.jsr330 );
         assertEquals( "cValue", bean2.c );
         assertNull( bean2.b );
         assertNull( bean2.a );

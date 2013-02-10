@@ -106,16 +106,6 @@ public class BeanPropertiesTest
         void name( final String _name )
         {
         }
-
-        @javax.inject.Inject
-        void setName( final String _name )
-        {
-        }
-
-        @com.google.inject.Inject
-        void setLastName( final String _name )
-        {
-        }
     }
 
     static class F

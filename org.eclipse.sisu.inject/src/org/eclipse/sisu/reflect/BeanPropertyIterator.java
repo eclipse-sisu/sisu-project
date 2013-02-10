@@ -76,12 +76,6 @@ final class BeanPropertyIterator<T>
             {
                 nextProperty = new BeanPropertyField<T>( (Field) member );
             }
-
-            // ignore properties annotated with JSR330/Guice
-            if ( null != nextProperty && atInject( member ) )
-            {
-                nextProperty = null;
-            }
         }
 
         return true;
@@ -116,12 +110,5 @@ final class BeanPropertyIterator<T>
             return method.getParameterTypes().length == 1;
         }
         return false;
-    }
-
-    private static boolean atInject( final Member member )
-    {
-        final AnnotatedElement e = (AnnotatedElement) member;
-        return e.isAnnotationPresent( javax.inject.Inject.class )
-            || e.isAnnotationPresent( com.google.inject.Inject.class );
     }
 }
