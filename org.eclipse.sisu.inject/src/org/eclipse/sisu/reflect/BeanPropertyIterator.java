@@ -33,8 +33,6 @@ final class BeanPropertyIterator<T>
     // look-ahead, maintained by hasNext()
     private BeanProperty<T> nextProperty;
 
-    private Class<?> clazz;
-
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
@@ -58,15 +56,6 @@ final class BeanPropertyIterator<T>
             }
 
             final Member member = memberIterator.next();
-            if ( clazz != member.getDeclaringClass() )
-            {
-                clazz = member.getDeclaringClass();
-                if ( clazz.getName().startsWith( "java." ) )
-                {
-                    return false; // short-circuit search when we reach java.* classes
-                }
-            }
-
             final int modifiers = member.getModifiers();
 
             // static members can't be properties, abstracts and synthetics are just noise so we ignore them

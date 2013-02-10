@@ -102,7 +102,7 @@ public final class DeclaredMembers
                     viewIndex = 0;
                 }
 
-                if ( null == clazz )
+                if ( null == clazz || clazz == java.lang.Object.class )
                 {
                     return false;
                 }

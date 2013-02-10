@@ -81,6 +81,22 @@ public class DeclaredMembersTest
         }
     }
 
+    public void testJavaClass()
+    {
+        final Iterator<Member> i = new DeclaredMembers( Object.class ).iterator();
+
+        assertFalse( i.hasNext() );
+
+        try
+        {
+            i.next();
+            fail( "Expected NoSuchElementException" );
+        }
+        catch ( final NoSuchElementException e )
+        {
+        }
+    }
+
     public void testReadOnlyIterator()
     {
         final Iterator<Member> i = new DeclaredMembers( D.class ).iterator();
@@ -118,10 +134,6 @@ public class DeclaredMembersTest
         int i = 0;
         for ( final Member e : new DeclaredMembers( D.class ) )
         {
-            if ( e.getDeclaringClass() == Object.class )
-            {
-                break; // stop at java.lang.Object as its members vary according to JDK
-            }
             assertEquals( elements[i++], e );
         }
         assertEquals( 6, i );
