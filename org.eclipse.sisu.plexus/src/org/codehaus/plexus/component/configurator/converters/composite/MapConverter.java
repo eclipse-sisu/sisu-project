@@ -51,7 +51,7 @@ public class MapConverter
                 }
                 catch ( final ComponentConfigurationException e )
                 {
-                    if ( e.getFailedConfiguration() == null )
+                    if ( null == e.getFailedConfiguration() )
                     {
                         e.setFailedConfiguration( configuration );
                     }

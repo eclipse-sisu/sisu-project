@@ -44,20 +44,20 @@ public final class ObjectWithFieldsConverter
                 return value;
             }
             final Class<?> implType = getClassForImplementationHint( type, configuration, loader );
-            if ( null == value && implType.isInterface() && configuration.getChildCount() <= 0 )
+            if ( null == value && implType.isInterface() && configuration.getChildCount() == 0 )
             {
                 return null; // nothing to process
             }
-            final Object result = instantiateObject( implType );
+            final Object bean = instantiateObject( implType );
             if ( null == value )
             {
-                processConfiguration( lookup, result, loader, configuration, evaluator, listener );
+                processConfiguration( lookup, bean, loader, configuration, evaluator, listener );
             }
             else
             {
-                // TODO: set value as property
+                new BeanHelper( lookup, loader, evaluator, listener ).setDefault( bean, value, configuration );
             }
-            return result;
+            return bean;
         }
         catch ( final ComponentConfigurationException e )
         {
@@ -69,18 +69,19 @@ public final class ObjectWithFieldsConverter
         }
     }
 
-    public void processConfiguration( final ConverterLookup lookup, final Object component, final ClassLoader loader,
+    public void processConfiguration( final ConverterLookup lookup, final Object bean, final ClassLoader loader,
                                       final PlexusConfiguration configuration, final ExpressionEvaluator evaluator )
         throws ComponentConfigurationException
     {
-        processConfiguration( lookup, component, loader, configuration, evaluator, null );
+        processConfiguration( lookup, bean, loader, configuration, evaluator, null );
     }
 
-    public void processConfiguration( final ConverterLookup lookup, final Object component, final ClassLoader loader,
+    public void processConfiguration( final ConverterLookup lookup, final Object bean, final ClassLoader loader,
                                       final PlexusConfiguration configuration, final ExpressionEvaluator evaluator,
                                       final ConfigurationListener listener )
         throws ComponentConfigurationException
     {
+        final BeanHelper beanHelper = new BeanHelper( lookup, loader, evaluator, listener );
         for ( int i = 0, size = configuration.getChildCount(); i < size; i++ )
         {
             final PlexusConfiguration element = configuration.getChild( i );
@@ -90,12 +91,11 @@ public final class ObjectWithFieldsConverter
             {
                 implType = getClassForImplementationHint( null, element, loader );
             }
-            catch ( final Exception e )
+            catch ( final ComponentConfigurationException e )
             {
                 implType = null;
             }
-
-            // TODO: evaluate element and set as property
+            beanHelper.setProperty( bean, propertyName, implType, element );
         }
     }
 }
