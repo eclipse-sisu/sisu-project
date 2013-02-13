@@ -36,7 +36,7 @@ public final class ClassRealmConverter
     }
 
     public Object fromConfiguration( final ConverterLookup lookup, final PlexusConfiguration configuration,
-                                     final Class<?> type, final Class<?> contextType, final ClassLoader loader,
+                                     final Class<?> type, final Class<?> enclosingType, final ClassLoader loader,
                                      final ExpressionEvaluator evaluator, final ConfigurationListener listener )
         throws ComponentConfigurationException
     {

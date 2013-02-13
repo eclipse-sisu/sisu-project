@@ -24,11 +24,11 @@ public abstract class AbstractConfigurationConverter
     implements ConfigurationConverter
 {
     public Object fromConfiguration( final ConverterLookup lookup, final PlexusConfiguration configuration,
-                                     final Class<?> type, final Class<?> contextType, final ClassLoader loader,
+                                     final Class<?> type, final Class<?> enclosingType, final ClassLoader loader,
                                      final ExpressionEvaluator evaluator )
         throws ComponentConfigurationException
     {
-        return fromConfiguration( lookup, configuration, type, contextType, loader, evaluator, null );
+        return fromConfiguration( lookup, configuration, type, enclosingType, loader, evaluator, null );
     }
 
     // ----------------------------------------------------------------------

@@ -21,11 +21,11 @@ public interface ConfigurationConverter
     boolean canConvert( Class<?> type );
 
     Object fromConfiguration( ConverterLookup lookup, PlexusConfiguration configuration, Class<?> type,
-                              Class<?> contextType, ClassLoader loader, ExpressionEvaluator evaluator )
+                              Class<?> enclosingType, ClassLoader loader, ExpressionEvaluator evaluator )
         throws ComponentConfigurationException;
 
     Object fromConfiguration( ConverterLookup lookup, PlexusConfiguration configuration, Class<?> type,
-                              Class<?> contextType, ClassLoader loader, ExpressionEvaluator evaluator,
+                              Class<?> enclosingType, ClassLoader loader, ExpressionEvaluator evaluator,
                               ConfigurationListener listener )
         throws ComponentConfigurationException;
 }
