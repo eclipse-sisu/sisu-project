@@ -101,7 +101,7 @@ public abstract class AbstractConfigurationConverter
 
     protected final Class<?> getClassForImplementationHint( final Class<?> type,
                                                             final PlexusConfiguration configuration,
-                                                            final ClassLoader classLoader )
+                                                            final ClassLoader loader )
         throws ComponentConfigurationException
     {
         String hint = configuration.getAttribute( "implementation" );
@@ -116,10 +116,10 @@ public abstract class AbstractConfigurationConverter
             {
                 hint = hint.substring( 0, hint.length() - 2 );
             }
-            Class<?> implType = classLoader.loadClass( hint );
+            Class<?> implType = loader.loadClass( hint );
             for ( ; dims > 0; dims-- )
             {
-                implType = Array.newInstance( implType, dims ).getClass();
+                implType = Array.newInstance( implType, 0 ).getClass();
             }
             return implType;
         }
