@@ -55,7 +55,6 @@ final class BeanHelper
         throws ComponentConfigurationException
     {
         final Class<?> beanType = bean.getClass();
-        ComponentConfigurationException problem = null;
         for ( final Method method : beanType.getMethods() )
         {
             if ( "set".equals( method.getName() ) && !Modifier.isStatic( method.getModifiers() ) )
@@ -63,68 +62,65 @@ final class BeanHelper
                 final Class<?>[] parameterTypes = method.getParameterTypes();
                 if ( parameterTypes.length == 1 )
                 {
+                    Object value = defaultValue;
+                    final Class<?> type = parameterTypes[0];
+                    if ( !type.isInstance( value ) )
+                    {
+                        if ( cfg.getChildCount() > 0 )
+                        {
+                            throw new ComponentConfigurationException( "Basic element '" + cfg.getName()
+                                + "' must not contain child elements" );
+                        }
+                        value = convertProperty( beanType, type, type, cfg );
+                    }
+                    if ( null != listener )
+                    {
+                        listener.notifyFieldChangeUsingSetter( "", value, bean );
+                    }
                     try
                     {
-                        Object value = defaultValue;
-                        final Class<?> type = parameterTypes[0];
-                        if ( !type.isInstance( value ) )
-                        {
-                            value = convertProperty( beanType, type, null, cfg );
-                        }
-                        if ( null != listener )
-                        {
-                            listener.notifyFieldChangeUsingSetter( "", value, bean );
-                        }
-                        try
-                        {
-                            method.invoke( bean, value );
-                            return;
-                        }
-                        catch ( final Exception e )
-                        {
-                            throw new ComponentConfigurationException( cfg, "Cannot set default", e );
-                        }
-                        catch ( final LinkageError e )
-                        {
-                            throw new ComponentConfigurationException( cfg, "Cannot set default", e );
-                        }
+                        method.invoke( bean, value );
+                        return;
                     }
-                    catch ( final ComponentConfigurationException e )
+                    catch ( final Exception e )
                     {
-                        if ( null == problem )
-                        {
-                            problem = e;
-                        }
+                        throw new ComponentConfigurationException( cfg, "Cannot set default", e );
+                    }
+                    catch ( final LinkageError e )
+                    {
+                        throw new ComponentConfigurationException( cfg, "Cannot set default", e );
                     }
                 }
             }
         }
-        if ( null != problem )
-        {
-            throw problem;
-        }
+        throw new ComponentConfigurationException( cfg, "Cannot find default setter in " + beanType );
     }
 
     void setProperty( final Object bean, final String propertyName, final Class<?> implType,
                       final PlexusConfiguration cfg )
         throws ComponentConfigurationException
     {
+        boolean foundProperty = false;
         final Class<?> beanType = bean.getClass();
         ComponentConfigurationException problem = null;
+        Object value = null;
         for ( final BeanProperty<Object> property : new BeanProperties( beanType ) )
         {
             if ( propertyName.equals( property.getName() ) )
             {
+                foundProperty = true;
                 final TypeLiteral<?> propertyType = property.getType();
                 Class<?> rawPropertyType = propertyType.getRawType();
-                if ( null != implType && rawPropertyType.isAssignableFrom( implType ) )
-                {
-                    rawPropertyType = implType; // pick more specific type
-                }
-                final Type genericPropertyType = propertyType.getType();
                 try
                 {
-                    final Object value = convertProperty( beanType, rawPropertyType, genericPropertyType, cfg );
+                    if ( !rawPropertyType.isInstance( value ) )
+                    {
+                        if ( null != implType && rawPropertyType.isAssignableFrom( implType ) )
+                        {
+                            rawPropertyType = implType; // pick more specific type
+                        }
+                        value = convertProperty( beanType, rawPropertyType, propertyType.getType(), cfg );
+                    }
                     if ( null != value )
                     {
                         if ( null != listener )
@@ -148,6 +144,10 @@ final class BeanHelper
         {
             throw problem;
         }
+        else if ( !foundProperty )
+        {
+            throw new ComponentConfigurationException( cfg, "Cannot find '" + propertyName + "' in " + beanType );
+        }
     }
 
     private Object convertProperty( final Class<?> beanType, final Class<?> rawPropertyType,
@@ -155,7 +155,7 @@ final class BeanHelper
         throws ComponentConfigurationException
     {
         final ConfigurationConverter converter = lookup.lookupConverterForType( rawPropertyType );
-        if ( genericPropertyType != null && converter instanceof ParameterizedConfigurationConverter )
+        if ( !( genericPropertyType instanceof Class<?> ) && converter instanceof ParameterizedConfigurationConverter )
         {
             final Type[] paramTypes = getParameterTypes( genericPropertyType );
             return ( (ParameterizedConfigurationConverter) converter ).fromConfiguration( lookup, cfg, rawPropertyType,
