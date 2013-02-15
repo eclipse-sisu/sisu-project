@@ -52,9 +52,9 @@ public final class XmlPlexusConfiguration
         if ( getChildCount() > 0 )
         {
             buf.append( '>' );
-            for ( final PlexusConfiguration c : getChildren() )
+            for ( int i = 0, size = getChildCount(); i < size; i++ )
             {
-                buf.append( c );
+                buf.append( getChild( i ) );
             }
             buf.append( "</" ).append( getName() ).append( '>' );
         }

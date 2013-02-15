@@ -62,9 +62,10 @@ public class MapConverter
 
             @SuppressWarnings( { "rawtypes", "unchecked" } )
             final Map<Object, Object> map = (Map) result;
-            for ( final PlexusConfiguration child : configuration.getChildren() )
+            for ( int i = 0, size = configuration.getChildCount(); i < size; i++ )
             {
-                map.put( child.getName(), fromExpression( child, evaluator ) );
+                final PlexusConfiguration element = configuration.getChild( i );
+                map.put( element.getName(), fromExpression( element, evaluator ) );
             }
         }
         return result;
