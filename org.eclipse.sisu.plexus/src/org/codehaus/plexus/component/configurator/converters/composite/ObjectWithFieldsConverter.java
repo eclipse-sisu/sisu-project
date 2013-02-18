@@ -21,7 +21,7 @@ import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLoo
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
-public final class ObjectWithFieldsConverter
+public class ObjectWithFieldsConverter
     extends AbstractConfigurationConverter
 {
     public boolean canConvert( final Class<?> type )
@@ -36,13 +36,13 @@ public final class ObjectWithFieldsConverter
                                      final ExpressionEvaluator evaluator, final ConfigurationListener listener )
         throws ComponentConfigurationException
     {
+        final Object value = fromExpression( configuration, evaluator );
+        if ( type.isInstance( value ) )
+        {
+            return value;
+        }
         try
         {
-            final Object value = fromExpression( configuration, evaluator );
-            if ( type.isInstance( value ) )
-            {
-                return value;
-            }
             final Class<?> implType = getClassForImplementationHint( type, configuration, loader );
             if ( null == value && implType.isInterface() && configuration.getChildCount() == 0 )
             {
@@ -81,7 +81,7 @@ public final class ObjectWithFieldsConverter
                                       final ConfigurationListener listener )
         throws ComponentConfigurationException
     {
-        final BeanHelper beanHelper = new BeanHelper( lookup, loader, evaluator, listener );
+        final BeanHelper helper = new BeanHelper( lookup, loader, evaluator, listener );
         for ( int i = 0, size = configuration.getChildCount(); i < size; i++ )
         {
             final PlexusConfiguration element = configuration.getChild( i );
@@ -95,7 +95,7 @@ public final class ObjectWithFieldsConverter
             {
                 implType = null;
             }
-            beanHelper.setProperty( bean, propertyName, implType, element );
+            helper.setProperty( bean, propertyName, implType, element );
         }
     }
 }

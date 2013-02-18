@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.codehaus.plexus.component.configurator.converters.composite;
 
+import java.lang.reflect.Modifier;
 import java.util.Properties;
 
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
@@ -32,39 +33,52 @@ public class PropertiesConverter
                                      final ExpressionEvaluator evaluator, final ConfigurationListener listener )
         throws ComponentConfigurationException
     {
-        Object result = fromExpression( configuration, evaluator, type );
-        if ( null == result )
+        final Object value = fromExpression( configuration, evaluator, type );
+        if ( null != value )
         {
-            result = fromChildren( configuration, evaluator );
+            return value;
         }
-        return result;
-    }
-
-    private Object fromChildren( final PlexusConfiguration configuration, final ExpressionEvaluator evaluator )
-        throws ComponentConfigurationException
-    {
         try
         {
-            final Properties result = new Properties();
+            final Properties properties = instantiateProperties( configuration, type, loader );
             for ( int i = 0, size = configuration.getChildCount(); i < size; i++ )
             {
-                final PlexusConfiguration entry = configuration.getChild( i );
-                if ( "property".equals( entry.getName() ) && entry.getChildCount() > 0 )
+                final PlexusConfiguration element = configuration.getChild( i );
+                if ( "property".equals( element.getName() ) && element.getChildCount() > 0 )
                 {
-                    final Object name = fromExpression( entry.getChild( "name" ), evaluator );
-                    setProperty( result, name, entry.getChild( "value" ), evaluator );
+                    final Object name = fromExpression( element.getChild( "name" ), evaluator );
+                    setProperty( properties, name, element.getChild( "value" ), evaluator );
                 }
-                else if ( entry.getChildCount() == 0 )
+                else if ( element.getChildCount() == 0 )
                 {
-                    setProperty( result, entry.getName(), entry, evaluator );
+                    setProperty( properties, element.getName(), element, evaluator );
                 }
             }
-            return result;
+            return properties;
         }
-        catch ( final IllegalArgumentException e )
+        catch ( final ComponentConfigurationException e )
         {
-            throw new ComponentConfigurationException( configuration, "Missing name in properties" );
+            if ( null == e.getFailedConfiguration() )
+            {
+                e.setFailedConfiguration( configuration );
+            }
+            throw e;
         }
+    }
+
+    private Properties instantiateProperties( final PlexusConfiguration configuration, final Class<?> type,
+                                              final ClassLoader loader )
+        throws ComponentConfigurationException
+    {
+        final Class<?> implType = getClassForImplementationHint( type, configuration, loader );
+        if ( null == implType || Modifier.isAbstract( implType.getModifiers() ) )
+        {
+            return new Properties();
+        }
+
+        final Object impl = instantiateObject( implType );
+        failIfNotTypeCompatible( impl, type, configuration );
+        return (Properties) impl;
     }
 
     private void setProperty( final Properties properties, final Object name,
@@ -80,7 +94,7 @@ public class PropertiesConverter
         }
         else
         {
-            throw new IllegalArgumentException();
+            throw new ComponentConfigurationException( "Missing name in properties" );
         }
     }
 }

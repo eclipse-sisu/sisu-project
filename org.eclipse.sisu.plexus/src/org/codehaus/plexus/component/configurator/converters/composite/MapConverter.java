@@ -35,39 +35,44 @@ public class MapConverter
                                      final ExpressionEvaluator evaluator, final ConfigurationListener listener )
         throws ComponentConfigurationException
     {
-        Object result = fromExpression( configuration, evaluator, type );
-        if ( null == result )
+        final Object value = fromExpression( configuration, evaluator, type );
+        if ( null != value )
         {
-            final Class<?> implType = getClassForImplementationHint( type, configuration, loader );
-            if ( null == implType || Modifier.isAbstract( implType.getModifiers() ) )
-            {
-                result = new TreeMap<Object, Object>();
-            }
-            else
-            {
-                try
-                {
-                    result = instantiateObject( implType );
-                }
-                catch ( final ComponentConfigurationException e )
-                {
-                    if ( null == e.getFailedConfiguration() )
-                    {
-                        e.setFailedConfiguration( configuration );
-                    }
-                    throw e;
-                }
-                failIfNotTypeCompatible( result, type, configuration );
-            }
-
-            @SuppressWarnings( { "rawtypes", "unchecked" } )
-            final Map<Object, Object> map = (Map) result;
+            return value;
+        }
+        try
+        {
+            final Map<Object, Object> map = instantiateMap( configuration, type, loader );
             for ( int i = 0, size = configuration.getChildCount(); i < size; i++ )
             {
                 final PlexusConfiguration element = configuration.getChild( i );
                 map.put( element.getName(), fromExpression( element, evaluator ) );
             }
+            return map;
         }
-        return result;
+        catch ( final ComponentConfigurationException e )
+        {
+            if ( null == e.getFailedConfiguration() )
+            {
+                e.setFailedConfiguration( configuration );
+            }
+            throw e;
+        }
+    }
+
+    @SuppressWarnings( "unchecked" )
+    private Map<Object, Object> instantiateMap( final PlexusConfiguration configuration, final Class<?> type,
+                                                final ClassLoader loader )
+        throws ComponentConfigurationException
+    {
+        final Class<?> implType = getClassForImplementationHint( type, configuration, loader );
+        if ( null == implType || Modifier.isAbstract( implType.getModifiers() ) )
+        {
+            return new TreeMap<Object, Object>();
+        }
+
+        final Object impl = instantiateObject( implType );
+        failIfNotTypeCompatible( impl, type, configuration );
+        return (Map<Object, Object>) impl;
     }
 }
