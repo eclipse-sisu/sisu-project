@@ -51,7 +51,7 @@ final class BeanHelper
         this.listener = listener;
     }
 
-    void setDefault( final Object bean, final Object defaultValue, final PlexusConfiguration cfg )
+    void setDefault( final Object bean, final Object defaultValue, final PlexusConfiguration configuration )
         throws ComponentConfigurationException
     {
         final Class<?> beanType = bean.getClass();
@@ -66,12 +66,12 @@ final class BeanHelper
                     final Class<?> type = parameterTypes[0];
                     if ( !type.isInstance( value ) )
                     {
-                        if ( cfg.getChildCount() > 0 )
+                        if ( configuration.getChildCount() > 0 )
                         {
-                            throw new ComponentConfigurationException( "Basic element '" + cfg.getName()
+                            throw new ComponentConfigurationException( "Basic element '" + configuration.getName()
                                 + "' must not contain child elements" );
                         }
-                        value = convertProperty( beanType, type, type, cfg );
+                        value = convertProperty( beanType, type, type, configuration );
                     }
                     if ( null != listener )
                     {
@@ -84,20 +84,20 @@ final class BeanHelper
                     }
                     catch ( final Exception e )
                     {
-                        throw new ComponentConfigurationException( cfg, "Cannot set default", e );
+                        throw new ComponentConfigurationException( configuration, "Cannot set default", e );
                     }
                     catch ( final LinkageError e )
                     {
-                        throw new ComponentConfigurationException( cfg, "Cannot set default", e );
+                        throw new ComponentConfigurationException( configuration, "Cannot set default", e );
                     }
                 }
             }
         }
-        throw new ComponentConfigurationException( cfg, "Cannot find default setter in " + beanType );
+        throw new ComponentConfigurationException( configuration, "Cannot find default setter in " + beanType );
     }
 
     void setProperty( final Object bean, final String propertyName, final Class<?> implType,
-                      final PlexusConfiguration cfg )
+                      final PlexusConfiguration configuration )
         throws ComponentConfigurationException
     {
         boolean foundProperty = false;
@@ -119,7 +119,7 @@ final class BeanHelper
                         {
                             rawPropertyType = implType; // pick more specific type
                         }
-                        value = convertProperty( beanType, rawPropertyType, propertyType.getType(), cfg );
+                        value = convertProperty( beanType, rawPropertyType, propertyType.getType(), configuration );
                     }
                     if ( null != value )
                     {
@@ -146,23 +146,26 @@ final class BeanHelper
         }
         else if ( !foundProperty )
         {
-            throw new ComponentConfigurationException( cfg, "Cannot find '" + propertyName + "' in " + beanType );
+            throw new ComponentConfigurationException( configuration, "Cannot find '" + propertyName + "' in "
+                + beanType );
         }
     }
 
     private Object convertProperty( final Class<?> beanType, final Class<?> rawPropertyType,
-                                    final Type genericPropertyType, final PlexusConfiguration cfg )
+                                    final Type genericPropertyType, final PlexusConfiguration configuration )
         throws ComponentConfigurationException
     {
         final ConfigurationConverter converter = lookup.lookupConverterForType( rawPropertyType );
         if ( !( genericPropertyType instanceof Class<?> ) && converter instanceof ParameterizedConfigurationConverter )
         {
             final Type[] paramTypes = getParameterTypes( genericPropertyType );
-            return ( (ParameterizedConfigurationConverter) converter ).fromConfiguration( lookup, cfg, rawPropertyType,
-                                                                                          paramTypes, beanType, loader,
-                                                                                          evaluator, listener );
+            return ( (ParameterizedConfigurationConverter) converter ).fromConfiguration( lookup, configuration,
+                                                                                          rawPropertyType, paramTypes,
+                                                                                          beanType, loader, evaluator,
+                                                                                          listener );
         }
-        return converter.fromConfiguration( lookup, cfg, rawPropertyType, beanType, loader, evaluator, listener );
+        return converter.fromConfiguration( lookup, configuration, rawPropertyType, beanType, loader, evaluator,
+                                            listener );
     }
 
     private static Type[] getParameterTypes( final Type type )

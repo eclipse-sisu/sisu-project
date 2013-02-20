@@ -11,26 +11,25 @@
 package org.codehaus.plexus.component.configurator.converters.composite;
 
 import java.lang.reflect.Array;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ConfigurationListener;
-import org.codehaus.plexus.component.configurator.converters.AbstractConfigurationConverter;
 import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
 public class ArrayConverter
-    extends AbstractConfigurationConverter
+    extends AbstractCollectionConverter
 {
     public boolean canConvert( final Class<?> type )
     {
         return type.isArray();
     }
 
+    @SuppressWarnings( "unchecked" )
     public Object fromConfiguration( final ConverterLookup lookup, final PlexusConfiguration configuration,
                                      final Class<?> type, final Class<?> enclosingType, final ClassLoader loader,
                                      final ExpressionEvaluator evaluator, final ConfigurationListener listener )
@@ -43,30 +42,28 @@ public class ArrayConverter
         }
         try
         {
-            final Collection<?> collection;
-            if ( value instanceof Collection<?> )
+            final Collection<Object> elements;
+            final Class<?> elementType = type.getComponentType();
+            if ( null == value )
             {
-                collection = (Collection<?>) value;
+                elements =
+                    fromChildren( lookup, configuration, type, elementType, enclosingType, loader, evaluator, listener );
+            }
+            else if ( value instanceof String && ( "".equals( value ) || !value.equals( configuration.getValue() ) ) )
+            {
+                final PlexusConfiguration xml = csvToXml( configuration, (String) value );
+                elements = fromChildren( lookup, xml, type, elementType, enclosingType, loader, evaluator, listener );
+            }
+            else if ( value instanceof Collection<?> )
+            {
+                elements = (Collection<Object>) value;
             }
             else
             {
-                collection = new ArrayList<Object>( configuration.getChildCount() );
-                final CollectionHelper helper = new CollectionHelper( lookup, loader, evaluator, listener );
-                final Type[] parameterTypes = { type.getComponentType() };
-                if ( null == value )
-                {
-                    helper.addAll( collection, parameterTypes, enclosingType, configuration );
-                }
-                else if ( value instanceof String && ( "".equals( value ) || !value.equals( configuration.getValue() ) ) )
-                {
-                    helper.addAll( collection, parameterTypes, enclosingType, csvToXml( configuration, (String) value ) );
-                }
-                else
-                {
-                    failIfNotTypeCompatible( value, type, configuration );
-                }
+                failIfNotTypeCompatible( value, type, configuration );
+                elements = Collections.emptyList();
             }
-            return collection.toArray( (Object[]) Array.newInstance( type.getComponentType(), collection.size() ) );
+            return elements.toArray( (Object[]) Array.newInstance( elementType, elements.size() ) );
         }
         catch ( final ComponentConfigurationException e )
         {
@@ -82,13 +79,10 @@ public class ArrayConverter
         }
     }
 
-    private static PlexusConfiguration csvToXml( final PlexusConfiguration configuration, final String csv )
+    @Override
+    protected final Collection<Object> instantiateCollection( final PlexusConfiguration configuration,
+                                                              final Class<?> type, final ClassLoader loader )
     {
-        final PlexusConfiguration xml = new XmlPlexusConfiguration( configuration.getName() );
-        for ( final String token : csv.split( ",", -1 ) )
-        {
-            xml.addChild( "#", token );
-        }
-        return xml;
+        return new ArrayList<Object>( configuration.getChildCount() );
     }
 }
