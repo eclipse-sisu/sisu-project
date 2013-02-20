@@ -7,6 +7,8 @@
  *
  * Contributors:
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
+ *
+ * Minimal facade required to be binary-compatible with legacy Plexus API
  *******************************************************************************/
 package org.codehaus.plexus.component.factory;
 
