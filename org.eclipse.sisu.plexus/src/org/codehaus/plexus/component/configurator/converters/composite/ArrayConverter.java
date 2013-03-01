@@ -49,12 +49,12 @@ public class ArrayConverter
             if ( null == value )
             {
                 elements =
-                    fromChildren( lookup, configuration, type, elementType, enclosingType, loader, evaluator, listener );
+                    fromChildren( lookup, configuration, type, enclosingType, loader, evaluator, listener, elementType );
             }
             else if ( value instanceof String && ( "".equals( value ) || !value.equals( configuration.getValue() ) ) )
             {
                 final PlexusConfiguration xml = csvToXml( configuration, (String) value );
-                elements = fromChildren( lookup, xml, type, elementType, enclosingType, loader, evaluator, listener );
+                elements = fromChildren( lookup, xml, type, enclosingType, loader, evaluator, listener, elementType );
             }
             else if ( value instanceof Collection<?> )
             {
@@ -63,7 +63,7 @@ public class ArrayConverter
             else
             {
                 failIfNotTypeCompatible( value, type, configuration );
-                elements = Collections.emptyList();
+                elements = Collections.emptyList(); // unreachable
             }
             return elements.toArray( (Object[]) Array.newInstance( elementType, elements.size() ) );
         }

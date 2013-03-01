@@ -30,7 +30,7 @@ public class ClassConverter
         {
             return Class.forName( value );
         }
-        catch ( final ClassNotFoundException e )
+        catch ( final Exception e )
         {
             throw new ComponentConfigurationException( "Cannot convert '" + value + "' to Class", e );
         }

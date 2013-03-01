@@ -38,16 +38,16 @@ public abstract class AbstractCollectionConverter
 
     protected final Collection<Object> fromChildren( final ConverterLookup lookup,
                                                      final PlexusConfiguration configuration, final Class<?> type,
-                                                     final Class<?> elementType, final Class<?> enclosingType,
-                                                     final ClassLoader loader, final ExpressionEvaluator evaluator,
-                                                     final ConfigurationListener listener )
+                                                     final Class<?> enclosingType, final ClassLoader loader,
+                                                     final ExpressionEvaluator evaluator,
+                                                     final ConfigurationListener listener, final Class<?> elementType )
         throws ComponentConfigurationException
     {
         final Collection<Object> elements = instantiateCollection( configuration, type, loader );
         for ( int i = 0, size = configuration.getChildCount(); i < size; i++ )
         {
             final PlexusConfiguration xml = configuration.getChild( i );
-            final Class<?> childType = getChildType( xml, elementType, enclosingType, loader );
+            final Class<?> childType = getChildType( xml, enclosingType, loader, elementType );
             final ConfigurationConverter converter = lookup.lookupConverterForType( childType );
             elements.add( converter.fromConfiguration( lookup, xml, childType, enclosingType, //
                                                        loader, evaluator, listener ) );
@@ -55,8 +55,8 @@ public abstract class AbstractCollectionConverter
         return elements;
     }
 
-    protected final Class<?> getChildType( final PlexusConfiguration childConfiguration, final Class<?> elementType,
-                                           final Class<?> enclosingType, final ClassLoader loader )
+    protected final Class<?> getChildType( final PlexusConfiguration childConfiguration, final Class<?> enclosingType,
+                                           final ClassLoader loader, final Class<?> elementType )
         throws ComponentConfigurationException
     {
         final String childName = fromXML( childConfiguration.getName() );
@@ -69,7 +69,11 @@ public abstract class AbstractCollectionConverter
             {
                 childType = loader.loadClass( childName );
             }
-            catch ( final ClassNotFoundException e )
+            catch ( final Exception e )
+            {
+                cause = e;
+            }
+            catch ( final LinkageError e )
             {
                 cause = e;
             }
@@ -80,7 +84,11 @@ public abstract class AbstractCollectionConverter
             {
                 childType = loader.loadClass( alignPackageName( enclosingType.getName(), childName ) );
             }
-            catch ( final ClassNotFoundException e )
+            catch ( final Exception e )
+            {
+                cause = e;
+            }
+            catch ( final LinkageError e )
             {
                 cause = e;
             }
