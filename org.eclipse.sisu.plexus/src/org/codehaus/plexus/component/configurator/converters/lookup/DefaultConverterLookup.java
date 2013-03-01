@@ -21,7 +21,6 @@ import org.codehaus.plexus.component.configurator.converters.ConfigurationConver
 import org.codehaus.plexus.component.configurator.converters.basic.BooleanConverter;
 import org.codehaus.plexus.component.configurator.converters.basic.ByteConverter;
 import org.codehaus.plexus.component.configurator.converters.basic.CharConverter;
-import org.codehaus.plexus.component.configurator.converters.basic.ClassConverter;
 import org.codehaus.plexus.component.configurator.converters.basic.DateConverter;
 import org.codehaus.plexus.component.configurator.converters.basic.DoubleConverter;
 import org.codehaus.plexus.component.configurator.converters.basic.EnumConverter;
@@ -66,7 +65,7 @@ public final class DefaultConverterLookup
         new CharConverter(), //
         new ByteConverter(), //
         new ShortConverter(), //
-        new ClassConverter(), //
+        // new ClassConverter(), // not installed by default
         new PlexusConfigurationConverter(), //
         new StringBufferConverter(), //
         new StringBuilderConverter(), //
