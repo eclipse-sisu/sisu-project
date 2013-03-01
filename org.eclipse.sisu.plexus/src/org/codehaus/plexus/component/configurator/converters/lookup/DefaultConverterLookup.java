@@ -75,12 +75,12 @@ public final class DefaultConverterLookup
     private final Map<Class<?>, ConfigurationConverter> lookupCache = //
         Weak.concurrentKeys(); // entries will expire on class unload
 
-    private final List<ConfigurationConverter> registeredConverters =
+    private final List<ConfigurationConverter> customConverters = //
         new CopyOnWriteArrayList<ConfigurationConverter>();
 
     public void registerConverter( final ConfigurationConverter converter )
     {
-        registeredConverters.add( converter );
+        customConverters.add( converter );
     }
 
     public ConfigurationConverter lookupConverterForType( final Class<?> type )
@@ -91,9 +91,9 @@ public final class DefaultConverterLookup
         {
             return converter;
         }
-        for ( int i = 0; i < registeredConverters.size(); i++ )
+        for ( int i = 0; i < customConverters.size(); i++ )
         {
-            converter = registeredConverters.get( i );
+            converter = customConverters.get( i );
             if ( converter.canConvert( type ) )
             {
                 lookupCache.put( type, converter );
@@ -110,5 +110,13 @@ public final class DefaultConverterLookup
             }
         }
         throw new ComponentConfigurationException( "Cannot find converter for type: " + type );
+    }
+
+    /*
+     * Referenced by some external XML configurations
+     */
+    void setCustomConverters( final List<ConfigurationConverter> converters )
+    {
+        customConverters.addAll( converters );
     }
 }

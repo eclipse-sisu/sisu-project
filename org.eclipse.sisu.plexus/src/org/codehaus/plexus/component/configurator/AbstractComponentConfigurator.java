@@ -68,20 +68,20 @@ public abstract class AbstractComponentConfigurator
         }
         catch ( final InvocationTargetException e )
         {
-            final Throwable result = e.getCause();
-            if ( result instanceof ComponentConfigurationException )
+            final Throwable cause = e.getCause();
+            if ( cause instanceof ComponentConfigurationException )
             {
-                throw (ComponentConfigurationException) result;
+                throw (ComponentConfigurationException) cause;
             }
-            if ( result instanceof RuntimeException )
+            if ( cause instanceof RuntimeException )
             {
-                throw (RuntimeException) result;
+                throw (RuntimeException) cause;
             }
-            if ( result instanceof Error )
+            if ( cause instanceof Error )
             {
-                throw (Error) result;
+                throw (Error) cause;
             }
-            throw new ComponentConfigurationException( "Incompatible configurator " + clazz.getName(), result );
+            throw new ComponentConfigurationException( "Incompatible configurator " + clazz.getName(), cause );
         }
         catch ( final Exception e )
         {
