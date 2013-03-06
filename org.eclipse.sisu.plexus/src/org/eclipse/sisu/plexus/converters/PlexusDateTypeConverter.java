@@ -59,18 +59,22 @@ public final class PlexusDateTypeConverter
 
     public Object convert( final String value, final TypeLiteral<?> toType )
     {
-        for ( final DateFormat f : PLEXUS_DATE_FORMATS )
+        for ( int i = 0; i < 2; i++ )
         {
-            try
+            for ( final DateFormat f : PLEXUS_DATE_FORMATS )
             {
-                synchronized ( f ) // formats are not thread-safe!
+                try
                 {
-                    return f.parse( value );
+                    synchronized ( f ) // formats are not thread-safe!
+                    {
+                        f.setLenient( i == 1 );
+                        return f.parse( value );
+                    }
                 }
-            }
-            catch ( final ParseException e )
-            {
-                continue; // try another format
+                catch ( final ParseException e )
+                {
+                    continue; // try another format
+                }
             }
         }
         throw new IllegalArgumentException( String.format( CONVERSION_ERROR, value, Date.class ) );
