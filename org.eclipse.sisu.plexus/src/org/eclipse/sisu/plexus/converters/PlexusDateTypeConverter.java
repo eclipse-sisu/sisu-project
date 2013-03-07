@@ -38,6 +38,14 @@ public final class PlexusDateTypeConverter
 
     private static final String CONVERSION_ERROR = "Cannot convert: \"%s\" to: %s";
 
+    static
+    {
+        for ( final DateFormat f : PLEXUS_DATE_FORMATS )
+        {
+            f.setLenient( false ); // turn off lenient parsing as it gives odd results
+        }
+    }
+
     // ----------------------------------------------------------------------
     // Guice binding
     // ----------------------------------------------------------------------
@@ -59,22 +67,18 @@ public final class PlexusDateTypeConverter
 
     public Object convert( final String value, final TypeLiteral<?> toType )
     {
-        for ( int i = 0; i < 2; i++ )
+        for ( final DateFormat f : PLEXUS_DATE_FORMATS )
         {
-            for ( final DateFormat f : PLEXUS_DATE_FORMATS )
+            try
             {
-                try
+                synchronized ( f ) // formats are not thread-safe!
                 {
-                    synchronized ( f ) // formats are not thread-safe!
-                    {
-                        f.setLenient( i == 1 );
-                        return f.parse( value );
-                    }
+                    return f.parse( value );
                 }
-                catch ( final ParseException e )
-                {
-                    continue; // try another format
-                }
+            }
+            catch ( final ParseException e )
+            {
+                continue; // try another format
             }
         }
         throw new IllegalArgumentException( String.format( CONVERSION_ERROR, value, Date.class ) );

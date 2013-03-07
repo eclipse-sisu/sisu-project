@@ -12,19 +12,17 @@
  *******************************************************************************/
 package org.codehaus.plexus.component.configurator.converters.basic;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
+import org.eclipse.sisu.plexus.converters.PlexusDateTypeConverter;
+
+import com.google.inject.spi.TypeConverter;
 
 public class DateConverter
     extends AbstractBasicConverter
 {
-    private static final DateFormat[] PLEXUS_DATE_FORMATS = { new SimpleDateFormat( "yyyy-MM-dd hh:mm:ss.S a" ),
-        new SimpleDateFormat( "yyyy-MM-dd hh:mm:ssa" ), new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss.S" ),
-        new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" ) };
+    private static final TypeConverter DATE_CONVERTER = new PlexusDateTypeConverter();
 
     public boolean canConvert( final Class<?> type )
     {
@@ -35,24 +33,13 @@ public class DateConverter
     public Object fromString( final String value )
         throws ComponentConfigurationException
     {
-        for ( int i = 0; i < 2; i++ )
+        try
         {
-            for ( final DateFormat f : PLEXUS_DATE_FORMATS )
-            {
-                try
-                {
-                    synchronized ( f ) // formats are not thread-safe!
-                    {
-                        f.setLenient( i == 1 );
-                        return f.parse( value );
-                    }
-                }
-                catch ( final ParseException e )
-                {
-                    continue; // try another format
-                }
-            }
+            return DATE_CONVERTER.convert( value, null /* unused */);
         }
-        throw new ComponentConfigurationException( "Cannot convert '" + value + "' to Date" );
+        catch ( final RuntimeException e )
+        {
+            throw new ComponentConfigurationException( "Cannot convert '" + value + "' to Date" );
+        }
     }
 }
