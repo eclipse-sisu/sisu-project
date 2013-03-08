@@ -32,5 +32,8 @@ git add . ; git commit -m "Milestone ${MILESTONE_TAG}"
 
 MILESTONE_OLD="0.0.0.M$((MILESTONE_NUM-1))"
 
-git diff milestones/${MILESTONE_OLD} -w --patience --color-words=[^[:space:]]
+if git show-ref -q --tags refs/tags/milestones/${MILESTONE_OLD}
+then
+  git diff milestones/${MILESTONE_OLD} -w --patience --color-words=[^[:space:]]
+fi
 
