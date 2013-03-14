@@ -10,13 +10,17 @@
  *******************************************************************************/
 package org.codehaus.plexus.component.configurator.converters.composite;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ConfigurationListener;
@@ -25,8 +29,8 @@ import org.codehaus.plexus.component.configurator.converters.ParameterizedConfig
 import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.eclipse.sisu.reflect.BeanProperties;
-import org.eclipse.sisu.reflect.BeanProperty;
+import org.eclipse.sisu.reflect.DeclaredMembers;
+import org.eclipse.sisu.reflect.DeclaredMembers.View;
 
 import com.google.inject.TypeLiteral;
 
@@ -55,99 +59,163 @@ final class BeanHelper
         throws ComponentConfigurationException
     {
         final Class<?> beanType = bean.getClass();
-        for ( final Method method : beanType.getMethods() )
+        final Type[] paramTypeHolder = new Type[1];
+
+        // ----------------------------------------------------------------------
+
+        final Method setter = findMethod( beanType, paramTypeHolder, "set" );
+        if ( null == setter )
         {
-            if ( "set".equals( method.getName() ) && !Modifier.isStatic( method.getModifiers() ) )
+            throw new ComponentConfigurationException( configuration, "Cannot find default setter in " + beanType );
+        }
+
+        // ----------------------------------------------------------------------
+
+        Object value = defaultValue;
+        final TypeLiteral<?> paramType = TypeLiteral.get( paramTypeHolder[0] );
+        if ( !paramType.getRawType().isInstance( value ) )
+        {
+            if ( configuration.getChildCount() > 0 )
             {
-                final Class<?>[] parameterTypes = method.getParameterTypes();
-                if ( parameterTypes.length == 1 )
+                throw new ComponentConfigurationException( "Basic element '" + configuration.getName()
+                    + "' must not contain child elements" );
+            }
+            value = convertProperty( beanType, paramType.getRawType(), paramType.getType(), configuration );
+        }
+
+        // ----------------------------------------------------------------------
+
+        if ( null != value )
+        {
+            try
+            {
+                if ( null != listener )
                 {
-                    Object value = defaultValue;
-                    final Class<?> type = parameterTypes[0];
-                    if ( !type.isInstance( value ) )
-                    {
-                        if ( configuration.getChildCount() > 0 )
-                        {
-                            throw new ComponentConfigurationException( "Basic element '" + configuration.getName()
-                                + "' must not contain child elements" );
-                        }
-                        value = convertProperty( beanType, type, type, configuration );
-                    }
-                    if ( null != listener )
-                    {
-                        listener.notifyFieldChangeUsingSetter( "", value, bean );
-                    }
-                    try
-                    {
-                        method.invoke( bean, value );
-                        return;
-                    }
-                    catch ( final Exception e )
-                    {
-                        throw new ComponentConfigurationException( configuration, "Cannot set default", e );
-                    }
-                    catch ( final LinkageError e )
-                    {
-                        throw new ComponentConfigurationException( configuration, "Cannot set default", e );
-                    }
+                    listener.notifyFieldChangeUsingSetter( "", value, bean );
                 }
+                setter.invoke( bean, value );
+            }
+            catch ( final Exception e )
+            {
+                throw new ComponentConfigurationException( configuration, "Cannot set default", e );
+            }
+            catch ( final LinkageError e )
+            {
+                throw new ComponentConfigurationException( configuration, "Cannot set default", e );
             }
         }
-        throw new ComponentConfigurationException( configuration, "Cannot find default setter in " + beanType );
     }
 
     void setProperty( final Object bean, final String propertyName, final Class<?> implType,
                       final PlexusConfiguration configuration )
         throws ComponentConfigurationException
     {
-        boolean foundProperty = false;
         final Class<?> beanType = bean.getClass();
-        ComponentConfigurationException problem = null;
-        Object value = null;
-        for ( final BeanProperty<Object> property : new BeanProperties( beanType ) )
+        final Type[] paramTypeHolder = new Type[1];
+
+        // ----------------------------------------------------------------------
+
+        final String title = Character.toTitleCase( propertyName.charAt( 0 ) ) + propertyName.substring( 1 );
+        Method setter = findMethod( beanType, paramTypeHolder, "set" + title );
+        if ( null == setter )
         {
-            if ( propertyName.equals( property.getName() ) )
+            setter = findMethod( beanType, paramTypeHolder, "add" + title );
+        }
+
+        // ----------------------------------------------------------------------
+
+        Throwable problem = null;
+        Object value = null;
+
+        if ( null != setter )
+        {
+            try
             {
-                foundProperty = true;
-                final TypeLiteral<?> propertyType = property.getType();
-                Class<?> rawPropertyType = propertyType.getRawType();
-                try
+                final TypeLiteral<?> paramType = TypeLiteral.get( paramTypeHolder[0] );
+                Class<?> rawPropertyType = paramType.getRawType();
+                if ( null != implType && rawPropertyType.isAssignableFrom( implType ) )
                 {
-                    if ( !rawPropertyType.isInstance( value ) )
-                    {
-                        if ( null != implType && rawPropertyType.isAssignableFrom( implType ) )
-                        {
-                            rawPropertyType = implType; // pick more specific type
-                        }
-                        value = convertProperty( beanType, rawPropertyType, propertyType.getType(), configuration );
-                    }
-                    if ( null != value )
-                    {
-                        if ( null != listener )
-                        {
-                            listener.notifyFieldChangeUsingReflection( propertyName, value, bean );
-                        }
-                        property.set( bean, value );
-                        return;
-                    }
+                    rawPropertyType = implType; // pick more specific type
                 }
-                catch ( final ComponentConfigurationException e )
+                value = convertProperty( beanType, rawPropertyType, paramType.getType(), configuration );
+                if ( null != value )
                 {
-                    if ( null == problem )
+                    if ( null != listener )
                     {
-                        problem = e;
+                        listener.notifyFieldChangeUsingSetter( propertyName, value, bean );
                     }
+                    setter.invoke( bean, value );
+                    return;
+                }
+            }
+            catch ( final Exception e )
+            {
+                problem = e;
+            }
+            catch ( final LinkageError e )
+            {
+                problem = e;
+            }
+        }
+
+        // ----------------------------------------------------------------------
+
+        final Field field = findField( beanType, propertyName );
+        if ( null != field )
+        {
+            try
+            {
+                final TypeLiteral<?> fieldType = TypeLiteral.get( field.getGenericType() );
+                Class<?> rawPropertyType = fieldType.getRawType();
+                if ( !rawPropertyType.isInstance( value ) ) // only re-convert if we must
+                {
+                    if ( null != implType && rawPropertyType.isAssignableFrom( implType ) )
+                    {
+                        rawPropertyType = implType; // pick more specific type
+                    }
+                    value = convertProperty( beanType, rawPropertyType, fieldType.getType(), configuration );
+                }
+                if ( null != value )
+                {
+                    if ( null != listener )
+                    {
+                        listener.notifyFieldChangeUsingReflection( propertyName, value, bean );
+                    }
+                    setField( bean, field, value );
+                    return;
+                }
+            }
+            catch ( final Exception e )
+            {
+                if ( null == problem )
+                {
+                    problem = e;
+                }
+            }
+            catch ( final LinkageError e )
+            {
+                if ( null == problem )
+                {
+                    problem = e;
                 }
             }
         }
+
+        // ----------------------------------------------------------------------
+
+        if ( problem instanceof ComponentConfigurationException )
+        {
+            throw (ComponentConfigurationException) problem;
+        }
         if ( null != problem )
         {
-            throw problem;
+            final String reason = "Cannot set '" + propertyName + "' in " + beanType;
+            throw new ComponentConfigurationException( configuration, reason, problem );
         }
-        else if ( !foundProperty )
+        if ( null == setter && null == field )
         {
-            throw new ComponentConfigurationException( configuration, "Cannot find '" + propertyName + "' in "
-                + beanType );
+            final String reason = "Cannot find '" + propertyName + "' in " + beanType;
+            throw new ComponentConfigurationException( configuration, reason );
         }
     }
 
@@ -197,5 +265,51 @@ final class BeanHelper
             return ( (TypeVariable<?>) type ).getBounds()[0];
         }
         return type;
+    }
+
+    private static Method findMethod( final Class<?> beanType, final Type[] paramTypeHolder, final String methodName )
+    {
+        for ( final Method m : beanType.getMethods() )
+        {
+            if ( methodName.equals( m.getName() ) && !Modifier.isStatic( m.getModifiers() ) )
+            {
+                final Type[] paramTypes = m.getGenericParameterTypes();
+                if ( paramTypes.length == 1 )
+                {
+                    paramTypeHolder[0] = paramTypes[0];
+                    return m;
+                }
+            }
+        }
+        return null;
+    }
+
+    private static Field findField( final Class<?> beanType, final String fieldName )
+    {
+        for ( final Member f : new DeclaredMembers( beanType, View.FIELDS ) )
+        {
+            if ( fieldName.equals( f.getName() ) && !Modifier.isStatic( f.getModifiers() ) )
+            {
+                return (Field) f;
+            }
+        }
+        return null;
+    }
+
+    private static void setField( final Object bean, final Field field, final Object value )
+        throws Exception
+    {
+        if ( !field.isAccessible() )
+        {
+            AccessController.doPrivileged( new PrivilegedAction<Void>()
+            {
+                public Void run()
+                {
+                    field.setAccessible( true );
+                    return null;
+                }
+            } );
+        }
+        field.set( bean, value );
     }
 }
