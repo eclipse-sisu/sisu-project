@@ -18,6 +18,8 @@ import org.codehaus.plexus.configuration.PlexusConfiguration;
 
 public interface ComponentConfigurator
 {
+    String ROLE = ComponentConfigurator.class.getName();
+
     void configureComponent( Object component, PlexusConfiguration configuration, ClassRealm realm )
         throws ComponentConfigurationException;
 
