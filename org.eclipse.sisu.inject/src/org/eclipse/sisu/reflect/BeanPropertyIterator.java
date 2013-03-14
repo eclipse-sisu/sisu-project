@@ -65,7 +65,7 @@ final class BeanPropertyIterator<T>
 
             if ( member instanceof Method )
             {
-                if ( isSetterOrAdder( member ) )
+                if ( isSetter( member ) )
                 {
                     nextProperty = new BeanPropertySetter<T>( (Method) member );
                 }
@@ -100,12 +100,10 @@ final class BeanPropertyIterator<T>
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    private static boolean isSetterOrAdder( final Member member )
+    private static boolean isSetter( final Member member )
     {
         final String name = member.getName();
-        return ( name.startsWith( "set" ) || name.startsWith( "add" ) ) //
-            && name.length() > 3
-            && Character.isUpperCase( name.charAt( 3 ) )
+        return name.startsWith( "set" ) && name.length() > 3 && Character.isUpperCase( name.charAt( 3 ) )
             && ( (Method) member ).getParameterTypes().length == 1;
     }
 }
