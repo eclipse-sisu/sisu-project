@@ -25,7 +25,7 @@
 
   <groupId>org.eclipse.sisu</groupId>
   <artifactId>sisu-inject</artifactId>
-  <version>0.0.0-SNAPSHOT</version>
+  <version>0.0.0.M2a</version>
 
   <name>Sisu Inject</name>
 
