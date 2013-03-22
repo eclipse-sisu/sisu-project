@@ -51,7 +51,7 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.0.9</version>
+      <version>1.0.10</version>
     </dependency>
     <dependency>
       <groupId>javax.enterprise</groupId>
@@ -59,19 +59,9 @@
       <version>1.0</version>
     </dependency>
     <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-      <version>3.0</version>
-    </dependency>
-    <dependency>
       <groupId>com.google.inject.extensions</groupId>
       <artifactId>guice-assistedinject</artifactId>
       <version>3.0</version>
-    </dependency>
-    <dependency>
-      <groupId>asm</groupId>
-      <artifactId>asm</artifactId>
-      <version>3.3.1</version>
     </dependency>
     <dependency>
       <groupId>org.osgi</groupId>
@@ -81,7 +71,7 @@
     <dependency>
       <groupId>org.apache.felix</groupId>
       <artifactId>org.apache.felix.framework</artifactId>
-      <version>4.2.0</version>
+      <version>4.2.1</version>
     </dependency>
   </dependencies>
 

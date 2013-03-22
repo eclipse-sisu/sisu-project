@@ -136,4 +136,20 @@
     </plugins>
   </build>
 
+  <!--
+   | Minimum requirements
+  -->
+  <dependencies>
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>asm</groupId>
+      <artifactId>asm</artifactId>
+      <version>3.3.1</version>
+    </dependency>
+  </dependencies>
+
 </project>
