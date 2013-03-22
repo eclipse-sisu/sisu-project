@@ -103,15 +103,14 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.eclipse.sisu</groupId>
-      <artifactId>org.eclipse.sisu.inject</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>1.6.4</version>
+      <optional>true</optional>
     </dependency>
+    <!--
+     | CDI's @Typed helps Plexus->JSR330 migration
+    -->
     <dependency>
       <groupId>javax.enterprise</groupId>
       <artifactId>cdi-api</artifactId>
@@ -131,6 +130,9 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <!--
+     | Swap in sisu-guice for ProvisionListener API
+    -->
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
@@ -140,6 +142,7 @@
       <groupId>org.sonatype.sisu</groupId>
       <artifactId>sisu-guice</artifactId>
       <version>3.1.0</version>
+      <classifier>no_aop</classifier>
       <exclusions>
         <exclusion>
           <groupId>org.sonatype.sisu</groupId>
@@ -148,10 +151,19 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>asm</groupId>
-      <artifactId>asm</artifactId>
-      <version>3.3.1</version>
+      <groupId>org.eclipse.sisu</groupId>
+      <artifactId>org.eclipse.sisu.inject</artifactId>
+      <version>${project.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.google.inject</groupId>
+          <artifactId>guice</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
+    <!--
+     | Plexus classloading/utilities
+    -->
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-component-annotations</artifactId>
