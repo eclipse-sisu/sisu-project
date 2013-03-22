@@ -102,7 +102,7 @@ public class LogsTest
     public void testConsoleLogging()
         throws Exception
     {
-        System.setProperty( "org.eclipse.sisu.debug", "true" );
+        System.setProperty( "org.eclipse.sisu.log", "console" );
         try
         {
             final ClassLoader consoleLoader =
@@ -124,7 +124,7 @@ public class LogsTest
         }
         finally
         {
-            System.clearProperty( "org.eclipse.sisu.debug" );
+            System.clearProperty( "org.eclipse.sisu.log" );
         }
     }
 }

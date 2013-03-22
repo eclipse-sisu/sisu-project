@@ -65,7 +65,7 @@ public final class QualifiedTypeVisitor
         space = _space;
         source = null;
 
-        if ( Logs.DEBUG_ENABLED )
+        if ( Logs.TRACE_ENABLED )
         {
             ClassSpaceScanner.verify( _space, Qualifier.class, Module.class );
         }

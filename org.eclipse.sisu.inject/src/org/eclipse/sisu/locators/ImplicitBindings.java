@@ -57,7 +57,7 @@ final class ImplicitBindings
                 final Binding binding = i.getBindings().get( implicitKey );
                 if ( null != binding )
                 {
-                    Logs.debug( "Using implicit binding: {} from: <>", binding, i );
+                    Logs.trace( "Using implicit binding: {} from: <>", binding, i );
                     return binding;
                 }
             }
@@ -75,7 +75,7 @@ final class ImplicitBindings
                     final Binding binding = i.getBinding( justInTimeKey );
                     if ( InjectorPublisher.isVisible( binding ) )
                     {
-                        Logs.debug( "Using just-in-time binding: {} from: <>", binding, i );
+                        Logs.trace( "Using just-in-time binding: {} from: <>", binding, i );
                         return binding;
                     }
                 }

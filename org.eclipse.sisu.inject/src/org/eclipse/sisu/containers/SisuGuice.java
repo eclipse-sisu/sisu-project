@@ -85,7 +85,7 @@ public final class SisuGuice
         }
         else
         {
-            Logs.debug( "No BeanLocator found for thread {}", Thread.currentThread(), null );
+            Logs.trace( "No BeanLocator found for thread {}", Thread.currentThread(), null );
         }
         return null;
     }
@@ -107,7 +107,7 @@ public final class SisuGuice
         }
         else
         {
-            Logs.debug( "No BeanLocator found for thread {}", Thread.currentThread(), null );
+            Logs.trace( "No BeanLocator found for thread {}", Thread.currentThread(), null );
         }
     }
 

@@ -111,7 +111,7 @@ public final class DefaultBeanLocator
         {
             if ( !publishers.contains( publisher ) )
             {
-                Logs.debug( "Add publisher: {}", publisher, null );
+                Logs.trace( "Add publisher: {}", publisher, null );
                 publishers.insert( publisher, rank );
                 for ( final RankedBindings bindings : cachedBindings.values() )
                 {
@@ -136,7 +136,7 @@ public final class DefaultBeanLocator
         {
             if ( publishers.remove( publisher ) )
             {
-                Logs.debug( "Remove publisher: {}", publisher, null );
+                Logs.trace( "Remove publisher: {}", publisher, null );
                 for ( final RankedBindings bindings : cachedBindings.values() )
                 {
                     bindings.remove( publisher );

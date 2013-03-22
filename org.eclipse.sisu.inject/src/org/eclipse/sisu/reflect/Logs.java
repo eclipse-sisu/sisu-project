@@ -22,9 +22,9 @@ import com.google.inject.spi.Element;
 import com.google.inject.spi.Elements;
 
 /**
- * Utility methods for dealing with internal debug and warning messages.
+ * Utility methods for logging internal messages. Uses SLF4J if available, otherwise JUL.
  * <p>
- * Set <b>-Dorg.eclipse.sisu.debug=true</b> to send debug to the console.
+ * Set <b>-Dorg.eclipse.sisu.log=console</b> to send all internal messages to the console.
  */
 public final class Logs
 {
@@ -35,23 +35,23 @@ public final class Logs
     static
     {
         String newLine;
-        boolean isDebug;
+        boolean toConsole;
         try
         {
             newLine = System.getProperty( "line.separator", "\n" );
-            final String debug = System.getProperty( "org.eclipse.sisu.debug", "false" );
-            isDebug = "".equals( debug ) || "true".equalsIgnoreCase( debug );
+            final String sink = System.getProperty( "org.eclipse.sisu.log" );
+            toConsole = "console".equalsIgnoreCase( sink );
         }
         catch ( final RuntimeException e )
         {
             newLine = "\n";
-            isDebug = false;
+            toConsole = false;
         }
         NEW_LINE = newLine;
         Sink sink;
         try
         {
-            sink = isDebug ? new ConsoleSink() : new SLF4JSink();
+            sink = toConsole ? new ConsoleSink() : new SLF4JSink();
         }
         catch ( final RuntimeException e )
         {
@@ -74,7 +74,7 @@ public final class Logs
 
     private static final Sink SINK;
 
-    public static final boolean DEBUG_ENABLED = SINK.isDebugEnabled();
+    public static final boolean TRACE_ENABLED = SINK.isTraceEnabled();
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -90,17 +90,17 @@ public final class Logs
     // ----------------------------------------------------------------------
 
     /**
-     * Logs a debug message; uses "{}" format anchors. Pass {@link Throwable}s in last parameter for special handling.
+     * Logs a trace message; uses "{}" format anchors. Pass {@link Throwable}s in last parameter for special handling.
      * 
-     * @param format The debug message format
+     * @param format The trace message format
      * @param arg1 First object to format
      * @param arg2 Second object to format
      */
-    public static void debug( final String format, final Object arg1, final Object arg2 )
+    public static void trace( final String format, final Object arg1, final Object arg2 )
     {
-        if ( DEBUG_ENABLED )
+        if ( TRACE_ENABLED )
         {
-            SINK.debug( format( format( format, arg1 ), arg2 ), arg2 instanceof Throwable ? (Throwable) arg2 : null );
+            SINK.trace( format( format( format, arg1 ), arg2 ), arg2 instanceof Throwable ? (Throwable) arg2 : null );
         }
     }
 
@@ -268,17 +268,17 @@ public final class Logs
     private interface Sink
     {
         /**
-         * @return {@code true} if debug is enabled; otherwise {@code false}
+         * @return {@code true} if trace is enabled; otherwise {@code false}
          */
-        boolean isDebugEnabled();
+        boolean isTraceEnabled();
 
         /**
-         * Accepts a debug message and optional exception cause.
+         * Accepts a trace message and optional exception cause.
          * 
-         * @param message The debug message
+         * @param message The trace message
          * @param cause The exception cause
          */
-        void debug( String message, Throwable cause );
+        void trace( String message, Throwable cause );
 
         /**
          * Accepts a warning message and optional exception cause.
@@ -299,7 +299,7 @@ public final class Logs
         // Constants
         // ----------------------------------------------------------------------
 
-        private static final String DEBUG = "DEBUG: " + SISU + " - ";
+        private static final String TRACE = "TRACE: " + SISU + " - ";
 
         private static final String WARN = "WARN: " + SISU + " - ";
 
@@ -307,14 +307,14 @@ public final class Logs
         // Public methods
         // ----------------------------------------------------------------------
 
-        public boolean isDebugEnabled()
+        public boolean isTraceEnabled()
         {
             return true;
         }
 
-        public void debug( final String message, final Throwable cause )
+        public void trace( final String message, final Throwable cause )
         {
-            System.out.println( DEBUG + message );
+            System.out.println( TRACE + message );
             if ( null != cause )
             {
                 cause.printStackTrace( System.out );
@@ -347,14 +347,14 @@ public final class Logs
         // Public methods
         // ----------------------------------------------------------------------
 
-        public boolean isDebugEnabled()
+        public boolean isTraceEnabled()
         {
-            return logger.isLoggable( Level.FINE );
+            return logger.isLoggable( Level.FINER );
         }
 
-        public void debug( final String message, final Throwable cause )
+        public void trace( final String message, final Throwable cause )
         {
-            logger.log( Level.FINE, message, cause );
+            logger.log( Level.FINER, message, cause );
         }
 
         public void warn( final String message, final Throwable cause )
@@ -379,14 +379,14 @@ public final class Logs
         // Public methods
         // ----------------------------------------------------------------------
 
-        public boolean isDebugEnabled()
+        public boolean isTraceEnabled()
         {
-            return logger.isDebugEnabled();
+            return logger.isTraceEnabled();
         }
 
-        public void debug( final String message, final Throwable cause )
+        public void trace( final String message, final Throwable cause )
         {
-            logger.debug( message, cause );
+            logger.trace( message, cause );
         }
 
         public void warn( final String message, final Throwable cause )

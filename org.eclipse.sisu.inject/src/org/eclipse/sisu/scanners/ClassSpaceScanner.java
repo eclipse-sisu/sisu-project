@@ -112,7 +112,7 @@ public final class ClassSpaceScanner
         }
         catch ( final Exception e )
         {
-            Logs.debug( "Problem scanning: {}", url, e );
+            Logs.trace( "Problem scanning: {}", url, e );
         }
     }
 
@@ -133,7 +133,7 @@ public final class ClassSpaceScanner
             {
                 if ( expectedClazz.isAnnotation() )
                 {
-                    Logs.debug( "Potential problem: {} is not visible from: {}", expectedClazz, space );
+                    Logs.trace( "Potential problem: {} is not visible from: {}", expectedClazz, space );
                 }
             }
         }

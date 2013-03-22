@@ -18,7 +18,7 @@
  * <dt>{@link org.eclipse.sisu.reflect.BeanProperties}
  * <dd>Picks out potential bean properties from declared class members.
  * <dt>{@link org.eclipse.sisu.reflect.Logs}
- * <dd>Utility methods for logging internal debug and warning messages.
+ * <dd>Utility methods for logging internal messages.
  * <dt>{@link org.eclipse.sisu.reflect.TypeParameters}
  * <dd>Utility methods for dealing with generic type parameters.
  * </dl>

@@ -119,7 +119,7 @@ final class ElementAnalyzer
             }
             else
             {
-                Logs.debug( "Discard binding: {}", binding, null );
+                Logs.trace( "Discard binding: {}", binding, null );
             }
         }
         return null;

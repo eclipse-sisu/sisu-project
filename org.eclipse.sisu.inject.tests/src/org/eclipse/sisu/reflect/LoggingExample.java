@@ -29,26 +29,26 @@ public class LoggingExample
 
     public LoggingExample()
     {
-        Logs.debug( "", null, null );
-        Logs.debug( "", "a", "b" );
-        Logs.debug( "{", null, null );
-        Logs.debug( "}", "a", "b" );
-        Logs.debug( "}{", null, null );
-        Logs.debug( "{}", "a", "b" );
-        Logs.debug( "}{}", null, null );
-        Logs.debug( "{{}", "a", "b" );
-        Logs.debug( "{}{", null, null );
-        Logs.debug( "{}}", "a", "b" );
-        Logs.debug( "{{}}", null, null );
-        Logs.debug( "}{}{", "a", "b" );
-        Logs.debug( "{}{}", null, null );
-        Logs.debug( "{}{}", "a", "b" );
-        Logs.debug( "{{}}{{}}", null, null );
-        Logs.debug( "{}-{}", "a", "b" );
+        Logs.trace( "", null, null );
+        Logs.trace( "", "a", "b" );
+        Logs.trace( "{", null, null );
+        Logs.trace( "}", "a", "b" );
+        Logs.trace( "}{", null, null );
+        Logs.trace( "{}", "a", "b" );
+        Logs.trace( "}{}", null, null );
+        Logs.trace( "{{}", "a", "b" );
+        Logs.trace( "{}{", null, null );
+        Logs.trace( "{}}", "a", "b" );
+        Logs.trace( "{{}}", null, null );
+        Logs.trace( "}{}{", "a", "b" );
+        Logs.trace( "{}{}", null, null );
+        Logs.trace( "{}{}", "a", "b" );
+        Logs.trace( "{{}}{{}}", null, null );
+        Logs.trace( "{}-{}", "a", "b" );
 
-        Logs.debug( "{} {}", new BadValue(), new BadValue() );
+        Logs.trace( "{} {}", new BadValue(), new BadValue() );
 
-        Logs.debug( "Error: {} cause: {}", "oops", new UnexpectedException( "doh!" ) );
+        Logs.trace( "Error: {} cause: {}", "oops", new UnexpectedException( "doh!" ) );
 
         Logs.warn( "", null, null );
         Logs.warn( "", "a", "b" );
@@ -80,8 +80,8 @@ public class LoggingExample
             }
         };
 
-        Logs.debug( Logs.toString( module ), null, null );
+        Logs.trace( Logs.toString( module ), null, null );
 
-        Logs.debug( Logs.toString( Guice.createInjector( module ) ), null, null );
+        Logs.trace( Logs.toString( Guice.createInjector( module ) ), null, null );
     }
 }

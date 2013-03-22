@@ -60,7 +60,7 @@ final class ElementMerger
             }
             else
             {
-                Logs.debug( "Discard binding: {}", binding, null );
+                Logs.trace( "Discard binding: {}", binding, null );
             }
         }
         return null;

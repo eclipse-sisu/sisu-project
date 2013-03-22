@@ -70,12 +70,12 @@ final class DependencyVerifier
             }
             catch ( final RuntimeException e )
             {
-                Logs.debug( "Potential problem: {}", type, e );
+                Logs.trace( "Potential problem: {}", type, e );
                 return Boolean.FALSE;
             }
             catch ( final LinkageError e )
             {
-                Logs.debug( "Potential problem: {}", type, e );
+                Logs.trace( "Potential problem: {}", type, e );
                 return Boolean.FALSE;
             }
         }
