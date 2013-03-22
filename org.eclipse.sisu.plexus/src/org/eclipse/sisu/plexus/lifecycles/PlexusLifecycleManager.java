@@ -317,7 +317,7 @@ public final class PlexusLifecycleManager
 
     private void contextualize( final Contextualizable bean )
     {
-        Logs.debug( "Contextualize: <>", bean, null );
+        Logs.trace( "Contextualize: <>", bean, null );
         try
         {
             bean.contextualize( plexusContextProvider.get() );
@@ -338,7 +338,7 @@ public final class PlexusLifecycleManager
 
     private void initialize( final Initializable bean )
     {
-        Logs.debug( "Initialize: <>", bean, null );
+        Logs.trace( "Initialize: <>", bean, null );
         try
         {
             bean.initialize();
@@ -359,7 +359,7 @@ public final class PlexusLifecycleManager
 
     private void start( final Startable bean )
     {
-        Logs.debug( "Start: <>", bean, null );
+        Logs.trace( "Start: <>", bean, null );
         try
         {
             bean.start();
@@ -381,7 +381,7 @@ public final class PlexusLifecycleManager
     @SuppressWarnings( "finally" )
     private void stop( final Startable bean )
     {
-        Logs.debug( "Stop: <>", bean, null );
+        Logs.trace( "Stop: <>", bean, null );
         try
         {
             bean.stop();
@@ -403,7 +403,7 @@ public final class PlexusLifecycleManager
     @SuppressWarnings( "finally" )
     private void dispose( final Disposable bean )
     {
-        Logs.debug( "Dispose: <>", bean, null );
+        Logs.trace( "Dispose: <>", bean, null );
         try
         {
             bean.dispose();

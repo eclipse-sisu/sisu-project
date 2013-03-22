@@ -156,8 +156,8 @@ final class PlexusTypeRegistry
             return oldImplementation; // merge configuration
         }
 
-        Logs.debug( "Duplicate implementations for Plexus role: {}", key, null );
-        Logs.debug( "Using: {} ignoring: {}", oldImplementation, implementation );
+        Logs.trace( "Duplicate implementations for Plexus role: {}", key, null );
+        Logs.trace( "Using: {} ignoring: {}", oldImplementation, implementation );
 
         return null;
     }
@@ -194,7 +194,7 @@ final class PlexusTypeRegistry
         }
         catch ( final TypeNotPresentException e )
         {
-            Logs.debug( "Ignoring Plexus role: {}", role, e );
+            Logs.trace( "Ignoring Plexus role: {}", role, e );
         }
         return null;
     }

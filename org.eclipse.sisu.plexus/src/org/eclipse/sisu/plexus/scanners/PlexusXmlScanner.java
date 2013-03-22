@@ -171,7 +171,7 @@ public final class PlexusXmlScanner
         }
         catch ( final Exception e )
         {
-            Logs.debug( "Problem parsing: {}", url, e );
+            Logs.trace( "Problem parsing: {}", url, e );
         }
     }
 
@@ -208,7 +208,7 @@ public final class PlexusXmlScanner
         }
         catch ( final Exception e )
         {
-            Logs.debug( "Problem parsing: {}", url, e );
+            Logs.trace( "Problem parsing: {}", url, e );
         }
     }
 

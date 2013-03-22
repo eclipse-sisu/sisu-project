@@ -78,7 +78,7 @@ public final class PlexusTypeVisitor
         source = _space.toString();
         qualifiedTypeVisitor.visit( _space );
 
-        if ( Logs.DEBUG_ENABLED )
+        if ( Logs.TRACE_ENABLED )
         {
             ClassSpaceScanner.verify( _space, Component.class );
         }
