@@ -17,7 +17,7 @@ import javax.inject.Provider;
 import javax.inject.Qualifier;
 
 /**
- * Map {@link Entry} that maps a JSR330 @{@link Qualifier} annotation to a bean implementation.
+ * Represents a {@link Q}ualified bean implementation of {@link T}.
  */
 public interface BeanEntry<Q extends Annotation, T>
     extends Entry<Q, T>

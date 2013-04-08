@@ -17,6 +17,7 @@ import org.eclipse.sisu.containers.SisuGuice;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
 
+@Deprecated
 public final class Sisu
 {
     // ----------------------------------------------------------------------

@@ -17,7 +17,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Identifies beans that should be created as soon as the Injector starts.
+ * Marks beans that should be created as soon as possible.
  */
 @Target( value = { ElementType.TYPE } )
 @Retention( RetentionPolicy.RUNTIME )

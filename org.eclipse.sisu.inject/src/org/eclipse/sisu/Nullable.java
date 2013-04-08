@@ -17,7 +17,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks dependencies that allow {@code null} values.
+ * Marks dependencies that can be {@code null}.
  */
 @Target( value = { ElementType.FIELD, ElementType.PARAMETER } )
 @Retention( RetentionPolicy.RUNTIME )

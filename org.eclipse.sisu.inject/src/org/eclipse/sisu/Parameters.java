@@ -18,7 +18,7 @@ import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
 /**
- * Marks dependencies to external runtime parameters, for example:
+ * {@link Qualifier} of parameters passed into Sisu, for example:
  * 
  * <pre>
  * &#064;Inject
@@ -27,7 +27,7 @@ import javax.inject.Qualifier;
  * 
  * &#064;Inject
  * &#064;Parameters
- * Map&lt;String, String&gt; properties;
+ * Map&lt;?, ?&gt; properties;
  * </pre>
  */
 @Target( value = { ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD } )

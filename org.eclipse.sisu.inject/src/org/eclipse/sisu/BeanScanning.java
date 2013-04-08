@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.sisu;
 
+/**
+ * Various strategies for discovering bean implementations.
+ */
 public enum BeanScanning
 {
     /**
