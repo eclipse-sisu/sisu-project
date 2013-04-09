@@ -22,9 +22,9 @@ import com.google.inject.spi.Element;
 import com.google.inject.spi.Elements;
 
 /**
- * Utility methods for logging internal messages. Uses SLF4J if available, otherwise JUL.
+ * Utility methods for dealing with container logging and recovery.
  * <p>
- * Set <b>-Dorg.eclipse.sisu.log=console</b> to send all internal messages to the console.
+ * Set <b>-Dorg.eclipse.sisu.log=console</b> to force logs to the console.
  */
 public final class Logs
 {

@@ -14,11 +14,11 @@
  * <p>The principal members of this package are:
  * <dl>
  * <dt>{@link org.eclipse.sisu.util.Logs}
- * <dd>Utility methods for logging container messages.
+ * <dd>Utility methods for dealing with container logging and recovery.
  * <dt>{@link org.eclipse.sisu.util.Soft}
- * <dd>Utility methods for dealing with soft collections.
+ * <dd>Utility methods for dealing with {@link SoftReference} collections.
  * <dt>{@link org.eclipse.sisu.util.Weak}
- * <dd>Utility methods for dealing with weak collections.
+ * <dd>Utility methods for dealing with {@link WeakReference} collections.
  * </dl>
  */
 package org.eclipse.sisu.util;
