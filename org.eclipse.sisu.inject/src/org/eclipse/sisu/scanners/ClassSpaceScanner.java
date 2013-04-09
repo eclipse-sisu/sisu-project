@@ -15,7 +15,7 @@ import java.net.URL;
 import java.util.Enumeration;
 
 import org.eclipse.sisu.reflect.ClassSpace;
-import org.eclipse.sisu.reflect.Logs;
+import org.eclipse.sisu.util.Logs;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 

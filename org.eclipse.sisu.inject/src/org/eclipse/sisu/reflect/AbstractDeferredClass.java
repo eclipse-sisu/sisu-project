@@ -12,6 +12,8 @@ package org.eclipse.sisu.reflect;
 
 import javax.inject.Inject;
 
+import org.eclipse.sisu.util.Logs;
+
 import com.google.inject.Injector;
 
 /**

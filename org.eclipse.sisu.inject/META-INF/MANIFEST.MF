@@ -62,4 +62,5 @@ Export-Package: org.eclipse.sisu;uses:="javax.inject",
    javax.lang.model,
    javax.lang.model.element,
    org.eclipse.sisu.scanners,
-   javax.annotation.processing"
+   javax.annotation.processing",
+ org.eclipse.sisu.util;uses:="com.google.inject"

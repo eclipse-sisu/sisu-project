@@ -18,8 +18,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.sisu.Parameters;
-import org.eclipse.sisu.reflect.Logs;
 import org.eclipse.sisu.reflect.TypeParameters;
+import org.eclipse.sisu.util.Logs;
 
 import com.google.inject.Binder;
 import com.google.inject.Binding;

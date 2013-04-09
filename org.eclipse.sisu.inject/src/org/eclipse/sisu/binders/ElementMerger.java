@@ -13,7 +13,7 @@ package org.eclipse.sisu.binders;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.sisu.reflect.Logs;
+import org.eclipse.sisu.util.Logs;
 
 import com.google.inject.Binder;
 import com.google.inject.Binding;

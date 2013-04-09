@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.sisu.reflect.ClassSpace;
-import org.eclipse.sisu.reflect.Logs;
 import org.eclipse.sisu.reflect.Streams;
 import org.eclipse.sisu.scanners.ClassFinder;
+import org.eclipse.sisu.util.Logs;
 
 /**
  * {@link ClassFinder} that uses the qualified class index to select implementations to scan.

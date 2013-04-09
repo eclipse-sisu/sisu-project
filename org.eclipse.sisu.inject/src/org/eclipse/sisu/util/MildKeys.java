@@ -8,7 +8,7 @@
  * Contributors:
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sisu.reflect;
+package org.eclipse.sisu.util;
 
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;

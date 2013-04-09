@@ -16,7 +16,7 @@ import java.util.Iterator;
 
 import org.eclipse.sisu.locators.spi.BindingPublisher;
 import org.eclipse.sisu.locators.spi.BindingSubscriber;
-import org.eclipse.sisu.reflect.Weak;
+import org.eclipse.sisu.util.Weak;
 
 import com.google.inject.Binding;
 import com.google.inject.TypeLiteral;

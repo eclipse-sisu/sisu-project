@@ -20,10 +20,10 @@ import javax.inject.Singleton;
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.Mediator;
 import org.eclipse.sisu.locators.spi.BindingPublisher;
-import org.eclipse.sisu.reflect.Logs;
-import org.eclipse.sisu.reflect.Soft;
 import org.eclipse.sisu.reflect.TypeParameters;
-import org.eclipse.sisu.reflect.Weak;
+import org.eclipse.sisu.util.Logs;
+import org.eclipse.sisu.util.Soft;
+import org.eclipse.sisu.util.Weak;
 
 import com.google.inject.Injector;
 import com.google.inject.Key;

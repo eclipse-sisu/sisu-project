@@ -21,8 +21,8 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import org.eclipse.sisu.reflect.DeferredProvider;
-import org.eclipse.sisu.reflect.Logs;
 import org.eclipse.sisu.reflect.TypeParameters;
+import org.eclipse.sisu.util.Logs;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Binder;

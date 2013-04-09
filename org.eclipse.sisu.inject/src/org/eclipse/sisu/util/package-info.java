@@ -9,17 +9,17 @@
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
 /**
- * Bean reflection and introspection.
+ * Utility classes.
  *
  * <p>The principal members of this package are:
  * <dl>
- * <dt>{@link org.eclipse.sisu.reflect.ClassSpace}
- * <dd>Represents a source of classes and resources that can be scanned.
- * <dt>{@link org.eclipse.sisu.reflect.BeanProperties}
- * <dd>Picks out potential bean properties from declared class members.
- * <dt>{@link org.eclipse.sisu.reflect.TypeParameters}
- * <dd>Utility methods for dealing with generic type parameters.
+ * <dt>{@link org.eclipse.sisu.util.Logs}
+ * <dd>Utility methods for logging container messages.
+ * <dt>{@link org.eclipse.sisu.util.Soft}
+ * <dd>Utility methods for dealing with soft collections.
+ * <dt>{@link org.eclipse.sisu.util.Weak}
+ * <dd>Utility methods for dealing with weak collections.
  * </dl>
  */
-package org.eclipse.sisu.reflect;
+package org.eclipse.sisu.util;
 

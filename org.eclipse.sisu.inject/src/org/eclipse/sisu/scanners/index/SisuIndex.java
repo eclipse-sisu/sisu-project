@@ -26,11 +26,11 @@ import java.util.List;
 import javax.inject.Named;
 
 import org.eclipse.sisu.reflect.ClassSpace;
-import org.eclipse.sisu.reflect.Logs;
 import org.eclipse.sisu.reflect.URLClassSpace;
 import org.eclipse.sisu.scanners.ClassSpaceScanner;
 import org.eclipse.sisu.scanners.QualifiedTypeListener;
 import org.eclipse.sisu.scanners.QualifiedTypeVisitor;
+import org.eclipse.sisu.util.Logs;
 
 /**
  * Command-line utility that generates a qualified class index for a space-separated list of JARs.

@@ -20,7 +20,7 @@ import javax.inject.Inject;
 
 import org.eclipse.sisu.binders.WireModule;
 import org.eclipse.sisu.locators.BeanLocator;
-import org.eclipse.sisu.reflect.Logs;
+import org.eclipse.sisu.util.Logs;
 
 import com.google.inject.Binder;
 import com.google.inject.Guice;

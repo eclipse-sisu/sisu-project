@@ -25,7 +25,7 @@ import org.eclipse.sisu.locators.DefaultBeanLocator;
 import org.eclipse.sisu.locators.MutableBeanLocator;
 import org.eclipse.sisu.reflect.BundleClassSpace;
 import org.eclipse.sisu.reflect.ClassSpace;
-import org.eclipse.sisu.reflect.Logs;
+import org.eclipse.sisu.util.Logs;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;

@@ -17,7 +17,7 @@ import java.lang.ref.WeakReference;
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.Mediator;
 import org.eclipse.sisu.locators.spi.BindingSubscriber;
-import org.eclipse.sisu.reflect.Logs;
+import org.eclipse.sisu.util.Logs;
 
 import com.google.inject.Binding;
 import com.google.inject.Key;

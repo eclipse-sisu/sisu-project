@@ -15,7 +15,7 @@ import java.net.URL;
 import javax.inject.Qualifier;
 
 import org.eclipse.sisu.reflect.ClassSpace;
-import org.eclipse.sisu.reflect.Logs;
+import org.eclipse.sisu.util.Logs;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Opcodes;

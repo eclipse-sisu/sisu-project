@@ -8,9 +8,9 @@
  * Contributors:
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sisu.reflect;
+package org.eclipse.sisu.util;
 
-import java.lang.ref.WeakReference;
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,16 +19,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * Utility methods for dealing with {@link WeakReference} collections.
+ * Utility methods for dealing with {@link SoftReference} collections.
  */
 @SuppressWarnings( { "rawtypes", "unchecked" } )
-public final class Weak
+public final class Soft
 {
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
-    private Weak()
+    private Soft()
     {
         // static utility class, not allowed to create instances
     }
@@ -38,7 +38,7 @@ public final class Weak
     // ----------------------------------------------------------------------
 
     /**
-     * @return {@link Collection} whose elements are kept alive with {@link WeakReference}s
+     * @return {@link Collection} whose elements are kept alive with {@link SoftReference}s
      */
     public static <T> Collection<T> elements()
     {
@@ -47,15 +47,15 @@ public final class Weak
 
     /**
      * @param capacity The initial capacity
-     * @return {@link Collection} whose elements are kept alive with {@link WeakReference}s
+     * @return {@link Collection} whose elements are kept alive with {@link SoftReference}s
      */
     public static <T> Collection<T> elements( final int capacity )
     {
-        return new MildElements( new ArrayList( capacity ), false );
+        return new MildElements( new ArrayList( capacity ), true );
     }
 
     /**
-     * @return {@link Map} whose keys are kept alive with {@link WeakReference}s
+     * @return {@link Map} whose keys are kept alive with {@link SoftReference}s
      */
     public static <K, V> Map<K, V> keys()
     {
@@ -64,15 +64,15 @@ public final class Weak
 
     /**
      * @param capacity The initial capacity
-     * @return {@link Map} whose keys are kept alive with {@link WeakReference}s
+     * @return {@link Map} whose keys are kept alive with {@link SoftReference}s
      */
     public static <K, V> Map<K, V> keys( final int capacity )
     {
-        return new MildKeys( new HashMap( capacity ), false );
+        return new MildKeys( new HashMap( capacity ), true );
     }
 
     /**
-     * @return {@link ConcurrentMap} whose keys are kept alive with {@link WeakReference}s
+     * @return {@link ConcurrentMap} whose keys are kept alive with {@link SoftReference}s
      */
     public static <K, V> ConcurrentMap<K, V> concurrentKeys()
     {
@@ -82,15 +82,15 @@ public final class Weak
     /**
      * @param capacity The initial capacity
      * @param concurrency The concurrency level
-     * @return {@link ConcurrentMap} whose keys are kept alive with {@link WeakReference}s
+     * @return {@link ConcurrentMap} whose keys are kept alive with {@link SoftReference}s
      */
     public static <K, V> ConcurrentMap<K, V> concurrentKeys( final int capacity, final int concurrency )
     {
-        return new MildConcurrentKeys( new ConcurrentHashMap( capacity, 0.75f, concurrency ), false );
+        return new MildConcurrentKeys( new ConcurrentHashMap( capacity, 0.75f, concurrency ), true );
     }
 
     /**
-     * @return {@link Map} whose values are kept alive with {@link WeakReference}s
+     * @return {@link Map} whose values are kept alive with {@link SoftReference}s
      */
     public static <K, V> Map<K, V> values()
     {
@@ -99,15 +99,15 @@ public final class Weak
 
     /**
      * @param capacity The initial capacity
-     * @return {@link Map} whose values are kept alive with {@link WeakReference}s
+     * @return {@link Map} whose values are kept alive with {@link SoftReference}s
      */
     public static <K, V> Map<K, V> values( final int capacity )
     {
-        return new MildValues( new HashMap( capacity ), false );
+        return new MildValues( new HashMap( capacity ), true );
     }
 
     /**
-     * @return {@link ConcurrentMap} whose values are kept alive with {@link WeakReference}s
+     * @return {@link ConcurrentMap} whose values are kept alive with {@link SoftReference}s
      */
     public static <K, V> ConcurrentMap<K, V> concurrentValues()
     {
@@ -117,10 +117,10 @@ public final class Weak
     /**
      * @param capacity The initial capacity
      * @param concurrency The concurrency level
-     * @return {@link ConcurrentMap} whose values are kept alive with {@link WeakReference}s
+     * @return {@link ConcurrentMap} whose values are kept alive with {@link SoftReference}s
      */
     public static <K, V> ConcurrentMap<K, V> concurrentValues( final int capacity, final int concurrency )
     {
-        return new MildConcurrentValues( new ConcurrentHashMap( capacity, 0.75f, concurrency ), false );
+        return new MildConcurrentValues( new ConcurrentHashMap( capacity, 0.75f, concurrency ), true );
     }
 }

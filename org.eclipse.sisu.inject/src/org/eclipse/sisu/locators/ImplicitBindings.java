@@ -11,7 +11,7 @@
 package org.eclipse.sisu.locators;
 
 import org.eclipse.sisu.locators.spi.BindingPublisher;
-import org.eclipse.sisu.reflect.Logs;
+import org.eclipse.sisu.util.Logs;
 
 import com.google.inject.Binding;
 import com.google.inject.ImplementedBy;

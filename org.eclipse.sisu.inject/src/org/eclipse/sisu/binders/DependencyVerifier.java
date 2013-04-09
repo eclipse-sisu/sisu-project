@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.sisu.binders;
 
-import org.eclipse.sisu.reflect.Logs;
 import org.eclipse.sisu.reflect.TypeParameters;
+import org.eclipse.sisu.util.Logs;
 
 import com.google.inject.Binding;
 import com.google.inject.Key;
