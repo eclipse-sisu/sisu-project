@@ -29,7 +29,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.eclipse.sisu.inject.PropertyBinding;
 import org.eclipse.sisu.plexus.binders.PlexusBeanManager;
 import org.eclipse.sisu.reflect.BeanProperty;
-import org.eclipse.sisu.reflect.Logs;
+import org.eclipse.sisu.util.Logs;
 
 import com.google.inject.spi.ProvisionListener;
 

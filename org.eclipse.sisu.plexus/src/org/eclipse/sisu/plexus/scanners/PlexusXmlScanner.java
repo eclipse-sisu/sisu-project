@@ -37,8 +37,8 @@ import org.eclipse.sisu.plexus.config.Roles;
 import org.eclipse.sisu.plexus.config.Strategies;
 import org.eclipse.sisu.reflect.ClassSpace;
 import org.eclipse.sisu.reflect.DeferredClass;
-import org.eclipse.sisu.reflect.Logs;
 import org.eclipse.sisu.reflect.Streams;
+import org.eclipse.sisu.util.Logs;
 
 public final class PlexusXmlScanner
 {

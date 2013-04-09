@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
-import org.eclipse.sisu.reflect.Weak;
+import org.eclipse.sisu.util.Weak;
 
 public final class ClassRealmUtils
 {
