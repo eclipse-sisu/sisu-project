@@ -28,7 +28,7 @@ import com.google.inject.spi.TypeListener;
 /**
  * {@link InjectionListener} that listens for mediated watchers and registers them with the {@link BeanLocator}.
  */
-final class BeanListener
+final class MediationListener
     implements TypeListener, InjectionListener<Object>
 {
     // ----------------------------------------------------------------------

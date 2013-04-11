@@ -72,7 +72,7 @@ public final class QualifiedTypeBinder
 
     private final Binder rootBinder;
 
-    private BeanListener beanListener;
+    private MediationListener mediationListener;
 
     private Object currentSource;
 
@@ -182,13 +182,13 @@ public final class QualifiedTypeBinder
     @SuppressWarnings( "rawtypes" )
     private void mediate( final Key key, final Mediator mediator, final Class watcherType )
     {
-        if ( null == beanListener )
+        if ( null == mediationListener )
         {
-            beanListener = new BeanListener();
-            binder.bindListener( Matchers.any(), beanListener );
-            binder.requestInjection( beanListener );
+            mediationListener = new MediationListener();
+            binder.bindListener( Matchers.any(), mediationListener );
+            binder.requestInjection( mediationListener );
         }
-        beanListener.mediate( key, mediator, watcherType );
+        mediationListener.mediate( key, mediator, watcherType );
     }
 
     /**
