@@ -3,7 +3,7 @@
 <plugin>
   <extension point="org.eclipse.jdt.apt.core.annotationProcessorFactory">
     <java6processors enableDefault="true">
-      <java6processor class="org.eclipse.sisu.scanners.index.SisuIndexAPT6"/>
+      <java6processor class="org.eclipse.sisu.space.SisuIndexAPT6"/>
     </java6processors>
   </extension>
 </plugin>

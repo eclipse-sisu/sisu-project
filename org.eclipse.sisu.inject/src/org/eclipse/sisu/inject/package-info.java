@@ -9,18 +9,30 @@
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
 /**
- * Custom bean injection.
+ * Locate qualified bean implementations across multiple injectors.
  *
  * <p>The principal members of this package are:
  * <dl>
- * <dt>{@link org.eclipse.sisu.inject.BeanListener}
- * <dd>{@link com.google.inject.spi.TypeListener} that listens for bean types and wires up their properties.
- * <dt>{@link org.eclipse.sisu.inject.BeanBinder}
- * <dd>Provides custom {@link org.eclipse.sisu.inject.PropertyBinder}s for bean types.
- * <dt>{@link org.eclipse.sisu.inject.PropertyBinder}
- * <dd>Provides custom {@link org.eclipse.sisu.inject.PropertyBinding}s for bean properties.
- * <dt>{@link org.eclipse.sisu.inject.PropertyBinding}
- * <dd>Injects a customized bean property into bean instances.
+ * <dt>{@link BeanLocator}
+ * <dd>Finds and tracks bean implementations annotated with {@link javax.inject.Qualifier} annotations.
+ * <dt>{@link MutableBeanLocator}
+ * <dd>Mutable {@link BeanLocator} that distributes bindings from zero or more {@link BindingPublisher}s.
+ * <dt>{@link BeanDescription}
+ * <dd>Source location mixin used to supply descriptions to the {@link BeanLocator}.
+ * <dt>{@link HiddenBinding}
+ * <dd>Source location mixin used to hide bindings from the {@link BeanLocator}.
+ * <dt>{@link BindingPublisher}
+ * <dd>Publisher of {@link com.google.inject.Binding}s to interested {@link BindingSubscriber}s.
+ * <dt>{@link BindingSubscriber}
+ * <dd>Subscriber of {@link com.google.inject.Binding}s from one or more {@link BindingPublisher}s.
+ * <dt>{@link Logs}
+ * <dd>Utility methods for dealing with container logging and recovery.
+ * <dt>{@link Soft}
+ * <dd>Utility methods for dealing with {@link SoftReference} collections.
+ * <dt>{@link Weak}
+ * <dd>Utility methods for dealing with {@link WeakReference} collections.
+ * <dt>{@link TypeParameters}
+ * <dd>Utility methods for dealing with generic type parameters.
  * </dl>
  */
 package org.eclipse.sisu.inject;

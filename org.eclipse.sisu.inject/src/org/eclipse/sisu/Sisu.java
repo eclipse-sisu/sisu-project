@@ -12,7 +12,7 @@ package org.eclipse.sisu;
 
 import java.lang.annotation.Annotation;
 
-import org.eclipse.sisu.containers.SisuGuice;
+import org.eclipse.sisu.launch.SisuGuice;
 
 import com.google.inject.Key;
 import com.google.inject.name.Names;

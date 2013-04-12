@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
-Main-Class: org.eclipse.sisu.containers.Main
+Main-Class: org.eclipse.sisu.launch.Main
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.eclipse.sisu.inject;singleton:=true
 Bundle-Version: 0.0.0.qualifier
 Bundle-Name: Sisu-Inject
 Bundle-ActivationPolicy: lazy
-Bundle-Activator: org.eclipse.sisu.containers.SisuActivator
+Bundle-Activator: org.eclipse.sisu.launch.SisuActivator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6,J2SE-1.5
 Bundle-Vendor: The Eclipse Foundation
 Bundle-Copyright: Copyright (c) 2010, 2012 Sonatype, Inc. and others
@@ -32,35 +32,28 @@ Import-Package: com.google.inject;version="1.3",
  org.slf4j;resolution:=optional,
  org.testng.annotations;resolution:=optional
 Export-Package: org.eclipse.sisu;uses:="javax.inject",
- org.eclipse.sisu.binders;
-  uses:="org.eclipse.sisu,
-   org.eclipse.sisu.reflect,
-   com.google.inject.spi,
-   org.eclipse.sisu.scanners,
-   com.google.inject",
- org.eclipse.sisu.containers;
-  uses:="org.eclipse.sisu,
-   junit.framework,
-   org.eclipse.sisu.reflect,
-   org.osgi.util.tracker,
-   org.eclipse.sisu.locators,
-   org.osgi.framework,
-   com.google.inject",
- org.eclipse.sisu.converters;uses:="com.google.inject.spi,com.google.inject",
- org.eclipse.sisu.inject;uses:="org.eclipse.sisu.reflect,com.google.inject.spi,com.google.inject",
- org.eclipse.sisu.locators;
+ org.eclipse.sisu.bean;uses:="com.google.inject.spi,com.google.inject",
+ org.eclipse.sisu.inject;
   uses:="org.eclipse.sisu,
    com.google.inject.spi,
    javax.inject,
-   org.eclipse.sisu.locators.spi,
    com.google.inject",
- org.eclipse.sisu.locators.spi;uses:="com.google.inject",
- org.eclipse.sisu.reflect;uses:="org.osgi.framework,com.google.inject",
- org.eclipse.sisu.scanners;uses:="org.objectweb.asm,org.eclipse.sisu.reflect",
- org.eclipse.sisu.scanners.index;
-  uses:="org.eclipse.sisu.reflect,
+ org.eclipse.sisu.launch;
+  uses:="org.eclipse.sisu,
+   junit.framework,
+   org.osgi.util.tracker,
+   org.eclipse.sisu.space,
+   org.osgi.framework,
+   org.eclipse.sisu.inject,
+   com.google.inject",
+ org.eclipse.sisu.space;
+  uses:="org.objectweb.asm,
+   org.eclipse.sisu.inject,
+   org.eclipse.sisu,
    javax.lang.model,
+   org.osgi.framework,
    javax.lang.model.element,
-   org.eclipse.sisu.scanners,
+   com.google.inject.spi,
+   com.google.inject,
    javax.annotation.processing",
- org.eclipse.sisu.util;uses:="com.google.inject"
+ org.eclipse.sisu.wire;uses:="com.google.inject.spi,com.google.inject"
