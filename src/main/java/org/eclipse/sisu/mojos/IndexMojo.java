@@ -29,8 +29,8 @@ import org.apache.maven.shared.artifact.filter.collection.ProjectTransitivityFil
 import org.apache.maven.shared.artifact.filter.collection.ScopeFilter;
 import org.apache.maven.shared.artifact.filter.collection.TypeFilter;
 import org.codehaus.plexus.util.StringUtils;
-import org.eclipse.sisu.reflect.URLClassSpace;
-import org.eclipse.sisu.scanners.index.SisuIndex;
+import org.eclipse.sisu.space.SisuIndex;
+import org.eclipse.sisu.space.URLClassSpace;
 
 /**
  * Generates a qualified class index for the current project and its dependencies.
