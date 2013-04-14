@@ -11,8 +11,8 @@
 package org.eclipse.sisu.plexus.scanners;
 
 import org.codehaus.plexus.component.annotations.Component;
-import org.eclipse.sisu.reflect.DeferredClass;
-import org.eclipse.sisu.scanners.QualifiedTypeListener;
+import org.eclipse.sisu.inject.DeferredClass;
+import org.eclipse.sisu.space.QualifiedTypeListener;
 
 /**
  * {@link QualifiedTypeListener} that also listens for Plexus components.

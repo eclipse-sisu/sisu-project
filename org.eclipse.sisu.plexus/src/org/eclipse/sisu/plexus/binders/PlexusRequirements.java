@@ -20,13 +20,13 @@ import java.util.Set;
 import javax.inject.Provider;
 
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.eclipse.sisu.locators.EntryListAdapter;
-import org.eclipse.sisu.locators.EntryMapAdapter;
-import org.eclipse.sisu.locators.EntrySetAdapter;
+import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.plexus.config.Hints;
 import org.eclipse.sisu.plexus.config.PlexusBeanLocator;
 import org.eclipse.sisu.plexus.config.Roles;
-import org.eclipse.sisu.reflect.BeanProperty;
+import org.eclipse.sisu.wire.EntryListAdapter;
+import org.eclipse.sisu.wire.EntryMapAdapter;
+import org.eclipse.sisu.wire.EntrySetAdapter;
 
 import com.google.inject.ProvisionException;
 import com.google.inject.TypeLiteral;

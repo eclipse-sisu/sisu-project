@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus.scanners;
 
-import org.eclipse.sisu.reflect.ClassSpace;
-import org.eclipse.sisu.reflect.URLClassSpace;
+import org.eclipse.sisu.space.ClassSpace;
+import org.eclipse.sisu.space.URLClassSpace;
 
 public class SimpleScanningExample
 {

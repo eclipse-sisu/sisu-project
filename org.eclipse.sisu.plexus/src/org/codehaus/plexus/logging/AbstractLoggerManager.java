@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.codehaus.plexus.logging;
 
+import org.eclipse.sisu.bean.IgnoreSetters;
 import org.eclipse.sisu.plexus.config.Hints;
-import org.eclipse.sisu.reflect.IgnoreSetters;
 
 @IgnoreSetters
 public abstract class AbstractLoggerManager

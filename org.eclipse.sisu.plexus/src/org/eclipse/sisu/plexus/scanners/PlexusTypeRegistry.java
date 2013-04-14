@@ -19,14 +19,14 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.codehaus.plexus.component.annotations.Component;
+import org.eclipse.sisu.inject.DeferredClass;
+import org.eclipse.sisu.inject.Logs;
 import org.eclipse.sisu.plexus.annotations.ComponentImpl;
 import org.eclipse.sisu.plexus.config.Hints;
 import org.eclipse.sisu.plexus.config.Roles;
 import org.eclipse.sisu.plexus.config.Strategies;
-import org.eclipse.sisu.reflect.ClassSpace;
-import org.eclipse.sisu.reflect.DeferredClass;
-import org.eclipse.sisu.reflect.URLClassSpace;
-import org.eclipse.sisu.util.Logs;
+import org.eclipse.sisu.space.ClassSpace;
+import org.eclipse.sisu.space.URLClassSpace;
 
 /**
  * Enhanced Plexus component map with additional book-keeping.

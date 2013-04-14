@@ -23,12 +23,12 @@ import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.context.Context;
-import org.eclipse.sisu.locators.EntryListAdapter;
-import org.eclipse.sisu.locators.EntryMapAdapter;
 import org.eclipse.sisu.plexus.binders.PlexusBeanManager;
 import org.eclipse.sisu.plexus.config.Hints;
 import org.eclipse.sisu.plexus.config.PlexusBean;
 import org.eclipse.sisu.plexus.config.PlexusBeanLocator;
+import org.eclipse.sisu.wire.EntryListAdapter;
+import org.eclipse.sisu.wire.EntryMapAdapter;
 
 import com.google.inject.TypeLiteral;
 

@@ -16,8 +16,8 @@ import java.util.Map;
 
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.plexus.config.PlexusBeanMetadata;
-import org.eclipse.sisu.reflect.BeanProperty;
 
 /**
  * Consumable {@link PlexusBeanMetadata} that uses {@link BeanProperty} names as keys.

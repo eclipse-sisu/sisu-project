@@ -14,10 +14,10 @@ import javax.inject.Provider;
 
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.eclipse.sisu.inject.PropertyBinder;
-import org.eclipse.sisu.inject.PropertyBinding;
+import org.eclipse.sisu.bean.BeanProperty;
+import org.eclipse.sisu.bean.PropertyBinder;
+import org.eclipse.sisu.bean.PropertyBinding;
 import org.eclipse.sisu.plexus.config.PlexusBeanMetadata;
-import org.eclipse.sisu.reflect.BeanProperty;
 
 import com.google.inject.spi.TypeEncounter;
 

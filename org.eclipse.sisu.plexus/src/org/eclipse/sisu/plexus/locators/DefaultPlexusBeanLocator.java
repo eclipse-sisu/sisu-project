@@ -14,7 +14,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import org.eclipse.sisu.BeanEntry;
-import org.eclipse.sisu.locators.BeanLocator;
+import org.eclipse.sisu.inject.BeanLocator;
 import org.eclipse.sisu.plexus.config.PlexusBean;
 import org.eclipse.sisu.plexus.config.PlexusBeanLocator;
 

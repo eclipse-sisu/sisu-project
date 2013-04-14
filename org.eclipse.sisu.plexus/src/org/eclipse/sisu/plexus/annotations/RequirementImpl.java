@@ -15,9 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.plexus.config.Hints;
-import org.eclipse.sisu.reflect.DeferredClass;
-import org.eclipse.sisu.reflect.LoadedClass;
+import org.eclipse.sisu.space.LoadedClass;
 
 /**
  * Runtime implementation of Plexus @{@link Requirement} annotation.

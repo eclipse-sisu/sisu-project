@@ -29,16 +29,16 @@ import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.eclipse.sisu.inject.DeferredClass;
+import org.eclipse.sisu.inject.Logs;
 import org.eclipse.sisu.plexus.annotations.ConfigurationImpl;
 import org.eclipse.sisu.plexus.annotations.RequirementImpl;
 import org.eclipse.sisu.plexus.config.Hints;
 import org.eclipse.sisu.plexus.config.PlexusBeanMetadata;
 import org.eclipse.sisu.plexus.config.Roles;
 import org.eclipse.sisu.plexus.config.Strategies;
-import org.eclipse.sisu.reflect.ClassSpace;
-import org.eclipse.sisu.reflect.DeferredClass;
-import org.eclipse.sisu.reflect.Streams;
-import org.eclipse.sisu.util.Logs;
+import org.eclipse.sisu.space.ClassSpace;
+import org.eclipse.sisu.space.Streams;
 
 public final class PlexusXmlScanner
 {

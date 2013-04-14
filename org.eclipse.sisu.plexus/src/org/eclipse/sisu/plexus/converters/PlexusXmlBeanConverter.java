@@ -25,12 +25,12 @@ import javax.inject.Singleton;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.eclipse.sisu.bean.BeanProperties;
+import org.eclipse.sisu.bean.BeanProperty;
+import org.eclipse.sisu.inject.Logs;
+import org.eclipse.sisu.inject.TypeParameters;
 import org.eclipse.sisu.plexus.config.PlexusBeanConverter;
 import org.eclipse.sisu.plexus.config.Roles;
-import org.eclipse.sisu.reflect.BeanProperties;
-import org.eclipse.sisu.reflect.BeanProperty;
-import org.eclipse.sisu.reflect.TypeParameters;
-import org.eclipse.sisu.util.Logs;
 
 import com.google.inject.Injector;
 import com.google.inject.Key;

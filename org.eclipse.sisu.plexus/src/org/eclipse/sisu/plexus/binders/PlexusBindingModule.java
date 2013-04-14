@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.sisu.inject.BeanListener;
+import org.eclipse.sisu.bean.BeanListener;
 import org.eclipse.sisu.plexus.config.PlexusBeanModule;
 import org.eclipse.sisu.plexus.config.PlexusBeanSource;
 

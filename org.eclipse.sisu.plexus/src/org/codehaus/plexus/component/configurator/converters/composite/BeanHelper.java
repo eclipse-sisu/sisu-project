@@ -29,8 +29,8 @@ import org.codehaus.plexus.component.configurator.converters.ParameterizedConfig
 import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.eclipse.sisu.reflect.DeclaredMembers;
-import org.eclipse.sisu.reflect.DeclaredMembers.View;
+import org.eclipse.sisu.bean.DeclaredMembers;
+import org.eclipse.sisu.bean.DeclaredMembers.View;
 
 import com.google.inject.TypeLiteral;
 

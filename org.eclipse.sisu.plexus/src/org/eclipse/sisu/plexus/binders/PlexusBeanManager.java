@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus.binders;
 
-import org.eclipse.sisu.inject.PropertyBinding;
-import org.eclipse.sisu.reflect.BeanProperty;
+import org.eclipse.sisu.bean.BeanProperty;
+import org.eclipse.sisu.bean.PropertyBinding;
 
 /**
  * Service that manages the lifecycle of Plexus beans.

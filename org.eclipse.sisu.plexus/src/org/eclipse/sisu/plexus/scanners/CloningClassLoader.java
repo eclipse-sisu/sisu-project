@@ -12,7 +12,7 @@ package org.eclipse.sisu.plexus.scanners;
 
 import java.lang.reflect.Modifier;
 
-import org.eclipse.sisu.reflect.ClassSpace;
+import org.eclipse.sisu.space.ClassSpace;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;

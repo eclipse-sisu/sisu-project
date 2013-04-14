@@ -27,6 +27,7 @@ import junit.framework.TestCase;
 
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.plexus.config.Hints;
 import org.eclipse.sisu.plexus.config.PlexusBeanConverter;
 import org.eclipse.sisu.plexus.config.PlexusBeanLocator;
@@ -36,9 +37,8 @@ import org.eclipse.sisu.plexus.config.Strategies;
 import org.eclipse.sisu.plexus.converters.PlexusDateTypeConverter;
 import org.eclipse.sisu.plexus.converters.PlexusXmlBeanConverter;
 import org.eclipse.sisu.plexus.locators.DefaultPlexusBeanLocator;
-import org.eclipse.sisu.reflect.ClassSpace;
-import org.eclipse.sisu.reflect.DeferredClass;
-import org.eclipse.sisu.reflect.URLClassSpace;
+import org.eclipse.sisu.space.ClassSpace;
+import org.eclipse.sisu.space.URLClassSpace;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Binder;

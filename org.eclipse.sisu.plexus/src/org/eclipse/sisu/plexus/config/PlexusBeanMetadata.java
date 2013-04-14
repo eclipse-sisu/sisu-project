@@ -12,7 +12,7 @@ package org.eclipse.sisu.plexus.config;
 
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.eclipse.sisu.reflect.BeanProperty;
+import org.eclipse.sisu.bean.BeanProperty;
 
 /**
  * Supplies metadata associated with a particular Plexus bean implementation.

@@ -13,8 +13,8 @@ package org.eclipse.sisu.plexus.binders;
 import javax.inject.Provider;
 
 import org.codehaus.plexus.component.annotations.Configuration;
+import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.plexus.config.PlexusBeanConverter;
-import org.eclipse.sisu.reflect.BeanProperty;
 
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeEncounter;

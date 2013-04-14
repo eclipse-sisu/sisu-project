@@ -19,9 +19,9 @@ import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.classworlds.ClassWorldException;
 import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
 import org.codehaus.plexus.classworlds.realm.NoSuchRealmException;
-import org.eclipse.sisu.locators.DefaultBeanLocator;
-import org.eclipse.sisu.locators.HiddenBinding;
-import org.eclipse.sisu.locators.MutableBeanLocator;
+import org.eclipse.sisu.inject.DefaultBeanLocator;
+import org.eclipse.sisu.inject.HiddenBinding;
+import org.eclipse.sisu.inject.MutableBeanLocator;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Binder;

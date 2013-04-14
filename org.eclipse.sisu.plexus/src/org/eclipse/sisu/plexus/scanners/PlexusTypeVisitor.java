@@ -13,17 +13,16 @@ package org.eclipse.sisu.plexus.scanners;
 import java.net.URL;
 
 import org.codehaus.plexus.component.annotations.Component;
+import org.eclipse.sisu.inject.Logs;
 import org.eclipse.sisu.plexus.annotations.ComponentImpl;
 import org.eclipse.sisu.plexus.config.Hints;
 import org.eclipse.sisu.plexus.config.Strategies;
-import org.eclipse.sisu.reflect.ClassSpace;
-import org.eclipse.sisu.reflect.LoadedClass;
-import org.eclipse.sisu.scanners.ClassSpaceScanner;
-import org.eclipse.sisu.scanners.ClassSpaceVisitor;
-import org.eclipse.sisu.scanners.EmptyAnnotationVisitor;
-import org.eclipse.sisu.scanners.EmptyClassVisitor;
-import org.eclipse.sisu.scanners.QualifiedTypeVisitor;
-import org.eclipse.sisu.util.Logs;
+import org.eclipse.sisu.space.ClassSpace;
+import org.eclipse.sisu.space.ClassSpaceVisitor;
+import org.eclipse.sisu.space.EmptyAnnotationVisitor;
+import org.eclipse.sisu.space.EmptyClassVisitor;
+import org.eclipse.sisu.space.LoadedClass;
+import org.eclipse.sisu.space.QualifiedTypeVisitor;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Opcodes;
@@ -80,7 +79,7 @@ public final class PlexusTypeVisitor
 
         if ( Logs.TRACE_ENABLED )
         {
-            ClassSpaceScanner.verify( _space, Component.class );
+            QualifiedTypeVisitor.verify( _space, Component.class );
         }
     }
 

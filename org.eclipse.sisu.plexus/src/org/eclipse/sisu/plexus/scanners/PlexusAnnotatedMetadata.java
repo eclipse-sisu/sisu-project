@@ -19,9 +19,9 @@ import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.InterpolationFilterReader;
+import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.plexus.annotations.ConfigurationImpl;
 import org.eclipse.sisu.plexus.config.PlexusBeanMetadata;
-import org.eclipse.sisu.reflect.BeanProperty;
 
 /**
  * Runtime {@link PlexusBeanMetadata} based on {@link BeanProperty} annotations.

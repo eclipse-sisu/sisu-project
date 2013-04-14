@@ -12,8 +12,8 @@ package org.eclipse.sisu.plexus.binders;
 
 import javax.inject.Provider;
 
-import org.eclipse.sisu.inject.PropertyBinding;
-import org.eclipse.sisu.reflect.BeanProperty;
+import org.eclipse.sisu.bean.BeanProperty;
+import org.eclipse.sisu.bean.PropertyBinding;
 
 /**
  * Represents a {@link BeanProperty} bound to an optional {@link Provider}.

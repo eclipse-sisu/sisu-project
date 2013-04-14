@@ -40,7 +40,7 @@ import org.codehaus.plexus.component.configurator.converters.composite.MapConver
 import org.codehaus.plexus.component.configurator.converters.composite.ObjectWithFieldsConverter;
 import org.codehaus.plexus.component.configurator.converters.composite.PlexusConfigurationConverter;
 import org.codehaus.plexus.component.configurator.converters.composite.PropertiesConverter;
-import org.eclipse.sisu.util.Weak;
+import org.eclipse.sisu.inject.Weak;
 
 public final class DefaultConverterLookup
     implements ConverterLookup

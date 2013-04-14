@@ -19,11 +19,11 @@ import junit.framework.TestCase;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.eclipse.sisu.bean.BeanProperties;
+import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.plexus.annotations.ConfigurationImpl;
 import org.eclipse.sisu.plexus.annotations.RequirementImpl;
 import org.eclipse.sisu.plexus.config.PlexusBeanMetadata;
-import org.eclipse.sisu.reflect.BeanProperties;
-import org.eclipse.sisu.reflect.BeanProperty;
 
 public class PlexusAnnotatedBeanMetadataTest
     extends TestCase

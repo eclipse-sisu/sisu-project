@@ -16,12 +16,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.codehaus.plexus.component.annotations.Component;
+import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.plexus.config.PlexusBeanMetadata;
 import org.eclipse.sisu.plexus.config.PlexusBeanModule;
 import org.eclipse.sisu.plexus.config.PlexusBeanSource;
 import org.eclipse.sisu.plexus.scanners.PlexusXmlScanner;
-import org.eclipse.sisu.reflect.ClassSpace;
-import org.eclipse.sisu.reflect.DeferredClass;
+import org.eclipse.sisu.space.ClassSpace;
 
 import com.google.inject.Binder;
 

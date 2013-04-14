@@ -30,7 +30,7 @@ import org.eclipse.sisu.plexus.config.PlexusBeanModule;
 import org.eclipse.sisu.plexus.converters.PlexusXmlBeanConverter;
 import org.eclipse.sisu.plexus.lifecycles.PlexusLifecycleManager;
 import org.eclipse.sisu.plexus.locators.DefaultPlexusBeanLocator;
-import org.eclipse.sisu.reflect.ClassSpace;
+import org.eclipse.sisu.space.ClassSpace;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;

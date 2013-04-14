@@ -12,8 +12,8 @@ package org.eclipse.sisu.plexus.binders;
 
 import java.util.List;
 
-import org.eclipse.sisu.inject.BeanBinder;
-import org.eclipse.sisu.inject.PropertyBinder;
+import org.eclipse.sisu.bean.BeanBinder;
+import org.eclipse.sisu.bean.PropertyBinder;
 import org.eclipse.sisu.plexus.config.PlexusBeanMetadata;
 import org.eclipse.sisu.plexus.config.PlexusBeanSource;
 
