@@ -3,7 +3,7 @@
   <components>
     <component>
       <implementation>
-        org.eclipse.sisu.plexus.scanners.PlexusXmlScannerTest$DefaultBean
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$DefaultBean
       </implementation>
       <requirements>
         <requirement>

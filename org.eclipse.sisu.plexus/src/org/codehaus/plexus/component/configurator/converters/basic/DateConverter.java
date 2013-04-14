@@ -15,7 +15,7 @@ package org.codehaus.plexus.component.configurator.converters.basic;
 import java.util.Date;
 
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
-import org.eclipse.sisu.plexus.converters.PlexusDateTypeConverter;
+import org.eclipse.sisu.plexus.PlexusDateTypeConverter;
 
 import com.google.inject.spi.TypeConverter;
 

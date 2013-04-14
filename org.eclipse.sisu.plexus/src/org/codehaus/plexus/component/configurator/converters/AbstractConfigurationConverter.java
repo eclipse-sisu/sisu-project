@@ -19,7 +19,7 @@ import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLoo
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluationException;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.eclipse.sisu.plexus.config.Roles;
+import org.eclipse.sisu.plexus.Roles;
 
 @SuppressWarnings( "static-method" )
 public abstract class AbstractConfigurationConverter

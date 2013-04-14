@@ -7,28 +7,22 @@
  *
  * Contributors:
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
- *
- * Minimal facade required to be binary-compatible with legacy Plexus API
  *******************************************************************************/
-package org.codehaus.plexus;
+package org.eclipse.sisu.plexus;
 
-import org.eclipse.sisu.plexus.Hints;
+import com.google.inject.TypeLiteral;
 
-public interface PlexusConstants
+/**
+ * Service that converts values into various beans by following Plexus configuration rules.
+ */
+public interface PlexusBeanConverter
 {
-    String PLEXUS_DEFAULT_HINT = Hints.DEFAULT_HINT;
-
-    String PLEXUS_KEY = "plexus";
-
-    String GLOBAL_VISIBILITY = "global";
-
-    String REALM_VISIBILITY = "realm";
-
-    String SCANNING_ON = "on";
-
-    String SCANNING_OFF = "off";
-
-    String SCANNING_INDEX = "index";
-
-    String SCANNING_CACHE = "cache";
+    /**
+     * Converts the given constant value to a bean of the given type.
+     * 
+     * @param role The expected bean type
+     * @param value The constant value
+     * @return Bean of the given type, based on the given constant value
+     */
+    <T> T convert( TypeLiteral<T> role, String value );
 }

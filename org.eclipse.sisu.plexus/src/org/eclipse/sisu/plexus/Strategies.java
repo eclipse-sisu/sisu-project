@@ -7,28 +7,21 @@
  *
  * Contributors:
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
- *
- * Minimal facade required to be binary-compatible with legacy Plexus API
  *******************************************************************************/
-package org.codehaus.plexus;
+package org.eclipse.sisu.plexus;
 
-import org.eclipse.sisu.plexus.Hints;
-
-public interface PlexusConstants
+/**
+ * Constants representing supported Plexus instantiation strategies.
+ */
+public interface Strategies
 {
-    String PLEXUS_DEFAULT_HINT = Hints.DEFAULT_HINT;
+    // ----------------------------------------------------------------------
+    // Constants
+    // ----------------------------------------------------------------------
 
-    String PLEXUS_KEY = "plexus";
+    String LOAD_ON_START = "load-on-start";
 
-    String GLOBAL_VISIBILITY = "global";
+    String PER_LOOKUP = "per-lookup";
 
-    String REALM_VISIBILITY = "realm";
-
-    String SCANNING_ON = "on";
-
-    String SCANNING_OFF = "off";
-
-    String SCANNING_INDEX = "index";
-
-    String SCANNING_CACHE = "cache";
+    String SINGLETON = "singleton";
 }

@@ -3,7 +3,7 @@
   <components>
     <component>
       <implementation>
-        org.eclipse.sisu.plexus.scanners.PlexusXmlScannerTest$DefaultBean
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$DefaultBean
       </implementation>
       <configuration>
         <prefix>foo</prefix>
@@ -16,7 +16,7 @@
         debug
       </role-hint>
       <implementation>
-        org.eclipse.sisu.plexus.scanners.PlexusXmlScannerTest$DefaultBean
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$DefaultBean
       </implementation>
     </component>
     <component>
@@ -24,7 +24,7 @@
         again
       </role-hint>
       <implementation>
-        org.eclipse.sisu.plexus.scanners.PlexusXmlScannerTest$DefaultBean
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$DefaultBean
       </implementation>
     </component>
   </components>

@@ -18,8 +18,8 @@ import java.util.List;
 
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.eclipse.sisu.plexus.config.Hints;
-import org.eclipse.sisu.plexus.config.Strategies;
+import org.eclipse.sisu.plexus.Hints;
+import org.eclipse.sisu.plexus.Strategies;
 
 public class ComponentDescriptor<T>
 {

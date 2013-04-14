@@ -3,7 +3,7 @@
   <components>
     <component>
       <implementation>
-        org.eclipse.sisu.plexus.scanners.PlexusXmlScannerTest$DefaultBean
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$DefaultBean
       </implementation>
       <instantiation-strategy>
         per-lookup
@@ -16,7 +16,7 @@
     </component>
     <component>
       <role>
-        org.eclipse.sisu.plexus.scanners.PlexusXmlScannerTest$Bean
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$Bean
       </role>
       <role-hint>
         debug
@@ -25,13 +25,13 @@
         For debugging
       </description>
       <implementation>
-        org.eclipse.sisu.plexus.scanners.PlexusXmlScannerTest$DebugBean
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$DebugBean
       </implementation>
       <extra-bits/>
     </component>
     <component>
       <implementation>
-        org.eclipse.sisu.plexus.scanners.PlexusXmlScannerTest$DefaultBean
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$DefaultBean
       </implementation>
       <configuration>
         <foo/><simple >value</simple  ><value with="attribute"></value><empty-value1 with="attribute" /><empty-value2/><foo/>
@@ -42,7 +42,7 @@
       <requirements>
         <requirement>
           <role>
-            org.eclipse.sisu.plexus.scanners.PlexusXmlScannerTest$Bean
+            org.eclipse.sisu.plexus.PlexusXmlScannerTest$Bean
           </role>
           <role-hint>
             debug
@@ -54,7 +54,7 @@
         </requirement>
         <requirement>
           <role>
-            org.eclipse.sisu.plexus.scanners.PlexusXmlScannerTest$Bean
+            org.eclipse.sisu.plexus.PlexusXmlScannerTest$Bean
           </role>
           <role-hints>
             <role-hint>
@@ -72,12 +72,12 @@
     </component>
     <component>
       <implementation>
-        org.eclipse.sisu.plexus.scanners.PlexusXmlScannerTest$DefaultBean
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$DefaultBean
       </implementation>
       <requirements>
         <requirement>
           <role>
-            org.eclipse.sisu.plexus.scanners.PlexusXmlScannerTest$Bean
+            org.eclipse.sisu.plexus.PlexusXmlScannerTest$Bean
           </role>
           <field-name>
             beanField
@@ -87,36 +87,36 @@
     </component>
     <component>
       <role>
-        org.eclipse.sisu.plexus.scanners.PlexusXmlScannerTest$Bean
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$Bean
       </role>
       <implementation>
-        org.eclipse.sisu.plexus.scanners.PlexusXmlScannerTest$AnotherBean
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$AnotherBean
       </implementation>
       <requirements>
         <requirement>
           <role>
-            org.eclipse.sisu.plexus.scanners.PlexusXmlScannerTest$Bean
+            org.eclipse.sisu.plexus.PlexusXmlScannerTest$Bean
           </role>
         </requirement>
       </requirements>
     </component>
     <component>
       <role>
-        org.eclipse.sisu.plexus.scanners.PlexusXmlScannerTest$Bean
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$Bean
       </role>
       <implementation>
-        org.eclipse.sisu.plexus.scanners.PlexusXmlScannerTest$DefaultBean
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$DefaultBean
       </implementation>
     </component>
     <component>
       <role>
-        org.eclipse.sisu.plexus.scanners.PlexusXmlScannerTest$Bean
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$Bean
       </role>
       <role-hint>
         clone
       </role-hint>
       <implementation>
-        org.eclipse.sisu.plexus.scanners.PlexusXmlScannerTest$DefaultBean
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$DefaultBean
       </implementation>
     </component>
   </components>

@@ -7,28 +7,16 @@
  *
  * Contributors:
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
- *
- * Minimal facade required to be binary-compatible with legacy Plexus API
  *******************************************************************************/
-package org.codehaus.plexus;
+package org.eclipse.sisu.plexus;
 
-import org.eclipse.sisu.plexus.Hints;
+import org.codehaus.plexus.component.annotations.Component;
 
-public interface PlexusConstants
+@Component( role = Runnable.class, hint = "test", instantiationStrategy = Strategies.PER_LOOKUP, description = "Some Test", isolatedRealm = true )
+public class TestBean
+    implements Runnable
 {
-    String PLEXUS_DEFAULT_HINT = Hints.DEFAULT_HINT;
-
-    String PLEXUS_KEY = "plexus";
-
-    String GLOBAL_VISIBILITY = "global";
-
-    String REALM_VISIBILITY = "realm";
-
-    String SCANNING_ON = "on";
-
-    String SCANNING_OFF = "off";
-
-    String SCANNING_INDEX = "index";
-
-    String SCANNING_CACHE = "cache";
+    public void run()
+    {
+    }
 }

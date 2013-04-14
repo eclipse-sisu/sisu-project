@@ -22,6 +22,7 @@ import org.codehaus.plexus.component.configurator.converters.AbstractConfigurati
 import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.eclipse.sisu.plexus.CompositeBeanHelper;
 
 public class ObjectWithFieldsConverter
     extends AbstractConfigurationConverter
@@ -57,7 +58,7 @@ public class ObjectWithFieldsConverter
             }
             else
             {
-                new BeanHelper( lookup, loader, evaluator, listener ).setDefault( bean, value, configuration );
+                new CompositeBeanHelper( lookup, loader, evaluator, listener ).setDefault( bean, value, configuration );
             }
             return bean;
         }
@@ -83,7 +84,7 @@ public class ObjectWithFieldsConverter
                                       final ConfigurationListener listener )
         throws ComponentConfigurationException
     {
-        final BeanHelper helper = new BeanHelper( lookup, loader, evaluator, listener );
+        final CompositeBeanHelper helper = new CompositeBeanHelper( lookup, loader, evaluator, listener );
         for ( int i = 0, size = configuration.getChildCount(); i < size; i++ )
         {
             final PlexusConfiguration element = configuration.getChild( i );
