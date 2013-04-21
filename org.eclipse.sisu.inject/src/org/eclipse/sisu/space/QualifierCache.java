@@ -17,13 +17,14 @@ import javax.inject.Qualifier;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 /**
  * Caching {@link ClassVisitor} that maintains a map of known {@link Qualifier} annotations.
  */
 final class QualifierCache
-    extends EmptyClassVisitor
+    extends ClassVisitor
 {
     // ----------------------------------------------------------------------
     // Constants
@@ -38,6 +39,15 @@ final class QualifierCache
     private static final Map<String, Boolean> cachedResults = new ConcurrentHashMap<String, Boolean>( 32, 0.75f, 1 );
 
     private boolean isQualified;
+
+    // ----------------------------------------------------------------------
+    // Constructors
+    // ----------------------------------------------------------------------
+
+    QualifierCache()
+    {
+        super( Opcodes.ASM4 );
+    }
 
     // ----------------------------------------------------------------------
     // Public methods

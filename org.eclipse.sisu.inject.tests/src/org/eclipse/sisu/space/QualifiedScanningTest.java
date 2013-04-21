@@ -37,7 +37,6 @@ import junit.framework.TestCase;
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.space.oops.Handler;
 import org.junit.Ignore;
-import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Type;
 
@@ -342,25 +341,6 @@ public class QualifiedScanningTest
         {
             Logger.getLogger( "" ).setLevel( level );
         }
-    }
-
-    public void testEmptyMethods()
-    {
-        final AnnotationVisitor emptyAnnotationVisitor = new EmptyAnnotationVisitor();
-
-        emptyAnnotationVisitor.visit( null, null );
-        emptyAnnotationVisitor.visitEnum( null, null, null );
-        emptyAnnotationVisitor.visitAnnotation( null, null );
-        emptyAnnotationVisitor.visitArray( null );
-        emptyAnnotationVisitor.visitEnd();
-
-        final ClassVisitor emptyClassVisitor = new EmptyClassVisitor();
-
-        emptyClassVisitor.visit( 0, 0, null, null, null, null );
-        emptyClassVisitor.visitAnnotation( null, false );
-        emptyClassVisitor.visitAttribute( null );
-        emptyClassVisitor.visitSource( null, null );
-        emptyClassVisitor.visitEnd();
     }
 
     public void testICU4J()

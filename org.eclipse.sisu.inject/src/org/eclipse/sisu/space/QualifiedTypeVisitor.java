@@ -25,7 +25,7 @@ import com.google.inject.Module;
  * {@link ClassSpaceVisitor} that reports types annotated with {@link Qualifier} annotations.
  */
 public final class QualifiedTypeVisitor
-    extends EmptyClassVisitor
+    extends ClassVisitor
     implements ClassSpaceVisitor
 {
     // ----------------------------------------------------------------------
@@ -52,6 +52,7 @@ public final class QualifiedTypeVisitor
 
     public QualifiedTypeVisitor( final QualifiedTypeListener listener )
     {
+        super( Opcodes.ASM4 );
         this.listener = listener;
     }
 
