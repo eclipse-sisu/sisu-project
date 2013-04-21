@@ -16,8 +16,6 @@ import org.codehaus.plexus.component.annotations.Component;
 import org.eclipse.sisu.inject.Logs;
 import org.eclipse.sisu.space.ClassSpace;
 import org.eclipse.sisu.space.ClassSpaceVisitor;
-import org.eclipse.sisu.space.EmptyAnnotationVisitor;
-import org.eclipse.sisu.space.EmptyClassVisitor;
 import org.eclipse.sisu.space.LoadedClass;
 import org.eclipse.sisu.space.QualifiedTypeVisitor;
 import org.objectweb.asm.AnnotationVisitor;
@@ -29,7 +27,7 @@ import org.objectweb.asm.Type;
  * {@link ClassSpaceVisitor} that reports Plexus bean classes annotated with @{@link Component}.
  */
 public final class PlexusTypeVisitor
-    extends EmptyClassVisitor
+    extends ClassVisitor
     implements ClassSpaceVisitor
 {
     // ----------------------------------------------------------------------
@@ -60,6 +58,7 @@ public final class PlexusTypeVisitor
 
     public PlexusTypeVisitor( final PlexusTypeListener listener )
     {
+        super( Opcodes.ASM4 );
         plexusTypeListener = listener;
         qualifiedTypeVisitor = new QualifiedTypeVisitor( listener );
     }
@@ -132,8 +131,8 @@ public final class PlexusTypeVisitor
     // Component annotation scanner
     // ----------------------------------------------------------------------
 
-    static final class ComponentAnnotationVisitor
-        extends EmptyAnnotationVisitor
+    private static final class ComponentAnnotationVisitor
+        extends AnnotationVisitor
     {
         private String role;
 
@@ -142,6 +141,11 @@ public final class PlexusTypeVisitor
         private String strategy;
 
         private String description;
+
+        ComponentAnnotationVisitor()
+        {
+            super( Opcodes.ASM4 );
+        }
 
         public void reset()
         {
