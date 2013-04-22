@@ -21,7 +21,7 @@ import org.objectweb.asm.ClassVisitor;
 /**
  * ASM-style scanner that makes a {@link ClassSpaceVisitor} visit an existing {@link ClassSpace}.
  */
-final class ClassSpaceScanner
+public final class ClassSpaceScanner
 {
     // ----------------------------------------------------------------------
     // Constants
@@ -41,19 +41,19 @@ final class ClassSpaceScanner
     // Constructors
     // ----------------------------------------------------------------------
 
-    ClassSpaceScanner( final ClassSpace space )
+    public ClassSpaceScanner( final ClassSpace space )
     {
         this( null, space );
     }
 
-    ClassSpaceScanner( final ClassFinder finder, final ClassSpace space )
+    public ClassSpaceScanner( final ClassFinder finder, final ClassSpace space )
     {
         this.finder = finder;
         this.space = space;
     }
 
     // ----------------------------------------------------------------------
-    // Local methods
+    // Public methods
     // ----------------------------------------------------------------------
 
     /**
@@ -61,7 +61,7 @@ final class ClassSpaceScanner
      * 
      * @param visitor The class space visitor
      */
-    void accept( final ClassSpaceVisitor visitor )
+    public void accept( final ClassSpaceVisitor visitor )
     {
         visitor.visit( space );
 
@@ -87,7 +87,7 @@ final class ClassSpaceScanner
      * @param visitor The class space visitor
      * @param url The class resource URL
      */
-    static void accept( final ClassVisitor visitor, final URL url )
+    public static void accept( final ClassVisitor visitor, final URL url )
     {
         if ( null == url )
         {
