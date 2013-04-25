@@ -10,30 +10,26 @@
  *******************************************************************************/
 package org.eclipse.sisu.space;
 
-import java.net.URL;
-
 /**
- * Something that can visit {@link ClassSpace}s.
+ * Something that can visit annotation declarations.
  */
-public interface ClassSpaceVisitor
+public interface AnnotationVisitor
 {
     /**
-     * Enters the class space.
-     * 
-     * @param space The class space
+     * Enters the annotation declaration.
      */
-    void enter( ClassSpace space );
+    void enter();
 
     /**
-     * Visits a class resource in the class space.
+     * Visits an element of the declared annotation.
      * 
-     * @param url The class resource URL
-     * @return Class visitor; {@code null} if it is not interested in visiting the class
+     * @param name The element name
+     * @param value The element value
      */
-    ClassVisitor visitClass( URL url );
+    void visitElement( String name, Object value );
 
     /**
-     * Leaves the class space.
+     * Leaves the annotation declaration.
      */
     void leave();
 }

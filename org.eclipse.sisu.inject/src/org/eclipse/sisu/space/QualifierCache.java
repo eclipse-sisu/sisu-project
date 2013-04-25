@@ -15,22 +15,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Qualifier;
 
-import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
-
 /**
  * Caching {@link ClassVisitor} that maintains a map of known {@link Qualifier} annotations.
  */
 final class QualifierCache
-    extends ClassVisitor
+    implements ClassVisitor
 {
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final String QUALIFIER_DESC = Type.getDescriptor( Qualifier.class );
+    private static final String QUALIFIER_DESC = 'L' + Qualifier.class.getName().replace( '.', '/' ) + ';';
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -41,23 +36,23 @@ final class QualifierCache
     private boolean isQualified;
 
     // ----------------------------------------------------------------------
-    // Constructors
-    // ----------------------------------------------------------------------
-
-    QualifierCache()
-    {
-        super( Opcodes.ASM4 );
-    }
-
-    // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
 
-    @Override
-    public AnnotationVisitor visitAnnotation( final String desc, final boolean visible )
+    public void enter( final int modifiers, final String name, final String _extends, final String[] _implements )
+    {
+        // no-op
+    }
+
+    public AnnotationVisitor visitAnnotation( final String desc )
     {
         isQualified |= QUALIFIER_DESC.equals( desc );
         return null;
+    }
+
+    public void leave()
+    {
+        // no-op
     }
 
     // ----------------------------------------------------------------------

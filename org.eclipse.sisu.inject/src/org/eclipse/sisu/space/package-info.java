@@ -9,7 +9,7 @@
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
 /**
- * <a href="http://asm.ow2.org/">ASM</a>-based bean scanning.
+ * Bean scanning.
  *
  * <p>The principal members of this package are:
  * <dl>
@@ -18,7 +18,7 @@
  * <dt>{@link SpaceModule}
  * <dd>Scans a {@link ClassSpace} for beans and adds any qualified bindings.
  * <dt>{@link ClassSpaceVisitor}
- * <dd>ASM-style visitor that can visit a {@link ClassSpace}.
+ * <dd>Something that can visit {@link ClassSpace}s.
  * <dt>{@link QualifiedTypeListener}
  * <dd>Listens out for types annotated with {@link javax.inject.Qualifier} annotations.
  * <dt>{@link QualifiedTypeVisitor}

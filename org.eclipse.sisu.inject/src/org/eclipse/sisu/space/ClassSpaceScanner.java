@@ -16,10 +16,11 @@ import java.util.Enumeration;
 
 import org.eclipse.sisu.inject.Logs;
 import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 /**
- * ASM-style scanner that makes a {@link ClassSpaceVisitor} visit an existing {@link ClassSpace}.
+ * Makes a {@link ClassSpaceVisitor} visit a {@link ClassSpace}; can be directed by an optional {@link ClassFinder}.
  */
 public final class ClassSpaceScanner
 {
@@ -63,7 +64,7 @@ public final class ClassSpaceScanner
      */
     public void accept( final ClassSpaceVisitor visitor )
     {
-        visitor.visit( space );
+        visitor.enter( space );
 
         final Enumeration<URL> result =
             null != finder ? finder.findClasses( space ) : space.findEntries( null, "*.class", true );
@@ -78,7 +79,7 @@ public final class ClassSpaceScanner
             }
         }
 
-        visitor.visitEnd();
+        visitor.leave();
     }
 
     /**
@@ -98,7 +99,7 @@ public final class ClassSpaceScanner
             final InputStream in = url.openStream();
             try
             {
-                new ClassReader( in ).accept( visitor, ASM_FLAGS );
+                new ClassReader( in ).accept( adapt( visitor ), ASM_FLAGS );
             }
             finally
             {
@@ -113,5 +114,66 @@ public final class ClassSpaceScanner
         {
             Logs.trace( "Problem scanning: {}", url, e );
         }
+    }
+
+    // ----------------------------------------------------------------------
+    // Implementation methods
+    // ----------------------------------------------------------------------
+
+    /**
+     * Adapts the given {@link ClassVisitor} to its equivalent ASM form.
+     * 
+     * @param delegate The class visitor to adapt
+     * @return ASM-compatible class visitor
+     */
+    static org.objectweb.asm.ClassVisitor adapt( final ClassVisitor delegate )
+    {
+        return new org.objectweb.asm.ClassVisitor( Opcodes.ASM4 )
+        {
+            @Override
+            public void visit( final int version, final int access, final String name, final String signature,
+                               final String superName, final String[] interfaces )
+            {
+                delegate.enter( access, name, superName, interfaces );
+            }
+
+            @Override
+            public org.objectweb.asm.AnnotationVisitor visitAnnotation( final String desc, final boolean visible )
+            {
+                final AnnotationVisitor visitor = delegate.visitAnnotation( desc );
+                return visitor != null ? adapt( visitor ) : null;
+            }
+
+            @Override
+            public void visitEnd()
+            {
+                delegate.leave();
+            }
+        };
+    }
+
+    /**
+     * Adapts the given {@link AnnotationVisitor} to its equivalent ASM form.
+     * 
+     * @param delegate The annotation visitor to adapt
+     * @return ASM-compatible annotation visitor
+     */
+    static org.objectweb.asm.AnnotationVisitor adapt( final AnnotationVisitor delegate )
+    {
+        delegate.enter();
+        return new org.objectweb.asm.AnnotationVisitor( Opcodes.ASM4 )
+        {
+            @Override
+            public void visit( final String name, final Object value )
+            {
+                delegate.visitElement( name, value instanceof Type ? ( (Type) value ).getClassName() : value );
+            }
+
+            @Override
+            public void visitEnd()
+            {
+                delegate.leave();
+            }
+        };
     }
 }

@@ -37,8 +37,6 @@ import junit.framework.TestCase;
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.space.oops.Handler;
 import org.junit.Ignore;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.Type;
 
 public class QualifiedScanningTest
     extends TestCase
@@ -121,9 +119,9 @@ public class QualifiedScanningTest
         final ClassSpaceVisitor visitor = new QualifiedTypeVisitor( listener );
         new ClassSpaceScanner( space ).accept( new ClassSpaceVisitor()
         {
-            public void visit( final ClassSpace _space )
+            public void enter( final ClassSpace _space )
             {
-                visitor.visit( _space );
+                visitor.enter( _space );
             }
 
             public ClassVisitor visitClass( final URL url )
@@ -135,9 +133,9 @@ public class QualifiedScanningTest
                 return visitor.visitClass( url );
             }
 
-            public void visitEnd()
+            public void leave()
             {
-                visitor.visitEnd();
+                visitor.leave();
             }
         } );
 
@@ -275,31 +273,31 @@ public class QualifiedScanningTest
 
         final QualifiedTypeVisitor visitor = new QualifiedTypeVisitor( listener );
 
-        visitor.visit( new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } ) );
+        visitor.enter( new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } ) );
 
         assertEquals( 0, listener.sources.size() );
 
         visitor.visitClass( new URL( "file:target/classes/java/lang/Object.class" ) );
-        visitor.visit( 0, 0, Type.getInternalName( Object.class ), null, null, null );
-        visitor.visitAnnotation( Type.getDescriptor( Named.class ), true );
-        visitor.visitEnd();
+        visitor.enter( 0, "java/lang/Object", null, null );
+        visitor.visitAnnotation( "Ljavax/inject/Named;" );
+        visitor.leave();
 
         assertEquals( 1, listener.sources.size() );
         assertTrue( listener.sources.contains( "target/classes/" ) );
 
         visitor.visitClass( new URL( "jar:file:bar.jar!/java/lang/String.class" ) );
-        visitor.visit( 0, 0, Type.getInternalName( String.class ), null, null, null );
-        visitor.visitAnnotation( Type.getDescriptor( Named.class ), true );
-        visitor.visitEnd();
+        visitor.enter( 0, "java/lang/String", null, null );
+        visitor.visitAnnotation( "Ljavax/inject/Named;" );
+        visitor.leave();
 
         assertEquals( 2, listener.sources.size() );
         assertTrue( listener.sources.contains( "target/classes/" ) );
         assertTrue( listener.sources.contains( "file:bar.jar!/" ) );
 
         visitor.visitClass( new URL( "file:some/obfuscated/location" ) );
-        visitor.visit( 0, 0, Type.getInternalName( Integer.class ), null, null, null );
-        visitor.visitAnnotation( Type.getDescriptor( Named.class ), true );
-        visitor.visitEnd();
+        visitor.enter( 0, "java/lang/Integer", null, null );
+        visitor.visitAnnotation( "Ljavax/inject/Named;" );
+        visitor.leave();
 
         assertEquals( 3, listener.sources.size() );
         assertTrue( listener.sources.contains( "target/classes/" ) );

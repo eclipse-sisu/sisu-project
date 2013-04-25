@@ -15,9 +15,6 @@ import java.net.URL;
 import javax.inject.Qualifier;
 
 import org.eclipse.sisu.inject.Logs;
-import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.Opcodes;
 
 import com.google.inject.Module;
 
@@ -25,8 +22,7 @@ import com.google.inject.Module;
  * {@link ClassSpaceVisitor} that reports types annotated with {@link Qualifier} annotations.
  */
 public final class QualifiedTypeVisitor
-    extends ClassVisitor
-    implements ClassSpaceVisitor
+    implements ClassSpaceVisitor, ClassVisitor
 {
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -52,7 +48,6 @@ public final class QualifiedTypeVisitor
 
     public QualifiedTypeVisitor( final QualifiedTypeListener listener )
     {
-        super( Opcodes.ASM4 );
         this.listener = listener;
     }
 
@@ -84,7 +79,7 @@ public final class QualifiedTypeVisitor
         return true;
     }
 
-    public void visit( final ClassSpace _space )
+    public void enter( final ClassSpace _space )
     {
         space = _space;
         source = null;
@@ -104,18 +99,15 @@ public final class QualifiedTypeVisitor
         return this;
     }
 
-    @Override
-    public void visit( final int version, final int access, final String name, final String signature,
-                       final String superName, final String[] interfaces )
+    public void enter( final int modifiers, final String name, final String _extends, final String[] _implements )
     {
-        if ( ( access & ( Opcodes.ACC_INTERFACE | Opcodes.ACC_ABSTRACT | Opcodes.ACC_SYNTHETIC ) ) == 0 )
+        if ( ( modifiers & NON_INSTANTIABLE ) == 0 )
         {
             clazzName = name; // concrete type
         }
     }
 
-    @Override
-    public AnnotationVisitor visitAnnotation( final String desc, final boolean visible )
+    public AnnotationVisitor visitAnnotation( final String desc )
     {
         if ( null != clazzName )
         {
@@ -124,8 +116,7 @@ public final class QualifiedTypeVisitor
         return null;
     }
 
-    @Override
-    public void visitEnd()
+    public void leave()
     {
         if ( qualified )
         {
