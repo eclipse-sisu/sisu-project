@@ -14,27 +14,24 @@ import java.net.URL;
 
 import org.codehaus.plexus.component.annotations.Component;
 import org.eclipse.sisu.inject.Logs;
+import org.eclipse.sisu.space.AnnotationVisitor;
 import org.eclipse.sisu.space.ClassSpace;
 import org.eclipse.sisu.space.ClassSpaceVisitor;
+import org.eclipse.sisu.space.ClassVisitor;
 import org.eclipse.sisu.space.LoadedClass;
 import org.eclipse.sisu.space.QualifiedTypeVisitor;
-import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
 
 /**
  * {@link ClassSpaceVisitor} that reports Plexus bean classes annotated with @{@link Component}.
  */
 public final class PlexusTypeVisitor
-    extends ClassVisitor
-    implements ClassSpaceVisitor
+    implements ClassSpaceVisitor, ClassVisitor
 {
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final String COMPONENT_DESC = Type.getDescriptor( Component.class );
+    private static final String COMPONENT_DESC = 'L' + Component.class.getName().replace( '.', '/' ) + ';';
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -58,7 +55,6 @@ public final class PlexusTypeVisitor
 
     public PlexusTypeVisitor( final PlexusTypeListener listener )
     {
-        super( Opcodes.ASM4 );
         plexusTypeListener = listener;
         qualifiedTypeVisitor = new QualifiedTypeVisitor( listener );
     }
@@ -67,11 +63,11 @@ public final class PlexusTypeVisitor
     // Public methods
     // ----------------------------------------------------------------------
 
-    public void visit( final ClassSpace _space )
+    public void enter( final ClassSpace _space )
     {
         space = _space;
         source = _space.toString();
-        qualifiedTypeVisitor.visit( _space );
+        qualifiedTypeVisitor.enter( _space );
 
         if ( Logs.TRACE_ENABLED )
         {
@@ -87,29 +83,25 @@ public final class PlexusTypeVisitor
         return this;
     }
 
-    @Override
-    public void visit( final int version, final int access, final String name, final String signature,
-                       final String superName, final String[] interfaces )
+    public void enter( final int modifiers, final String name, final String _extends, final String[] _implements )
     {
-        if ( ( access & ( Opcodes.ACC_INTERFACE | Opcodes.ACC_ABSTRACT | Opcodes.ACC_SYNTHETIC ) ) == 0 )
+        if ( ( modifiers & NON_INSTANTIABLE ) == 0 )
         {
             implementation = name.replace( '/', '.' );
         }
-        qualifiedTypeVisitor.visit( version, access, name, signature, superName, interfaces );
+        qualifiedTypeVisitor.enter( modifiers, name, _extends, _implements );
     }
 
-    @Override
-    public AnnotationVisitor visitAnnotation( final String desc, final boolean visible )
+    public AnnotationVisitor visitAnnotation( final String desc )
     {
         if ( COMPONENT_DESC.equals( desc ) )
         {
             return componentVisitor;
         }
-        return qualifiedTypeVisitor.visitAnnotation( desc, visible );
+        return qualifiedTypeVisitor.visitAnnotation( desc );
     }
 
-    @Override
-    public void visitEnd()
+    public void leave()
     {
         if ( null != implementation )
         {
@@ -121,7 +113,7 @@ public final class PlexusTypeVisitor
             }
             else
             {
-                qualifiedTypeVisitor.visitEnd();
+                qualifiedTypeVisitor.leave();
             }
             implementation = null;
         }
@@ -131,8 +123,8 @@ public final class PlexusTypeVisitor
     // Component annotation scanner
     // ----------------------------------------------------------------------
 
-    private static final class ComponentAnnotationVisitor
-        extends AnnotationVisitor
+    static final class ComponentAnnotationVisitor
+        implements AnnotationVisitor
     {
         private String role;
 
@@ -142,11 +134,6 @@ public final class PlexusTypeVisitor
 
         private String description;
 
-        ComponentAnnotationVisitor()
-        {
-            super( Opcodes.ASM4 );
-        }
-
         public void reset()
         {
             role = null;
@@ -155,12 +142,16 @@ public final class PlexusTypeVisitor
             description = "";
         }
 
-        @Override
-        public void visit( final String name, final Object value )
+        public void enter()
+        {
+            // no-op; maintain results outside of individual annotation scan
+        }
+
+        public void visitElement( final String name, final Object value )
         {
             if ( "role".equals( name ) )
             {
-                role = ( (Type) value ).getClassName();
+                role = (String) value;
             }
             else if ( "hint".equals( name ) )
             {
@@ -174,6 +165,11 @@ public final class PlexusTypeVisitor
             {
                 description = (String) value;
             }
+        }
+
+        public void leave()
+        {
+            // no-op; maintain results outside of individual annotation scan
         }
 
         public Component getComponent( final ClassSpace space )
