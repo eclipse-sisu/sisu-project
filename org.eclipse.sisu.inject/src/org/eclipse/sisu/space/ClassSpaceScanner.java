@@ -123,10 +123,10 @@ public final class ClassSpaceScanner
     /**
      * Adapts the given {@link ClassVisitor} to its equivalent ASM form.
      * 
-     * @param delegate The class visitor to adapt
+     * @param _cv The class visitor to adapt
      * @return ASM-compatible class visitor
      */
-    static org.eclipse.sisu.space.asm.ClassVisitor adapt( final ClassVisitor delegate )
+    private static org.eclipse.sisu.space.asm.ClassVisitor adapt( final ClassVisitor _cv )
     {
         return new org.eclipse.sisu.space.asm.ClassVisitor( Opcodes.ASM4 )
         {
@@ -134,45 +134,39 @@ public final class ClassSpaceScanner
             public void visit( final int version, final int access, final String name, final String signature,
                                final String superName, final String[] interfaces )
             {
-                delegate.enter( access, name, superName, interfaces );
+                _cv.enter( access, name, superName, interfaces );
             }
 
             @Override
-            public org.eclipse.sisu.space.asm.AnnotationVisitor visitAnnotation( final String desc, final boolean visible )
+            public org.eclipse.sisu.space.asm.AnnotationVisitor visitAnnotation( final String desc,
+                                                                                 final boolean visible )
             {
-                final AnnotationVisitor visitor = delegate.visitAnnotation( desc );
-                return visitor != null ? adapt( visitor ) : null;
-            }
+                final AnnotationVisitor _av = _cv.visitAnnotation( desc );
+                if ( null == _av )
+                {
+                    return null;
+                }
+                _av.enter();
+                return new org.eclipse.sisu.space.asm.AnnotationVisitor( Opcodes.ASM4 )
+                {
+                    @Override
+                    public void visit( final String name, final Object value )
+                    {
+                        _av.visitElement( name, value instanceof Type ? ( (Type) value ).getClassName() : value );
+                    }
 
-            @Override
-            public void visitEnd()
-            {
-                delegate.leave();
-            }
-        };
-    }
-
-    /**
-     * Adapts the given {@link AnnotationVisitor} to its equivalent ASM form.
-     * 
-     * @param delegate The annotation visitor to adapt
-     * @return ASM-compatible annotation visitor
-     */
-    static org.eclipse.sisu.space.asm.AnnotationVisitor adapt( final AnnotationVisitor delegate )
-    {
-        delegate.enter();
-        return new org.eclipse.sisu.space.asm.AnnotationVisitor( Opcodes.ASM4 )
-        {
-            @Override
-            public void visit( final String name, final Object value )
-            {
-                delegate.visitElement( name, value instanceof Type ? ( (Type) value ).getClassName() : value );
+                    @Override
+                    public void visitEnd()
+                    {
+                        _av.leave();
+                    }
+                };
             }
 
             @Override
             public void visitEnd()
             {
-                delegate.leave();
+                _cv.leave();
             }
         };
     }
