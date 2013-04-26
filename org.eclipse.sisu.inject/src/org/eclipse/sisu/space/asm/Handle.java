@@ -28,7 +28,7 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.objectweb.asm;
+package org.eclipse.sisu.space.asm;
 
 /**
  * A reference to a field or a method.

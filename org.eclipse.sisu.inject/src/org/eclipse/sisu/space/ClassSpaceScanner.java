@@ -15,9 +15,9 @@ import java.net.URL;
 import java.util.Enumeration;
 
 import org.eclipse.sisu.inject.Logs;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.eclipse.sisu.space.asm.ClassReader;
+import org.eclipse.sisu.space.asm.Opcodes;
+import org.eclipse.sisu.space.asm.Type;
 
 /**
  * Makes a {@link ClassSpaceVisitor} visit a {@link ClassSpace}; can be directed by an optional {@link ClassFinder}.
@@ -126,9 +126,9 @@ public final class ClassSpaceScanner
      * @param delegate The class visitor to adapt
      * @return ASM-compatible class visitor
      */
-    static org.objectweb.asm.ClassVisitor adapt( final ClassVisitor delegate )
+    static org.eclipse.sisu.space.asm.ClassVisitor adapt( final ClassVisitor delegate )
     {
-        return new org.objectweb.asm.ClassVisitor( Opcodes.ASM4 )
+        return new org.eclipse.sisu.space.asm.ClassVisitor( Opcodes.ASM4 )
         {
             @Override
             public void visit( final int version, final int access, final String name, final String signature,
@@ -138,7 +138,7 @@ public final class ClassSpaceScanner
             }
 
             @Override
-            public org.objectweb.asm.AnnotationVisitor visitAnnotation( final String desc, final boolean visible )
+            public org.eclipse.sisu.space.asm.AnnotationVisitor visitAnnotation( final String desc, final boolean visible )
             {
                 final AnnotationVisitor visitor = delegate.visitAnnotation( desc );
                 return visitor != null ? adapt( visitor ) : null;
@@ -158,10 +158,10 @@ public final class ClassSpaceScanner
      * @param delegate The annotation visitor to adapt
      * @return ASM-compatible annotation visitor
      */
-    static org.objectweb.asm.AnnotationVisitor adapt( final AnnotationVisitor delegate )
+    static org.eclipse.sisu.space.asm.AnnotationVisitor adapt( final AnnotationVisitor delegate )
     {
         delegate.enter();
-        return new org.objectweb.asm.AnnotationVisitor( Opcodes.ASM4 )
+        return new org.eclipse.sisu.space.asm.AnnotationVisitor( Opcodes.ASM4 )
         {
             @Override
             public void visit( final String name, final Object value )
