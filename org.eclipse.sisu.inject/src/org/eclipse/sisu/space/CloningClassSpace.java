@@ -56,7 +56,7 @@ public final class CloningClassSpace
     // Public methods
     // ----------------------------------------------------------------------
 
-    public DeferredClass<?> cloneClass( String name )
+    public DeferredClass<?> cloneClass( final String name )
     {
         final StringBuilder buf = new StringBuilder();
         if ( name.startsWith( "java" ) )
