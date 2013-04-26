@@ -19,10 +19,6 @@
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
-<unit id="org.objectweb.asm" version="4.0.0.v201302062210"/>
-<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/S20130308121626/repository/"/>
-</location>
-<location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="org.testng" version="6.7.0"/>
 <repository location="http://git.eclipse.org/c/sisu/org.eclipse.sisu.inject.git/plain/org.eclipse.sisu.inject/build.extra?id=567103a544cb97541f5af583b1dc392d1928883e"/>
 </location>
