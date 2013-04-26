@@ -30,7 +30,7 @@ import org.eclipse.sisu.inject.DeferredClass;
 /**
  * {@link ClassSpace} backed by a strongly-referenced {@link ClassLoader} and a {@link URL} class path.
  */
-public final class URLClassSpace
+public class URLClassSpace
     implements ClassSpace
 {
     // ----------------------------------------------------------------------
