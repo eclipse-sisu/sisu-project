@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -22,7 +20,7 @@ import org.codehaus.plexus.component.annotations.Component;
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.inject.Logs;
 import org.eclipse.sisu.space.ClassSpace;
-import org.eclipse.sisu.space.URLClassSpace;
+import org.eclipse.sisu.space.CloningClassSpace;
 
 /**
  * Enhanced Plexus component map with additional book-keeping.
@@ -46,11 +44,9 @@ final class PlexusTypeRegistry
 
     private final Set<String> deferredNames = new HashSet<String>();
 
-    final ClassSpace space;
+    private final ClassSpace space;
 
-    private ClassSpace cloningClassSpace;
-
-    private int cloneCounter;
+    private CloningClassSpace clones;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -147,7 +143,7 @@ final class PlexusTypeRegistry
             return implementationType.getName();
         }
         final String oldImplementation = implementationType.getName();
-        if ( implementation.equals( CloningClassLoader.getRealName( oldImplementation ) ) )
+        if ( implementation.equals( CloningClassSpace.originalName( oldImplementation ) ) )
         {
             return oldImplementation; // merge configuration
         }
@@ -197,16 +193,10 @@ final class PlexusTypeRegistry
 
     private DeferredClass<?> cloneImplementation( final String implementation )
     {
-        if ( null == cloningClassSpace )
+        if ( null == clones )
         {
-            cloningClassSpace = new URLClassSpace( AccessController.doPrivileged( new PrivilegedAction<ClassLoader>()
-            {
-                public ClassLoader run()
-                {
-                    return new CloningClassLoader( space );
-                }
-            } ), null );
+            clones = new CloningClassSpace( space );
         }
-        return cloningClassSpace.deferLoadClass( CloningClassLoader.proxyName( implementation, ++cloneCounter ) );
+        return clones.cloneClass( implementation );
     }
 }
