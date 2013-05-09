@@ -86,8 +86,14 @@ final class FileEntryIterator
     static File toFile( final URL url )
     {
         final StringBuilder buf = new StringBuilder();
-        final String path = url.getPath();
 
+        final String authority = url.getAuthority();
+        if ( null != authority && authority.length() > 0 )
+        {
+            buf.append( File.separatorChar ).append( File.separatorChar ).append( authority );
+        }
+
+        final String path = url.getPath();
         for ( int i = 0, length = path.length(); i < length; i++ )
         {
             final char c = path.charAt( i );
