@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.sisu.launch;
 
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.Dictionary;
@@ -37,10 +39,9 @@ import org.osgi.util.tracker.BundleTrackerCustomizer;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
-import com.google.inject.Binder;
+import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.Module;
 
 /**
  * {@link BundleActivator} that maintains a dynamic {@link Injector} graph by scanning bundles as they come and go.
@@ -60,7 +61,9 @@ public final class SisuActivator
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    static final MutableBeanLocator locator = new DefaultBeanLocator();
+    private static Reference<MutableBeanLocator> LOCATOR_REF;
+
+    private MutableBeanLocator locator;
 
     private BundleContext bundleContext;
 
@@ -74,6 +77,15 @@ public final class SisuActivator
 
     public void start( final BundleContext context )
     {
+        if ( null != LOCATOR_REF )
+        {
+            locator = LOCATOR_REF.get();
+        }
+        if ( null == locator )
+        {
+            LOCATOR_REF = new WeakReference<MutableBeanLocator>( locator = new DefaultBeanLocator() );
+        }
+
         bundleContext = context;
         serviceTracker = new ServiceTracker( context, BUNDLE_INJECTOR_CLASS_NAME, this );
         serviceTracker.open();
@@ -102,7 +114,7 @@ public final class SisuActivator
         {
             try
             {
-                new BundleInjector( bundle );
+                new BundleInjector( locator, bundle );
             }
             catch ( final RuntimeException e )
             {
@@ -189,7 +201,7 @@ public final class SisuActivator
     // ----------------------------------------------------------------------
 
     private static final class BundleInjector
-        implements /* TODO:ManagedService, */Module
+    /* TODO: implements ManagedService */
     {
         // ----------------------------------------------------------------------
         // Constants
@@ -201,25 +213,31 @@ public final class SisuActivator
         // Implementation fields
         // ----------------------------------------------------------------------
 
-        private final Map<?, ?> properties;
-
         private final Injector injector;
-
-        private final BundleContext extendedBundleContext;
 
         // ----------------------------------------------------------------------
         // Constructors
         // ----------------------------------------------------------------------
 
-        BundleInjector( final Bundle bundle )
+        BundleInjector( final MutableBeanLocator locator, final Bundle bundle )
         {
-            extendedBundleContext = bundle.getBundleContext();
-            properties = new BundleProperties( extendedBundleContext );
+            final BundleContext extendedBundleContext = bundle.getBundleContext();
+            final Map<?, ?> properties = new BundleProperties( extendedBundleContext );
 
             final ClassSpace space = new BundleClassSpace( bundle );
             final BeanScanning scanning = Main.selectScanning( properties );
 
-            injector = Guice.createInjector( new WireModule( this, new SpaceModule( space, scanning ) ) );
+            injector = Guice.createInjector( new WireModule( new AbstractModule()
+            {
+                @Override
+                protected void configure()
+                {
+                    requestStaticInjection( SisuGuice.class );
+                    bind( MutableBeanLocator.class ).toInstance( locator );
+                    bind( BundleContext.class ).toInstance( extendedBundleContext );
+                    bind( ParameterKeys.PROPERTIES ).toInstance( properties );
+                }
+            }, new SpaceModule( space, scanning ) ) );
 
             final Dictionary<Object, Object> metadata = new Hashtable<Object, Object>();
             metadata.put( Constants.SERVICE_PID, CONTAINER_SYMBOLIC_NAME );
@@ -229,14 +247,6 @@ public final class SisuActivator
         // ----------------------------------------------------------------------
         // Public methods
         // ----------------------------------------------------------------------
-
-        public void configure( final Binder binder )
-        {
-            binder.requestStaticInjection( SisuGuice.class );
-            binder.bind( ParameterKeys.PROPERTIES ).toInstance( properties );
-            binder.bind( MutableBeanLocator.class ).toInstance( locator );
-            binder.bind( BundleContext.class ).toInstance( extendedBundleContext );
-        }
 
         public Injector getInjector()
         {
