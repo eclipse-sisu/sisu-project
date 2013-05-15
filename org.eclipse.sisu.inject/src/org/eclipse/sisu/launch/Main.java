@@ -93,7 +93,6 @@ public final class Main
 
     public void configure( final Binder binder )
     {
-        binder.requestStaticInjection( SisuGuice.class );
         binder.bind( ParameterKeys.PROPERTIES ).toInstance( properties );
         binder.bind( ShutdownThread.class ).asEagerSingleton();
     }

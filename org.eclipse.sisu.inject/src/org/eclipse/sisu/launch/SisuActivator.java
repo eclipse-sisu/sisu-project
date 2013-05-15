@@ -232,7 +232,6 @@ public final class SisuActivator
                 @Override
                 protected void configure()
                 {
-                    requestStaticInjection( SisuGuice.class );
                     bind( MutableBeanLocator.class ).toInstance( locator );
                     bind( BundleContext.class ).toInstance( extendedBundleContext );
                     bind( ParameterKeys.PROPERTIES ).toInstance( properties );
