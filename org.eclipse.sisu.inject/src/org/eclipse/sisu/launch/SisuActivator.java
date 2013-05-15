@@ -89,7 +89,7 @@ public final class SisuActivator
         bundleContext = context;
         serviceTracker = new ServiceTracker( context, BUNDLE_INJECTOR_CLASS_NAME, this );
         serviceTracker.open();
-        bundleTracker = new BundleTracker( context, Bundle.STARTING | Bundle.ACTIVE, this );
+        bundleTracker = new BundleTracker( context, Bundle.ACTIVE, this );
         bundleTracker.open();
     }
 
