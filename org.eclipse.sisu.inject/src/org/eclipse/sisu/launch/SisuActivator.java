@@ -19,10 +19,11 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 
+import javax.inject.Provider;
+
 import org.eclipse.sisu.BeanScanning;
 import org.eclipse.sisu.inject.DefaultBeanLocator;
 import org.eclipse.sisu.inject.Logs;
-import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.space.BundleClassSpace;
 import org.eclipse.sisu.space.ClassSpace;
 import org.eclipse.sisu.space.SpaceModule;
@@ -61,9 +62,9 @@ public final class SisuActivator
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private static Reference<MutableBeanLocator> LOCATOR_REF;
+    private static Reference<DefaultBeanLocator> LOCATOR_REF;
 
-    private MutableBeanLocator locator;
+    private DefaultBeanLocator locator;
 
     private BundleContext bundleContext;
 
@@ -83,12 +84,12 @@ public final class SisuActivator
         }
         if ( null == locator )
         {
-            LOCATOR_REF = new WeakReference<MutableBeanLocator>( locator = new DefaultBeanLocator() );
+            LOCATOR_REF = new WeakReference<DefaultBeanLocator>( locator = new DefaultBeanLocator() );
         }
 
         bundleContext = context;
         serviceTracker = new ServiceTracker( context, BUNDLE_INJECTOR_CLASS_NAME, this );
-        serviceTracker.open();
+        serviceTracker.open( true );
         bundleTracker = new BundleTracker( context, Bundle.ACTIVE, this );
         bundleTracker.open();
     }
@@ -138,23 +139,33 @@ public final class SisuActivator
     // Service tracking
     // ----------------------------------------------------------------------
 
-    @SuppressWarnings( "deprecation" )
     public Object addingService( final ServiceReference reference )
     {
         final Object service = bundleContext.getService( reference );
-        locator.add( ( (BundleInjector) service ).getInjector(), 0 );
-        return service;
+        if ( service instanceof Provider )
+        {
+            final Object injector = ( (Provider<?>) service ).get();
+            if ( injector instanceof Injector )
+            {
+                locator.add( (Injector) injector, 0 );
+                return injector;
+            }
+        }
+        return null;
     }
 
-    public void modifiedService( final ServiceReference reference, final Object service )
+    public void modifiedService( final ServiceReference reference, final Object injector )
     {
         // nothing to do
     }
 
-    @SuppressWarnings( "deprecation" )
-    public void removedService( final ServiceReference reference, final Object service )
+    public void removedService( final ServiceReference reference, final Object injector )
     {
-        locator.remove( ( (BundleInjector) service ).getInjector() );
+        if ( injector instanceof Injector )
+        {
+            locator.remove( (Injector) injector );
+        }
+        bundleContext.ungetService( reference );
     }
 
     // ----------------------------------------------------------------------
@@ -201,7 +212,7 @@ public final class SisuActivator
     // ----------------------------------------------------------------------
 
     private static final class BundleInjector
-    /* TODO: implements ManagedService */
+        implements Provider<Injector>/* TODO: ManagedService */
     {
         // ----------------------------------------------------------------------
         // Constants
@@ -219,7 +230,7 @@ public final class SisuActivator
         // Constructors
         // ----------------------------------------------------------------------
 
-        BundleInjector( final MutableBeanLocator locator, final Bundle bundle )
+        BundleInjector( final DefaultBeanLocator locator, final Bundle bundle )
         {
             final BundleContext extendedBundleContext = bundle.getBundleContext();
             final Map<?, ?> properties = new BundleProperties( extendedBundleContext );
@@ -232,7 +243,7 @@ public final class SisuActivator
                 @Override
                 protected void configure()
                 {
-                    bind( MutableBeanLocator.class ).toInstance( locator );
+                    bind( DefaultBeanLocator.class ).toInstance( locator );
                     bind( BundleContext.class ).toInstance( extendedBundleContext );
                     bind( ParameterKeys.PROPERTIES ).toInstance( properties );
                 }
@@ -247,7 +258,7 @@ public final class SisuActivator
         // Public methods
         // ----------------------------------------------------------------------
 
-        public Injector getInjector()
+        public Injector get()
         {
             return injector;
         }
