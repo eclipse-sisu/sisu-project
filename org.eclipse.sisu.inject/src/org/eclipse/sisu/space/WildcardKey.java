@@ -8,12 +8,13 @@
  * Contributors:
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sisu.inject;
+package org.eclipse.sisu.space;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import javax.inject.Provider;
 import javax.inject.Qualifier;
 
 import com.google.inject.Key;
@@ -23,10 +24,11 @@ import com.google.inject.Key;
  * <p>
  * Since the wild-card type is {@link Object} and the associated qualifier may not be unique between implementations,
  * the qualifier is saved and replaced with a unique (per-implementation) pseudo-qualifier. The original qualifier is
- * available from {@link #getQualifier()}.
+ * available from {@link #get()}.
  */
-public final class WildcardKey
-    extends Key<Object> // all wild-card keys have Object as their type
+final class WildcardKey
+    extends Key<Object>
+    implements Provider<Annotation>
 {
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -38,9 +40,9 @@ public final class WildcardKey
     // Constructors
     // ----------------------------------------------------------------------
 
-    public WildcardKey( final Class<?> type, final Annotation qualifier )
+    WildcardKey( final Class<?> type, final Annotation qualifier )
     {
-        super( new Wrapped( type ) );
+        super( new QualifiedImpl( type ) );
         this.qualifier = qualifier;
     }
 
@@ -51,7 +53,7 @@ public final class WildcardKey
     /**
      * @return Original qualifier associated with the implementation
      */
-    public Annotation getQualifier()
+    public Annotation get()
     {
         return qualifier;
     }
@@ -62,7 +64,7 @@ public final class WildcardKey
 
     @Qualifier
     @Retention( RetentionPolicy.RUNTIME )
-    private static @interface Wrapper
+    private static @interface Qualified
     {
         Class<?> value();
     }
@@ -70,8 +72,8 @@ public final class WildcardKey
     /**
      * Pseudo-{@link Annotation} that can wrap any implementation type as a {@link Qualifier}.
      */
-    private static final class Wrapped
-        implements Wrapper
+    private static final class QualifiedImpl
+        implements Qualified
     {
         // ----------------------------------------------------------------------
         // Implementation fields
@@ -83,7 +85,7 @@ public final class WildcardKey
         // Constructors
         // ----------------------------------------------------------------------
 
-        Wrapped( final Class<?> value )
+        QualifiedImpl( final Class<?> value )
         {
             this.value = value;
         }
@@ -99,7 +101,7 @@ public final class WildcardKey
 
         public Class<? extends Annotation> annotationType()
         {
-            return Wrapper.class;
+            return Qualified.class;
         }
 
         @Override
@@ -115,9 +117,9 @@ public final class WildcardKey
             {
                 return true;
             }
-            if ( rhs instanceof Wrapped )
+            if ( rhs instanceof QualifiedImpl )
             {
-                return value == ( (Wrapped) rhs ).value;
+                return value == ( (QualifiedImpl) rhs ).value;
             }
             return false;
         }

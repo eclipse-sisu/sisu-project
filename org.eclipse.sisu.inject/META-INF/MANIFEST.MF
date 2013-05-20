@@ -12,12 +12,12 @@ Bundle-Copyright: Copyright (c) 2010, 2012 Sonatype, Inc. and others
 Bundle-DocURL: http://www.eclipse.org/sisu/
 Bundle-License: http://www.eclipse.org/legal/epl-v10.html
 Import-Package:  javax.inject,
+ org.eclipse.sisu,
  com.google.inject;version="1.3",
  com.google.inject.binder;version="1.3",
  com.google.inject.matcher;version="1.3",
  com.google.inject.name;version="1.3",
  com.google.inject.spi;version="1.3",
- com.google.inject.util;version="1.3",
  org.osgi.framework;version="1.5",
  org.osgi.util.tracker;version="1.4",
  org.slf4j;resolution:=optional,
@@ -52,6 +52,7 @@ Export-Package: org.eclipse.sisu;uses:="javax.inject",
    org.osgi.framework,
    javax.lang.model.element,
    com.google.inject.spi,
+   javax.inject,
    com.google.inject,
    javax.annotation.processing",
  org.eclipse.sisu.wire;uses:="com.google.inject.spi,com.google.inject"

@@ -21,7 +21,6 @@ import org.eclipse.sisu.EagerSingleton;
 import org.eclipse.sisu.Mediator;
 import org.eclipse.sisu.inject.BeanLocator;
 import org.eclipse.sisu.inject.TypeParameters;
-import org.eclipse.sisu.inject.WildcardKey;
 
 import com.google.inject.Binder;
 import com.google.inject.Key;

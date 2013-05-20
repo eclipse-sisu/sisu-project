@@ -12,6 +12,7 @@ package org.eclipse.sisu.inject;
 
 import java.lang.annotation.Annotation;
 
+import javax.inject.Provider;
 import javax.inject.Qualifier;
 
 import com.google.inject.Binding;
@@ -131,10 +132,10 @@ enum QualifyingStrategy
      */
     static final Annotation qualify( final Key<?> key )
     {
-        if ( key instanceof WildcardKey )
+        if ( key instanceof Provider<?> )
         {
-            final Annotation qualifier = ( (WildcardKey) key ).getQualifier();
-            return null != qualifier ? qualifier : DEFAULT_QUALIFIER;
+            final Object qualifier = ( (Provider<?>) key ).get();
+            return qualifier instanceof Annotation ? (Annotation) qualifier : DEFAULT_QUALIFIER;
         }
         return null != key.getAnnotationType() ? key.getAnnotation() : DEFAULT_QUALIFIER;
     }
