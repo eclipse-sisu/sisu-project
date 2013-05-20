@@ -31,9 +31,9 @@ import org.eclipse.sisu.inject.DeferredProvider;
 import org.eclipse.sisu.space.ClassSpace;
 import org.eclipse.sisu.space.LoadedClass;
 import org.eclipse.sisu.space.URLClassSpace;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
+import org.eclipse.sisu.space.asm.ClassWriter;
+import org.eclipse.sisu.space.asm.MethodVisitor;
+import org.eclipse.sisu.space.asm.Opcodes;
 
 import com.google.inject.TypeLiteral;
 
