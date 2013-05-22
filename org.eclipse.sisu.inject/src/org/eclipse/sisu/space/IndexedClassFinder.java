@@ -24,24 +24,36 @@ import java.util.Set;
 import org.eclipse.sisu.inject.Logs;
 
 /**
- * {@link ClassFinder} that uses the qualified class index to select implementations to scan.
+ * {@link ClassFinder} that finds {@link Class} resources listed in the named index.
  */
-final class SisuIndexFinder
+public class IndexedClassFinder
     implements ClassFinder
 {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final boolean globalIndex;
+    private final String indexPath;
+
+    private final String indexName;
 
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
-    SisuIndexFinder( final boolean globalIndex )
+    public IndexedClassFinder( final String name, final boolean globalIndex )
     {
-        this.globalIndex = globalIndex;
+        if ( globalIndex )
+        {
+            indexPath = null;
+            indexName = name;
+        }
+        else
+        {
+            final int i = name.lastIndexOf( '/' ) + 1;
+            indexPath = name.substring( 0, i );
+            indexName = name.substring( i );
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -54,13 +66,13 @@ final class SisuIndexFinder
         final Set<String> visited = new HashSet<String>();
         final Enumeration<URL> indices;
 
-        if ( globalIndex )
+        if ( null == indexPath )
         {
-            indices = space.getResources( "META-INF/sisu/" + SisuIndex.NAMED );
+            indices = space.getResources( indexName );
         }
         else
         {
-            indices = space.findEntries( "META-INF/sisu/", SisuIndex.NAMED, false );
+            indices = space.findEntries( indexPath, indexName, false );
         }
 
         while ( indices.hasMoreElements() )

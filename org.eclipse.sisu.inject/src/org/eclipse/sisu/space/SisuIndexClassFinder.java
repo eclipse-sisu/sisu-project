@@ -8,22 +8,20 @@
  * Contributors:
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sisu.wire;
-
-import java.io.File;
-
-import com.google.inject.Module;
-import com.google.inject.TypeLiteral;
-import com.google.inject.spi.TypeConverter;
+package org.eclipse.sisu.space;
 
 /**
- * {@link TypeConverter} {@link Module} that converts constants to {@link File}s.
+ * {@link ClassFinder} that uses the qualified class index to select implementations to scan.
  */
-final class FileTypeConverter
-    extends AbstractTypeConverter<File>
+public final class SisuIndexClassFinder
+    extends IndexedClassFinder
 {
-    public Object convert( final String value, final TypeLiteral<?> toType )
+    // ----------------------------------------------------------------------
+    // Constructors
+    // ----------------------------------------------------------------------
+
+    public SisuIndexClassFinder( final boolean globalIndex )
     {
-        return new File( value );
+        super( "META-INF/sisu/" + SisuIndex.NAMED, globalIndex );
     }
 }

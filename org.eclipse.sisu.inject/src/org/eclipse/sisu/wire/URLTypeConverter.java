@@ -21,7 +21,7 @@ import com.google.inject.spi.TypeConverter;
 /**
  * {@link TypeConverter} {@link Module} that converts constants to {@link URL}s.
  */
-public final class URLTypeConverter
+final class URLTypeConverter
     extends AbstractTypeConverter<URL>
 {
     public Object convert( final String value, final TypeLiteral<?> toType )

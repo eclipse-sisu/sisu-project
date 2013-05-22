@@ -72,10 +72,10 @@ public class SpaceModule
                 scanner = new ClassSpaceScanner( space );
                 break;
             case INDEX:
-                scanner = new ClassSpaceScanner( new SisuIndexFinder( false ), space );
+                scanner = new ClassSpaceScanner( new SisuIndexClassFinder( false ), space );
                 break;
             case GLOBAL_INDEX:
-                scanner = new ClassSpaceScanner( new SisuIndexFinder( true ), space );
+                scanner = new ClassSpaceScanner( new SisuIndexClassFinder( true ), space );
                 break;
             case CACHE:
                 replayCachedElements( binder );
