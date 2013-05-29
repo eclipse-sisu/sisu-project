@@ -19,7 +19,7 @@ import com.google.inject.Binding;
  * <p>
  * Default bindings are given zero or positive ranks; the rest are given negative ranks.
  */
-public class DefaultRankingFunction
+public final class DefaultRankingFunction
     implements RankingFunction
 {
     // ----------------------------------------------------------------------
