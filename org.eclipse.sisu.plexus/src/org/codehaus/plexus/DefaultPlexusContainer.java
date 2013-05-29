@@ -465,7 +465,7 @@ public final class DefaultPlexusContainer
         return null; // no-one actually seems to use or check the returned component list!
     }
 
-    public void addPlexusInjector( final List<PlexusBeanModule> beanModules, final Module... customModules )
+    public void addPlexusInjector( final List<? extends PlexusBeanModule> beanModules, final Module... customModules )
     {
         final List<Module> modules = new ArrayList<Module>();
 

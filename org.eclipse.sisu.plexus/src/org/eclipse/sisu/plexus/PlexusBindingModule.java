@@ -45,7 +45,7 @@ public final class PlexusBindingModule
         this.modules = modules.clone();
     }
 
-    public PlexusBindingModule( final PlexusBeanManager manager, final Collection<PlexusBeanModule> modules )
+    public PlexusBindingModule( final PlexusBeanManager manager, final Collection<? extends PlexusBeanModule> modules )
     {
         this.manager = manager;
         this.modules = modules.toArray( new PlexusBeanModule[modules.size()] );
