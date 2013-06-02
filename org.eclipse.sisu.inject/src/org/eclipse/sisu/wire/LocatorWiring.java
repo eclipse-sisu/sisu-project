@@ -30,6 +30,7 @@ import com.google.inject.Binder;
 import com.google.inject.ImplementedBy;
 import com.google.inject.Key;
 import com.google.inject.ProvidedBy;
+import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Named;
 import com.google.inject.spi.InjectionPoint;
@@ -126,22 +127,20 @@ final class LocatorWiring
      * 
      * @param key The dependency key
      */
+    @SuppressWarnings( "deprecation" )
     private void bindListImport( final Key<?> key )
     {
-        TypeLiteral<?>[] parameters = TypeParameters.get( key.getTypeLiteral() );
+        final TypeLiteral<?>[] parameters = TypeParameters.get( key.getTypeLiteral() );
         if ( 1 == parameters.length && null == key.getAnnotation() )
         {
             final TypeLiteral<?> elementType = parameters[0];
-            if ( BeanEntry.class == elementType.getRawType() )
+            if ( BeanEntry.class == elementType.getRawType()
+                || org.sonatype.inject.BeanEntry.class == elementType.getRawType() )
             {
-                parameters = TypeParameters.get( elementType );
-                if ( 2 == parameters.length )
+                final Provider beanEntriesProvider = getBeanEntriesProvider( elementType );
+                if ( null != beanEntriesProvider )
                 {
-                    final Class qualifierType = parameters[0].getRawType();
-                    if ( qualifierType.isAnnotationPresent( Qualifier.class ) )
-                    {
-                        binder.bind( key ).toProvider( new BeanEntryProvider( Key.get( parameters[1], qualifierType ) ) );
-                    }
+                    binder.bind( key ).toProvider( beanEntriesProvider );
                 }
             }
             else
@@ -149,6 +148,26 @@ final class LocatorWiring
                 binder.bind( key ).toProvider( new BeanListProvider( Key.get( elementType ) ) );
             }
         }
+    }
+
+    @SuppressWarnings( "deprecation" )
+    private static Provider getBeanEntriesProvider( final TypeLiteral<?> elementType )
+    {
+        final TypeLiteral<?>[] parameters = TypeParameters.get( elementType );
+        if ( 2 == parameters.length )
+        {
+            final Class qualifierType = parameters[0].getRawType();
+            if ( qualifierType.isAnnotationPresent( Qualifier.class ) )
+            {
+                final Key beanKey = Key.get( parameters[1], qualifierType );
+                if ( BeanEntry.class == elementType.getRawType() )
+                {
+                    return new BeanEntryProvider( beanKey );
+                }
+                return org.sonatype.inject.Legacy.beanEntriesProvider( beanKey );
+            }
+        }
+        return null;
     }
 
     /**

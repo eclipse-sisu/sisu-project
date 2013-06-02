@@ -90,7 +90,7 @@ public final class QualifiedTypeBinder
     // Public methods
     // ----------------------------------------------------------------------
 
-    @SuppressWarnings( { "unchecked", "rawtypes" } )
+    @SuppressWarnings( { "unchecked", "rawtypes", "deprecation" } )
     public void hear( final Annotation qualifier, final Class qualifiedType, final Object source )
     {
         if ( currentSource != source )
@@ -118,6 +118,10 @@ public final class QualifiedTypeBinder
         else if ( Mediator.class.isAssignableFrom( qualifiedType ) )
         {
             registerMediator( qualifiedType );
+        }
+        else if ( org.sonatype.inject.Mediator.class.isAssignableFrom( qualifiedType ) )
+        {
+            registerLegacyMediator( qualifiedType );
         }
         else if ( Provider.class.isAssignableFrom( qualifiedType ) )
         {
@@ -163,6 +167,24 @@ public final class QualifiedTypeBinder
         else
         {
             final Mediator mediator = newInstance( mediatorType );
+            if ( null != mediator )
+            {
+                mediate( Key.get( params[1], (Class) params[0].getRawType() ), mediator, params[2].getRawType() );
+            }
+        }
+    }
+
+    @SuppressWarnings( { "unchecked", "rawtypes", "deprecation" } )
+    private void registerLegacyMediator( final Class<org.sonatype.inject.Mediator> mediatorType )
+    {
+        final TypeLiteral<?>[] params = getSuperTypeParameters( mediatorType, org.sonatype.inject.Mediator.class );
+        if ( params.length != 3 )
+        {
+            binder.addError( mediatorType + " has wrong number of type arguments" );
+        }
+        else
+        {
+            final Mediator mediator = org.sonatype.inject.Legacy.adapt( newInstance( mediatorType ) );
             if ( null != mediator )
             {
                 mediate( Key.get( params[1], (Class) params[0].getRawType() ), mediator, params[2].getRawType() );
