@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.sisu.wire;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -83,7 +84,7 @@ final class ElementAnalyzer
         final Map<?, ?> mergedProperties = new MergedProperties( properties );
         for ( final Key<?> key : missingKeys )
         {
-            if ( Parameters.class == key.getAnnotationType() )
+            if ( isParameters( key.getAnnotationType() ) )
             {
                 wireParameters( key, mergedProperties );
             }
@@ -108,7 +109,7 @@ final class ElementAnalyzer
         final Key<T> key = binding.getKey();
         if ( !localKeys.contains( key ) )
         {
-            if ( Parameters.class == key.getAnnotationType() )
+            if ( isParameters( key.getAnnotationType() ) )
             {
                 mergeParameters( binding );
             }
@@ -239,5 +240,11 @@ final class ElementAnalyzer
         {
             binder.bind( key ).toInstance( arguments.toArray( new String[arguments.size()] ) );
         }
+    }
+
+    @SuppressWarnings( "deprecation" )
+    private static boolean isParameters( final Class<? extends Annotation> qualifierType )
+    {
+        return Parameters.class == qualifierType || org.sonatype.inject.Parameters.class == qualifierType;
     }
 }

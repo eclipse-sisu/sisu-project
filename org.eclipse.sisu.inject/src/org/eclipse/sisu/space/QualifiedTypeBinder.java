@@ -206,12 +206,11 @@ public final class QualifiedTypeBinder
         {
             final Key key = getBindingKey( params[0], getBindingName( providerType ) );
             final ScopedBindingBuilder sbb = binder.bind( key ).toProvider( providerType );
-            if ( providerType.isAnnotationPresent( EagerSingleton.class ) )
+            if ( isEagerSingleton( providerType ) )
             {
                 sbb.asEagerSingleton();
             }
-            else if ( providerType.isAnnotationPresent( javax.inject.Singleton.class )
-                || providerType.isAnnotationPresent( com.google.inject.Singleton.class ) )
+            else if ( isSingleton( providerType ) )
             {
                 sbb.in( Scopes.SINGLETON );
             }
@@ -236,7 +235,7 @@ public final class QualifiedTypeBinder
     private void bindQualifiedType( final Class<?> qualifiedType )
     {
         final ScopedBindingBuilder sbb = binder.bind( qualifiedType );
-        if ( qualifiedType.isAnnotationPresent( EagerSingleton.class ) )
+        if ( isEagerSingleton( qualifiedType ) )
         {
             sbb.asEagerSingleton();
         }
@@ -356,5 +355,18 @@ public final class QualifiedTypeBinder
             }
         }
         return null;
+    }
+
+    private static boolean isSingleton( final Class<?> type )
+    {
+        return type.isAnnotationPresent( javax.inject.Singleton.class )
+            || type.isAnnotationPresent( com.google.inject.Singleton.class );
+    }
+
+    @SuppressWarnings( "deprecation" )
+    private static boolean isEagerSingleton( final Class<?> type )
+    {
+        return type.isAnnotationPresent( EagerSingleton.class )
+            || type.isAnnotationPresent( org.sonatype.inject.EagerSingleton.class );
     }
 }
