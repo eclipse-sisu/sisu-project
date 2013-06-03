@@ -61,9 +61,13 @@ final class ElementAnalyzer
                 legacyRankingKey = Key.get( legacyType );
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
-            Logs.catchThrowable( e );
+            // legacy wrappers are not available
+        }
+        catch ( final LinkageError e )
+        {
+            // legacy wrappers are not available
         }
         LEGACY_RANKING_KEY = legacyRankingKey;
     }

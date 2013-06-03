@@ -20,7 +20,6 @@ import java.util.Iterator;
 import javax.inject.Inject;
 
 import org.eclipse.sisu.inject.BeanLocator;
-import org.eclipse.sisu.inject.Logs;
 
 import com.google.inject.Key;
 import com.google.inject.Provider;
@@ -46,17 +45,15 @@ public final class Legacy<S>
 
     private Legacy( final Class<? extends S> clazz )
     {
-        Constructor<?> ctor = null;
+        final Class<?> proxyClazz = Proxy.getProxyClass( clazz.getClassLoader(), clazz );
         try
         {
-            final Class<?> proxyClazz = Proxy.getProxyClass( clazz.getClassLoader(), clazz );
-            ctor = proxyClazz.getConstructor( InvocationHandler.class );
+            this.proxyConstructor = proxyClazz.getConstructor( InvocationHandler.class );
         }
-        catch ( final Throwable e )
+        catch ( final NoSuchMethodException e )
         {
-            Logs.throwUnchecked( e );
+            throw new IllegalStateException( e ); // should never occur
         }
-        this.proxyConstructor = ctor;
     }
 
     // ----------------------------------------------------------------------
@@ -77,10 +74,9 @@ public final class Legacy<S>
                 }
             } );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
-            Logs.throwUnchecked( e );
-            return null; // not used
+            throw new IllegalStateException( e ); // should never occur
         }
     }
 
