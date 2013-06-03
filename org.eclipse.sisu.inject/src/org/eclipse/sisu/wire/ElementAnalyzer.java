@@ -20,6 +20,7 @@ import java.util.Set;
 
 import org.eclipse.sisu.Parameters;
 import org.eclipse.sisu.inject.Logs;
+import org.eclipse.sisu.inject.RankingFunction;
 import org.eclipse.sisu.inject.TypeParameters;
 
 import com.google.inject.Binder;
@@ -43,6 +44,38 @@ import com.google.inject.spi.StaticInjectionRequest;
 final class ElementAnalyzer
     extends DefaultElementVisitor<Void>
 {
+    // ----------------------------------------------------------------------
+    // Static initialization
+    // ----------------------------------------------------------------------
+
+    static
+    {
+        Key<? extends RankingFunction> legacyRankingKey = null;
+        try
+        {
+            @SuppressWarnings( "unchecked" )
+            final Class<? extends RankingFunction> legacyType = (Class<? extends RankingFunction>) //
+                RankingFunction.class.getClassLoader().loadClass( "org.sonatype.guice.bean.locators.RankingFunction" );
+            if ( RankingFunction.class.isAssignableFrom( legacyType ) )
+            {
+                legacyRankingKey = Key.get( legacyType );
+            }
+        }
+        catch ( final Throwable e )
+        {
+            Logs.catchThrowable( e );
+        }
+        LEGACY_RANKING_KEY = legacyRankingKey;
+    }
+
+    // ----------------------------------------------------------------------
+    // Constants
+    // ----------------------------------------------------------------------
+
+    private static final Key<RankingFunction> RANKING_KEY = Key.get( RankingFunction.class );
+
+    private static final Key<? extends RankingFunction> LEGACY_RANKING_KEY;
+
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -117,6 +150,15 @@ final class ElementAnalyzer
             {
                 localKeys.add( key );
                 binding.applyTo( binder );
+
+                if ( null != LEGACY_RANKING_KEY )
+                {
+                    // respect legacy ranking function overrides by using a binding alias
+                    if ( key.equals( LEGACY_RANKING_KEY ) && localKeys.add( RANKING_KEY ) )
+                    {
+                        binder.bind( RANKING_KEY ).to( LEGACY_RANKING_KEY );
+                    }
+                }
             }
             else
             {
