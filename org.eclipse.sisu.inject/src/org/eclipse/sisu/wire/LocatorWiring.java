@@ -266,6 +266,11 @@ final class LocatorWiring
      */
     private static boolean isRestricted( final Class<?> clazz )
     {
-        return "org.slf4j.Logger".equals( clazz.getName() ) || BeanLocator.class.isAssignableFrom( clazz );
+        final String name = clazz.getName();
+        if ( name.startsWith( "org.eclipse.sisu.inject" ) || name.startsWith( "org.sonatype.guice.bean.locators" ) )
+        {
+            return name.endsWith( "BeanLocator" );
+        }
+        return "org.slf4j.Logger".equals( name );
     }
 }
