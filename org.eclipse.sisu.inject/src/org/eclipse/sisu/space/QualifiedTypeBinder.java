@@ -35,6 +35,7 @@ import com.google.inject.name.Names;
 /**
  * {@link QualifiedTypeListener} that installs {@link Module}s, registers {@link Mediator}s, and binds types.
  */
+@SuppressWarnings( { "unchecked", "rawtypes" } )
 public final class QualifiedTypeBinder
     implements QualifiedTypeListener
 {
@@ -90,7 +91,7 @@ public final class QualifiedTypeBinder
     // Public methods
     // ----------------------------------------------------------------------
 
-    @SuppressWarnings( { "unchecked", "rawtypes", "deprecation" } )
+    @SuppressWarnings( "deprecation" )
     public void hear( final Annotation qualifier, final Class qualifiedType, final Object source )
     {
         if ( currentSource != source )
@@ -156,7 +157,6 @@ public final class QualifiedTypeBinder
      * 
      * @param mediatorType The mediator type
      */
-    @SuppressWarnings( { "unchecked", "rawtypes" } )
     private void registerMediator( final Class<Mediator> mediatorType )
     {
         final TypeLiteral<?>[] params = getSuperTypeParameters( mediatorType, Mediator.class );
@@ -174,7 +174,7 @@ public final class QualifiedTypeBinder
         }
     }
 
-    @SuppressWarnings( { "unchecked", "rawtypes", "deprecation" } )
+    @SuppressWarnings( "deprecation" )
     private void registerLegacyMediator( final Class<org.sonatype.inject.Mediator> mediatorType )
     {
         final TypeLiteral<?>[] params = getSuperTypeParameters( mediatorType, org.sonatype.inject.Mediator.class );
@@ -199,7 +199,6 @@ public final class QualifiedTypeBinder
      * @param mediator The bean mediator
      * @param watcherType The watcher type
      */
-    @SuppressWarnings( "rawtypes" )
     private void mediate( final Key key, final Mediator mediator, final Class watcherType )
     {
         if ( null == mediationListener )
@@ -216,7 +215,6 @@ public final class QualifiedTypeBinder
      * 
      * @param providerType The provider type
      */
-    @SuppressWarnings( { "unchecked", "rawtypes" } )
     private void bindProviderType( final Class<?> providerType )
     {
         final TypeLiteral[] params = getSuperTypeParameters( providerType, javax.inject.Provider.class );
@@ -253,7 +251,6 @@ public final class QualifiedTypeBinder
      * 
      * @param qualifiedType The qualified type
      */
-    @SuppressWarnings( { "unchecked", "rawtypes" } )
     private void bindQualifiedType( final Class<?> qualifiedType )
     {
         final ScopedBindingBuilder sbb = binder.bind( qualifiedType );
