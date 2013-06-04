@@ -78,13 +78,16 @@ public final class SisuActivator
 
     public void start( final BundleContext context )
     {
-        if ( null != LOCATOR_REF )
+        synchronized ( SisuActivator.class )
         {
-            locator = LOCATOR_REF.get();
-        }
-        if ( null == locator )
-        {
-            LOCATOR_REF = new WeakReference<DefaultBeanLocator>( locator = new DefaultBeanLocator() );
+            if ( null != LOCATOR_REF )
+            {
+                locator = LOCATOR_REF.get();
+            }
+            if ( null == locator )
+            {
+                LOCATOR_REF = new WeakReference<DefaultBeanLocator>( locator = new DefaultBeanLocator() );
+            }
         }
 
         bundleContext = context;
