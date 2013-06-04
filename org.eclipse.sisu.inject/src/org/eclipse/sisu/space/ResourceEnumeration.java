@@ -214,7 +214,7 @@ final class ResourceEnumeration
         if ( "jar".equals( currentURL.getProtocol() ) )
         {
             // workaround JDK limitation that doesn't allow nested "jar:" URLs
-            return new URL( currentURL, "#" + name, new NestedJarURLHandler() );
+            return new URL( currentURL, "#" + name, new NestedJarHandler() );
         }
         return new URL( "jar:" + currentURL + "!/" + name );
     }
@@ -245,38 +245,49 @@ final class ResourceEnumeration
     /**
      * Custom {@link URLStreamHandler} that can stream JARs nested inside an arbitrary resource.
      */
-    static final class NestedJarURLHandler
+    static final class NestedJarHandler
         extends URLStreamHandler
     {
         @Override
         protected URLConnection openConnection( final URL url )
         {
-            return new URLConnection( url )
+            return new NestedJarConnection( url );
+        }
+    }
+
+    /**
+     * Custom {@link URLConnection} that can access JARs nested inside an arbitrary resource.
+     */
+    static final class NestedJarConnection
+        extends URLConnection
+    {
+        NestedJarConnection( final URL url )
+        {
+            super( url );
+        }
+
+        @Override
+        public void connect()
+        {
+            // postpone until someone actually requests an input stream
+        }
+
+        @Override
+        public InputStream getInputStream()
+            throws IOException
+        {
+            final URL containingURL = new URL( "jar", null, -1, url.getFile() );
+            final ZipInputStream is = new ZipInputStream( Streams.open( containingURL ) );
+            final String entryName = url.getRef();
+
+            for ( ZipEntry entry = is.getNextEntry(); entry != null; entry = is.getNextEntry() )
             {
-                @Override
-                public void connect()
+                if ( entryName.equals( entry.getName() ) )
                 {
-                    // postpone until someone actually requests an input stream
+                    return is;
                 }
-
-                @Override
-                public InputStream getInputStream()
-                    throws IOException
-                {
-                    final URL containingURL = new URL( "jar", null, -1, url.getFile() );
-                    final ZipInputStream is = new ZipInputStream( Streams.open( containingURL ) );
-                    final String entryName = url.getRef();
-
-                    for ( ZipEntry entry = is.getNextEntry(); entry != null; entry = is.getNextEntry() )
-                    {
-                        if ( entryName.equals( entry.getName() ) )
-                        {
-                            return is;
-                        }
-                    }
-                    throw new ZipException( "No such entry: " + entryName + " in: " + containingURL );
-                }
-            };
+            }
+            throw new ZipException( "No such entry: " + entryName + " in: " + containingURL );
         }
     }
 }
