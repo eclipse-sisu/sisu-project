@@ -134,7 +134,10 @@ public class DeclaredMembersTest
         int i = 0;
         for ( final Member e : new DeclaredMembers( D.class ) )
         {
-            assertEquals( elements[i++], e );
+            if ( !e.getName().startsWith( "$" ) )
+            {
+                assertEquals( elements[i++], e );
+            }
         }
         assertEquals( 6, i );
     }
