@@ -122,7 +122,7 @@ public final class SisuIndexAPT6
         throws IOException
     {
         final FileObject file = environment.getFiler().getResource( StandardLocation.CLASS_OUTPUT, "", path );
-        return new InputStreamReader( file.openInputStream() );
+        return new InputStreamReader( file.openInputStream(), "UTF-8" );
     }
 
     @Override

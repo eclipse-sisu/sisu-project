@@ -80,7 +80,8 @@ public class IndexedClassFinder
             final URL url = indices.nextElement();
             try
             {
-                final BufferedReader reader = new BufferedReader( new InputStreamReader( Streams.open( url ) ) );
+                final BufferedReader reader =
+                    new BufferedReader( new InputStreamReader( Streams.open( url ), "UTF-8" ) );
                 try
                 {
                     // each index file contains a list of classes with that qualifier, one per line

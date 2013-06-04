@@ -11,9 +11,11 @@
 package org.eclipse.sisu.space;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
@@ -122,7 +124,7 @@ public final class SisuIndex
     protected Reader getReader( final String path )
         throws IOException
     {
-        return new FileReader( new File( targetDirectory, path ) );
+        return new InputStreamReader( new FileInputStream( new File( targetDirectory, path ) ), "UTF-8" );
     }
 
     @Override
@@ -133,7 +135,7 @@ public final class SisuIndex
         final File parent = index.getParentFile();
         if ( parent.isDirectory() || parent.mkdirs() )
         {
-            return new FileWriter( index );
+            return new OutputStreamWriter( new FileOutputStream( index ), "UTF-8" );
         }
         throw new IOException( "Error creating: " + parent );
     }
