@@ -42,9 +42,6 @@
             <goals>
               <goal>prepare-agent</goal>
             </goals>
-            <configuration>
-              <destFile>../org.eclipse.sisu.inject/target/jacoco.exec</destFile>
-            </configuration>
           </execution>
         </executions>
       </plugin>
