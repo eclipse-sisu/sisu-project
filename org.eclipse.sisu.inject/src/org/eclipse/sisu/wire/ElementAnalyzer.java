@@ -155,13 +155,10 @@ final class ElementAnalyzer
                 localKeys.add( key );
                 binding.applyTo( binder );
 
-                if ( null != LEGACY_RANKING_KEY )
+                // respect legacy ranking function overrides by using a binding alias (unless it is already bound)
+                if ( null != LEGACY_RANKING_KEY && key.equals( LEGACY_RANKING_KEY ) && localKeys.add( RANKING_KEY ) )
                 {
-                    // respect legacy ranking function overrides by using a binding alias
-                    if ( key.equals( LEGACY_RANKING_KEY ) && localKeys.add( RANKING_KEY ) )
-                    {
-                        binder.bind( RANKING_KEY ).to( LEGACY_RANKING_KEY );
-                    }
+                    binder.bind( RANKING_KEY ).to( LEGACY_RANKING_KEY );
                 }
             }
             else

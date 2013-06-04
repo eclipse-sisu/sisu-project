@@ -81,7 +81,7 @@ public final class DeclaredMembers
         // Constructors
         // ----------------------------------------------------------------------
 
-        MemberIterator( final Class<?> clazz, final View[] views )
+        MemberIterator( final Class<?> clazz, final View[] views ) // NOPMD
         {
             this.clazz = clazz;
             this.views = views;

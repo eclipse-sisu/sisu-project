@@ -247,7 +247,7 @@ final class RankedSequence<T>
             uniq = 1;
         }
 
-        Content( final Object[] objs, final long[] uids, final int uniq )
+        Content( final Object[] objs, final long[] uids, final int uniq ) // NOPMD
         {
             this.objs = objs;
             this.uids = uids;

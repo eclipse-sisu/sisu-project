@@ -47,7 +47,7 @@ abstract class AbstractDeferredClass<T>
             // load class and bootstrap injection
             return injector.getInstance( load() );
         }
-        catch ( final Throwable e )
+        catch ( final Throwable e ) // NOPMD see Logs.catchThrowable
         {
             Logs.catchThrowable( e );
             try

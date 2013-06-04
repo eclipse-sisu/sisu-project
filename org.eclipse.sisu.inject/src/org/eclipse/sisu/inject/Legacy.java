@@ -69,7 +69,7 @@ public final class Legacy<S>
             return null == delegate ? null : (T) proxyConstructor.newInstance( new InvocationHandler()
             {
                 public Object invoke( final Object proxy, final Method method, final Object[] args )
-                    throws Throwable
+                    throws Exception
                 {
                     return method.invoke( delegate, args );
                 }
