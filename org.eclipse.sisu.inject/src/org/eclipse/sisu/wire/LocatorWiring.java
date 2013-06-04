@@ -164,7 +164,7 @@ final class LocatorWiring
                 {
                     return new BeanEntryProvider( beanKey );
                 }
-                return org.sonatype.inject.Legacy.beanEntriesProvider( beanKey );
+                return org.eclipse.sisu.inject.Legacy.beanEntriesProvider( beanKey );
             }
         }
         return null;

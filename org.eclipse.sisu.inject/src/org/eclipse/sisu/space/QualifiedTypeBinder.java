@@ -184,7 +184,7 @@ public final class QualifiedTypeBinder
         }
         else
         {
-            final Mediator mediator = org.sonatype.inject.Legacy.adapt( newInstance( mediatorType ) );
+            final Mediator mediator = org.eclipse.sisu.inject.Legacy.adapt( newInstance( mediatorType ) );
             if ( null != mediator )
             {
                 mediate( Key.get( params[1], (Class) params[0].getRawType() ), mediator, params[2].getRawType() );

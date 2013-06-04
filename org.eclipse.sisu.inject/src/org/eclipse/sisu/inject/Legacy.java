@@ -8,7 +8,7 @@
  * Contributors:
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
-package org.sonatype.inject;
+package org.eclipse.sisu.inject;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -19,7 +19,8 @@ import java.util.Iterator;
 
 import javax.inject.Inject;
 
-import org.eclipse.sisu.inject.BeanLocator;
+import org.sonatype.inject.BeanEntry;
+import org.sonatype.inject.Mediator;
 
 import com.google.inject.Key;
 import com.google.inject.Provider;
