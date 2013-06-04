@@ -36,7 +36,7 @@ fi
 
 git checkout --no-track -b staging-${MILESTONE_TAG} master
 
-mvn org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=${MILESTONE_TAG}
+mvn org.eclipse.tycho:tycho-versions-plugin:0.17.0:set-version -DnewVersion=${MILESTONE_TAG}
 
 git add . ; git commit -m "Milestone ${MILESTONE_TAG}"
 
