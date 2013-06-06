@@ -63,10 +63,11 @@ public final class DefaultPlexusBeanLocator
     // Public methods
     // ----------------------------------------------------------------------
 
+    @SuppressWarnings( "unchecked" )
     public <T> Iterable<PlexusBean<T>> locate( final TypeLiteral<T> role, final String... hints )
     {
         final Key<T> key = hints.length == 1 ? Key.get( role, Names.named( hints[0] ) ) : Key.get( role, Named.class );
-        Iterable<BeanEntry<Named, T>> beans = beanLocator.locate( key );
+        Iterable<BeanEntry<Named, T>> beans = (Iterable<BeanEntry<Named, T>>) beanLocator.<Named, T> locate( key );
         if ( REALM_VISIBILITY.equalsIgnoreCase( visibility ) )
         {
             beans = new RealmFilter<T>( beans );
