@@ -21,7 +21,7 @@ import com.google.inject.TypeLiteral;
 /**
  * Publisher of {@link Binding}s from a single {@link Injector}; ranked according to a given {@link RankingFunction}.
  */
-final class InjectorPublisher
+public final class InjectorPublisher
     implements BindingPublisher
 {
     // ----------------------------------------------------------------------
@@ -42,7 +42,7 @@ final class InjectorPublisher
     // Constructors
     // ----------------------------------------------------------------------
 
-    InjectorPublisher( final Injector injector, final RankingFunction function )
+    public InjectorPublisher( final Injector injector, final RankingFunction function )
     {
         this.injector = injector;
         this.function = function;
