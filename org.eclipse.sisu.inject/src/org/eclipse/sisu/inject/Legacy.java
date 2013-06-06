@@ -97,13 +97,13 @@ public final class Legacy<S>
         return LEGACY_BEAN_ENTRY.proxy( delegate );
     }
 
-    public static <Q extends Annotation, T> Iterable<BeanEntry<Q, T>> adapt( final Iterable<org.eclipse.sisu.BeanEntry<Q, T>> delegate )
+    public static <Q extends Annotation, T> Iterable<BeanEntry<Q, T>> adapt( final Iterable<? extends org.eclipse.sisu.BeanEntry<Q, T>> delegate )
     {
         return new Iterable<BeanEntry<Q, T>>()
         {
             public Iterator<BeanEntry<Q, T>> iterator()
             {
-                final Iterator<org.eclipse.sisu.BeanEntry<Q, T>> itr = delegate.iterator();
+                final Iterator<? extends org.eclipse.sisu.BeanEntry<Q, T>> itr = delegate.iterator();
                 return new Iterator<BeanEntry<Q, T>>()
                 {
                     public boolean hasNext()

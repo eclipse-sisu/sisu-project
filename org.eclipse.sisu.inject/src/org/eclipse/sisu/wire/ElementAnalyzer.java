@@ -13,13 +13,16 @@ package org.eclipse.sisu.wire;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.sisu.Parameters;
+import org.eclipse.sisu.inject.BeanLocator;
 import org.eclipse.sisu.inject.Logs;
+import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.inject.RankingFunction;
 import org.eclipse.sisu.inject.TypeParameters;
 
@@ -50,16 +53,12 @@ final class ElementAnalyzer
 
     static
     {
-        Key<? extends RankingFunction> legacyRankingKey = null;
+        final Map<Key<?>, Key<?>> aliases = new HashMap<Key<?>, Key<?>>();
         try
         {
-            @SuppressWarnings( "unchecked" )
-            final Class<? extends RankingFunction> legacyType = (Class<? extends RankingFunction>) //
-                RankingFunction.class.getClassLoader().loadClass( "org.sonatype.guice.bean.locators.RankingFunction" );
-            if ( RankingFunction.class.isAssignableFrom( legacyType ) )
-            {
-                legacyRankingKey = Key.get( legacyType );
-            }
+            addLegacyKeyAlias( aliases, BeanLocator.class );
+            addLegacyKeyAlias( aliases, MutableBeanLocator.class );
+            addLegacyKeyAlias( aliases, RankingFunction.class );
         }
         catch ( final Exception e )
         {
@@ -69,16 +68,14 @@ final class ElementAnalyzer
         {
             // legacy wrappers are not available
         }
-        LEGACY_RANKING_KEY = legacyRankingKey;
+        LEGACY_KEY_ALIASES = aliases.isEmpty() ? null : aliases;
     }
 
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final Key<RankingFunction> RANKING_KEY = Key.get( RankingFunction.class );
-
-    private static final Key<? extends RankingFunction> LEGACY_RANKING_KEY;
+    private static final Map<Key<?>, Key<?>> LEGACY_KEY_ALIASES;
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -155,10 +152,14 @@ final class ElementAnalyzer
                 localKeys.add( key );
                 binding.applyTo( binder );
 
-                // respect legacy ranking function overrides by using a binding alias (unless it is already bound)
-                if ( null != LEGACY_RANKING_KEY && key.equals( LEGACY_RANKING_KEY ) && localKeys.add( RANKING_KEY ) )
+                if ( null != LEGACY_KEY_ALIASES )
                 {
-                    binder.bind( RANKING_KEY ).to( LEGACY_RANKING_KEY );
+                    @SuppressWarnings( "unchecked" )
+                    final Key<T> alias = (Key<T>) LEGACY_KEY_ALIASES.get( key );
+                    if ( null != alias && localKeys.add( alias ) )
+                    {
+                        binder.bind( alias ).to( key ); // chain to legacy binding
+                    }
                 }
             }
             else
@@ -289,5 +290,16 @@ final class ElementAnalyzer
     private static boolean isParameters( final Class<? extends Annotation> qualifierType )
     {
         return Parameters.class == qualifierType || org.sonatype.inject.Parameters.class == qualifierType;
+    }
+
+    private static void addLegacyKeyAlias( final Map<Key<?>, Key<?>> aliases, final Class<?> clazz )
+        throws ClassNotFoundException
+    {
+        final String legacyName = "org.sonatype.guice.bean.locators." + clazz.getSimpleName();
+        final Class<?> legacyType = ElementAnalyzer.class.getClassLoader().loadClass( legacyName );
+        if ( clazz.isAssignableFrom( legacyType ) )
+        {
+            aliases.put( Key.get( legacyType ), Key.get( clazz ) );
+        }
     }
 }

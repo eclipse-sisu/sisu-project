@@ -32,7 +32,7 @@ public interface BeanLocator
      * @param key The qualified key
      * @return Sequence of bean entries that match the given key
      */
-    <Q extends Annotation, T> Iterable<BeanEntry<Q, T>> locate( Key<T> key );
+    <Q extends Annotation, T> Iterable<? extends BeanEntry<Q, T>> locate( Key<T> key );
 
     /**
      * Tracks bean implementations that match the given qualified binding {@link Key}.

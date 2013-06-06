@@ -45,7 +45,7 @@ import com.google.inject.spi.TypeConverterBinding;
  * Provides an {@link Iterable} sequence of {@link BeanEntry}s.
  */
 final class BeanEntryProvider<K extends Annotation, V>
-    implements Provider<Iterable<BeanEntry<K, V>>>
+    implements Provider<Iterable<? extends BeanEntry<K, V>>>
 {
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -69,7 +69,7 @@ final class BeanEntryProvider<K extends Annotation, V>
     // Public methods
     // ----------------------------------------------------------------------
 
-    public Iterable<BeanEntry<K, V>> get()
+    public Iterable<? extends BeanEntry<K, V>> get()
     {
         return locator.locate( key );
     }
