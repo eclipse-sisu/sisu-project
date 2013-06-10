@@ -193,10 +193,6 @@ public final class BundleClassSpace
 
         private final Enumeration<T>[] enumerations;
 
-        private Enumeration<T> currentEnumeration;
-
-        private T nextElement;
-
         private int index;
 
         // ----------------------------------------------------------------------
@@ -214,31 +210,21 @@ public final class BundleClassSpace
 
         public boolean hasMoreElements()
         {
-            while ( null == nextElement )
+            for ( ; index < enumerations.length; index++ )
             {
-                if ( null != currentEnumeration && currentEnumeration.hasMoreElements() )
+                if ( null != enumerations[index] && enumerations[index].hasMoreElements() )
                 {
-                    nextElement = currentEnumeration.nextElement();
-                }
-                else if ( index < enumerations.length )
-                {
-                    currentEnumeration = enumerations[index++];
-                }
-                else
-                {
-                    return false; // no more elements
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
 
         public T nextElement()
         {
             if ( hasMoreElements() )
             {
-                final T element = nextElement;
-                nextElement = null;
-                return element;
+                return enumerations[index].nextElement();
             }
             throw new NoSuchElementException();
         }

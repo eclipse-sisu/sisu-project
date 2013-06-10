@@ -11,9 +11,11 @@
 package org.eclipse.sisu.wire;
 
 import java.util.AbstractMap;
-import java.util.LinkedHashSet;
+import java.util.AbstractSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 final class MergedProperties
@@ -23,7 +25,7 @@ final class MergedProperties
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final Map<?, ?>[] properties;
+    final Map<?, ?>[] properties;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -66,14 +68,60 @@ final class MergedProperties
     }
 
     @Override
-    @SuppressWarnings( { "unchecked", "rawtypes" } )
     public Set<Entry<Object, Object>> entrySet()
     {
-        final Set entries = new LinkedHashSet();
-        for ( final Map<?, ?> p : properties )
+        return new AbstractSet<Entry<Object, Object>>()
         {
-            entries.addAll( p.entrySet() );
-        }
-        return entries;
+            @Override
+            public Iterator<Entry<Object, Object>> iterator()
+            {
+                return new Iterator<Entry<Object, Object>>()
+                {
+                    @SuppressWarnings( "rawtypes" )
+                    private Iterator<? extends Entry> itr;
+
+                    private int index;
+
+                    public boolean hasNext()
+                    {
+                        while ( null == itr || !itr.hasNext() )
+                        {
+                            if ( index >= properties.length )
+                            {
+                                return false;
+                            }
+                            itr = properties[index++].entrySet().iterator();
+                        }
+                        return true;
+                    }
+
+                    @SuppressWarnings( "unchecked" )
+                    public Entry<Object, Object> next()
+                    {
+                        if ( hasNext() )
+                        {
+                            return itr.next();
+                        }
+                        throw new NoSuchElementException();
+                    }
+
+                    public void remove()
+                    {
+                        throw new UnsupportedOperationException();
+                    }
+                };
+            }
+
+            @Override
+            public int size()
+            {
+                int size = 0;
+                for ( final Map<?, ?> p : properties )
+                {
+                    size += p.size();
+                }
+                return size;
+            }
+        };
     }
 }
