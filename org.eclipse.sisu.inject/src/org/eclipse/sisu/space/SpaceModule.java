@@ -37,9 +37,11 @@ public class SpaceModule
 
     private static Map<String, List<Element>> cachedElementsMap;
 
+    private final boolean caching;
+
     final ClassSpace space;
 
-    private final BeanScanning scanning;
+    final ClassFinder finder;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -50,10 +52,34 @@ public class SpaceModule
         this( space, BeanScanning.ON );
     }
 
+    public SpaceModule( final ClassSpace space, final ClassFinder finder )
+    {
+        caching = false;
+
+        this.space = space;
+        this.finder = finder;
+    }
+
     public SpaceModule( final ClassSpace space, final BeanScanning scanning )
     {
+        caching = BeanScanning.CACHE == scanning;
+
         this.space = space;
-        this.scanning = scanning;
+        switch ( scanning )
+        {
+            case OFF:
+                finder = null;
+                break;
+            case INDEX:
+                finder = new SisuIndexClassFinder( false );
+                break;
+            case GLOBAL_INDEX:
+                finder = new SisuIndexClassFinder( true );
+                break;
+            default:
+                finder = new DefaultClassFinder();
+                break;
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -64,27 +90,14 @@ public class SpaceModule
     {
         binder.bind( ClassSpace.class ).toInstance( space );
 
-        final ClassSpaceScanner scanner;
-        switch ( scanning )
+        if ( caching )
         {
-            default:
-            case ON:
-                scanner = new ClassSpaceScanner( space );
-                break;
-            case INDEX:
-                scanner = new ClassSpaceScanner( new SisuIndexClassFinder( false ), space );
-                break;
-            case GLOBAL_INDEX:
-                scanner = new ClassSpaceScanner( new SisuIndexClassFinder( true ), space );
-                break;
-            case CACHE:
-                replayCachedElements( binder );
-                return;
-            case OFF:
-                return;
+            replayCachedElements( binder );
         }
-
-        scanner.accept( visitor( binder ) );
+        else if ( null != finder )
+        {
+            new ClassSpaceScanner( finder, space ).accept( visitor( binder ) );
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -119,7 +132,7 @@ public class SpaceModule
             {
                 public void configure( final Binder recorder )
                 {
-                    new ClassSpaceScanner( space ).accept( visitor( recorder ) );
+                    new ClassSpaceScanner( finder, space ).accept( visitor( recorder ) );
                 }
             } );
             cachedElementsMap.put( key, elements );
