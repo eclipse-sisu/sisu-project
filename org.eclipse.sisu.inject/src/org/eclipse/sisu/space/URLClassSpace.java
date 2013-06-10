@@ -16,6 +16,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -51,6 +52,8 @@ public class URLClassSpace
 
     private final ClassLoader loader;
 
+    private final String toStringSuffix;
+
     private URL[] classPath;
 
     // ----------------------------------------------------------------------
@@ -67,6 +70,7 @@ public class URLClassSpace
     public URLClassSpace( final ClassLoader loader )
     {
         this.loader = loader;
+        toStringSuffix = null;
         // compute class path on demand
     }
 
@@ -81,6 +85,7 @@ public class URLClassSpace
     public URLClassSpace( final ClassLoader loader, final URL[] path )
     {
         this.loader = loader;
+        toStringSuffix = Arrays.toString( path );
         if ( null != path && path.length > 0 )
         {
             classPath = expandClassPath( path );
@@ -167,7 +172,7 @@ public class URLClassSpace
     @Override
     public String toString()
     {
-        return loader.toString(); // TODO: include classpath details?
+        return null == toStringSuffix ? loader.toString() : loader + "(" + toStringSuffix + ")";
     }
 
     // ----------------------------------------------------------------------
