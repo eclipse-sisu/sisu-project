@@ -42,15 +42,15 @@ public final class ClassSpaceScanner
     // Constructors
     // ----------------------------------------------------------------------
 
-    public ClassSpaceScanner( final ClassSpace space )
-    {
-        this( null, space );
-    }
-
     public ClassSpaceScanner( final ClassFinder finder, final ClassSpace space )
     {
         this.finder = finder;
         this.space = space;
+    }
+
+    public ClassSpaceScanner( final ClassSpace space )
+    {
+        this( new DefaultClassFinder(), space );
     }
 
     // ----------------------------------------------------------------------
@@ -66,10 +66,7 @@ public final class ClassSpaceScanner
     {
         visitor.enter( space );
 
-        final Enumeration<URL> result =
-            null != finder ? finder.findClasses( space ) : space.findEntries( null, "*.class", true );
-
-        while ( result.hasMoreElements() )
+        for ( final Enumeration<URL> result = finder.findClasses( space ); result.hasMoreElements(); )
         {
             final URL url = result.nextElement();
             final ClassVisitor cv = visitor.visitClass( url );

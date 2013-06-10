@@ -52,7 +52,7 @@ public class URLClassSpace
 
     private final ClassLoader loader;
 
-    private final String toStringSuffix;
+    private final String pathDetails;
 
     private URL[] classPath;
 
@@ -70,7 +70,7 @@ public class URLClassSpace
     public URLClassSpace( final ClassLoader loader )
     {
         this.loader = loader;
-        toStringSuffix = null;
+        pathDetails = null;
         // compute class path on demand
     }
 
@@ -85,7 +85,7 @@ public class URLClassSpace
     public URLClassSpace( final ClassLoader loader, final URL[] path )
     {
         this.loader = loader;
-        toStringSuffix = Arrays.toString( path );
+        pathDetails = Arrays.toString( path );
         if ( null != path && path.length > 0 )
         {
             classPath = expandClassPath( path );
@@ -172,7 +172,7 @@ public class URLClassSpace
     @Override
     public String toString()
     {
-        return null == toStringSuffix ? loader.toString() : loader + "(" + toStringSuffix + ")";
+        return null == pathDetails ? loader.toString() : loader + "(" + pathDetails + ")";
     }
 
     // ----------------------------------------------------------------------
