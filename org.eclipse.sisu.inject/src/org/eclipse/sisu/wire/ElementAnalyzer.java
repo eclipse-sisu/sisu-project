@@ -118,11 +118,11 @@ final class ElementAnalyzer
         final Map<?, ?> mergedProperties = new MergedProperties( properties );
         for ( final Key<?> key : missingKeys )
         {
-            if ( isParameters( key.getAnnotationType() ) )
+            if ( isParameters( key ) )
             {
                 wireParameters( key, mergedProperties );
             }
-            else
+            else if ( !isRestricted( key ) )
             {
                 wiring.wire( key );
             }
@@ -143,7 +143,7 @@ final class ElementAnalyzer
         final Key<T> key = binding.getKey();
         if ( !localKeys.contains( key ) )
         {
-            if ( isParameters( key.getAnnotationType() ) )
+            if ( isParameters( key ) )
             {
                 mergeParameters( binding );
             }
@@ -287,9 +287,20 @@ final class ElementAnalyzer
     }
 
     @SuppressWarnings( "deprecation" )
-    private static boolean isParameters( final Class<? extends Annotation> qualifierType )
+    private static boolean isParameters( final Key<?> key )
     {
+        final Class<? extends Annotation> qualifierType = key.getAnnotationType();
         return Parameters.class == qualifierType || org.sonatype.inject.Parameters.class == qualifierType;
+    }
+
+    private static boolean isRestricted( final Key<?> key )
+    {
+        final String name = key.getTypeLiteral().getRawType().getName();
+        if ( name.startsWith( "org.eclipse.sisu.inject" ) || name.startsWith( "org.sonatype.guice.bean.locators" ) )
+        {
+            return name.endsWith( "BeanLocator" );
+        }
+        return "org.slf4j.Logger".equals( name );
     }
 
     private static void addLegacyKeyAlias( final Map<Key<?>, Key<?>> aliases, final Class<?> clazz )

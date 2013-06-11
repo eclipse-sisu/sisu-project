@@ -89,7 +89,7 @@ final class LocatorWiring
         {
             bindSetImport( key );
         }
-        else if ( !isRestricted( clazz ) )
+        else
         {
             bindBeanImport( key );
         }
@@ -256,21 +256,5 @@ final class LocatorWiring
         {
             // can safely ignore
         }
-    }
-
-    /**
-     * Determines whether the given type is restricted and therefore can never be overridden by the import binder.
-     * 
-     * @param clazz The binding type
-     * @return {@code true} if the given type is restricted; otherwise {@code false}
-     */
-    private static boolean isRestricted( final Class<?> clazz )
-    {
-        final String name = clazz.getName();
-        if ( name.startsWith( "org.eclipse.sisu.inject" ) || name.startsWith( "org.sonatype.guice.bean.locators" ) )
-        {
-            return name.endsWith( "BeanLocator" );
-        }
-        return "org.slf4j.Logger".equals( name );
     }
 }
