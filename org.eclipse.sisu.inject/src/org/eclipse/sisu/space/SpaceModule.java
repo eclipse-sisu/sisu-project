@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.sisu.space;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import javax.inject.Qualifier;
 
@@ -35,7 +35,7 @@ public class SpaceModule
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private static Map<String, List<Element>> cachedElementsMap;
+    private static ConcurrentMap<String, List<Element>> cachedElementsMap;
 
     private final boolean caching;
 
@@ -92,7 +92,7 @@ public class SpaceModule
 
         if ( caching )
         {
-            replayCachedElements( binder );
+            recordAndReplayElements( binder );
         }
         else if ( null != finder )
         {
@@ -113,36 +113,46 @@ public class SpaceModule
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    private final synchronized void replayCachedElements( final Binder binder )
+    private final void recordAndReplayElements( final Binder binder )
     {
-        if ( null == cachedElementsMap )
+        synchronized ( SpaceModule.class )
         {
-            cachedElementsMap = new HashMap<String, List<Element>>();
+            if ( null == cachedElementsMap )
+            {
+                cachedElementsMap = new ConcurrentHashMap<String, List<Element>>();
+            }
         }
+
+        boolean alreadyCached = true;
+
         /*
-         * Scan and cache elements
+         * Record elements first time round
          */
         final String key = space.toString();
-        List<Element> elements = cachedElementsMap.get( key );
-        boolean replaying = true;
-        if ( null == elements )
+        List<Element> cachedElements = cachedElementsMap.get( key );
+        if ( null == cachedElements )
         {
-            replaying = false;
-            elements = Elements.getElements( new Module()
+            final List<Element> elements = Elements.getElements( new Module()
             {
                 public void configure( final Binder recorder )
                 {
                     new ClassSpaceScanner( finder, space ).accept( visitor( recorder ) );
                 }
             } );
-            cachedElementsMap.put( key, elements );
+            cachedElements = cachedElementsMap.putIfAbsent( key, elements );
+            if ( null == cachedElements )
+            {
+                cachedElements = elements;
+                alreadyCached = false;
+            }
         }
+
         /*
-         * Replay cached elements
+         * Then replay onto current binder
          */
-        for ( final Element e : elements )
+        for ( final Element e : cachedElements )
         {
-            if ( replaying )
+            if ( alreadyCached )
             {
                 // lookups have state so we replace them with duplicates when replaying...
                 if ( e instanceof ProviderLookup<?> )

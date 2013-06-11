@@ -100,11 +100,14 @@ public final class BundleClassSpace
     }
 
     @SuppressWarnings( "unchecked" )
-    public synchronized Enumeration<URL> findEntries( final String path, final String glob, final boolean recurse )
+    public Enumeration<URL> findEntries( final String path, final String glob, final boolean recurse )
     {
-        if ( null == classPath )
+        synchronized ( this )
         {
-            classPath = getBundleClassPath( bundle );
+            if ( null == classPath )
+            {
+                classPath = getBundleClassPath( bundle );
+            }
         }
         final Enumeration<URL> entries = bundle.findEntries( null != path ? path : "/", glob, recurse );
         if ( classPath.length > 0 )
