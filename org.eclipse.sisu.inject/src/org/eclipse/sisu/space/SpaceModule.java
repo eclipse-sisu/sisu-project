@@ -35,7 +35,10 @@ public class SpaceModule
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private static ConcurrentMap<String, List<Element>> cachedElementsMap;
+    private static final class RecordedElements
+    {
+        static final ConcurrentMap<String, List<Element>> cache = new ConcurrentHashMap<String, List<Element>>();
+    }
 
     private final boolean caching;
 
@@ -115,44 +118,36 @@ public class SpaceModule
 
     private final void recordAndReplayElements( final Binder binder )
     {
-        synchronized ( SpaceModule.class )
-        {
-            if ( null == cachedElementsMap )
-            {
-                cachedElementsMap = new ConcurrentHashMap<String, List<Element>>();
-            }
-        }
-
-        boolean alreadyCached = true;
+        boolean alreadyUsed = true;
 
         /*
          * Record elements first time round
          */
         final String key = space.toString();
-        List<Element> cachedElements = cachedElementsMap.get( key );
-        if ( null == cachedElements )
+        List<Element> elements = RecordedElements.cache.get( key );
+        if ( null == elements )
         {
-            final List<Element> elements = Elements.getElements( new Module()
+            final List<Element> recording = Elements.getElements( new Module()
             {
                 public void configure( final Binder recorder )
                 {
                     new ClassSpaceScanner( finder, space ).accept( visitor( recorder ) );
                 }
             } );
-            cachedElements = cachedElementsMap.putIfAbsent( key, elements );
-            if ( null == cachedElements )
+            elements = RecordedElements.cache.putIfAbsent( key, recording );
+            if ( null == elements )
             {
-                cachedElements = elements;
-                alreadyCached = false;
+                elements = recording;
+                alreadyUsed = false;
             }
         }
 
         /*
          * Then replay onto current binder
          */
-        for ( final Element e : cachedElements )
+        for ( final Element e : elements )
         {
-            if ( alreadyCached )
+            if ( alreadyUsed )
             {
                 // lookups have state so we replace them with duplicates when replaying...
                 if ( e instanceof ProviderLookup<?> )
