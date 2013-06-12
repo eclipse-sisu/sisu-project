@@ -44,7 +44,7 @@ public final class BundleClassSpace
 
     private final Bundle bundle;
 
-    private URL[] classPath;
+    private URL[] bundleClassPath;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -102,13 +102,7 @@ public final class BundleClassSpace
     @SuppressWarnings( "unchecked" )
     public Enumeration<URL> findEntries( final String path, final String glob, final boolean recurse )
     {
-        synchronized ( this )
-        {
-            if ( null == classPath )
-            {
-                classPath = getBundleClassPath( bundle );
-            }
-        }
+        final URL[] classPath = getBundleClassPath();
         final Enumeration<URL> entries = bundle.findEntries( null != path ? path : "/", glob, recurse );
         if ( classPath.length > 0 )
         {
@@ -149,35 +143,39 @@ public final class BundleClassSpace
 
     /**
      * Returns the expanded Bundle-ClassPath; we need this to iterate over embedded JARs.
-     * 
-     * @param bundle The bundle
-     * @return URL class path
      */
-    private static URL[] getBundleClassPath( final Bundle bundle )
+    private synchronized URL[] getBundleClassPath()
     {
-        final String path = (String) bundle.getHeaders().get( Constants.BUNDLE_CLASSPATH );
-        if ( null == path )
+        if ( null == bundleClassPath )
         {
-            return NO_URLS;
-        }
-
-        final List<URL> classPath = new ArrayList<URL>();
-        final Set<String> visited = new HashSet<String>();
-
-        visited.add( "." );
-
-        for ( final String entry : path.trim().split( "\\s*,\\s*" ) )
-        {
-            if ( visited.add( entry ) )
+            final String path = (String) bundle.getHeaders().get( Constants.BUNDLE_CLASSPATH );
+            if ( null == path )
             {
-                final URL url = bundle.getEntry( entry );
-                if ( null != url )
+                bundleClassPath = NO_URLS;
+            }
+            else
+            {
+                final List<URL> classPath = new ArrayList<URL>();
+                final Set<String> visited = new HashSet<String>();
+
+                visited.add( "." );
+
+                for ( final String entry : path.trim().split( "\\s*,\\s*" ) )
                 {
-                    classPath.add( url );
+                    if ( visited.add( entry ) )
+                    {
+                        final URL url = bundle.getEntry( entry );
+                        if ( null != url )
+                        {
+                            classPath.add( url );
+                        }
+                    }
                 }
+
+                bundleClassPath = classPath.isEmpty() ? NO_URLS : classPath.toArray( new URL[classPath.size()] );
             }
         }
-        return classPath.isEmpty() ? NO_URLS : classPath.toArray( new URL[classPath.size()] );
+        return bundleClassPath;
     }
 
     // ----------------------------------------------------------------------
