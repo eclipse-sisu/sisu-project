@@ -30,7 +30,7 @@ import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
 import com.google.inject.util.Types;
 
-public class TypeParametersTest
+public class TypeArgumentsTest
     extends TestCase
 {
     static TypeLiteral<Object> OBJECT_TYPE = TypeLiteral.get( Object.class );
@@ -70,55 +70,55 @@ public class TypeParametersTest
     {
         TypeLiteral<?>[] types;
 
-        assertEquals( OBJECT_TYPE, TypeParameters.get( getFieldType( "rawList" ), 0 ) );
-        types = TypeParameters.get( getFieldType( "rawList" ) );
+        assertEquals( OBJECT_TYPE, TypeArguments.get( getFieldType( "rawList" ), 0 ) );
+        types = TypeArguments.get( getFieldType( "rawList" ) );
         assertEquals( 0, types.length );
 
-        assertEquals( OBJECT_TYPE, TypeParameters.get( getFieldType( "rawMap" ), 0 ) );
-        assertEquals( OBJECT_TYPE, TypeParameters.get( getFieldType( "rawMap" ), 1 ) );
-        types = TypeParameters.get( getFieldType( "rawMap" ) );
+        assertEquals( OBJECT_TYPE, TypeArguments.get( getFieldType( "rawMap" ), 0 ) );
+        assertEquals( OBJECT_TYPE, TypeArguments.get( getFieldType( "rawMap" ), 1 ) );
+        types = TypeArguments.get( getFieldType( "rawMap" ) );
         assertEquals( 0, types.length );
 
-        assertEquals( SHORT_TYPE, TypeParameters.get( getFieldType( "shortList" ), 0 ) );
-        types = TypeParameters.get( getFieldType( "shortList" ) );
+        assertEquals( SHORT_TYPE, TypeArguments.get( getFieldType( "shortList" ), 0 ) );
+        types = TypeArguments.get( getFieldType( "shortList" ) );
         assertEquals( 1, types.length );
         assertEquals( SHORT_TYPE, types[0] );
 
-        assertEquals( STRING_TYPE, TypeParameters.get( getFieldType( "stringFloatMap" ), 0 ) );
-        assertEquals( FLOAT_TYPE, TypeParameters.get( getFieldType( "stringFloatMap" ), 1 ) );
-        types = TypeParameters.get( getFieldType( "stringFloatMap" ) );
+        assertEquals( STRING_TYPE, TypeArguments.get( getFieldType( "stringFloatMap" ), 0 ) );
+        assertEquals( FLOAT_TYPE, TypeArguments.get( getFieldType( "stringFloatMap" ), 1 ) );
+        types = TypeArguments.get( getFieldType( "stringFloatMap" ) );
         assertEquals( 2, types.length );
         assertEquals( STRING_TYPE, types[0] );
         assertEquals( FLOAT_TYPE, types[1] );
 
-        assertEquals( OBJECT_TYPE, TypeParameters.get( getFieldType( "wildcardList" ), 0 ) );
-        types = TypeParameters.get( getFieldType( "wildcardList" ) );
+        assertEquals( OBJECT_TYPE, TypeArguments.get( getFieldType( "wildcardList" ), 0 ) );
+        types = TypeArguments.get( getFieldType( "wildcardList" ) );
         assertEquals( 1, types.length );
         assertEquals( OBJECT_TYPE, types[0] );
 
-        assertEquals( OBJECT_TYPE, TypeParameters.get( getFieldType( "wildcardMap" ), 0 ) );
-        assertEquals( OBJECT_TYPE, TypeParameters.get( getFieldType( "wildcardMap" ), 1 ) );
-        types = TypeParameters.get( getFieldType( "wildcardMap" ) );
+        assertEquals( OBJECT_TYPE, TypeArguments.get( getFieldType( "wildcardMap" ), 0 ) );
+        assertEquals( OBJECT_TYPE, TypeArguments.get( getFieldType( "wildcardMap" ), 1 ) );
+        types = TypeArguments.get( getFieldType( "wildcardMap" ) );
         assertEquals( 2, types.length );
         assertEquals( OBJECT_TYPE, types[0] );
         assertEquals( OBJECT_TYPE, types[1] );
 
-        assertEquals( STRING_TYPE, TypeParameters.get( getFieldType( "wildcardStringList" ), 0 ) );
-        types = TypeParameters.get( getFieldType( "wildcardStringList" ) );
+        assertEquals( STRING_TYPE, TypeArguments.get( getFieldType( "wildcardStringList" ), 0 ) );
+        types = TypeArguments.get( getFieldType( "wildcardStringList" ) );
         assertEquals( 1, types.length );
         assertEquals( STRING_TYPE, types[0] );
 
-        assertEquals( FLOAT_TYPE, TypeParameters.get( getFieldType( "wildcardFloatShortMap" ), 0 ) );
-        assertEquals( SHORT_TYPE, TypeParameters.get( getFieldType( "wildcardFloatShortMap" ), 1 ) );
-        types = TypeParameters.get( getFieldType( "wildcardFloatShortMap" ) );
+        assertEquals( FLOAT_TYPE, TypeArguments.get( getFieldType( "wildcardFloatShortMap" ), 0 ) );
+        assertEquals( SHORT_TYPE, TypeArguments.get( getFieldType( "wildcardFloatShortMap" ), 1 ) );
+        types = TypeArguments.get( getFieldType( "wildcardFloatShortMap" ) );
         assertEquals( 2, types.length );
         assertEquals( FLOAT_TYPE, types[0] );
         assertEquals( SHORT_TYPE, types[1] );
 
         final TypeLiteral<?> genericSuperType = TypeLiteral.get( CallableNumber.class ).getSupertype( Callable.class );
 
-        assertEquals( NUMBER_TYPE, TypeParameters.get( genericSuperType, 0 ) );
-        types = TypeParameters.get( genericSuperType );
+        assertEquals( NUMBER_TYPE, TypeArguments.get( genericSuperType, 0 ) );
+        types = TypeArguments.get( genericSuperType );
         assertEquals( 1, types.length );
         assertEquals( NUMBER_TYPE, types[0] );
     }
@@ -147,57 +147,57 @@ public class TypeParametersTest
     {
         TypeLiteral<?>[] types;
 
-        types = TypeParameters.get( getFieldType( "rawListArray" ) );
+        types = TypeArguments.get( getFieldType( "rawListArray" ) );
         assertEquals( getFieldType( "rawList" ), types[0] );
-        assertEquals( types[0], TypeParameters.get( getFieldType( "rawListArray" ), 0 ) );
+        assertEquals( types[0], TypeArguments.get( getFieldType( "rawListArray" ), 0 ) );
         assertEquals( List.class, types[0].getType() );
 
-        types = TypeParameters.get( getFieldType( "rawMapArray" ) );
+        types = TypeArguments.get( getFieldType( "rawMapArray" ) );
         assertEquals( getFieldType( "rawMap" ), types[0] );
-        assertEquals( types[0], TypeParameters.get( getFieldType( "rawMapArray" ), 0 ) );
+        assertEquals( types[0], TypeArguments.get( getFieldType( "rawMapArray" ), 0 ) );
         assertEquals( Map.class, types[0].getType() );
 
-        types = TypeParameters.get( getFieldType( "shortListArray" ) );
+        types = TypeArguments.get( getFieldType( "shortListArray" ) );
         assertEquals( getFieldType( "shortList" ), types[0] );
-        assertEquals( types[0], TypeParameters.get( getFieldType( "shortListArray" ), 0 ) );
+        assertEquals( types[0], TypeArguments.get( getFieldType( "shortListArray" ), 0 ) );
         assertEquals( Types.listOf( Short.class ), types[0].getType() );
 
-        types = TypeParameters.get( getFieldType( "stringFloatMapArray" ) );
+        types = TypeArguments.get( getFieldType( "stringFloatMapArray" ) );
         assertEquals( getFieldType( "stringFloatMap" ), types[0] );
-        assertEquals( types[0], TypeParameters.get( getFieldType( "stringFloatMapArray" ), 0 ) );
+        assertEquals( types[0], TypeArguments.get( getFieldType( "stringFloatMapArray" ), 0 ) );
         assertEquals( Types.mapOf( String.class, Float.class ), types[0].getType() );
 
-        types = TypeParameters.get( getFieldType( "wildcardListArray" ) );
+        types = TypeArguments.get( getFieldType( "wildcardListArray" ) );
         assertEquals( getFieldType( "wildcardList" ), types[0] );
-        assertEquals( types[0], TypeParameters.get( getFieldType( "wildcardListArray" ), 0 ) );
+        assertEquals( types[0], TypeArguments.get( getFieldType( "wildcardListArray" ), 0 ) );
         assertEquals( Types.listOf( Types.subtypeOf( Object.class ) ), types[0].getType() );
 
-        types = TypeParameters.get( getFieldType( "wildcardMapArray" ) );
+        types = TypeArguments.get( getFieldType( "wildcardMapArray" ) );
         assertEquals( getFieldType( "wildcardMap" ), types[0] );
-        assertEquals( types[0], TypeParameters.get( getFieldType( "wildcardMapArray" ), 0 ) );
+        assertEquals( types[0], TypeArguments.get( getFieldType( "wildcardMapArray" ), 0 ) );
         assertEquals( Types.mapOf( Types.subtypeOf( Object.class ), Types.subtypeOf( Object.class ) ),
                       types[0].getType() );
 
-        types = TypeParameters.get( getFieldType( "wildcardStringListArray" ) );
+        types = TypeArguments.get( getFieldType( "wildcardStringListArray" ) );
         assertEquals( getFieldType( "wildcardStringList" ), types[0] );
-        assertEquals( types[0], TypeParameters.get( getFieldType( "wildcardStringListArray" ), 0 ) );
+        assertEquals( types[0], TypeArguments.get( getFieldType( "wildcardStringListArray" ), 0 ) );
         assertEquals( Types.listOf( Types.subtypeOf( String.class ) ), types[0].getType() );
 
-        types = TypeParameters.get( getFieldType( "wildcardFloatShortMapArray" ) );
+        types = TypeArguments.get( getFieldType( "wildcardFloatShortMapArray" ) );
         assertEquals( getFieldType( "wildcardFloatShortMap" ), types[0] );
-        assertEquals( types[0], TypeParameters.get( getFieldType( "wildcardFloatShortMapArray" ), 0 ) );
+        assertEquals( types[0], TypeArguments.get( getFieldType( "wildcardFloatShortMapArray" ), 0 ) );
         assertEquals( Types.mapOf( Types.subtypeOf( Float.class ), Types.subtypeOf( Short.class ) ), types[0].getType() );
 
-        types = TypeParameters.get( TypeParameters.get( getFieldType( "stringArrayList" ) )[0] );
+        types = TypeArguments.get( TypeArguments.get( getFieldType( "stringArrayList" ) )[0] );
         assertEquals( STRING_TYPE, types[0] );
-        assertEquals( types[0], TypeParameters.get( TypeParameters.get( getFieldType( "stringArrayList" ), 0 ), 0 ) );
+        assertEquals( types[0], TypeArguments.get( TypeArguments.get( getFieldType( "stringArrayList" ), 0 ), 0 ) );
     }
 
-    public void testTypeParameterRangeChecks()
+    public void testTypeArgumentRangeChecks()
     {
         try
         {
-            TypeParameters.get( getFieldType( "stringFloatMap" ), -1 );
+            TypeArguments.get( getFieldType( "stringFloatMap" ), -1 );
             fail( "Expected IndexOutOfBoundsException" );
         }
         catch ( final IndexOutOfBoundsException e )
@@ -205,7 +205,7 @@ public class TypeParametersTest
         }
         try
         {
-            TypeParameters.get( getFieldType( "stringFloatMap" ), 2 );
+            TypeArguments.get( getFieldType( "stringFloatMap" ), 2 );
             fail( "Expected IndexOutOfBoundsException" );
         }
         catch ( final IndexOutOfBoundsException e )
@@ -214,7 +214,7 @@ public class TypeParametersTest
 
         try
         {
-            TypeParameters.get( getFieldType( "wildcardStringListArray" ), -1 );
+            TypeArguments.get( getFieldType( "wildcardStringListArray" ), -1 );
             fail( "Expected IndexOutOfBoundsException" );
         }
         catch ( final IndexOutOfBoundsException e )
@@ -222,7 +222,7 @@ public class TypeParametersTest
         }
         try
         {
-            TypeParameters.get( getFieldType( "wildcardStringListArray" ), 1 );
+            TypeArguments.get( getFieldType( "wildcardStringListArray" ), 1 );
             fail( "Expected IndexOutOfBoundsException" );
         }
         catch ( final IndexOutOfBoundsException e )
@@ -266,91 +266,91 @@ public class TypeParametersTest
     {
         // === simple types ===
 
-        assertTrue( TypeParameters.isAssignableFrom( TypeLiteral.get( Object.class ), TypeLiteral.get( String.class ) ) );
-        assertTrue( TypeParameters.isAssignableFrom( TypeLiteral.get( Number.class ), TypeLiteral.get( Short.class ) ) );
-        assertTrue( TypeParameters.isAssignableFrom( TypeLiteral.get( Collection.class ), TypeLiteral.get( Set.class ) ) );
+        assertTrue( TypeArguments.isAssignableFrom( TypeLiteral.get( Object.class ), TypeLiteral.get( String.class ) ) );
+        assertTrue( TypeArguments.isAssignableFrom( TypeLiteral.get( Number.class ), TypeLiteral.get( Short.class ) ) );
+        assertTrue( TypeArguments.isAssignableFrom( TypeLiteral.get( Collection.class ), TypeLiteral.get( Set.class ) ) );
 
         // === generic types ===
 
-        assertFalse( TypeParameters.isAssignableFrom( new TypeLiteral<Callable<Collection>>()
+        assertFalse( TypeArguments.isAssignableFrom( new TypeLiteral<Callable<Collection>>()
         {
         }, TypeLiteral.get( CallableListImpl.class ) ) ); // not assignable since no wild-card
-        assertTrue( TypeParameters.isAssignableFrom( new TypeLiteral<Callable<List>>()
+        assertTrue( TypeArguments.isAssignableFrom( new TypeLiteral<Callable<List>>()
         {
         }, TypeLiteral.get( CallableListImpl.class ) ) );
-        assertFalse( TypeParameters.isAssignableFrom( new TypeLiteral<Callable<String>>()
+        assertFalse( TypeArguments.isAssignableFrom( new TypeLiteral<Callable<String>>()
         {
         }, TypeLiteral.get( CallableListImpl.class ) ) );
 
         // === unbound type-variables ===
 
-        assertTrue( TypeParameters.isAssignableFrom( new TypeLiteral<Callable>()
+        assertTrue( TypeArguments.isAssignableFrom( new TypeLiteral<Callable>()
         {
         }, TypeLiteral.get( Callable.class ) ) );
-        assertTrue( TypeParameters.isAssignableFrom( new TypeLiteral<Callable>()
+        assertTrue( TypeArguments.isAssignableFrom( new TypeLiteral<Callable>()
         {
         }, TypeLiteral.get( CallableImpl.class ) ) );
-        assertTrue( TypeParameters.isAssignableFrom( new TypeLiteral<Callable<String>>()
+        assertTrue( TypeArguments.isAssignableFrom( new TypeLiteral<Callable<String>>()
         {
         }, TypeLiteral.get( CallableImpl.class ) ) );
-        assertFalse( TypeParameters.isAssignableFrom( new TypeLiteral<CallableImpl>()
+        assertFalse( TypeArguments.isAssignableFrom( new TypeLiteral<CallableImpl>()
         {
         }, TypeLiteral.get( Callable.class ) ) );
 
         // === bound type-variables ===
 
-        assertTrue( TypeParameters.isAssignableFrom( new TypeLiteral<CallableNumber>()
+        assertTrue( TypeArguments.isAssignableFrom( new TypeLiteral<CallableNumber>()
         {
         }, TypeLiteral.get( CallableNumberImpl.class ) ) );
-        assertTrue( TypeParameters.isAssignableFrom( new TypeLiteral<CallableNumber<Number>>()
+        assertTrue( TypeArguments.isAssignableFrom( new TypeLiteral<CallableNumber<Number>>()
         {
         }, TypeLiteral.get( CallableNumberImpl.class ) ) );
-        assertTrue( TypeParameters.isAssignableFrom( new TypeLiteral<CallableNumber<Float>>()
+        assertTrue( TypeArguments.isAssignableFrom( new TypeLiteral<CallableNumber<Float>>()
         {
         }, TypeLiteral.get( CallableNumberImpl.class ) ) );
-        assertFalse( TypeParameters.isAssignableFrom( new TypeLiteral<Callable<String>>()
+        assertFalse( TypeArguments.isAssignableFrom( new TypeLiteral<Callable<String>>()
         {
         }, TypeLiteral.get( CallableNumberImpl.class ) ) ); // mismatched type-bounds
 
         // === unbound wild-cards ===
 
-        assertTrue( TypeParameters.isAssignableFrom( new TypeLiteral<Callable<?>>()
+        assertTrue( TypeArguments.isAssignableFrom( new TypeLiteral<Callable<?>>()
         {
         }, TypeLiteral.get( CallableImpl.class ) ) );
-        assertTrue( TypeParameters.isAssignableFrom( new TypeLiteral<Callable<?>>()
+        assertTrue( TypeArguments.isAssignableFrom( new TypeLiteral<Callable<?>>()
         {
         }, TypeLiteral.get( CallableNumberImpl.class ) ) );
-        assertTrue( TypeParameters.isAssignableFrom( new TypeLiteral<CallableNumber<?>>()
+        assertTrue( TypeArguments.isAssignableFrom( new TypeLiteral<CallableNumber<?>>()
         {
         }, TypeLiteral.get( CallableNumberImpl.class ) ) );
 
         // === bound wild-cards ===
 
-        assertTrue( TypeParameters.isAssignableFrom( new TypeLiteral<Callable<? extends Collection>>()
+        assertTrue( TypeArguments.isAssignableFrom( new TypeLiteral<Callable<? extends Collection>>()
         {
         }, TypeLiteral.get( CallableListImpl.class ) ) );
-        assertTrue( TypeParameters.isAssignableFrom( new TypeLiteral<Callable<? extends Number>>()
+        assertTrue( TypeArguments.isAssignableFrom( new TypeLiteral<Callable<? extends Number>>()
         {
         }, TypeLiteral.get( CallableNumberImpl.class ) ) );
-        assertTrue( TypeParameters.isAssignableFrom( new TypeLiteral<Callable<? extends Float>>()
+        assertTrue( TypeArguments.isAssignableFrom( new TypeLiteral<Callable<? extends Float>>()
         {
         }, TypeLiteral.get( CallableNumberImpl.class ) ) );
-        assertFalse( TypeParameters.isAssignableFrom( new TypeLiteral<Callable<? extends String>>()
+        assertFalse( TypeArguments.isAssignableFrom( new TypeLiteral<Callable<? extends String>>()
         {
         }, TypeLiteral.get( CallableNumberImpl.class ) ) );
 
         // === array types ===
 
-        assertTrue( TypeParameters.isAssignableFrom( TypeLiteral.get( Types.arrayOf( Object.class ) ),
+        assertTrue( TypeArguments.isAssignableFrom( TypeLiteral.get( Types.arrayOf( Object.class ) ),
                                                      TypeLiteral.get( Types.arrayOf( String.class ) ) ) );
-        assertTrue( TypeParameters.isAssignableFrom( TypeLiteral.get( Types.arrayOf( Number.class ) ),
+        assertTrue( TypeArguments.isAssignableFrom( TypeLiteral.get( Types.arrayOf( Number.class ) ),
                                                      TypeLiteral.get( Types.arrayOf( Float.class ) ) ) );
 
         // === mismatched types ===
 
-        assertFalse( TypeParameters.isAssignableFrom( TypeLiteral.get( Types.arrayOf( Object.class ) ),
+        assertFalse( TypeArguments.isAssignableFrom( TypeLiteral.get( Types.arrayOf( Object.class ) ),
                                                       TypeLiteral.get( Types.listOf( Object.class ) ) ) );
-        assertFalse( TypeParameters.isAssignableFrom( TypeLiteral.get( Types.listOf( Object.class ) ),
+        assertFalse( TypeArguments.isAssignableFrom( TypeLiteral.get( Types.listOf( Object.class ) ),
                                                       TypeLiteral.get( Types.arrayOf( Object.class ) ) ) );
 
         // === corner case ===
@@ -391,25 +391,25 @@ public class TypeParametersTest
             }
         };
 
-        assertFalse( TypeParameters.isAssignableFrom( TypeLiteral.get( callableT ), TypeLiteral.get( Callable.class ) ) );
+        assertFalse( TypeArguments.isAssignableFrom( TypeLiteral.get( callableT ), TypeLiteral.get( Callable.class ) ) );
 
-        assertFalse( TypeParameters.isAssignableFrom( TypeLiteral.get( callableT ),
+        assertFalse( TypeArguments.isAssignableFrom( TypeLiteral.get( callableT ),
                                                       TypeLiteral.get( CallableNumberImpl.class ) ) );
     }
 
     public void testIsConcrete()
     {
-        assertFalse( TypeParameters.isConcrete( Map.class ) );
-        assertFalse( TypeParameters.isConcrete( AbstractMap.class ) );
-        assertTrue( TypeParameters.isConcrete( HashMap.class ) );
+        assertFalse( TypeArguments.isConcrete( Map.class ) );
+        assertFalse( TypeArguments.isConcrete( AbstractMap.class ) );
+        assertTrue( TypeArguments.isConcrete( HashMap.class ) );
 
-        assertFalse( TypeParameters.isConcrete( new TypeLiteral<Map<String, String>>()
+        assertFalse( TypeArguments.isConcrete( new TypeLiteral<Map<String, String>>()
         {
         } ) );
-        assertFalse( TypeParameters.isConcrete( new TypeLiteral<AbstractMap<String, String>>()
+        assertFalse( TypeArguments.isConcrete( new TypeLiteral<AbstractMap<String, String>>()
         {
         } ) );
-        assertTrue( TypeParameters.isConcrete( new TypeLiteral<HashMap<String, String>>()
+        assertTrue( TypeArguments.isConcrete( new TypeLiteral<HashMap<String, String>>()
         {
         } ) );
     }
@@ -435,27 +435,27 @@ public class TypeParametersTest
 
     public void testIsImplicit()
     {
-        assertFalse( TypeParameters.isImplicit( Map.class ) );
-        assertFalse( TypeParameters.isImplicit( AbstractMap.class ) );
-        assertTrue( TypeParameters.isImplicit( HashMap.class ) );
+        assertFalse( TypeArguments.isImplicit( Map.class ) );
+        assertFalse( TypeArguments.isImplicit( AbstractMap.class ) );
+        assertTrue( TypeArguments.isImplicit( HashMap.class ) );
 
-        assertFalse( TypeParameters.isImplicit( new TypeLiteral<Map<String, String>>()
+        assertFalse( TypeArguments.isImplicit( new TypeLiteral<Map<String, String>>()
         {
         } ) );
-        assertFalse( TypeParameters.isImplicit( new TypeLiteral<AbstractMap<String, String>>()
+        assertFalse( TypeArguments.isImplicit( new TypeLiteral<AbstractMap<String, String>>()
         {
         } ) );
-        assertTrue( TypeParameters.isImplicit( new TypeLiteral<HashMap<String, String>>()
+        assertTrue( TypeArguments.isImplicit( new TypeLiteral<HashMap<String, String>>()
         {
         } ) );
 
-        assertTrue( TypeParameters.isImplicit( Implicit1.class ) );
-        assertTrue( TypeParameters.isImplicit( Implicit2.class ) );
+        assertTrue( TypeArguments.isImplicit( Implicit1.class ) );
+        assertTrue( TypeArguments.isImplicit( Implicit2.class ) );
 
-        assertTrue( TypeParameters.isImplicit( new TypeLiteral<Implicit1<String>>()
+        assertTrue( TypeArguments.isImplicit( new TypeLiteral<Implicit1<String>>()
         {
         } ) );
-        assertTrue( TypeParameters.isImplicit( new TypeLiteral<Implicit2<String>>()
+        assertTrue( TypeArguments.isImplicit( new TypeLiteral<Implicit2<String>>()
         {
         } ) );
     }
@@ -464,7 +464,7 @@ public class TypeParametersTest
     {
         try
         {
-            return TypeLiteral.get( TypeParametersTest.class.getDeclaredField( name ).getGenericType() );
+            return TypeLiteral.get( TypeArgumentsTest.class.getDeclaredField( name ).getGenericType() );
         }
         catch ( final NoSuchFieldException e )
         {

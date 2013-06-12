@@ -22,9 +22,9 @@ import com.google.inject.ProvidedBy;
 import com.google.inject.TypeLiteral;
 
 /**
- * Utility methods for dealing with generic type parameters and arguments.
+ * Utility methods for dealing with generic type arguments.
  */
-public final class TypeParameters
+public final class TypeArguments
 {
     // ----------------------------------------------------------------------
     // Constants
@@ -38,7 +38,7 @@ public final class TypeParameters
     // Constructors
     // ----------------------------------------------------------------------
 
-    private TypeParameters()
+    private TypeArguments()
     {
         // static utility class, not allowed to create instances
     }
@@ -225,7 +225,7 @@ public final class TypeParameters
 
             /*
              * Implementations could have unbound type variables, such as ArrayList<T>. We want to support injecting
-             * MyList<T extends Number> into List<Double>. This is why the isAssignableFrom parameters are reversed.
+             * MyList<T extends Number> into List<Double> which is why we reverse the following expanded arguments:
              */
             if ( subType instanceof TypeVariable<?> && isAssignableFrom( expand( subType ), expand( superType ) ) )
             {

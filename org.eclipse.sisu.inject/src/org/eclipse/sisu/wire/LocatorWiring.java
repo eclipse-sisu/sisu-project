@@ -24,7 +24,7 @@ import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.inject.BeanLocator;
 import org.eclipse.sisu.inject.HiddenBinding;
 import org.eclipse.sisu.inject.Implicit;
-import org.eclipse.sisu.inject.TypeParameters;
+import org.eclipse.sisu.inject.TypeArguments;
 
 import com.google.inject.Binder;
 import com.google.inject.ImplementedBy;
@@ -101,39 +101,39 @@ final class LocatorWiring
     // ----------------------------------------------------------------------
 
     /**
-     * Adds an imported {@link Map} binding; uses the generic type parameters to determine the search details.
+     * Adds an imported {@link Map} binding; uses the generic type arguments to determine the search details.
      * 
      * @param key The dependency key
      */
     private void bindMapImport( final Key<?> key )
     {
-        final TypeLiteral<?>[] parameters = TypeParameters.get( key.getTypeLiteral() );
-        if ( 2 == parameters.length && null == key.getAnnotation() )
+        final TypeLiteral<?>[] args = TypeArguments.get( key.getTypeLiteral() );
+        if ( 2 == args.length && null == key.getAnnotation() )
         {
-            final Class qualifierType = parameters[0].getRawType();
+            final Class qualifierType = args[0].getRawType();
             if ( String.class == qualifierType )
             {
-                binder.bind( key ).toProvider( new NamedBeanMapProvider( parameters[1] ) );
+                binder.bind( key ).toProvider( new NamedBeanMapProvider( args[1] ) );
             }
             else if ( qualifierType.isAnnotationPresent( Qualifier.class ) )
             {
-                binder.bind( key ).toProvider( new BeanMapProvider( Key.get( parameters[1], qualifierType ) ) );
+                binder.bind( key ).toProvider( new BeanMapProvider( Key.get( args[1], qualifierType ) ) );
             }
         }
     }
 
     /**
-     * Adds an imported {@link List} binding; uses the generic type parameters to determine the search details.
+     * Adds an imported {@link List} binding; uses the generic type arguments to determine the search details.
      * 
      * @param key The dependency key
      */
     @SuppressWarnings( "deprecation" )
     private void bindListImport( final Key<?> key )
     {
-        final TypeLiteral<?>[] parameters = TypeParameters.get( key.getTypeLiteral() );
-        if ( 1 == parameters.length && null == key.getAnnotation() )
+        final TypeLiteral<?>[] args = TypeArguments.get( key.getTypeLiteral() );
+        if ( 1 == args.length && null == key.getAnnotation() )
         {
-            final TypeLiteral<?> elementType = parameters[0];
+            final TypeLiteral<?> elementType = args[0];
             if ( BeanEntry.class == elementType.getRawType()
                 || org.sonatype.inject.BeanEntry.class == elementType.getRawType() )
             {
@@ -153,13 +153,13 @@ final class LocatorWiring
     @SuppressWarnings( "deprecation" )
     private static Provider getBeanEntriesProvider( final TypeLiteral<?> elementType )
     {
-        final TypeLiteral<?>[] parameters = TypeParameters.get( elementType );
-        if ( 2 == parameters.length )
+        final TypeLiteral<?>[] args = TypeArguments.get( elementType );
+        if ( 2 == args.length )
         {
-            final Class qualifierType = parameters[0].getRawType();
+            final Class qualifierType = args[0].getRawType();
             if ( qualifierType.isAnnotationPresent( Qualifier.class ) )
             {
-                final Key beanKey = Key.get( parameters[1], qualifierType );
+                final Key beanKey = Key.get( args[1], qualifierType );
                 if ( BeanEntry.class == elementType.getRawType() )
                 {
                     return new BeanEntryProvider( beanKey );
@@ -171,16 +171,16 @@ final class LocatorWiring
     }
 
     /**
-     * Adds an imported {@link Set} binding; uses the generic type parameters to determine the search details.
+     * Adds an imported {@link Set} binding; uses the generic type arguments to determine the search details.
      * 
      * @param key The dependency key
      */
     private void bindSetImport( final Key<?> key )
     {
-        final TypeLiteral<?>[] parameters = TypeParameters.get( key.getTypeLiteral() );
-        if ( 1 == parameters.length && null == key.getAnnotation() )
+        final TypeLiteral<?>[] args = TypeArguments.get( key.getTypeLiteral() );
+        if ( 1 == args.length && null == key.getAnnotation() )
         {
-            binder.bind( key ).toProvider( new BeanSetProvider( Key.get( parameters[0] ) ) );
+            binder.bind( key ).toProvider( new BeanSetProvider( Key.get( args[0] ) ) );
         }
     }
 
@@ -226,7 +226,7 @@ final class LocatorWiring
         try
         {
             final Class<?> clazz = type.getRawType();
-            if ( TypeParameters.isConcrete( clazz ) )
+            if ( TypeArguments.isConcrete( clazz ) )
             {
                 final Member ctor = InjectionPoint.forConstructorOf( type ).getMember();
                 binder.bind( Key.get( clazz, Implicit.class ) ).toConstructor( (Constructor) ctor );

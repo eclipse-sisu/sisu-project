@@ -20,7 +20,7 @@ import javax.inject.Provider;
 import org.eclipse.sisu.EagerSingleton;
 import org.eclipse.sisu.Mediator;
 import org.eclipse.sisu.inject.BeanLocator;
-import org.eclipse.sisu.inject.TypeParameters;
+import org.eclipse.sisu.inject.TypeArguments;
 
 import com.google.inject.Binder;
 import com.google.inject.Key;
@@ -108,7 +108,7 @@ public final class QualifiedTypeBinder
             }
         }
 
-        if ( !TypeParameters.isConcrete( qualifiedType ) )
+        if ( !TypeArguments.isConcrete( qualifiedType ) )
         {
             return;
         }
@@ -153,14 +153,14 @@ public final class QualifiedTypeBinder
     }
 
     /**
-     * Registers an instance of the given {@link Mediator} using its generic type parameters as configuration.
+     * Registers an instance of the given {@link Mediator} using its generic type arguments as configuration.
      * 
      * @param mediatorType The mediator type
      */
     private void registerMediator( final Class<Mediator> mediatorType )
     {
-        final TypeLiteral<?>[] params = getSuperTypeParameters( mediatorType, Mediator.class );
-        if ( params.length != 3 )
+        final TypeLiteral<?>[] args = resolveTypeArguments( mediatorType, Mediator.class );
+        if ( args.length != 3 )
         {
             binder.addError( mediatorType + " has wrong number of type arguments" );
         }
@@ -169,7 +169,7 @@ public final class QualifiedTypeBinder
             final Mediator mediator = newInstance( mediatorType );
             if ( null != mediator )
             {
-                mediate( Key.get( params[1], (Class) params[0].getRawType() ), mediator, params[2].getRawType() );
+                mediate( Key.get( args[1], (Class) args[0].getRawType() ), mediator, args[2].getRawType() );
             }
         }
     }
@@ -177,8 +177,8 @@ public final class QualifiedTypeBinder
     @SuppressWarnings( "deprecation" )
     private void registerLegacyMediator( final Class<org.sonatype.inject.Mediator> mediatorType )
     {
-        final TypeLiteral<?>[] params = getSuperTypeParameters( mediatorType, org.sonatype.inject.Mediator.class );
-        if ( params.length != 3 )
+        final TypeLiteral<?>[] args = resolveTypeArguments( mediatorType, org.sonatype.inject.Mediator.class );
+        if ( args.length != 3 )
         {
             binder.addError( mediatorType + " has wrong number of type arguments" );
         }
@@ -187,7 +187,7 @@ public final class QualifiedTypeBinder
             final Mediator mediator = org.eclipse.sisu.inject.Legacy.adapt( newInstance( mediatorType ) );
             if ( null != mediator )
             {
-                mediate( Key.get( params[1], (Class) params[0].getRawType() ), mediator, params[2].getRawType() );
+                mediate( Key.get( args[1], (Class) args[0].getRawType() ), mediator, args[2].getRawType() );
             }
         }
     }
@@ -217,14 +217,14 @@ public final class QualifiedTypeBinder
      */
     private void bindProviderType( final Class<?> providerType )
     {
-        final TypeLiteral[] params = getSuperTypeParameters( providerType, javax.inject.Provider.class );
-        if ( params.length != 1 )
+        final TypeLiteral[] args = resolveTypeArguments( providerType, javax.inject.Provider.class );
+        if ( args.length != 1 )
         {
             binder.addError( providerType + " has wrong number of type arguments" );
         }
         else
         {
-            final Key key = getBindingKey( params[0], getBindingName( providerType ) );
+            final Key key = getBindingKey( args[0], getBindingName( providerType ) );
             final ScopedBindingBuilder sbb = binder.bind( key ).toProvider( providerType );
             if ( isEagerSingleton( providerType ) )
             {
@@ -305,15 +305,15 @@ public final class QualifiedTypeBinder
     }
 
     /**
-     * Resolves the type parameters of a super type based on the given concrete type.
+     * Resolves the type arguments of a super type based on the given concrete type.
      * 
      * @param type The concrete type
      * @param superType The generic super type
-     * @return Resolved super type parameters
+     * @return Resolved super type arguments
      */
-    private static TypeLiteral<?>[] getSuperTypeParameters( final Class<?> type, final Class<?> superType )
+    private static TypeLiteral<?>[] resolveTypeArguments( final Class<?> type, final Class<?> superType )
     {
-        return TypeParameters.get( TypeLiteral.get( type ).getSupertype( superType ) );
+        return TypeArguments.get( TypeLiteral.get( type ).getSupertype( superType ) );
     }
 
     private static <T> Key<T> getBindingKey( final TypeLiteral<T> bindingType, final Annotation qualifier )

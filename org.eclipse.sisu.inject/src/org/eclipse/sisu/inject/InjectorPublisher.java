@@ -129,7 +129,7 @@ public final class InjectorPublisher
         final Class<?> implementation = binding.acceptTargetVisitor( ImplementationVisitor.THIS );
         if ( null != implementation && superType.getRawType() != implementation )
         {
-            return TypeParameters.isAssignableFrom( superType, TypeLiteral.get( implementation ) );
+            return TypeArguments.isAssignableFrom( superType, TypeLiteral.get( implementation ) );
         }
         return false;
     }

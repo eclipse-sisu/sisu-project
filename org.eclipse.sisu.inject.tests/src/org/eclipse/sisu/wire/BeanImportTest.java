@@ -31,7 +31,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.Nullable;
-import org.eclipse.sisu.inject.TypeParameters;
+import org.eclipse.sisu.inject.TypeArguments;
 import org.eclipse.sisu.space.ClassSpace;
 import org.eclipse.sisu.space.URLClassSpace;
 
@@ -644,7 +644,7 @@ public class BeanImportTest
         assertEquals( LocatorWiring.class.getName(), injector.getBinding( Y.class ).getSource().toString() );
     }
 
-    public void testInvalidTypeParameters()
+    public void testInvalidTypeArguments()
     {
         try
         {
@@ -751,11 +751,11 @@ public class BeanImportTest
             (GenericInstance) injector.getInstance( Key.get( X.class, Names.named( "GI" ) ) );
 
         assertEquals( TypeLiteral.get( Integer.class ),
-                      TypeParameters.get( TypeLiteral.get( genericInstance.number.getClass() ).getSupertype( Z.class ),
+                      TypeArguments.get( TypeLiteral.get( genericInstance.number.getClass() ).getSupertype( Z.class ),
                                           0 ) );
 
         assertEquals( TypeLiteral.get( String.class ),
-                      TypeParameters.get( TypeLiteral.get( genericInstance.chars.getClass() ).getSupertype( Z.class ),
+                      TypeArguments.get( TypeLiteral.get( genericInstance.chars.getClass() ).getSupertype( Z.class ),
                                           0 ) );
 
         assertEquals( ZImpl.class, genericInstance.random.getClass() );

@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 
 import org.eclipse.sisu.inject.DeferredProvider;
 import org.eclipse.sisu.inject.Logs;
-import org.eclipse.sisu.inject.TypeParameters;
+import org.eclipse.sisu.inject.TypeArguments;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Binder;
@@ -200,7 +200,7 @@ final class DependencyAnalyzer
             final Class<?> clazz = key.getTypeLiteral().getRawType();
             if ( javax.inject.Provider.class == clazz || com.google.inject.Provider.class == clazz )
             {
-                requireKey( key.ofType( TypeParameters.get( key.getTypeLiteral(), 0 ) ) );
+                requireKey( key.ofType( TypeArguments.get( key.getTypeLiteral(), 0 ) ) );
             }
             else if ( !RESTRICTED_CLASSES.contains( clazz ) )
             {
@@ -215,7 +215,7 @@ final class DependencyAnalyzer
         if ( null == applyBinding )
         {
             applyBinding = Boolean.TRUE;
-            if ( TypeParameters.isConcrete( type ) && !type.toString().startsWith( "java" ) )
+            if ( TypeArguments.isConcrete( type ) && !type.toString().startsWith( "java" ) )
             {
                 try
                 {
@@ -281,7 +281,7 @@ final class DependencyAnalyzer
         if ( !analyzedTypes.containsKey( type ) )
         {
             final Class<?> clazz = type.getRawType();
-            if ( TypeParameters.isConcrete( clazz ) )
+            if ( TypeArguments.isConcrete( clazz ) )
             {
                 analyzeImplementation( type, false );
             }

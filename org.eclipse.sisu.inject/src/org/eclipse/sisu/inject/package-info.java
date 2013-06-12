@@ -31,8 +31,8 @@
  * <dd>Utility methods for dealing with {@link SoftReference} collections.
  * <dt>{@link Weak}
  * <dd>Utility methods for dealing with {@link WeakReference} collections.
- * <dt>{@link TypeParameters}
- * <dd>Utility methods for dealing with generic type parameters.
+ * <dt>{@link TypeArguments}
+ * <dd>Utility methods for dealing with generic type arguments.
  * </dl>
  */
 package org.eclipse.sisu.inject;

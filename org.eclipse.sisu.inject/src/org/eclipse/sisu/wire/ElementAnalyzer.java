@@ -24,7 +24,7 @@ import org.eclipse.sisu.inject.BeanLocator;
 import org.eclipse.sisu.inject.Logs;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.inject.RankingFunction;
-import org.eclipse.sisu.inject.TypeParameters;
+import org.eclipse.sisu.inject.TypeArguments;
 
 import com.google.inject.Binder;
 import com.google.inject.Binding;
@@ -270,7 +270,7 @@ final class ElementAnalyzer
         final Class<?> clazz = type.getRawType();
         if ( Map.class == clazz )
         {
-            final TypeLiteral<?>[] constraints = TypeParameters.get( type );
+            final TypeLiteral<?>[] constraints = TypeArguments.get( type );
             if ( constraints.length == 2 && String.class == constraints[1].getRawType() )
             {
                 binder.bind( key ).toInstance( new StringProperties( mergedProperties ) );

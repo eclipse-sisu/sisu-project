@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.sisu.wire;
 
-import org.eclipse.sisu.inject.TypeParameters;
+import org.eclipse.sisu.inject.TypeArguments;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
@@ -19,15 +19,15 @@ import com.google.inject.matcher.Matchers;
 import com.google.inject.spi.TypeConverter;
 
 /**
- * Abstract {@link TypeConverter} {@link Module} that automatically registers the converter based on the type parameter.
+ * Abstract {@link TypeConverter} {@link Module} that automatically registers the converter based on the type argument.
  */
 public abstract class AbstractTypeConverter<T>
     implements TypeConverter, Module
 {
     public final void configure( final Binder binder )
     {
-        // make sure we pick up the right super type parameter, i.e. Foo from AbstractTypeConverter<Foo>
+        // make sure we pick up the right super type argument, i.e. Foo from AbstractTypeConverter<Foo>
         final TypeLiteral<?> superType = TypeLiteral.get( getClass() ).getSupertype( AbstractTypeConverter.class );
-        binder.convertToTypes( Matchers.only( TypeParameters.get( superType, 0 ) ), this );
+        binder.convertToTypes( Matchers.only( TypeArguments.get( superType, 0 ) ), this );
     }
 }

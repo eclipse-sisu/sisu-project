@@ -77,7 +77,7 @@ public final class DefaultBeanLocator
                 unlock();
             }
         }
-        final boolean isImplicit = key.getAnnotationType() == null && TypeParameters.isImplicit( type );
+        final boolean isImplicit = key.getAnnotationType() == null && TypeArguments.isImplicit( type );
         return new LocatedBeans( key, bindings, isImplicit ? implicitBindings : null );
     }
 

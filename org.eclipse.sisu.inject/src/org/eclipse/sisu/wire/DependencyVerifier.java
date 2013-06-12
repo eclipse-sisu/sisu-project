@@ -11,7 +11,7 @@
 package org.eclipse.sisu.wire;
 
 import org.eclipse.sisu.inject.Logs;
-import org.eclipse.sisu.inject.TypeParameters;
+import org.eclipse.sisu.inject.TypeArguments;
 
 import com.google.inject.Binding;
 import com.google.inject.Key;
@@ -61,7 +61,7 @@ final class DependencyVerifier
 
     private static Boolean verifyImplementation( final TypeLiteral<?> type )
     {
-        if ( TypeParameters.isConcrete( type ) && !type.toString().startsWith( "java" ) )
+        if ( TypeArguments.isConcrete( type ) && !type.toString().startsWith( "java" ) )
         {
             try
             {

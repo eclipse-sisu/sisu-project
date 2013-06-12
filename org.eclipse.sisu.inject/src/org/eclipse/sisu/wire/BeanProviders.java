@@ -25,7 +25,7 @@ import javax.inject.Singleton;
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.Parameters;
 import org.eclipse.sisu.inject.BeanLocator;
-import org.eclipse.sisu.inject.TypeParameters;
+import org.eclipse.sisu.inject.TypeArguments;
 
 import com.google.inject.Injector;
 import com.google.inject.Key;
@@ -104,7 +104,7 @@ class AbstractBeans<K extends Annotation, V>
         isProvider = javax.inject.Provider.class == clazz || com.google.inject.Provider.class == clazz;
         if ( isProvider )
         {
-            this.key = key.ofType( TypeParameters.get( type, 0 ) );
+            this.key = key.ofType( TypeArguments.get( type, 0 ) );
         }
         else
         {
