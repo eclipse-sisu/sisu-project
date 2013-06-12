@@ -226,26 +226,26 @@ public final class CompositeBeanHelper
         final ConfigurationConverter converter = lookup.lookupConverterForType( rawPropertyType );
         if ( !( genericPropertyType instanceof Class<?> ) && converter instanceof ParameterizedConfigurationConverter )
         {
-            final Type[] paramTypes = getParameterTypes( genericPropertyType );
+            final Type[] propertyTypeArgs = getTypeArguments( genericPropertyType );
             return ( (ParameterizedConfigurationConverter) converter ).fromConfiguration( lookup, configuration,
-                                                                                          rawPropertyType, paramTypes,
-                                                                                          beanType, loader, evaluator,
-                                                                                          listener );
+                                                                                          rawPropertyType,
+                                                                                          propertyTypeArgs, beanType,
+                                                                                          loader, evaluator, listener );
         }
         return converter.fromConfiguration( lookup, configuration, rawPropertyType, beanType, loader, evaluator,
                                             listener );
     }
 
-    private static Type[] getParameterTypes( final Type type )
+    private static Type[] getTypeArguments( final Type type )
     {
         if ( type instanceof ParameterizedType )
         {
-            final Type[] argumentTypes = ( (ParameterizedType) type ).getActualTypeArguments();
-            for ( int i = 0; i < argumentTypes.length; i++ )
+            final Type[] typeArguments = ( (ParameterizedType) type ).getActualTypeArguments();
+            for ( int i = 0; i < typeArguments.length; i++ )
             {
-                argumentTypes[i] = expandType( argumentTypes[i] );
+                typeArguments[i] = expandType( typeArguments[i] );
             }
-            return argumentTypes;
+            return typeArguments;
         }
         if ( type instanceof GenericArrayType )
         {

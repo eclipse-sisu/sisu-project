@@ -48,7 +48,7 @@ public class CollectionConverter
     }
 
     public Object fromConfiguration( final ConverterLookup lookup, final PlexusConfiguration configuration,
-                                     final Class<?> type, final Type[] parameterTypes, final Class<?> enclosingType,
+                                     final Class<?> type, final Type[] typeArguments, final Class<?> enclosingType,
                                      final ClassLoader loader, final ExpressionEvaluator evaluator,
                                      final ConfigurationListener listener )
         throws ComponentConfigurationException
@@ -61,7 +61,7 @@ public class CollectionConverter
         try
         {
             final Collection<Object> elements;
-            final Class<?> elementType = findElementType( parameterTypes );
+            final Class<?> elementType = findElementType( typeArguments );
             if ( null == value )
             {
                 elements =
@@ -123,11 +123,11 @@ public class CollectionConverter
         return (Collection<Object>) impl;
     }
 
-    private static Class<?> findElementType( final Type[] parameterTypes )
+    private static Class<?> findElementType( final Type[] typeArguments )
     {
-        if ( null != parameterTypes && parameterTypes.length > 0 && parameterTypes[0] instanceof Class<?> )
+        if ( null != typeArguments && typeArguments.length > 0 && typeArguments[0] instanceof Class<?> )
         {
-            return (Class<?>) parameterTypes[0];
+            return (Class<?>) typeArguments[0];
         }
         return Object.class;
     }

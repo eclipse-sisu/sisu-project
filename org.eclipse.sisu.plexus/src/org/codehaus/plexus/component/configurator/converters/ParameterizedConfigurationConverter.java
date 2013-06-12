@@ -24,7 +24,7 @@ public interface ParameterizedConfigurationConverter
     extends ConfigurationConverter
 {
     Object fromConfiguration( ConverterLookup lookup, PlexusConfiguration configuration, Class<?> type,
-                              Type[] parameterTypes, Class<?> enclosingType, ClassLoader loader,
+                              Type[] typeArguments, Class<?> enclosingType, ClassLoader loader,
                               ExpressionEvaluator evaluator, ConfigurationListener listener )
         throws ComponentConfigurationException;
 }

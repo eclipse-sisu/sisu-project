@@ -28,7 +28,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.eclipse.sisu.bean.BeanProperties;
 import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.inject.Logs;
-import org.eclipse.sisu.inject.TypeParameters;
+import org.eclipse.sisu.inject.TypeArguments;
 
 import com.google.inject.Injector;
 import com.google.inject.Key;
@@ -116,15 +116,15 @@ public final class PlexusXmlBeanConverter
         }
         if ( Map.class.isAssignableFrom( rawType ) )
         {
-            return parseMap( parser, TypeParameters.get( toType.getSupertype( Map.class ), 1 ) );
+            return parseMap( parser, TypeArguments.get( toType.getSupertype( Map.class ), 1 ) );
         }
         if ( Collection.class.isAssignableFrom( rawType ) )
         {
-            return parseCollection( parser, TypeParameters.get( toType.getSupertype( Collection.class ), 0 ) );
+            return parseCollection( parser, TypeArguments.get( toType.getSupertype( Collection.class ), 0 ) );
         }
         if ( rawType.isArray() )
         {
-            return parseArray( parser, TypeParameters.get( toType, 0 ) );
+            return parseArray( parser, TypeArguments.get( toType, 0 ) );
         }
         return parseBean( parser, toType, rawType );
     }
