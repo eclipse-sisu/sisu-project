@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
-import java.lang.annotation.Annotation;
-
 import org.codehaus.plexus.component.annotations.Component;
 import org.eclipse.sisu.inject.BeanDescription;
 import org.eclipse.sisu.inject.DeferredClass;
@@ -49,9 +47,9 @@ public final class PlexusTypeBinder
     // Public methods
     // ----------------------------------------------------------------------
 
-    public void hear( final Annotation qualifier, final Class<?> qualifiedType, final Object source )
+    public void hear( final Class<?> qualifiedType, final Object source )
     {
-        qualifiedTypeBinder.hear( qualifier, qualifiedType, source );
+        qualifiedTypeBinder.hear( qualifiedType, source );
     }
 
     @SuppressWarnings( { "unchecked", "rawtypes" } )
