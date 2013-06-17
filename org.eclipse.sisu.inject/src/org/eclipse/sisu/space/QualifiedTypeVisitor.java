@@ -130,7 +130,7 @@ public final class QualifiedTypeVisitor
                 source = i <= 0 ? path : path.substring( 0, i );
             }
 
-            listener.hear( null, space.loadClass( clazzName.replace( '/', '.' ) ), source );
+            listener.hear( space.loadClass( clazzName.replace( '/', '.' ) ), source );
         }
     }
 }

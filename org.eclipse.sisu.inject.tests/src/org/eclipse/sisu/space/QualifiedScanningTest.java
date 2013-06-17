@@ -11,7 +11,6 @@
 package org.eclipse.sisu.space;
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.net.MalformedURLException;
@@ -91,7 +90,7 @@ public class QualifiedScanningTest
 
         final Set<Object> sources = new HashSet<Object>();
 
-        public void hear( final Annotation qualifier, final Class<?> clazz, final Object source )
+        public void hear( final Class<?> clazz, final Object source )
         {
             clazzes.add( clazz );
             sources.add( source );

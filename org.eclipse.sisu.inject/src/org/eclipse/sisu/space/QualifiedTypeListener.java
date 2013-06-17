@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.sisu.space;
 
-import java.lang.annotation.Annotation;
-
 import javax.inject.Qualifier;
 
 import com.google.inject.Binder;
@@ -24,10 +22,9 @@ public interface QualifiedTypeListener
     /**
      * Invoked when the {@link QualifiedTypeVisitor} finds a qualified type.
      * 
-     * @param qualifier The qualifier (unused)
      * @param qualifiedType The qualified type
      * @param source The source of this type
      * @see Binder#withSource(Object)
      */
-    void hear( @Deprecated Annotation qualifier, Class<?> qualifiedType, Object source );
+    void hear( Class<?> qualifiedType, Object source );
 }

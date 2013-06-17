@@ -99,7 +99,7 @@ public final class SisuIndex
         }
     }
 
-    public void hear( final Annotation qualifier, final Class<?> qualifiedType, final Object source )
+    public void hear( final Class<?> qualifiedType, final Object source )
     {
         addClassToIndex( SisuIndex.NAMED, qualifiedType.getName() );
     }

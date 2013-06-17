@@ -332,10 +332,10 @@ public class QualifiedTypesTest
         {
             final QualifiedTypeListener listener = new QualifiedTypeBinder( binder );
 
-            listener.hear( null, Ambiguous.class, null );
-            listener.hear( null, RawMediator.class, null );
-            listener.hear( null, AbstractNamedMediator.class, null );
-            listener.hear( null, AbstractModule.class, null );
+            listener.hear( Ambiguous.class, null );
+            listener.hear( RawMediator.class, null );
+            listener.hear( AbstractNamedMediator.class, null );
+            listener.hear( AbstractModule.class, null );
         }
     }
 

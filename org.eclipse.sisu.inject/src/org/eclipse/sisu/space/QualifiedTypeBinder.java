@@ -92,7 +92,7 @@ public final class QualifiedTypeBinder
     // ----------------------------------------------------------------------
 
     @SuppressWarnings( "deprecation" )
-    public void hear( final Annotation qualifier, final Class qualifiedType, final Object source )
+    public void hear( final Class qualifiedType, final Object source )
     {
         if ( currentSource != source )
         {
