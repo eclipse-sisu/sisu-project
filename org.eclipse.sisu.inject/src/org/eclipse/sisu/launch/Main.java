@@ -108,7 +108,7 @@ public final class Main
         return args.clone();
     }
 
-    static BeanScanning selectScanning( final Map<?, ?> properties )
+    public static BeanScanning selectScanning( final Map<?, ?> properties )
     {
         final String option = (String) properties.get( BeanScanning.class.getName() );
         if ( null == option || option.length() == 0 )

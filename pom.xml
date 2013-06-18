@@ -64,6 +64,7 @@
 
   <modules>
     <module>org.eclipse.sisu.inject</module>
+    <module>org.eclipse.sisu.inject.extender</module>
     <module>org.eclipse.sisu.inject.tests</module>
   </modules>
 
@@ -269,7 +270,7 @@
         </property>
       </activation>
       <build>
-        <!-- ignore enforcer goals that aren't covered by m2e -->
+        <!-- ignore various mojos that aren't covered by m2e -->
         <pluginManagement>
           <plugins>
             <plugin>
@@ -287,6 +288,15 @@
                         <goals><goal>enforce</goal></goals>
                       </pluginExecutionFilter>
                       <action><ignore /></action>
+                    </pluginExecution>
+                    <pluginExecution>
+                      <pluginExecutionFilter>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <versionRange>[1.0,)</versionRange>
+                        <goals><goal>attach-artifact</goal></goals>
+                      </pluginExecutionFilter>
+                      <action><ignore></ignore></action>
                     </pluginExecution>
                     <pluginExecution>
                       <pluginExecutionFilter>

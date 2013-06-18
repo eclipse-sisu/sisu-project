@@ -15,8 +15,6 @@
  * <dl>
  * <dt>{@link Main}
  * <dd>Classic main entry point that creates a static {@link com.google.inject.Injector} for the current class-path.
- * <dt>{@link SisuActivator}
- * <dd>OSGi {@link org.osgi.framework.BundleActivator} that maintains a dynamic injector graph as bundles come and go.
  * <dt>{@link InjectedTestCase}
  * <dd>JUnit {@link junit.framework.TestCase} that automatically binds and injects itself.
  * <dt>{@link InjectedTest}

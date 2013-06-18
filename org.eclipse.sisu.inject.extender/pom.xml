@@ -20,46 +20,12 @@
     <version>0.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.eclipse.sisu.inject</artifactId>
+  <artifactId>org.eclipse.sisu.inject.extender</artifactId>
   <packaging>eclipse-plugin</packaging>
-
-  <!--
-   | Minimum requirements
-  -->
-  <dependencies>
-    <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-      <version>3.0</version>
-    </dependency>
-  </dependencies>
 
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.8</version>
-        <executions>
-          <execution>
-            <id>attach-build-target</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>attach-artifact</goal>
-            </goals>
-            <configuration>
-              <artifacts>
-                <artifact>
-                  <file>build.target</file>
-                  <classifier>build</classifier>
-                  <type>target</type>
-                </artifact>
-              </artifacts>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>animal-sniffer-maven-plugin</artifactId>
