@@ -342,16 +342,16 @@ public class TypeArgumentsTest
         // === array types ===
 
         assertTrue( TypeArguments.isAssignableFrom( TypeLiteral.get( Types.arrayOf( Object.class ) ),
-                                                     TypeLiteral.get( Types.arrayOf( String.class ) ) ) );
+                                                    TypeLiteral.get( Types.arrayOf( String.class ) ) ) );
         assertTrue( TypeArguments.isAssignableFrom( TypeLiteral.get( Types.arrayOf( Number.class ) ),
-                                                     TypeLiteral.get( Types.arrayOf( Float.class ) ) ) );
+                                                    TypeLiteral.get( Types.arrayOf( Float.class ) ) ) );
 
         // === mismatched types ===
 
         assertFalse( TypeArguments.isAssignableFrom( TypeLiteral.get( Types.arrayOf( Object.class ) ),
-                                                      TypeLiteral.get( Types.listOf( Object.class ) ) ) );
+                                                     TypeLiteral.get( Types.listOf( Object.class ) ) ) );
         assertFalse( TypeArguments.isAssignableFrom( TypeLiteral.get( Types.listOf( Object.class ) ),
-                                                      TypeLiteral.get( Types.arrayOf( Object.class ) ) ) );
+                                                     TypeLiteral.get( Types.arrayOf( Object.class ) ) ) );
 
         // === corner case ===
 
@@ -394,7 +394,7 @@ public class TypeArgumentsTest
         assertFalse( TypeArguments.isAssignableFrom( TypeLiteral.get( callableT ), TypeLiteral.get( Callable.class ) ) );
 
         assertFalse( TypeArguments.isAssignableFrom( TypeLiteral.get( callableT ),
-                                                      TypeLiteral.get( CallableNumberImpl.class ) ) );
+                                                     TypeLiteral.get( CallableNumberImpl.class ) ) );
     }
 
     public void testIsConcrete()

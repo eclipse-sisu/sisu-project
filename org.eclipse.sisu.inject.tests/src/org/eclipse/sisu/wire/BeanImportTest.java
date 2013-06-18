@@ -752,11 +752,10 @@ public class BeanImportTest
 
         assertEquals( TypeLiteral.get( Integer.class ),
                       TypeArguments.get( TypeLiteral.get( genericInstance.number.getClass() ).getSupertype( Z.class ),
-                                          0 ) );
+                                         0 ) );
 
         assertEquals( TypeLiteral.get( String.class ),
-                      TypeArguments.get( TypeLiteral.get( genericInstance.chars.getClass() ).getSupertype( Z.class ),
-                                          0 ) );
+                      TypeArguments.get( TypeLiteral.get( genericInstance.chars.getClass() ).getSupertype( Z.class ), 0 ) );
 
         assertEquals( ZImpl.class, genericInstance.random.getClass() );
     }
