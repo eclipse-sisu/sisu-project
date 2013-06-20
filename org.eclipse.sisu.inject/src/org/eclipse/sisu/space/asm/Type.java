@@ -39,7 +39,7 @@ import java.lang.reflect.Method;
  * @author Eric Bruneton
  * @author Chris Nokleberg
  */
-public class Type {
+public final class Type {
 
     /**
      * The sort of the <tt>void</tt> type. See {@link #getSort getSort}.

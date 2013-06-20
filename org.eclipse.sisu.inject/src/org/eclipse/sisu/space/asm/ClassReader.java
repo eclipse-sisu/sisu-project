@@ -41,7 +41,7 @@ import java.io.InputStream;
  * @author Eric Bruneton
  * @author Eugene Kuleshov
  */
-public class ClassReader {
+public final class ClassReader {
 
     /**
      * True to enable signatures support.

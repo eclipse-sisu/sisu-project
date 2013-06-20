@@ -37,7 +37,7 @@ package org.eclipse.sisu.space.asm;
  * @author Eric Bruneton
  * @author Eugene Kuleshov
  */
-class MethodWriter extends MethodVisitor {
+final class MethodWriter extends MethodVisitor {
 
     /**
      * Pseudo access flag used to denote constructors.

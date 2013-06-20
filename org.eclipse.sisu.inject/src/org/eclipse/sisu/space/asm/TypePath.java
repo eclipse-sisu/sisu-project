@@ -36,7 +36,7 @@ package org.eclipse.sisu.space.asm;
  * 
  * @author Eric Bruneton
  */
-public class TypePath {
+public final class TypePath {
 
     /**
      * A type path step that steps into the element type of an array type. See
