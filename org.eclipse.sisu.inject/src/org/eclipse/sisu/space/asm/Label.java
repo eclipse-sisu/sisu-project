@@ -38,7 +38,7 @@ package org.eclipse.sisu.space.asm;
  * 
  * @author Eric Bruneton
  */
-final class Label {
+public final class Label {
 
     /**
      * Indicates if this label is only used for debug attributes. Such a label
