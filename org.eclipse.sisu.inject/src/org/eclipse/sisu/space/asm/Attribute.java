@@ -35,7 +35,7 @@ package org.eclipse.sisu.space.asm;
  * @author Eric Bruneton
  * @author Eugene Kuleshov
  */
-public class Attribute {
+final class Attribute {
 
     /**
      * The type of this attribute.

@@ -34,7 +34,7 @@ package org.eclipse.sisu.space.asm;
  * 
  * @author Eric Bruneton
  */
-class Handler {
+final class Handler {
 
     /**
      * Beginning of the exception handler's scope (inclusive).

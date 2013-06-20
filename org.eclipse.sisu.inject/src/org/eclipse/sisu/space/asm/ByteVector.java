@@ -35,7 +35,7 @@ package org.eclipse.sisu.space.asm;
  * 
  * @author Eric Bruneton
  */
-public class ByteVector {
+final class ByteVector {
 
     /**
      * The content of this vector.
