@@ -11,7 +11,7 @@
 package org.eclipse.sisu.plexus;
 
 import org.codehaus.plexus.component.annotations.Component;
-import org.eclipse.sisu.inject.BeanDescription;
+import org.eclipse.sisu.inject.DescribedBinding;
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.space.QualifiedTypeBinder;
 import org.eclipse.sisu.space.QualifiedTypeListener;
@@ -101,7 +101,7 @@ public final class PlexusTypeBinder
     {
         if ( null != description && description.length() > 0 )
         {
-            return binder.withSource( new PlexusBeanDescription( source, description ) );
+            return binder.withSource( new PlexusDescribedBinding( source, description ) );
         }
         return binder.withSource( source );
     }
@@ -110,14 +110,14 @@ public final class PlexusTypeBinder
     // Implementation types
     // ----------------------------------------------------------------------
 
-    private static final class PlexusBeanDescription
-        implements BeanDescription
+    private static final class PlexusDescribedBinding
+        implements DescribedBinding
     {
         private final Object source;
 
         private final String description;
 
-        PlexusBeanDescription( final Object source, final String description )
+        PlexusDescribedBinding( final Object source, final String description )
         {
             this.source = source;
             this.description = description;
