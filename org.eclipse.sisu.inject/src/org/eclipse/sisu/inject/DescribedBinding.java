@@ -17,7 +17,7 @@ import com.google.inject.Binder;
  * 
  * @see Binder#withSource(Object)
  */
-public interface BeanDescription
+public interface DescribedBinding
 {
     /**
      * @return Human-readable description

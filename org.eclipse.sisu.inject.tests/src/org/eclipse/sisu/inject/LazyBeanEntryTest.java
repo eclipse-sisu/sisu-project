@@ -53,7 +53,7 @@ public class LazyBeanEntryTest
             {
                 bind( key1 ).to( DescribedBean.class ).in( Scopes.SINGLETON );
 
-                binder().withSource( new BeanDescription()
+                binder().withSource( new DescribedBinding()
                 {
                     public String getDescription()
                     {
@@ -82,7 +82,7 @@ public class LazyBeanEntryTest
         assertEquals( 42, bean1.getRank() );
 
         assertEquals( "Another test", bean2.getDescription() );
-        assertTrue( bean2.getSource() instanceof BeanDescription );
+        assertTrue( bean2.getSource() instanceof DescribedBinding );
         assertEquals( BeanImpl.class, bean2.getImplementationClass() );
         assertEquals( -24, bean2.getRank() );
 

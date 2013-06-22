@@ -17,7 +17,7 @@
  * <dd>Finds and tracks bean implementations annotated with {@link javax.inject.Qualifier} annotations.
  * <dt>{@link MutableBeanLocator}
  * <dd>Mutable {@link BeanLocator} that distributes bindings from zero or more {@link BindingPublisher}s.
- * <dt>{@link BeanDescription}
+ * <dt>{@link DescribedBinding}
  * <dd>Source location mixin used to supply descriptions to the {@link BeanLocator}.
  * <dt>{@link HiddenBinding}
  * <dd>Source location mixin used to hide bindings from the {@link BeanLocator}.
