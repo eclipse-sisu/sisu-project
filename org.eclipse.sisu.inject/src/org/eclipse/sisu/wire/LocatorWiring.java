@@ -23,7 +23,6 @@ import javax.inject.Qualifier;
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.inject.BeanLocator;
 import org.eclipse.sisu.inject.HiddenBinding;
-import org.eclipse.sisu.inject.Implicit;
 import org.eclipse.sisu.inject.TypeArguments;
 
 import com.google.inject.Binder;
@@ -229,21 +228,21 @@ final class LocatorWiring
             if ( TypeArguments.isConcrete( clazz ) )
             {
                 final Member ctor = InjectionPoint.forConstructorOf( type ).getMember();
-                binder.bind( Key.get( clazz, Implicit.class ) ).toConstructor( (Constructor) ctor );
+                binder.bind( TypeArguments.implicitKey( clazz ) ).toConstructor( (Constructor) ctor );
             }
             else
             {
                 final ImplementedBy implementedBy = clazz.getAnnotation( ImplementedBy.class );
                 if ( null != implementedBy )
                 {
-                    binder.bind( Key.get( clazz, Implicit.class ) ).to( (Class) implementedBy.value() );
+                    binder.bind( TypeArguments.implicitKey( clazz ) ).to( (Class) implementedBy.value() );
                 }
                 else
                 {
                     final ProvidedBy providedBy = clazz.getAnnotation( ProvidedBy.class );
                     if ( null != providedBy )
                     {
-                        binder.bind( Key.get( clazz, Implicit.class ) ).toProvider( (Class) providedBy.value() );
+                        binder.bind( TypeArguments.implicitKey( clazz ) ).toProvider( (Class) providedBy.value() );
                     }
                 }
             }

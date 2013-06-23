@@ -44,7 +44,7 @@ final class ImplicitBindings
     @SuppressWarnings( { "unchecked", "rawtypes" } )
     public <T> Binding<T> get( final TypeLiteral<T> type )
     {
-        final Key implicitKey = Key.get( type.getRawType(), Implicit.class );
+        final Key implicitKey = TypeArguments.implicitKey( type.getRawType() );
         for ( final BindingPublisher p : publishers )
         {
             if ( p instanceof InjectorPublisher )

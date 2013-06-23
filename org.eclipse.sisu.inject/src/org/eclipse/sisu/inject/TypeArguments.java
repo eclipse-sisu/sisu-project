@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.sisu.inject;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
@@ -17,7 +19,10 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 
+import javax.inject.Qualifier;
+
 import com.google.inject.ImplementedBy;
+import com.google.inject.Key;
 import com.google.inject.ProvidedBy;
 import com.google.inject.TypeLiteral;
 
@@ -184,6 +189,27 @@ public final class TypeArguments
     {
         return isConcrete( clazz ) || clazz.isAnnotationPresent( ImplementedBy.class )
             || clazz.isAnnotationPresent( ProvidedBy.class );
+    }
+
+    /**
+     * Creates a special binding key for the given implicit type.
+     * 
+     * @param clazz The implicit type
+     * @return Implicit binding key
+     */
+    public static <T> Key<T> implicitKey( final Class<T> clazz )
+    {
+        return Key.get( clazz, Implicit.class );
+    }
+
+    // ----------------------------------------------------------------------
+    // Implementation types
+    // ----------------------------------------------------------------------
+
+    @Qualifier
+    @Retention( RetentionPolicy.RUNTIME )
+    private static @interface Implicit
+    {
     }
 
     // ----------------------------------------------------------------------
