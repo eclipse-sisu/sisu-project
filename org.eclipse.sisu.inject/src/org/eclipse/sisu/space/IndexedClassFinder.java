@@ -14,12 +14,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.List;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.sisu.inject.Logs;
 
@@ -29,6 +30,12 @@ import org.eclipse.sisu.inject.Logs;
 public class IndexedClassFinder
     implements ClassFinder
 {
+    // ----------------------------------------------------------------------
+    // Constants
+    // ----------------------------------------------------------------------
+
+    private static Pattern LINE_PATTERN = Pattern.compile( "\\s*([^#\\s]+).*" );
+
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -60,10 +67,8 @@ public class IndexedClassFinder
     // Public methods
     // ----------------------------------------------------------------------
 
-    public Enumeration<URL> findClasses( final ClassSpace space )
+    public Iterable<String> indexedNames( final ClassSpace space )
     {
-        final List<URL> components = new ArrayList<URL>();
-        final Set<String> visited = new HashSet<String>();
         final Enumeration<URL> indices;
 
         if ( null == indexPath )
@@ -75,6 +80,7 @@ public class IndexedClassFinder
             indices = space.findEntries( indexPath, indexName, false );
         }
 
+        final Set<String> names = new LinkedHashSet<String>();
         while ( indices.hasMoreElements() )
         {
             final URL url = indices.nextElement();
@@ -84,16 +90,13 @@ public class IndexedClassFinder
                     new BufferedReader( new InputStreamReader( Streams.open( url ), "UTF-8" ) );
                 try
                 {
-                    // each index file contains a list of classes with that qualifier, one per line
+                    // each index file contains list of classes, one per line with optional comment
                     for ( String line = reader.readLine(); line != null; line = reader.readLine() )
                     {
-                        if ( visited.add( line ) )
+                        final Matcher m = LINE_PATTERN.matcher( line );
+                        if ( m.matches() )
                         {
-                            final URL clazz = space.getResource( line.replace( '.', '/' ) + ".class" );
-                            if ( null != clazz )
-                            {
-                                components.add( clazz );
-                            }
+                            names.add( m.group( 1 ) );
                         }
                     }
                 }
@@ -107,6 +110,36 @@ public class IndexedClassFinder
                 Logs.warn( "Problem reading: {}", url, e );
             }
         }
-        return Collections.enumeration( components );
+        return names;
+    }
+
+    public Enumeration<URL> findClasses( final ClassSpace space )
+    {
+        final Iterator<String> itr = indexedNames( space ).iterator();
+
+        return new Enumeration<URL>()
+        {
+            private URL nextURL;
+
+            public boolean hasMoreElements()
+            {
+                while ( null == nextURL && itr.hasNext() )
+                {
+                    nextURL = space.getResource( itr.next().replace( '.', '/' ) + ".class" );
+                }
+                return null != nextURL;
+            }
+
+            public URL nextElement()
+            {
+                if ( hasMoreElements() )
+                {
+                    final URL tempURL = nextURL;
+                    nextURL = null;
+                    return tempURL;
+                }
+                throw new NoSuchElementException();
+            }
+        };
     }
 }
