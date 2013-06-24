@@ -90,7 +90,7 @@ public class IndexedClassFinder
                     new BufferedReader( new InputStreamReader( Streams.open( url ), "UTF-8" ) );
                 try
                 {
-                    // each index file contains list of classes, one per line with optional comment
+                    // each index contains a list of class names, one per line with optional comment
                     for ( String line = reader.readLine(); line != null; line = reader.readLine() )
                     {
                         final Matcher m = LINE_PATTERN.matcher( line );
