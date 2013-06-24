@@ -79,7 +79,7 @@ public final class QualifiedTypeVisitor
         return true;
     }
 
-    public void enter( final ClassSpace _space )
+    public void enterSpace( final ClassSpace _space )
     {
         space = _space;
         source = null;
@@ -99,7 +99,7 @@ public final class QualifiedTypeVisitor
         return this;
     }
 
-    public void enter( final int modifiers, final String name, final String _extends, final String[] _implements )
+    public void enterClass( final int modifiers, final String name, final String _extends, final String[] _implements )
     {
         if ( ( modifiers & NON_INSTANTIABLE ) == 0 )
         {
@@ -116,7 +116,7 @@ public final class QualifiedTypeVisitor
         return null;
     }
 
-    public void leave()
+    public void leaveClass()
     {
         if ( qualified )
         {
@@ -132,5 +132,10 @@ public final class QualifiedTypeVisitor
 
             listener.hear( space.loadClass( clazzName.replace( '/', '.' ) ), source );
         }
+    }
+
+    public void leaveSpace()
+    {
+        // no-op
     }
 }

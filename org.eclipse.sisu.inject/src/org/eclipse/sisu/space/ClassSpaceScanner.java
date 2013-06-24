@@ -64,7 +64,7 @@ public final class ClassSpaceScanner
      */
     public void accept( final ClassSpaceVisitor visitor )
     {
-        visitor.enter( space );
+        visitor.enterSpace( space );
 
         for ( final Enumeration<URL> result = finder.findClasses( space ); result.hasMoreElements(); )
         {
@@ -76,7 +76,7 @@ public final class ClassSpaceScanner
             }
         }
 
-        visitor.leave();
+        visitor.leaveSpace();
     }
 
     /**
@@ -131,7 +131,7 @@ public final class ClassSpaceScanner
             public void visit( final int version, final int access, final String name, final String signature,
                                final String superName, final String[] interfaces )
             {
-                _cv.enter( access, name, superName, interfaces );
+                _cv.enterClass( access, name, superName, interfaces );
             }
 
             @Override
@@ -143,7 +143,7 @@ public final class ClassSpaceScanner
                 {
                     return null;
                 }
-                _av.enter();
+                _av.enterAnnotation();
                 return new org.eclipse.sisu.space.asm.AnnotationVisitor( Opcodes.ASM4 )
                 {
                     @Override
@@ -155,7 +155,7 @@ public final class ClassSpaceScanner
                     @Override
                     public void visitEnd()
                     {
-                        _av.leave();
+                        _av.leaveAnnotation();
                     }
                 };
             }
@@ -163,7 +163,7 @@ public final class ClassSpaceScanner
             @Override
             public void visitEnd()
             {
-                _cv.leave();
+                _cv.leaveClass();
             }
         };
     }

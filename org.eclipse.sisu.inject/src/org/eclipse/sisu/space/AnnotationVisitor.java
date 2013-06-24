@@ -18,7 +18,7 @@ public interface AnnotationVisitor
     /**
      * Enters the annotation declaration.
      */
-    void enter();
+    void enterAnnotation();
 
     /**
      * Visits an element of the declared annotation.
@@ -31,5 +31,5 @@ public interface AnnotationVisitor
     /**
      * Leaves the annotation declaration.
      */
-    void leave();
+    void leaveAnnotation();
 }

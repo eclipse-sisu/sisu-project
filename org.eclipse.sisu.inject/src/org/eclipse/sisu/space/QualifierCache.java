@@ -39,7 +39,7 @@ final class QualifierCache
     // Public methods
     // ----------------------------------------------------------------------
 
-    public void enter( final int modifiers, final String name, final String _extends, final String[] _implements )
+    public void enterClass( final int modifiers, final String name, final String _extends, final String[] _implements )
     {
         // no-op
     }
@@ -50,7 +50,7 @@ final class QualifierCache
         return null;
     }
 
-    public void leave()
+    public void leaveClass()
     {
         // no-op
     }

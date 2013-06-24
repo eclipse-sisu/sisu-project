@@ -118,9 +118,9 @@ public class QualifiedScanningTest
         final ClassSpaceVisitor visitor = new QualifiedTypeVisitor( listener );
         new ClassSpaceScanner( space ).accept( new ClassSpaceVisitor()
         {
-            public void enter( final ClassSpace _space )
+            public void enterSpace( final ClassSpace _space )
             {
-                visitor.enter( _space );
+                visitor.enterSpace( _space );
             }
 
             public ClassVisitor visitClass( final URL url )
@@ -132,9 +132,9 @@ public class QualifiedScanningTest
                 return visitor.visitClass( url );
             }
 
-            public void leave()
+            public void leaveSpace()
             {
-                visitor.leave();
+                visitor.leaveSpace();
             }
         } );
 
@@ -272,36 +272,38 @@ public class QualifiedScanningTest
 
         final QualifiedTypeVisitor visitor = new QualifiedTypeVisitor( listener );
 
-        visitor.enter( new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } ) );
+        visitor.enterSpace( new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } ) );
 
         assertEquals( 0, listener.sources.size() );
 
         visitor.visitClass( new URL( "file:target/classes/java/lang/Object.class" ) );
-        visitor.enter( 0, "java/lang/Object", null, null );
+        visitor.enterClass( 0, "java/lang/Object", null, null );
         visitor.visitAnnotation( "Ljavax/inject/Named;" );
-        visitor.leave();
+        visitor.leaveClass();
 
         assertEquals( 1, listener.sources.size() );
         assertTrue( listener.sources.contains( "target/classes/" ) );
 
         visitor.visitClass( new URL( "jar:file:bar.jar!/java/lang/String.class" ) );
-        visitor.enter( 0, "java/lang/String", null, null );
+        visitor.enterClass( 0, "java/lang/String", null, null );
         visitor.visitAnnotation( "Ljavax/inject/Named;" );
-        visitor.leave();
+        visitor.leaveClass();
 
         assertEquals( 2, listener.sources.size() );
         assertTrue( listener.sources.contains( "target/classes/" ) );
         assertTrue( listener.sources.contains( "file:bar.jar!/" ) );
 
         visitor.visitClass( new URL( "file:some/obfuscated/location" ) );
-        visitor.enter( 0, "java/lang/Integer", null, null );
+        visitor.enterClass( 0, "java/lang/Integer", null, null );
         visitor.visitAnnotation( "Ljavax/inject/Named;" );
-        visitor.leave();
+        visitor.leaveClass();
 
         assertEquals( 3, listener.sources.size() );
         assertTrue( listener.sources.contains( "target/classes/" ) );
         assertTrue( listener.sources.contains( "file:bar.jar!/" ) );
         assertTrue( listener.sources.contains( "some/obfuscated/location" ) );
+
+        visitor.leaveSpace();
     }
 
     public void testOptionalLogging()

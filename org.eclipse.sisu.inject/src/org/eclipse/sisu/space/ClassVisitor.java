@@ -30,7 +30,7 @@ public interface ClassVisitor
      * @param _extends Extends this superclass
      * @param _implements Implements these interfaces
      */
-    void enter( int modifiers, String name, String _extends, String[] _implements );
+    void enterClass( int modifiers, String name, String _extends, String[] _implements );
 
     /**
      * Visits an annotation declared on the class.
@@ -43,5 +43,5 @@ public interface ClassVisitor
     /**
      * Leaves the class definition.
      */
-    void leave();
+    void leaveClass();
 }

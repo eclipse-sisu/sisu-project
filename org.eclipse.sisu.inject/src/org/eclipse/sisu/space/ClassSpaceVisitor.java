@@ -22,7 +22,7 @@ public interface ClassSpaceVisitor
      * 
      * @param space The class space
      */
-    void enter( ClassSpace space );
+    void enterSpace( ClassSpace space );
 
     /**
      * Visits a class resource in the class space.
@@ -35,5 +35,5 @@ public interface ClassSpaceVisitor
     /**
      * Leaves the class space.
      */
-    void leave();
+    void leaveSpace();
 }
