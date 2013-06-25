@@ -116,12 +116,15 @@ public final class QualifiedTypeVisitor
         return null;
     }
 
+    public void disqualify()
+    {
+        qualified = false;
+    }
+
     public void leaveClass()
     {
         if ( qualified )
         {
-            qualified = false; // we might be called twice (once per-class, once per-space)
-
             // compressed record of class location
             final String path = location.getPath();
             if ( null == source || !path.startsWith( source ) )
