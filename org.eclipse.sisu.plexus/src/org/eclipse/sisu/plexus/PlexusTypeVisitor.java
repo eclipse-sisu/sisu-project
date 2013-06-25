@@ -87,7 +87,7 @@ public final class PlexusTypeVisitor
     {
         if ( ( modifiers & NON_INSTANTIABLE ) == 0 )
         {
-            implementation = name.replace( '/', '.' );
+            implementation = name;
         }
         qualifiedTypeVisitor.enterClass( modifiers, name, _extends, _implements );
     }
@@ -108,15 +108,12 @@ public final class PlexusTypeVisitor
             final Component component = componentVisitor.getComponent( space );
             if ( null != component )
             {
-                final LoadedClass<?> clazz = new LoadedClass<Object>( space.loadClass( implementation ) );
-                plexusTypeListener.hear( component, clazz, source );
+                final Class<?> clazz = space.loadClass( implementation.replace( '/', '.' ) );
+                plexusTypeListener.hear( component, new LoadedClass<Object>( clazz ), source );
+                qualifiedTypeVisitor.disqualify();
             }
-            else
-            {
-                qualifiedTypeVisitor.leaveClass();
-            }
-            implementation = null;
         }
+        qualifiedTypeVisitor.leaveClass();
     }
 
     public void leaveSpace()
