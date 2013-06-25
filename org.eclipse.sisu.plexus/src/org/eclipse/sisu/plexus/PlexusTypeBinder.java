@@ -11,8 +11,8 @@
 package org.eclipse.sisu.plexus;
 
 import org.codehaus.plexus.component.annotations.Component;
-import org.eclipse.sisu.inject.DescribedBinding;
 import org.eclipse.sisu.inject.DeferredClass;
+import org.eclipse.sisu.inject.DescribedBinding;
 import org.eclipse.sisu.space.QualifiedTypeBinder;
 import org.eclipse.sisu.space.QualifiedTypeListener;
 

@@ -63,11 +63,11 @@ public final class PlexusTypeVisitor
     // Public methods
     // ----------------------------------------------------------------------
 
-    public void enter( final ClassSpace _space )
+    public void enterSpace( final ClassSpace _space )
     {
         space = _space;
         source = _space.toString();
-        qualifiedTypeVisitor.enter( _space );
+        qualifiedTypeVisitor.enterSpace( _space );
 
         if ( Logs.TRACE_ENABLED )
         {
@@ -83,13 +83,13 @@ public final class PlexusTypeVisitor
         return this;
     }
 
-    public void enter( final int modifiers, final String name, final String _extends, final String[] _implements )
+    public void enterClass( final int modifiers, final String name, final String _extends, final String[] _implements )
     {
         if ( ( modifiers & NON_INSTANTIABLE ) == 0 )
         {
             implementation = name.replace( '/', '.' );
         }
-        qualifiedTypeVisitor.enter( modifiers, name, _extends, _implements );
+        qualifiedTypeVisitor.enterClass( modifiers, name, _extends, _implements );
     }
 
     public AnnotationVisitor visitAnnotation( final String desc )
@@ -101,7 +101,7 @@ public final class PlexusTypeVisitor
         return qualifiedTypeVisitor.visitAnnotation( desc );
     }
 
-    public void leave()
+    public void leaveClass()
     {
         if ( null != implementation )
         {
@@ -113,10 +113,15 @@ public final class PlexusTypeVisitor
             }
             else
             {
-                qualifiedTypeVisitor.leave();
+                qualifiedTypeVisitor.leaveClass();
             }
             implementation = null;
         }
+    }
+
+    public void leaveSpace()
+    {
+        qualifiedTypeVisitor.leaveSpace();
     }
 
     // ----------------------------------------------------------------------
@@ -142,7 +147,7 @@ public final class PlexusTypeVisitor
             description = "";
         }
 
-        public void enter()
+        public void enterAnnotation()
         {
             // no-op; maintain results outside of individual annotation scan
         }
@@ -167,7 +172,7 @@ public final class PlexusTypeVisitor
             }
         }
 
-        public void leave()
+        public void leaveAnnotation()
         {
             // no-op; maintain results outside of individual annotation scan
         }
