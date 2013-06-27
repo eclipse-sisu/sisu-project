@@ -85,6 +85,7 @@ final class BeanCache<Q extends Annotation, T>
                     return oldBean;
                 }
                 n = createMap( oldBean, newBean = new LazyBeanEntry( qualifier, binding, rank ) );
+                mutated = true;
             }
             else
             {
@@ -201,7 +202,7 @@ final class BeanCache<Q extends Annotation, T>
 
     private static Map createMap( final LazyBeanEntry one, final LazyBeanEntry two )
     {
-        final Map map = new IdentityHashMap();
+        final Map map = new IdentityHashMap( 10 );
         map.put( one.binding, one );
         map.put( two.binding, two );
         return map;
