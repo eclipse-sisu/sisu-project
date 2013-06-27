@@ -20,7 +20,7 @@ public interface ClassVisitor
     /**
      * Non-instantiable classes: INTERFACE | ABSTRACT | ANNOTATION | ENUM | SYNTHETIC.
      */
-    static final int NON_INSTANTIABLE = Modifier.INTERFACE | Modifier.ABSTRACT | 0x00007000;
+    int NON_INSTANTIABLE = Modifier.INTERFACE | Modifier.ABSTRACT | 0x00007000;
 
     /**
      * Enters the class definition.

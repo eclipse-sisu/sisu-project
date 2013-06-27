@@ -34,7 +34,7 @@ public class IndexedClassFinder
     // Constants
     // ----------------------------------------------------------------------
 
-    private static Pattern LINE_PATTERN = Pattern.compile( "\\s*([^#\\s]+).*" );
+    private static final Pattern LINE_PATTERN = Pattern.compile( "\\s*([^#\\s]+).*" );
 
     // ----------------------------------------------------------------------
     // Implementation fields
