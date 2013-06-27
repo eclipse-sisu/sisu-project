@@ -21,7 +21,6 @@ import javax.annotation.processing.Completion;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
-import javax.inject.Named;
 import javax.inject.Qualifier;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.AnnotationMirror;
@@ -41,10 +40,22 @@ public final class SisuIndexAPT6
     implements Processor
 {
     // ----------------------------------------------------------------------
+    // Constants
+    // ----------------------------------------------------------------------
+
+    private static final String QUALIFIERS = "qualifiers";
+
+    private static final String ALL = "all";
+
+    private static final String NONE = "none";
+
+    // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
     private ProcessingEnvironment environment;
+
+    private String qualifiers;
 
     // ----------------------------------------------------------------------
     // Public methods
@@ -53,6 +64,7 @@ public final class SisuIndexAPT6
     public void init( final ProcessingEnvironment _environment )
     {
         environment = _environment;
+        qualifiers = _environment.getOptions().get( QUALIFIERS );
     }
 
     public boolean process( final Set<? extends TypeElement> annotations, final RoundEnvironment round )
@@ -88,12 +100,20 @@ public final class SisuIndexAPT6
 
     public Set<String> getSupportedAnnotationTypes()
     {
-        return Collections.singleton( Named.class.getName() );
+        if ( ALL.equalsIgnoreCase( qualifiers ) )
+        {
+            return Collections.singleton( "*" );
+        }
+        if ( NONE.equalsIgnoreCase( qualifiers ) )
+        {
+            return Collections.emptySet();
+        }
+        return Collections.singleton( SisuIndex.NAMED );
     }
 
     public Set<String> getSupportedOptions()
     {
-        return Collections.emptySet();
+        return Collections.singleton( QUALIFIERS );
     }
 
     public SourceVersion getSupportedSourceVersion()
