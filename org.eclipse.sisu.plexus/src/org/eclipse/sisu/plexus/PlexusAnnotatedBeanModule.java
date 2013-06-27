@@ -15,8 +15,8 @@ import java.util.Map;
 import org.codehaus.plexus.component.annotations.Component;
 import org.eclipse.sisu.BeanScanning;
 import org.eclipse.sisu.space.ClassSpace;
-import org.eclipse.sisu.space.ClassSpaceVisitor;
 import org.eclipse.sisu.space.SpaceModule;
+import org.eclipse.sisu.space.SpaceVisitor;
 
 import com.google.inject.Binder;
 
@@ -91,7 +91,7 @@ public final class PlexusAnnotatedBeanModule
         }
 
         @Override
-        protected ClassSpaceVisitor visitor( final Binder binder )
+        protected SpaceVisitor visitor( final Binder binder )
         {
             return new PlexusTypeVisitor( new PlexusTypeBinder( binder ) );
         }

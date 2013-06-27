@@ -16,16 +16,16 @@ import org.codehaus.plexus.component.annotations.Component;
 import org.eclipse.sisu.inject.Logs;
 import org.eclipse.sisu.space.AnnotationVisitor;
 import org.eclipse.sisu.space.ClassSpace;
-import org.eclipse.sisu.space.ClassSpaceVisitor;
 import org.eclipse.sisu.space.ClassVisitor;
 import org.eclipse.sisu.space.LoadedClass;
 import org.eclipse.sisu.space.QualifiedTypeVisitor;
+import org.eclipse.sisu.space.SpaceVisitor;
 
 /**
- * {@link ClassSpaceVisitor} that reports Plexus bean classes annotated with @{@link Component}.
+ * {@link SpaceVisitor} that reports Plexus bean classes annotated with @{@link Component}.
  */
 public final class PlexusTypeVisitor
-    implements ClassSpaceVisitor, ClassVisitor
+    implements SpaceVisitor, ClassVisitor
 {
     // ----------------------------------------------------------------------
     // Constants
