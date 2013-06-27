@@ -15,7 +15,7 @@ import java.net.URL;
 /**
  * Something that can visit {@link ClassSpace}s.
  */
-public interface ClassSpaceVisitor
+public interface SpaceVisitor
 {
     /**
      * Enters the class space.

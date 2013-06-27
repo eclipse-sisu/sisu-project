@@ -17,12 +17,12 @@
  * <dd>Represents a source of classes and resources that can be scanned.
  * <dt>{@link SpaceModule}
  * <dd>Scans a {@link ClassSpace} for beans and adds any qualified bindings.
- * <dt>{@link ClassSpaceVisitor}
+ * <dt>{@link SpaceVisitor}
  * <dd>Something that can visit {@link ClassSpace}s.
  * <dt>{@link QualifiedTypeListener}
  * <dd>Listens out for types annotated with {@link javax.inject.Qualifier} annotations.
  * <dt>{@link QualifiedTypeVisitor}
- * <dd>{@link ClassSpaceVisitor} that reports types with {@link javax.inject.Qualifier} annotations.
+ * <dd>{@link SpaceVisitor} that reports types with {@link javax.inject.Qualifier} annotations.
  * <dt>{@link SisuIndex}
  * <dd>Command-line indexing tool.
  * <dt>{@link SisuIndexAPT6}

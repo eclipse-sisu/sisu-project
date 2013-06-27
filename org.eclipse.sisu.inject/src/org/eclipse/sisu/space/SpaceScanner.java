@@ -20,9 +20,9 @@ import org.eclipse.sisu.space.asm.Opcodes;
 import org.eclipse.sisu.space.asm.Type;
 
 /**
- * Makes a {@link ClassSpaceVisitor} visit a {@link ClassSpace}; can be directed by an optional {@link ClassFinder}.
+ * Makes a {@link SpaceVisitor} visit a {@link ClassSpace}; can be directed by an optional {@link ClassFinder}.
  */
-public final class ClassSpaceScanner
+public final class SpaceScanner
 {
     // ----------------------------------------------------------------------
     // Constants
@@ -42,13 +42,13 @@ public final class ClassSpaceScanner
     // Constructors
     // ----------------------------------------------------------------------
 
-    public ClassSpaceScanner( final ClassFinder finder, final ClassSpace space )
+    public SpaceScanner( final ClassFinder finder, final ClassSpace space )
     {
         this.finder = finder;
         this.space = space;
     }
 
-    public ClassSpaceScanner( final ClassSpace space )
+    public SpaceScanner( final ClassSpace space )
     {
         this( new DefaultClassFinder(), space );
     }
@@ -58,11 +58,11 @@ public final class ClassSpaceScanner
     // ----------------------------------------------------------------------
 
     /**
-     * Makes the given {@link ClassSpaceVisitor} visit the {@link ClassSpace} of this scanner.
+     * Makes the given {@link SpaceVisitor} visit the {@link ClassSpace} of this scanner.
      * 
      * @param visitor The class space visitor
      */
-    public void accept( final ClassSpaceVisitor visitor )
+    public void accept( final SpaceVisitor visitor )
     {
         visitor.enterSpace( space );
 

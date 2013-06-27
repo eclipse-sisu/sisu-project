@@ -90,7 +90,7 @@ public final class SisuIndex
     {
         try
         {
-            new ClassSpaceScanner( space ).accept( new QualifiedTypeVisitor( this ) );
+            new SpaceScanner( space ).accept( new QualifiedTypeVisitor( this ) );
         }
         finally
         {

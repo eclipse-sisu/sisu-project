@@ -99,7 +99,7 @@ public class SpaceModule
         }
         else if ( null != finder )
         {
-            new ClassSpaceScanner( finder, space ).accept( visitor( binder ) );
+            new SpaceScanner( finder, space ).accept( visitor( binder ) );
         }
     }
 
@@ -107,7 +107,7 @@ public class SpaceModule
     // Customizable methods
     // ----------------------------------------------------------------------
 
-    protected ClassSpaceVisitor visitor( final Binder binder )
+    protected SpaceVisitor visitor( final Binder binder )
     {
         return new QualifiedTypeVisitor( new QualifiedTypeBinder( binder ) );
     }
@@ -131,7 +131,7 @@ public class SpaceModule
             {
                 public void configure( final Binder recorder )
                 {
-                    new ClassSpaceScanner( finder, space ).accept( visitor( recorder ) );
+                    new SpaceScanner( finder, space ).accept( visitor( recorder ) );
                 }
             } );
             elements = RecordedElements.cache.putIfAbsent( key, recording );

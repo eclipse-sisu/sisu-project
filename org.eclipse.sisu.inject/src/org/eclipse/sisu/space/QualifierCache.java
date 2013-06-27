@@ -74,7 +74,7 @@ final class QualifierCache
             isQualified = false;
 
             final String name = desc.substring( 1, desc.length() - 1 );
-            ClassSpaceScanner.accept( this, space.getResource( name + ".class" ) );
+            SpaceScanner.accept( this, space.getResource( name + ".class" ) );
             cachedResults.put( desc, Boolean.valueOf( isQualified ) );
 
             return isQualified;

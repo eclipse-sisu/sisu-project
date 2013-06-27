@@ -53,6 +53,6 @@ public class BrokenScanningExample
             }
         };
 
-        new ClassSpaceScanner( brokenResourceSpace ).accept( new QualifiedTypeVisitor( null ) );
+        new SpaceScanner( brokenResourceSpace ).accept( new QualifiedTypeVisitor( null ) );
     }
 }

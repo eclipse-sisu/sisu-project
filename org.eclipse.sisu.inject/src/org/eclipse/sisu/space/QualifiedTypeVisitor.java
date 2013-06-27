@@ -19,10 +19,10 @@ import org.eclipse.sisu.inject.Logs;
 import com.google.inject.Module;
 
 /**
- * {@link ClassSpaceVisitor} that reports types annotated with {@link Qualifier} annotations.
+ * {@link SpaceVisitor} that reports types annotated with {@link Qualifier} annotations.
  */
 public final class QualifiedTypeVisitor
-    implements ClassSpaceVisitor, ClassVisitor
+    implements SpaceVisitor, ClassVisitor
 {
     // ----------------------------------------------------------------------
     // Implementation fields

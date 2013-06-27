@@ -102,7 +102,7 @@ public class QualifiedScanningTest
         final TestListener listener = new TestListener();
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );
-        new ClassSpaceScanner( space ).accept( new QualifiedTypeVisitor( listener ) );
+        new SpaceScanner( space ).accept( new QualifiedTypeVisitor( listener ) );
         assertEquals( 35, listener.clazzes.size() );
 
         assertTrue( listener.clazzes.contains( C.class ) );
@@ -115,8 +115,8 @@ public class QualifiedScanningTest
         final TestListener listener = new TestListener();
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );
-        final ClassSpaceVisitor visitor = new QualifiedTypeVisitor( listener );
-        new ClassSpaceScanner( space ).accept( new ClassSpaceVisitor()
+        final SpaceVisitor visitor = new QualifiedTypeVisitor( listener );
+        new SpaceScanner( space ).accept( new SpaceVisitor()
         {
             public void enterSpace( final ClassSpace _space )
             {
@@ -149,8 +149,8 @@ public class QualifiedScanningTest
         final TestListener listener = new TestListener();
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );
-        final ClassSpaceVisitor visitor = new QualifiedTypeVisitor( listener );
-        new ClassSpaceScanner( new ClassFinder()
+        final SpaceVisitor visitor = new QualifiedTypeVisitor( listener );
+        new SpaceScanner( new ClassFinder()
         {
             public Enumeration<URL> findClasses( final ClassSpace space2 )
             {
@@ -169,8 +169,8 @@ public class QualifiedScanningTest
         final TestListener listener = new TestListener();
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );
-        final ClassSpaceVisitor visitor = new QualifiedTypeVisitor( listener );
-        new ClassSpaceScanner( new SisuIndexClassFinder( false ), space ).accept( visitor );
+        final SpaceVisitor visitor = new QualifiedTypeVisitor( listener );
+        new SpaceScanner( new SisuIndexClassFinder( false ), space ).accept( visitor );
 
         // we deliberately use a partial index
 
@@ -228,7 +228,7 @@ public class QualifiedScanningTest
             }
         };
 
-        new ClassSpaceScanner( brokenResourceSpace ).accept( new QualifiedTypeVisitor( null ) );
+        new SpaceScanner( brokenResourceSpace ).accept( new QualifiedTypeVisitor( null ) );
 
         final ClassSpace brokenLoadSpace = new ClassSpace()
         {
@@ -258,9 +258,9 @@ public class QualifiedScanningTest
             }
         };
 
-        new ClassSpaceScanner( brokenLoadSpace ).accept( new QualifiedTypeVisitor( null ) );
+        new SpaceScanner( brokenLoadSpace ).accept( new QualifiedTypeVisitor( null ) );
 
-        ClassSpaceScanner.accept( null, null );
+        SpaceScanner.accept( null, null );
 
         assertFalse( new SisuIndexClassFinder( false ).findClasses( brokenResourceSpace ).hasMoreElements() );
     }
@@ -349,7 +349,7 @@ public class QualifiedScanningTest
         final ClassSpace space = new URLClassSpace( loader, urls );
 
         final TestListener listener = new TestListener();
-        new ClassSpaceScanner( space ).accept( new QualifiedTypeVisitor( listener ) );
+        new SpaceScanner( space ).accept( new QualifiedTypeVisitor( listener ) );
         assertEquals( 0, listener.clazzes.size() );
     }
 }
