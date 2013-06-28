@@ -18,7 +18,9 @@ import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
 /**
- * {@link Qualifier} of parameters passed into Sisu, for example:
+ * {@link Qualifier} of parameters passed into Sisu.
+ * <p>
+ * For example:
  * 
  * <pre>
  * &#064;Inject
