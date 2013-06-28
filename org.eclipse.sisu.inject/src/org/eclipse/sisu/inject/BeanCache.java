@@ -85,7 +85,6 @@ final class BeanCache<Q extends Annotation, T>
                     return oldBean;
                 }
                 n = createMap( oldBean, newBean = new LazyBeanEntry( qualifier, binding, rank ) );
-                mutated = true;
             }
             else
             {
@@ -102,6 +101,11 @@ final class BeanCache<Q extends Annotation, T>
             }
         }
         while ( !compareAndSet( o, n ) );
+
+        if ( n instanceof IdentityHashMap )
+        {
+            mutated = true; // entry was upgraded to map, enable readCache
+        }
 
         return newBean;
     }
