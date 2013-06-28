@@ -237,13 +237,14 @@
              | bootclasspath required by Sun's JVM
             -->
             <bootclasspath>${sun.boot.class.path}</bootclasspath>
-            <excludePackageNames>*.internal</excludePackageNames>
+            <excludePackageNames>*.internal,*.asm</excludePackageNames>
             <additionalparam>
               -quiet
               -federate JDK http://download.oracle.com/javase/6/docs/api/index.html?
               -federationxml JDK http://doclava.googlecode.com/svn/static/api/openjdk-6.xml
               -federate Guice http://google-guice.googlecode.com/svn/trunk/javadoc/
               -hdf project.name "${project.name}"
+              -templatedir ${basedir}/../doclava-style
               -d ${project.build.directory}/apidocs
             </additionalparam>
             <useStandardDocletOptions>false</useStandardDocletOptions>

@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.sonatype.inject;
 
+/**
+ * @deprecated Replaced by {@link org.eclipse.sisu.BeanScanning org.eclipse.sisu.BeanScanning}
+ */
 @Deprecated
 public enum BeanScanning
 {

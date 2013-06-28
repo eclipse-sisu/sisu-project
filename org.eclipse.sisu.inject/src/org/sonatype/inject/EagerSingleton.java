@@ -15,6 +15,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * @deprecated Replaced by {@link org.eclipse.sisu.EagerSingleton org.eclipse.sisu.EagerSingleton}
+ */
 @Deprecated
 @Target( value = { ElementType.TYPE } )
 @Retention( RetentionPolicy.RUNTIME )

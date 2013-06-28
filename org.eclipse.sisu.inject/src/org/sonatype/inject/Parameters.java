@@ -17,6 +17,9 @@ import java.lang.annotation.Target;
 
 import javax.inject.Qualifier;
 
+/**
+ * @deprecated Replaced by {@link org.eclipse.sisu.Parameters org.eclipse.sisu.Parameters}
+ */
 @Deprecated
 @Target( value = { ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD } )
 @Retention( RetentionPolicy.RUNTIME )

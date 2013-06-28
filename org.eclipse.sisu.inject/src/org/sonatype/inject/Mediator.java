@@ -12,6 +12,9 @@ package org.sonatype.inject;
 
 import java.lang.annotation.Annotation;
 
+/**
+ * @deprecated Replaced by {@link org.eclipse.sisu.Mediator org.eclipse.sisu.Mediator}
+ */
 @Deprecated
 public interface Mediator<Q extends Annotation, T, W>
 {

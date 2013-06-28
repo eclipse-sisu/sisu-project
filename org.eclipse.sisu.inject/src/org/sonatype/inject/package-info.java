@@ -9,6 +9,7 @@
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
 /**
+ * Deprecated; new applications should use {@link org.eclipse.sisu}.
  */
-package org.eclipse.sisu.space;
+package org.sonatype.inject;
 
