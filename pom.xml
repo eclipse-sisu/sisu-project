@@ -91,8 +91,39 @@
     <pluginManagement>
       <plugins>
         <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>animal-sniffer-maven-plugin</artifactId>
+          <version>1.9</version>
+          <configuration>
+            <signature>
+              <groupId>org.codehaus.mojo.signature</groupId>
+              <artifactId>java15</artifactId>
+              <version>1.0</version>
+            </signature>
+          </configuration>
+          <executions>
+            <execution>
+              <id>check-java5</id>
+              <phase>package</phase>
+              <goals>
+                <goal>check</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>target-platform-configuration</artifactId>
+          <version>${tycho-version}</version>
+        </plugin>
+        <plugin>
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-compiler-plugin</artifactId>
+          <version>${tycho-version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-maven-plugin</artifactId>
           <version>${tycho-version}</version>
         </plugin>
         <plugin>
@@ -107,18 +138,16 @@
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
-          <artifactId>target-platform-configuration</artifactId>
-          <version>${tycho-version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.eclipse.tycho</groupId>
-          <artifactId>tycho-maven-plugin</artifactId>
-          <version>${tycho-version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-source-plugin</artifactId>
           <version>${tycho-version}</version>
+          <executions>
+            <execution>
+              <id>plugin-source</id>
+              <goals>
+                <goal>plugin-source</goal>
+              </goals>
+            </execution>
+          </executions>
         </plugin>
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
@@ -160,6 +189,37 @@
           </configuration>
         </plugin>
         <plugin>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>2.9</version>
+          <configuration>
+            <docletArtifact>
+              <groupId>com.google.doclava</groupId>
+              <artifactId>doclava</artifactId>
+              <version>1.0.5</version>
+            </docletArtifact>
+            <doclet>com.google.doclava.Doclava</doclet>
+            <!--
+             | bootclasspath required by Sun's JVM
+            -->
+            <bootclasspath>${sun.boot.class.path}</bootclasspath>
+            <excludePackageNames>*.internal</excludePackageNames>
+            <additionalparam>
+              -quiet
+              -federate JDK http://download.oracle.com/javase/6/docs/api/index.html?
+              -federationxml JDK http://doclava.googlecode.com/svn/static/api/openjdk-6.xml
+              -federate Guice http://google-guice.googlecode.com/svn/trunk/javadoc/
+              -hdf project.name "${project.name}"
+              -templatedir ${basedir}/../doclava-style
+              -d ${project.build.directory}/apidocs
+            </additionalparam>
+            <useStandardDocletOptions>false</useStandardDocletOptions>
+            <!--
+             | Apple's JVM sometimes requires more memory
+            -->
+            <additionalJOption>-J-Xmx1024m</additionalJOption>
+          </configuration>
+        </plugin>
+        <plugin>
           <artifactId>maven-site-plugin</artifactId>
           <version>3.3</version>
         </plugin>
@@ -176,7 +236,7 @@
         </property>
       </activation>
       <build>
-        <!-- ignore enforcer goals that aren't covered by m2e -->
+        <!-- ignore various mojos that aren't covered by m2e -->
         <pluginManagement>
           <plugins>
             <plugin>
