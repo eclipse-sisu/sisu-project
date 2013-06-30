@@ -11,7 +11,6 @@
 package org.eclipse.sisu.wire;
 
 import java.util.Arrays;
-import java.util.List;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
@@ -25,7 +24,7 @@ public final class MergedModule
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final List<Module> modules;
+    private final Iterable<Module> modules;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -36,7 +35,7 @@ public final class MergedModule
         this.modules = Arrays.asList( modules );
     }
 
-    public MergedModule( final List<Module> modules )
+    public MergedModule( final Iterable<Module> modules )
     {
         this.modules = modules;
     }

@@ -38,7 +38,7 @@ import com.google.inject.spi.InjectionPoint;
  * Adds {@link BeanLocator}-backed bindings for non-local bean dependencies.
  */
 @SuppressWarnings( { "unchecked", "rawtypes" } )
-final class LocatorWiring
+public final class LocatorWiring
     implements Wiring
 {
     // ----------------------------------------------------------------------
@@ -64,7 +64,7 @@ final class LocatorWiring
     // Constructors
     // ----------------------------------------------------------------------
 
-    LocatorWiring( final Binder binder )
+    public LocatorWiring( final Binder binder )
     {
         this.binder = binder.withSource( HIDDEN_SOURCE );
     }

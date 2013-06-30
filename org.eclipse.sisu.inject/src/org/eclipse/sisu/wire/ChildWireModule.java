@@ -11,7 +11,6 @@
 package org.eclipse.sisu.wire;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.eclipse.sisu.inject.DefaultBeanLocator;
 
@@ -40,7 +39,7 @@ public class ChildWireModule
         this( parent, Arrays.asList( modules ) );
     }
 
-    public ChildWireModule( final Injector parent, final List<Module> modules )
+    public ChildWireModule( final Injector parent, final Iterable<Module> modules )
     {
         super( modules );
         this.parent = parent;

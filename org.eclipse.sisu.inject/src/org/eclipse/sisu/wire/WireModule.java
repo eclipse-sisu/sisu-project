@@ -11,7 +11,6 @@
 package org.eclipse.sisu.wire;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.eclipse.sisu.inject.BeanLocator;
 
@@ -30,7 +29,7 @@ public class WireModule
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final List<Module> modules;
+    private final Iterable<Module> modules;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -41,7 +40,7 @@ public class WireModule
         this( Arrays.asList( modules ) );
     }
 
-    public WireModule( final List<Module> modules )
+    public WireModule( final Iterable<Module> modules )
     {
         this.modules = modules;
     }
@@ -51,6 +50,14 @@ public class WireModule
     // ----------------------------------------------------------------------
 
     public void configure( final Binder binder )
+    {
+        wireElements( binder );
+
+        binder.install( new FileTypeConverter() );
+        binder.install( new URLTypeConverter() );
+    }
+
+    public final void wireElements( final Binder binder )
     {
         final ElementAnalyzer analyzer = getAnalyzer( binder );
         for ( final Module m : modules )
@@ -69,9 +76,6 @@ public class WireModule
 
     protected Wiring wiring( final Binder binder )
     {
-        binder.install( new FileTypeConverter() );
-        binder.install( new URLTypeConverter() );
-
         return new LocatorWiring( binder );
     }
 
