@@ -11,10 +11,12 @@
 package org.eclipse.sisu.wire;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.sisu.inject.BeanLocator;
 
 import com.google.inject.Binder;
+import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.spi.Element;
 import com.google.inject.spi.Elements;
@@ -49,15 +51,36 @@ public class WireModule
     // Public methods
     // ----------------------------------------------------------------------
 
-    public void configure( final Binder binder )
+    public final void configure( final Binder binder )
     {
         wireElements( binder );
-
-        binder.install( new FileTypeConverter() );
-        binder.install( new URLTypeConverter() );
     }
 
-    public final void wireElements( final Binder binder )
+    // ----------------------------------------------------------------------
+    // Customizable methods
+    // ----------------------------------------------------------------------
+
+    protected Wiring wiring( final Binder binder )
+    {
+        binder.install( new FileTypeConverter() );
+        binder.install( new URLTypeConverter() );
+
+        return new LocatorWiring( binder );
+    }
+
+    /**
+     * @param binder
+     */
+    protected List<Wiring> extensions( final Binder binder )
+    {
+        return null;
+    }
+
+    // ----------------------------------------------------------------------
+    // Implementation methods
+    // ----------------------------------------------------------------------
+
+    private void wireElements( final Binder binder )
     {
         final ElementAnalyzer analyzer = getAnalyzer( binder );
         for ( final Module m : modules )
@@ -67,21 +90,32 @@ public class WireModule
                 e.acceptVisitor( analyzer );
             }
         }
-        analyzer.apply( wiring( binder ) );
+
+        final Wiring defaultWiring = wiring( binder );
+        final List<Wiring> customWiring = extensions( binder );
+        if ( null == customWiring || customWiring.isEmpty() )
+        {
+            analyzer.apply( defaultWiring );
+        }
+        else
+        {
+            analyzer.apply( new Wiring()
+            {
+                public boolean wire( final Key<?> key )
+                {
+                    for ( final Wiring w : customWiring )
+                    {
+                        final boolean wired = w.wire( key );
+                        if ( wired )
+                        {
+                            return true;
+                        }
+                    }
+                    return defaultWiring.wire( key );
+                }
+            } );
+        }
     }
-
-    // ----------------------------------------------------------------------
-    // Customizable methods
-    // ----------------------------------------------------------------------
-
-    protected Wiring wiring( final Binder binder )
-    {
-        return new LocatorWiring( binder );
-    }
-
-    // ----------------------------------------------------------------------
-    // Implementation methods
-    // ----------------------------------------------------------------------
 
     ElementAnalyzer getAnalyzer( final Binder binder )
     {

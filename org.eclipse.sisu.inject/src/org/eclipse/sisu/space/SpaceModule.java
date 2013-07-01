@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.sisu.space;
 
+import java.net.URL;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -42,9 +43,9 @@ public class SpaceModule
 
     private final boolean caching;
 
-    final ClassSpace space;
+    private final ClassSpace space;
 
-    final ClassFinder finder;
+    private final ClassFinder finder;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -99,7 +100,7 @@ public class SpaceModule
         }
         else if ( null != finder )
         {
-            new SpaceScanner( finder, space ).accept( visitor( binder ) );
+            scanForElements( binder );
         }
     }
 
@@ -112,11 +113,67 @@ public class SpaceModule
         return new QualifiedTypeVisitor( new QualifiedTypeBinder( binder ) );
     }
 
+    /**
+     * @param binder
+     */
+    protected List<SpaceVisitor> extensions( final Binder binder )
+    {
+        return null;
+    }
+
     // ----------------------------------------------------------------------
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    private final void recordAndReplayElements( final Binder binder )
+    void scanForElements( final Binder binder )
+    {
+        final SpaceScanner scanner = new SpaceScanner( finder, space );
+
+        final SpaceVisitor defaultVisitor = visitor( binder );
+        final List<SpaceVisitor> customVisitors = extensions( binder );
+        if ( null == customVisitors || customVisitors.isEmpty() )
+        {
+            scanner.accept( defaultVisitor );
+        }
+        else
+        {
+            scanner.accept( new SpaceVisitor()
+            {
+                public void enterSpace( final ClassSpace _space )
+                {
+                    for ( final SpaceVisitor v : customVisitors )
+                    {
+                        v.enterSpace( _space );
+                    }
+                    defaultVisitor.enterSpace( _space );
+                }
+
+                public ClassVisitor visitClass( final URL url )
+                {
+                    for ( final SpaceVisitor v : customVisitors )
+                    {
+                        final ClassVisitor visited = v.visitClass( url );
+                        if ( null != visited )
+                        {
+                            return visited;
+                        }
+                    }
+                    return defaultVisitor.visitClass( url );
+                }
+
+                public void leaveSpace()
+                {
+                    for ( final SpaceVisitor v : customVisitors )
+                    {
+                        v.leaveSpace();
+                    }
+                    defaultVisitor.leaveSpace();
+                }
+            } );
+        }
+    }
+
+    private void recordAndReplayElements( final Binder binder )
     {
         boolean alreadyUsed = true;
 
@@ -131,7 +188,7 @@ public class SpaceModule
             {
                 public void configure( final Binder recorder )
                 {
-                    new SpaceScanner( finder, space ).accept( visitor( recorder ) );
+                    scanForElements( recorder );
                 }
             } );
             elements = RecordedElements.cache.putIfAbsent( key, recording );
