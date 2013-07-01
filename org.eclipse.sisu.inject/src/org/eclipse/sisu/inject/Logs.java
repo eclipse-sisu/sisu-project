@@ -24,7 +24,7 @@ import com.google.inject.spi.Elements;
 /**
  * Utility methods for dealing with container logging and recovery.
  * <p>
- * Set <b>-Dorg.eclipse.sisu.log=console</b> to force logs to the console.
+ * Set <b>-Dsisu.debug</b> to send detailed tracing to the console.
  */
 public final class Logs
 {
@@ -39,8 +39,8 @@ public final class Logs
         try
         {
             newLine = System.getProperty( "line.separator", "\n" );
-            final String sink = System.getProperty( "org.eclipse.sisu.log" );
-            toConsole = "console".equalsIgnoreCase( sink );
+            final String debug = System.getProperty( "sisu.debug", "false" );
+            toConsole = "".equals( debug ) || "true".equalsIgnoreCase( debug );
         }
         catch ( final RuntimeException e )
         {
