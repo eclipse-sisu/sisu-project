@@ -11,12 +11,10 @@
 package org.eclipse.sisu.wire;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.eclipse.sisu.inject.BeanLocator;
 
 import com.google.inject.Binder;
-import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.spi.Element;
 import com.google.inject.spi.Elements;
@@ -24,7 +22,7 @@ import com.google.inject.spi.Elements;
 /**
  * Guice {@link Module} that automatically adds {@link BeanLocator}-backed bindings for non-local bean dependencies.
  */
-public class WireModule
+public final class WireModule
     implements Module
 {
     // ----------------------------------------------------------------------
@@ -32,6 +30,8 @@ public class WireModule
     // ----------------------------------------------------------------------
 
     private final Iterable<Module> modules;
+
+    private Strategy strategy = Strategy.DEFAULT;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -51,71 +51,39 @@ public class WireModule
     // Public methods
     // ----------------------------------------------------------------------
 
-    public final void configure( final Binder binder )
+    public Module with( final Strategy _strategy )
     {
-        wireElements( binder );
+        strategy = _strategy;
+        return this;
     }
 
-    // ----------------------------------------------------------------------
-    // Customizable methods
-    // ----------------------------------------------------------------------
-
-    protected Wiring wiring( final Binder binder )
+    public void configure( final Binder binder )
     {
-        binder.install( new FileTypeConverter() );
-        binder.install( new URLTypeConverter() );
-
-        return new LocatorWiring( binder );
-    }
-
-    /**
-     * @param binder
-     */
-    protected List<Wiring> extensions( final Binder binder )
-    {
-        return null;
-    }
-
-    // ----------------------------------------------------------------------
-    // Implementation methods
-    // ----------------------------------------------------------------------
-
-    private void wireElements( final Binder binder )
-    {
-        final ElementAnalyzer analyzer = getAnalyzer( binder );
+        final ElementAnalyzer analyzer = new ElementAnalyzer( binder );
         for ( final Element e : Elements.getElements( modules ) )
         {
             e.acceptVisitor( analyzer );
         }
-
-        final Wiring defaultWiring = wiring( binder );
-        final List<Wiring> customWiring = extensions( binder );
-        if ( null == customWiring || customWiring.isEmpty() )
-        {
-            analyzer.apply( defaultWiring );
-        }
-        else
-        {
-            analyzer.apply( new Wiring()
-            {
-                public boolean wire( final Key<?> key )
-                {
-                    for ( final Wiring w : customWiring )
-                    {
-                        final boolean wired = w.wire( key );
-                        if ( wired )
-                        {
-                            return true;
-                        }
-                    }
-                    return defaultWiring.wire( key );
-                }
-            } );
-        }
+        analyzer.apply( strategy.wiring( binder ) );
     }
 
-    ElementAnalyzer getAnalyzer( final Binder binder )
+    // ----------------------------------------------------------------------
+    // Public types
+    // ----------------------------------------------------------------------
+
+    public interface Strategy
     {
-        return new ElementAnalyzer( binder );
+        Wiring wiring( Binder binder );
+
+        Strategy DEFAULT = new Strategy()
+        {
+            public Wiring wiring( final Binder binder )
+            {
+                new FileTypeConverter().configure( binder );
+                new URLTypeConverter().configure( binder );
+
+                return new LocatorWiring( binder );
+            }
+        };
     }
 }

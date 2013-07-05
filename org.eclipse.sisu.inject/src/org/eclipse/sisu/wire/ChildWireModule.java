@@ -13,22 +13,29 @@ package org.eclipse.sisu.wire;
 import java.util.Arrays;
 
 import org.eclipse.sisu.inject.DefaultBeanLocator;
+import org.eclipse.sisu.wire.WireModule.Strategy;
 
 import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.google.inject.spi.Element;
+import com.google.inject.spi.Elements;
 
 /**
  * Child {@link WireModule} that avoids wiring dependencies that already exist in a parent {@link Injector}.
  */
-public class ChildWireModule
-    extends WireModule
+public final class ChildWireModule
+    implements Module
 {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    final Injector parent;
+    private final Injector parent;
+
+    private final Iterable<Module> modules;
+
+    private Strategy strategy = Strategy.DEFAULT;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -41,26 +48,37 @@ public class ChildWireModule
 
     public ChildWireModule( final Injector parent, final Iterable<Module> modules )
     {
-        super( modules );
+        this.modules = modules;
         this.parent = parent;
     }
 
     // ----------------------------------------------------------------------
-    // Implementation methods
+    // Public methods
     // ----------------------------------------------------------------------
 
-    @Override
-    ElementAnalyzer getAnalyzer( final Binder binder )
+    public Module with( final Strategy _strategy )
+    {
+        strategy = _strategy;
+        return this;
+    }
+
+    public void configure( final Binder binder )
     {
         // make sure we're added to locator as early as possible
         binder.requestStaticInjection( DefaultBeanLocator.class );
 
         // ignore any inherited bindings/dependencies
-        final ElementAnalyzer analyzer = super.getAnalyzer( binder );
+        final ElementAnalyzer analyzer = new ElementAnalyzer( binder );
         for ( Injector i = parent; i != null; i = i.getParent() )
         {
             analyzer.ignoreKeys( i.getAllBindings().keySet() );
         }
-        return analyzer;
+
+        // rest of this is the same as WireModule.configure...
+        for ( final Element e : Elements.getElements( modules ) )
+        {
+            e.acceptVisitor( analyzer );
+        }
+        analyzer.apply( strategy.wiring( binder ) );
     }
 }
