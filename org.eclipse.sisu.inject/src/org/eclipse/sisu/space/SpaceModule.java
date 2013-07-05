@@ -36,9 +36,11 @@ public class SpaceModule
     // Constants
     // ----------------------------------------------------------------------
 
-    public static final ClassFinder LOCAL_INDEX = new IndexedClassFinder( SisuIndex.NAMED_INDEX, false );
+    private static final String NAMED_INDEX = AbstractSisuIndex.INDEX_FOLDER + AbstractSisuIndex.NAMED;
 
-    public static final ClassFinder GLOBAL_INDEX = new IndexedClassFinder( SisuIndex.NAMED_INDEX, true );
+    public static final ClassFinder LOCAL_INDEX = new IndexedClassFinder( NAMED_INDEX, false );
+
+    public static final ClassFinder GLOBAL_INDEX = new IndexedClassFinder( NAMED_INDEX, true );
 
     public static final ClassFinder LOCAL_SCAN = new DefaultClassFinder();
 

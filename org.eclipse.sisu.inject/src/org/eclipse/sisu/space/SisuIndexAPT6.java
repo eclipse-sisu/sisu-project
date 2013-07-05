@@ -78,7 +78,7 @@ public final class SisuIndexAPT6
                 {
                     if ( elem.getKind().isClass() )
                     {
-                        addClassToIndex( SisuIndex.NAMED, elementUtils.getBinaryName( (TypeElement) elem ) );
+                        addClassToIndex( NAMED, elementUtils.getBinaryName( (TypeElement) elem ) );
                     }
                 }
             }
@@ -108,7 +108,7 @@ public final class SisuIndexAPT6
         {
             return Collections.emptySet();
         }
-        return Collections.singleton( SisuIndex.NAMED );
+        return Collections.singleton( NAMED );
     }
 
     public Set<String> getSupportedOptions()

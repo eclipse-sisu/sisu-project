@@ -24,8 +24,6 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Named;
-
 import org.eclipse.sisu.inject.Logs;
 
 /**
@@ -35,14 +33,6 @@ public final class SisuIndex
     extends AbstractSisuIndex
     implements QualifiedTypeListener
 {
-    // ----------------------------------------------------------------------
-    // Constants
-    // ----------------------------------------------------------------------
-
-    static final String NAMED = Named.class.getName();
-
-    static final String NAMED_INDEX = INDEX_FOLDER + NAMED;
-
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
