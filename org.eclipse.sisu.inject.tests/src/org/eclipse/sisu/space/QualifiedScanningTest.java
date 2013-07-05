@@ -170,7 +170,7 @@ public class QualifiedScanningTest
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );
         final SpaceVisitor visitor = new QualifiedTypeVisitor( listener );
-        new SpaceScanner( new SisuIndexClassFinder( false ), space ).accept( visitor );
+        new SpaceScanner( SpaceModule.LOCAL_INDEX, space ).accept( visitor );
 
         // we deliberately use a partial index
 
@@ -262,7 +262,7 @@ public class QualifiedScanningTest
 
         SpaceScanner.accept( null, null );
 
-        assertFalse( new SisuIndexClassFinder( false ).findClasses( brokenResourceSpace ).hasMoreElements() );
+        assertFalse( SpaceModule.LOCAL_INDEX.findClasses( brokenResourceSpace ).hasMoreElements() );
     }
 
     public void testSourceDetection()

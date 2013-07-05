@@ -27,7 +27,7 @@ import org.eclipse.sisu.inject.Logs;
 /**
  * {@link ClassFinder} that finds {@link Class} resources listed in the named index.
  */
-public class IndexedClassFinder
+public final class IndexedClassFinder
     implements ClassFinder
 {
     // ----------------------------------------------------------------------
@@ -40,7 +40,7 @@ public class IndexedClassFinder
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final String indexPath;
+    private final String localPath;
 
     private final String indexName;
 
@@ -48,17 +48,17 @@ public class IndexedClassFinder
     // Constructors
     // ----------------------------------------------------------------------
 
-    public IndexedClassFinder( final String name, final boolean globalIndex )
+    public IndexedClassFinder( final String name, final boolean global )
     {
-        if ( globalIndex )
+        if ( global )
         {
-            indexPath = null;
+            localPath = null;
             indexName = name;
         }
         else
         {
             final int i = name.lastIndexOf( '/' ) + 1;
-            indexPath = name.substring( 0, i );
+            localPath = name.substring( 0, i );
             indexName = name.substring( i );
         }
     }
@@ -71,13 +71,13 @@ public class IndexedClassFinder
     {
         final Enumeration<URL> indices;
 
-        if ( null == indexPath )
+        if ( null == localPath )
         {
             indices = space.getResources( indexName );
         }
         else
         {
-            indices = space.findEntries( indexPath, indexName, false );
+            indices = space.findEntries( localPath, indexName, false );
         }
 
         final Set<String> names = new LinkedHashSet<String>();

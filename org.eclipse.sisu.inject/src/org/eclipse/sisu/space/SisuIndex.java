@@ -39,7 +39,9 @@ public final class SisuIndex
     // Constants
     // ----------------------------------------------------------------------
 
-    public static final String NAMED = Named.class.getName();
+    static final String NAMED = Named.class.getName();
+
+    static final String NAMED_INDEX = INDEX_FOLDER + NAMED;
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -100,7 +102,7 @@ public final class SisuIndex
 
     public void hear( final Class<?> qualifiedType, final Object source )
     {
-        addClassToIndex( SisuIndex.NAMED, qualifiedType.getName() );
+        addClassToIndex( NAMED, qualifiedType.getName() );
     }
 
     // ----------------------------------------------------------------------

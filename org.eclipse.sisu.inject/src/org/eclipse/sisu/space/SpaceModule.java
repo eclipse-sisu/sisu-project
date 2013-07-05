@@ -33,6 +33,16 @@ public class SpaceModule
     implements Module
 {
     // ----------------------------------------------------------------------
+    // Constants
+    // ----------------------------------------------------------------------
+
+    public static final ClassFinder LOCAL_INDEX = new IndexedClassFinder( SisuIndex.NAMED_INDEX, false );
+
+    public static final ClassFinder GLOBAL_INDEX = new IndexedClassFinder( SisuIndex.NAMED_INDEX, true );
+
+    public static final ClassFinder LOCAL_SCAN = new DefaultClassFinder();
+
+    // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
@@ -75,13 +85,13 @@ public class SpaceModule
                 finder = null;
                 break;
             case INDEX:
-                finder = new SisuIndexClassFinder( false );
+                finder = LOCAL_INDEX;
                 break;
             case GLOBAL_INDEX:
-                finder = new SisuIndexClassFinder( true );
+                finder = GLOBAL_INDEX;
                 break;
             default:
-                finder = new DefaultClassFinder();
+                finder = LOCAL_SCAN;
                 break;
         }
     }
