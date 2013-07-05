@@ -19,6 +19,7 @@ import org.eclipse.sisu.space.SpaceModule;
 import org.eclipse.sisu.space.SpaceVisitor;
 
 import com.google.inject.Binder;
+import com.google.inject.Module;
 
 /**
  * {@link PlexusBeanModule} that registers Plexus beans by scanning classes for runtime annotations.
@@ -42,11 +43,9 @@ public final class PlexusAnnotatedBeanModule
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final ClassSpace space;
+    private final Module spaceModule;
 
-    private final Map<?, ?> variables;
-
-    private final BeanScanning scanning;
+    private final PlexusBeanSource beanSource;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -72,9 +71,15 @@ public final class PlexusAnnotatedBeanModule
      */
     public PlexusAnnotatedBeanModule( final ClassSpace space, final Map<?, ?> variables, final BeanScanning scanning )
     {
-        this.space = space;
-        this.variables = variables;
-        this.scanning = scanning;
+        if ( null != space && scanning != BeanScanning.OFF )
+        {
+            spaceModule = new SpaceModule( space, scanning ).with( PLEXUS_STRATEGY );
+        }
+        else
+        {
+            spaceModule = null;
+        }
+        beanSource = new PlexusAnnotatedBeanSource( variables );
     }
 
     // ----------------------------------------------------------------------
@@ -83,11 +88,11 @@ public final class PlexusAnnotatedBeanModule
 
     public PlexusBeanSource configure( final Binder binder )
     {
-        if ( null != space && scanning != BeanScanning.OFF )
+        if ( null != spaceModule )
         {
-            new SpaceModule( space, scanning ).with( PLEXUS_STRATEGY ).configure( binder );
+            spaceModule.configure( binder );
         }
-        return new PlexusAnnotatedBeanSource( variables );
+        return beanSource;
     }
 
     // ----------------------------------------------------------------------
