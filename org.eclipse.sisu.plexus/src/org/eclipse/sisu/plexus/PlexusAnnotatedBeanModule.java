@@ -27,6 +27,18 @@ public final class PlexusAnnotatedBeanModule
     implements PlexusBeanModule
 {
     // ----------------------------------------------------------------------
+    // Constants
+    // ----------------------------------------------------------------------
+
+    private static final SpaceModule.Strategy PLEXUS_STRATEGY = new SpaceModule.Strategy()
+    {
+        public SpaceVisitor visitor( final Binder binder )
+        {
+            return new PlexusTypeVisitor( new PlexusTypeBinder( binder ) );
+        }
+    };
+
+    // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
@@ -73,7 +85,7 @@ public final class PlexusAnnotatedBeanModule
     {
         if ( null != space && scanning != BeanScanning.OFF )
         {
-            new PlexusSpaceModule( space, scanning ).configure( binder );
+            new SpaceModule( space, scanning ).with( PLEXUS_STRATEGY ).configure( binder );
         }
         return new PlexusAnnotatedBeanSource( variables );
     }
@@ -81,21 +93,6 @@ public final class PlexusAnnotatedBeanModule
     // ----------------------------------------------------------------------
     // Implementation types
     // ----------------------------------------------------------------------
-
-    private static final class PlexusSpaceModule
-        extends SpaceModule
-    {
-        PlexusSpaceModule( final ClassSpace space, final BeanScanning scanning )
-        {
-            super( space, scanning );
-        }
-
-        @Override
-        protected SpaceVisitor visitor( final Binder binder )
-        {
-            return new PlexusTypeVisitor( new PlexusTypeBinder( binder ) );
-        }
-    }
 
     private static final class PlexusAnnotatedBeanSource
         implements PlexusBeanSource
