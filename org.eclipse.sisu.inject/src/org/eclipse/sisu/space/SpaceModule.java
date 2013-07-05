@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.sisu.space;
 
-import java.net.URL;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -29,7 +28,7 @@ import com.google.inject.spi.ProviderLookup;
 /**
  * Guice {@link Module} that automatically binds types annotated with {@link Qualifier} annotations.
  */
-public class SpaceModule
+public final class SpaceModule
     implements Module
 {
     // ----------------------------------------------------------------------
@@ -58,6 +57,8 @@ public class SpaceModule
     private final ClassSpace space;
 
     private final ClassFinder finder;
+
+    private Strategy strategy = Strategy.DEFAULT;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -102,7 +103,13 @@ public class SpaceModule
     // Public methods
     // ----------------------------------------------------------------------
 
-    public final void configure( final Binder binder )
+    public Module with( final Strategy _strategy )
+    {
+        strategy = _strategy;
+        return this;
+    }
+
+    public void configure( final Binder binder )
     {
         binder.bind( ClassSpace.class ).toInstance( space );
 
@@ -117,20 +124,20 @@ public class SpaceModule
     }
 
     // ----------------------------------------------------------------------
-    // Customizable methods
+    // Public types
     // ----------------------------------------------------------------------
 
-    protected SpaceVisitor visitor( final Binder binder )
+    public interface Strategy
     {
-        return new QualifiedTypeVisitor( new QualifiedTypeBinder( binder ) );
-    }
+        SpaceVisitor visitor( Binder binder );
 
-    /**
-     * @param binder
-     */
-    protected List<SpaceVisitor> extensions( final Binder binder )
-    {
-        return null;
+        Strategy DEFAULT = new Strategy()
+        {
+            public SpaceVisitor visitor( final Binder binder )
+            {
+                return new QualifiedTypeVisitor( new QualifiedTypeBinder( binder ) );
+            }
+        };
     }
 
     // ----------------------------------------------------------------------
@@ -139,50 +146,7 @@ public class SpaceModule
 
     void scanForElements( final Binder binder )
     {
-        final SpaceScanner scanner = new SpaceScanner( finder, space );
-
-        final SpaceVisitor defaultVisitor = visitor( binder );
-        final List<SpaceVisitor> customVisitors = extensions( binder );
-        if ( null == customVisitors || customVisitors.isEmpty() )
-        {
-            scanner.accept( defaultVisitor );
-        }
-        else
-        {
-            scanner.accept( new SpaceVisitor()
-            {
-                public void enterSpace( final ClassSpace _space )
-                {
-                    for ( final SpaceVisitor v : customVisitors )
-                    {
-                        v.enterSpace( _space );
-                    }
-                    defaultVisitor.enterSpace( _space );
-                }
-
-                public ClassVisitor visitClass( final URL url )
-                {
-                    for ( final SpaceVisitor v : customVisitors )
-                    {
-                        final ClassVisitor visited = v.visitClass( url );
-                        if ( null != visited )
-                        {
-                            return visited;
-                        }
-                    }
-                    return defaultVisitor.visitClass( url );
-                }
-
-                public void leaveSpace()
-                {
-                    for ( final SpaceVisitor v : customVisitors )
-                    {
-                        v.leaveSpace();
-                    }
-                    defaultVisitor.leaveSpace();
-                }
-            } );
-        }
+        new SpaceScanner( finder, space ).accept( strategy.visitor( binder ) );
     }
 
     private void recordAndReplayElements( final Binder binder )
