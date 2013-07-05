@@ -47,12 +47,9 @@ public final class MergedModule
     public void configure( final Binder binder )
     {
         final ElementMerger merger = new ElementMerger( binder );
-        for ( final Module m : modules )
+        for ( final Element e : Elements.getElements( modules ) )
         {
-            for ( final Element e : Elements.getElements( m ) )
-            {
-                e.acceptVisitor( merger );
-            }
+            e.acceptVisitor( merger );
         }
     }
 }

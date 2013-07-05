@@ -83,12 +83,9 @@ public class WireModule
     private void wireElements( final Binder binder )
     {
         final ElementAnalyzer analyzer = getAnalyzer( binder );
-        for ( final Module m : modules )
+        for ( final Element e : Elements.getElements( modules ) )
         {
-            for ( final Element e : Elements.getElements( m ) )
-            {
-                e.acceptVisitor( analyzer );
-            }
+            e.acceptVisitor( analyzer );
         }
 
         final Wiring defaultWiring = wiring( binder );
