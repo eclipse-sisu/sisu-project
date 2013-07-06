@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.sisu.launch;
 
-import com.google.inject.AbstractModule;
+import com.google.inject.Binder;
+import com.google.inject.Module;
 
 public final class SisuModule
-    extends AbstractModule
+    implements Module
 {
-    @Override
-    protected void configure()
+    public void configure( final Binder binder )
     {
     }
 }

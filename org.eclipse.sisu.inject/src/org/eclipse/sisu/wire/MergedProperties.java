@@ -25,9 +25,9 @@ final class MergedProperties
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    final Map<?, ?>[] properties;
+    private transient volatile Set<Entry<Object, Object>> entrySet;
 
-    transient volatile Set<Entry<Object, Object>> entrySet;
+    final Map<?, ?>[] properties;
 
     // ----------------------------------------------------------------------
     // Constructors
