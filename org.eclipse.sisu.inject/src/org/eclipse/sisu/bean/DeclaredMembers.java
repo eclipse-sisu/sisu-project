@@ -139,7 +139,7 @@ public final class DeclaredMembers
         CONSTRUCTORS
         {
             @Override
-            final Member[] members( final Class<?> clazz )
+            Member[] members( final Class<?> clazz )
             {
                 return clazz.getDeclaredConstructors();
             }
@@ -147,7 +147,7 @@ public final class DeclaredMembers
         METHODS
         {
             @Override
-            final Member[] members( final Class<?> clazz )
+            Member[] members( final Class<?> clazz )
             {
                 return clazz.getDeclaredMethods();
             }
@@ -155,7 +155,7 @@ public final class DeclaredMembers
         FIELDS
         {
             @Override
-            final Member[] members( final Class<?> clazz )
+            Member[] members( final Class<?> clazz )
             {
                 return clazz.getDeclaredFields();
             }

@@ -120,7 +120,7 @@ abstract class AbstractSisuIndex
      * @param name The table name
      * @return Table elements
      */
-    private final Set<String> readTable( final Object name )
+    private Set<String> readTable( final Object name )
     {
         final Set<String> table = new LinkedHashSet<String>();
         try
@@ -151,7 +151,7 @@ abstract class AbstractSisuIndex
      * @param name The table name
      * @param table The elements
      */
-    private final void writeTable( final Object name, final Set<String> table )
+    private void writeTable( final Object name, final Set<String> table )
     {
         try
         {

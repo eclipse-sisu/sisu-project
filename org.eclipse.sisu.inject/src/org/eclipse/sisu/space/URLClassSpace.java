@@ -100,7 +100,7 @@ public class URLClassSpace
     // Public methods
     // ----------------------------------------------------------------------
 
-    public Class<?> loadClass( final String name )
+    public final Class<?> loadClass( final String name )
     {
         try
         {
@@ -116,17 +116,17 @@ public class URLClassSpace
         }
     }
 
-    public DeferredClass<?> deferLoadClass( final String name )
+    public final DeferredClass<?> deferLoadClass( final String name )
     {
         return new NamedClass<Object>( this, name );
     }
 
-    public URL getResource( final String name )
+    public final URL getResource( final String name )
     {
         return loader.getResource( name );
     }
 
-    public Enumeration<URL> getResources( final String name )
+    public final Enumeration<URL> getResources( final String name )
     {
         try
         {
@@ -139,24 +139,24 @@ public class URLClassSpace
         }
     }
 
-    public Enumeration<URL> findEntries( final String path, final String glob, final boolean recurse )
+    public final Enumeration<URL> findEntries( final String path, final String glob, final boolean recurse )
     {
         return new ResourceEnumeration( path, glob, recurse, getClassPath() );
     }
 
-    public URL[] getURLs()
+    public final URL[] getURLs()
     {
         return getClassPath().clone();
     }
 
     @Override
-    public int hashCode()
+    public final int hashCode()
     {
         return loader.hashCode(); // the loader is the primary key
     }
 
     @Override
-    public boolean equals( final Object rhs )
+    public final boolean equals( final Object rhs )
     {
         if ( this == rhs )
         {
@@ -170,7 +170,7 @@ public class URLClassSpace
     }
 
     @Override
-    public String toString()
+    public final String toString()
     {
         return null == pathDetails ? loader.toString() : loader + "(" + pathDetails + ")";
     }

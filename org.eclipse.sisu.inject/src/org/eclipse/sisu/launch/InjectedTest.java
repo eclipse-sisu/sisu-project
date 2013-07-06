@@ -164,7 +164,7 @@ public abstract class InjectedTest
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    private final <T> T lookup( final Key<T> key )
+    private <T> T lookup( final Key<T> key )
     {
         final Iterator<? extends Entry<Annotation, T>> i = locator.locate( key ).iterator();
         return i.hasNext() ? i.next().getValue() : null;
