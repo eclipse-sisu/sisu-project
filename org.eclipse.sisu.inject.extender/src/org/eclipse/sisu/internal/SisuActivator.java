@@ -275,7 +275,7 @@ public final class SisuActivator
         // Implementation fields
         // ----------------------------------------------------------------------
 
-        private transient final BundleContext context;
+        private final transient BundleContext context;
 
         // ----------------------------------------------------------------------
         // Constructors

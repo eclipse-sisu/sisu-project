@@ -220,7 +220,7 @@ class MildValues<K, V>
     /**
      * Soft value with an {@link InverseMapping} back to its key.
      */
-    private final static class Soft<K, V>
+    private static final class Soft<K, V>
         extends MildKeys.Soft<V>
         implements InverseMapping
     {
@@ -253,7 +253,7 @@ class MildValues<K, V>
     /**
      * Weak value with an {@link InverseMapping} back to its key.
      */
-    private final static class Weak<K, V>
+    private static final class Weak<K, V>
         extends MildKeys.Weak<V>
         implements InverseMapping
     {

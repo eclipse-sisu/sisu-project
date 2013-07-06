@@ -52,7 +52,7 @@ abstract class AbstractSisuIndex
      * @param anno The annotation name
      * @param clazz The class name
      */
-    protected synchronized final void addClassToIndex( final Object anno, final Object clazz )
+    protected final synchronized void addClassToIndex( final Object anno, final Object clazz )
     {
         Set<String> table = index.get( anno );
         if ( null == table )
@@ -66,7 +66,7 @@ abstract class AbstractSisuIndex
     /**
      * Writes the current index as a series of tables.
      */
-    protected synchronized final void flushIndex()
+    protected final synchronized void flushIndex()
     {
         for ( final Entry<Object, Set<String>> entry : index.entrySet() )
         {
