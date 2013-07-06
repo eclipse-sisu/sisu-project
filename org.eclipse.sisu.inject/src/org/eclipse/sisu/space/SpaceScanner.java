@@ -30,6 +30,8 @@ public final class SpaceScanner
 
     private static final int ASM_FLAGS = ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES;
 
+    static final ClassFinder DEFAULT_FINDER = new DefaultClassFinder();
+
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -50,7 +52,7 @@ public final class SpaceScanner
 
     public SpaceScanner( final ClassSpace space )
     {
-        this( new DefaultClassFinder(), space );
+        this( DEFAULT_FINDER, space );
     }
 
     // ----------------------------------------------------------------------

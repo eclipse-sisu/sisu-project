@@ -27,6 +27,8 @@ final class MergedProperties
 
     final Map<?, ?>[] properties;
 
+    transient volatile Set<Entry<Object, Object>> entrySet;
+
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
@@ -70,58 +72,62 @@ final class MergedProperties
     @Override
     public Set<Entry<Object, Object>> entrySet()
     {
-        return new AbstractSet<Entry<Object, Object>>()
+        if ( null == entrySet )
         {
-            @Override
-            public Iterator<Entry<Object, Object>> iterator()
+            entrySet = new AbstractSet<Entry<Object, Object>>()
             {
-                return new Iterator<Entry<Object, Object>>()
+                @Override
+                public Iterator<Entry<Object, Object>> iterator()
                 {
-                    @SuppressWarnings( "rawtypes" )
-                    private Iterator<? extends Entry> itr;
-
-                    private int index;
-
-                    public boolean hasNext()
+                    return new Iterator<Entry<Object, Object>>()
                     {
-                        while ( null == itr || !itr.hasNext() )
+                        @SuppressWarnings( "rawtypes" )
+                        private Iterator<? extends Entry> itr;
+
+                        private int index;
+
+                        public boolean hasNext()
                         {
-                            if ( index >= properties.length )
+                            while ( null == itr || !itr.hasNext() )
                             {
-                                return false;
+                                if ( index >= properties.length )
+                                {
+                                    return false;
+                                }
+                                itr = properties[index++].entrySet().iterator();
                             }
-                            itr = properties[index++].entrySet().iterator();
+                            return true;
                         }
-                        return true;
-                    }
 
-                    @SuppressWarnings( "unchecked" )
-                    public Entry<Object, Object> next()
-                    {
-                        if ( hasNext() )
+                        @SuppressWarnings( "unchecked" )
+                        public Entry<Object, Object> next()
                         {
-                            return itr.next();
+                            if ( hasNext() )
+                            {
+                                return itr.next();
+                            }
+                            throw new NoSuchElementException();
                         }
-                        throw new NoSuchElementException();
-                    }
 
-                    public void remove()
-                    {
-                        throw new UnsupportedOperationException();
-                    }
-                };
-            }
-
-            @Override
-            public int size()
-            {
-                int size = 0;
-                for ( final Map<?, ?> p : properties )
-                {
-                    size += p.size();
+                        public void remove()
+                        {
+                            throw new UnsupportedOperationException();
+                        }
+                    };
                 }
-                return size;
-            }
-        };
+
+                @Override
+                public int size()
+                {
+                    int size = 0;
+                    for ( final Map<?, ?> p : properties )
+                    {
+                        size += p.size();
+                    }
+                    return size;
+                }
+            };
+        }
+        return entrySet;
     }
 }

@@ -26,6 +26,12 @@ public final class WireModule
     implements Module
 {
     // ----------------------------------------------------------------------
+    // Constants
+    // ----------------------------------------------------------------------
+
+    static final Module[] CONVERTERS = { new FileTypeConverter(), new URLTypeConverter() };
+
+    // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
@@ -79,9 +85,10 @@ public final class WireModule
         {
             public Wiring wiring( final Binder binder )
             {
-                new FileTypeConverter().configure( binder );
-                new URLTypeConverter().configure( binder );
-
+                for ( final Module m : CONVERTERS )
+                {
+                    m.configure( binder );
+                }
                 return new LocatorWiring( binder );
             }
         };

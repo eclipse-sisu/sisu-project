@@ -41,7 +41,7 @@ public final class SpaceModule
 
     public static final ClassFinder GLOBAL_INDEX = new IndexedClassFinder( NAMED_INDEX, true );
 
-    public static final ClassFinder LOCAL_SCAN = new DefaultClassFinder();
+    public static final ClassFinder LOCAL_SCAN = SpaceScanner.DEFAULT_FINDER;
 
     // ----------------------------------------------------------------------
     // Implementation fields
