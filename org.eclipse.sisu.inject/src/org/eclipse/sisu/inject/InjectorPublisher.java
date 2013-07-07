@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.sisu.inject;
 
-import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Binding;
@@ -138,10 +137,8 @@ public final class InjectorPublisher
     private void publishBindings( final TypeLiteral searchType, final BindingSubscriber subscriber,
                                   final TypeLiteral superType )
     {
-        final List<Binding<?>> bindings = injector.findBindingsByType( searchType );
-        for ( int i = 0, size = bindings.size(); i < size; i++ )
+        for ( final Binding binding : injector.<Object> findBindingsByType( searchType ) )
         {
-            final Binding binding = bindings.get( i );
             if ( isVisible( binding ) && ( null == superType || isAssignableFrom( superType, binding ) ) )
             {
                 subscriber.add( binding, function.rank( binding ) );

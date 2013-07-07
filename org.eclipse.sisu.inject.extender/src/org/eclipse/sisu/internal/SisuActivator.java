@@ -25,6 +25,7 @@ import org.eclipse.sisu.BeanScanning;
 import org.eclipse.sisu.inject.DefaultBeanLocator;
 import org.eclipse.sisu.inject.Logs;
 import org.eclipse.sisu.launch.Main;
+import org.eclipse.sisu.launch.SisuExtensions;
 import org.eclipse.sisu.space.BundleClassSpace;
 import org.eclipse.sisu.space.ClassSpace;
 import org.eclipse.sisu.space.SpaceModule;
@@ -67,7 +68,7 @@ public final class SisuActivator
 
     private DefaultBeanLocator locator;
 
-    private BundleContext bundleContext;
+    private BundleContext sisuBundleContext;
 
     private ServiceTracker serviceTracker;
 
@@ -91,7 +92,7 @@ public final class SisuActivator
             }
         }
 
-        bundleContext = context;
+        sisuBundleContext = context;
         serviceTracker = new ServiceTracker( context, BUNDLE_INJECTOR_CLASS_NAME, this );
         serviceTracker.open( true );
         bundleTracker = new BundleTracker( context, Bundle.ACTIVE, this );
@@ -145,7 +146,7 @@ public final class SisuActivator
 
     public Object addingService( final ServiceReference reference )
     {
-        final Object service = bundleContext.getService( reference );
+        final Object service = sisuBundleContext.getService( reference );
         if ( service instanceof Provider )
         {
             final Object injector = ( (Provider<?>) service ).get();
@@ -169,7 +170,7 @@ public final class SisuActivator
         {
             locator.remove( (Injector) injector );
         }
-        bundleContext.ungetService( reference );
+        sisuBundleContext.ungetService( reference );
     }
 
     // ----------------------------------------------------------------------
@@ -241,6 +242,7 @@ public final class SisuActivator
 
             final ClassSpace space = new BundleClassSpace( bundle );
             final BeanScanning scanning = Main.selectScanning( properties );
+            final SisuExtensions extensions = SisuExtensions.local( space );
 
             injector = Guice.createInjector( new WireModule( new AbstractModule()
             {
@@ -250,8 +252,10 @@ public final class SisuActivator
                     bind( DefaultBeanLocator.class ).toInstance( locator );
                     bind( BundleContext.class ).toInstance( extendedBundleContext );
                     bind( ParameterKeys.PROPERTIES ).toInstance( properties );
+
+                    extensions.install( binder(), Bundle.class, bundle );
                 }
-            }, new SpaceModule( space, scanning ) ) );
+            }, new SpaceModule( space, scanning ).with( extensions ) ).with( extensions ) );
 
             final Dictionary<Object, Object> metadata = new Hashtable<Object, Object>();
             metadata.put( Constants.SERVICE_PID, CONTAINER_SYMBOLIC_NAME );

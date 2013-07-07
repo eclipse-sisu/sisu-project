@@ -111,6 +111,11 @@ public final class BundleClassSpace
         return null != entries ? entries : NO_ENTRIES;
     }
 
+    public Bundle getBundle()
+    {
+        return bundle;
+    }
+
     @Override
     public int hashCode()
     {
