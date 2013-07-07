@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.sisu.inject.Logs;
-import org.eclipse.sisu.space.AnnotationVisitor;
 import org.eclipse.sisu.space.ClassSpace;
 import org.eclipse.sisu.space.ClassVisitor;
 import org.eclipse.sisu.space.IndexedClassFinder;
@@ -91,19 +90,65 @@ public final class SisuExtensions
 
     public Wiring wiring( final Binder binder )
     {
-        final List<Wiring> wiringList = load( Wiring.class, binder );
-        wiringList.add( WireModule.Strategy.DEFAULT.wiring( binder ) );
-        return asWiring( wiringList );
+        final List<Wiring> customWiring = load( Wiring.class, binder );
+        final Wiring defaultWiring = WireModule.Strategy.DEFAULT.wiring( binder );
+        return customWiring.isEmpty() ? defaultWiring : new Wiring()
+        {
+            public boolean wire( final Key<?> key )
+            {
+                for ( final Wiring w : customWiring )
+                {
+                    if ( w.wire( key ) )
+                    {
+                        return true;
+                    }
+                }
+                return defaultWiring.wire( key );
+            }
+        };
     }
 
     public SpaceVisitor visitor( final Binder binder )
     {
-        final List<SpaceVisitor> visitorList = load( SpaceVisitor.class, binder );
-        visitorList.add( SpaceModule.Strategy.DEFAULT.visitor( binder ) );
-        return asSpaceVisitor( visitorList );
+        final List<SpaceVisitor> customVisitors = load( SpaceVisitor.class, binder );
+        final SpaceVisitor defaultVisitor = SpaceModule.Strategy.DEFAULT.visitor( binder );
+        return customVisitors.isEmpty() ? defaultVisitor : new SpaceVisitor()
+        {
+            public void enterSpace( final ClassSpace _space )
+            {
+                for ( final SpaceVisitor v : customVisitors )
+                {
+                    v.enterSpace( _space );
+                }
+                defaultVisitor.enterSpace( _space );
+            }
+
+            public ClassVisitor visitClass( final URL url )
+            {
+                for ( final SpaceVisitor v : customVisitors )
+                {
+                    final ClassVisitor cv = v.visitClass( url );
+                    if ( null != cv )
+                    {
+                        return cv;
+                    }
+                }
+                return defaultVisitor.visitClass( url );
+            }
+
+            public void leaveSpace()
+            {
+                for ( final SpaceVisitor v : customVisitors )
+                {
+                    v.leaveSpace();
+                }
+                defaultVisitor.leaveSpace();
+            }
+        };
+
     }
 
-    <T> List<T> load( final Class<T> api, final Binder binder )
+    private <T> List<T> load( final Class<T> api, final Binder binder )
     {
         final List<T> extensions = new ArrayList<T>();
         final String index = "META-INF/services/" + api.getName();
@@ -123,142 +168,5 @@ public final class SisuExtensions
             }
         }
         return extensions;
-    }
-
-    static Wiring asWiring( final List<Wiring> wiring )
-    {
-        return wiring.size() == 1 ? wiring.get( 0 ) : new Wiring()
-        {
-            public boolean wire( final Key<?> key )
-            {
-                for ( final Wiring w : wiring )
-                {
-                    if ( w.wire( key ) )
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        };
-    }
-
-    static SpaceVisitor asSpaceVisitor( final List<SpaceVisitor> visitors )
-    {
-        return visitors.size() == 1 ? visitors.get( 0 ) : new SpaceVisitor()
-        {
-            public void enterSpace( final ClassSpace space )
-            {
-                for ( final SpaceVisitor v : visitors )
-                {
-                    v.enterSpace( space );
-                }
-            }
-
-            public ClassVisitor visitClass( final URL url )
-            {
-                List<ClassVisitor> cvs = null;
-                for ( int i = 0, size = visitors.size(); i < size; i++ )
-                {
-                    final ClassVisitor cv = visitors.get( i ).visitClass( url );
-                    if ( null != cv )
-                    {
-                        if ( null == cvs )
-                        {
-                            if ( i == size - 1 )
-                            {
-                                return cv;
-                            }
-                            cvs = new ArrayList<ClassVisitor>();
-                        }
-                        cvs.add( cv );
-                    }
-                }
-                return null == cvs ? null : asClassVisitor( cvs );
-            }
-
-            public void leaveSpace()
-            {
-                for ( final SpaceVisitor v : visitors )
-                {
-                    v.leaveSpace();
-                }
-            }
-        };
-    }
-
-    static ClassVisitor asClassVisitor( final List<ClassVisitor> visitors )
-    {
-        return visitors.size() == 1 ? visitors.get( 0 ) : new ClassVisitor()
-        {
-            public void enterClass( final int modifiers, final String name, final String _extends,
-                                    final String[] _implements )
-            {
-                for ( final ClassVisitor v : visitors )
-                {
-                    v.enterClass( modifiers, name, _extends, _implements );
-                }
-            }
-
-            public AnnotationVisitor visitAnnotation( final String desc )
-            {
-                List<AnnotationVisitor> avs = null;
-                for ( int i = 0, size = visitors.size(); i < size; i++ )
-                {
-                    final AnnotationVisitor av = visitors.get( i ).visitAnnotation( desc );
-                    if ( null != av )
-                    {
-                        if ( null == avs )
-                        {
-                            if ( i == size - 1 )
-                            {
-                                return av;
-                            }
-                            avs = new ArrayList<AnnotationVisitor>();
-                        }
-                        avs.add( av );
-                    }
-                }
-                return null == avs ? null : asAnnotationVisitor( avs );
-            }
-
-            public void leaveClass()
-            {
-                for ( final ClassVisitor v : visitors )
-                {
-                    v.leaveClass();
-                }
-            }
-        };
-    }
-
-    static AnnotationVisitor asAnnotationVisitor( final List<AnnotationVisitor> visitors )
-    {
-        return visitors.size() == 1 ? visitors.get( 0 ) : new AnnotationVisitor()
-        {
-            public void enterAnnotation()
-            {
-                for ( final AnnotationVisitor v : visitors )
-                {
-                    v.enterAnnotation();
-                }
-            }
-
-            public void visitElement( final String name, final Object value )
-            {
-                for ( final AnnotationVisitor v : visitors )
-                {
-                    v.visitElement( name, value );
-                }
-            }
-
-            public void leaveAnnotation()
-            {
-                for ( final AnnotationVisitor v : visitors )
-                {
-                    v.leaveAnnotation();
-                }
-            }
-        };
     }
 }
