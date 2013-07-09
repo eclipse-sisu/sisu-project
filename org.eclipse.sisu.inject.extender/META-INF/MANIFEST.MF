@@ -4,7 +4,7 @@ Bundle-SymbolicName: org.eclipse.sisu.inject.extender;singleton:=true
 Bundle-Version: 0.0.0.qualifier
 Bundle-Name: Sisu-Inject Extender
 Bundle-ActivationPolicy: lazy
-Bundle-Activator: org.eclipse.sisu.internal.SisuActivator
+Bundle-Activator: org.eclipse.sisu.launch.internal.SisuActivator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6,J2SE-1.5,JavaSE-1.7
 Bundle-Vendor: The Eclipse Foundation
 Bundle-Copyright: Copyright (c) 2010, 2013 Sonatype, Inc. and others
