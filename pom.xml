@@ -281,6 +281,11 @@
           <artifactId>maven-site-plugin</artifactId>
           <version>3.3</version>
         </plugin>
+        <plugin>
+          <groupId>org.sonatype.plugins</groupId>
+          <artifactId>nexus-staging-maven-plugin</artifactId>
+          <version>1.4.4</version>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
@@ -359,7 +364,6 @@
             <extensions>true</extensions>
             <groupId>org.sonatype.plugins</groupId>
             <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>1.4.4</version>
             <configuration>
               <nexusUrl>https://oss.sonatype.org/</nexusUrl>
               <serverId>sonatype-nexus-staging</serverId>
