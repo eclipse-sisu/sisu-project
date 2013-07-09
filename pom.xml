@@ -66,6 +66,7 @@
     <module>org.eclipse.sisu.inject</module>
     <module>org.eclipse.sisu.inject.extender</module>
     <module>org.eclipse.sisu.inject.tests</module>
+    <module>org.eclipse.sisu.inject.site</module>
   </modules>
 
   <scm>

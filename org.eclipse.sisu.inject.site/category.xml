@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ ~ Copyright (c) 2010, 2013 Sonatype, Inc.
+ ~ All rights reserved. This program and the accompanying materials
+ ~ are made available under the terms of the Eclipse Public License v1.0
+ ~ which accompanies this distribution, and is available at
+ ~ http://www.eclipse.org/legal/epl-v10.html
+ ~
+ ~ Contributors:
+ ~    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
+-->
+
+<site>
+  <bundle id="javax.inject" version="1.0.0.v20091030"/>
+  <bundle id="org.aopalliance" version="1.0.0.v201105210816"/>
+  <bundle id="com.google.inject" version="3.0.0.v201203062045"/>
+  <bundle id="org.eclipse.sisu.inject" version="0.0.0.qualifier"/>
+  <bundle id="org.eclipse.sisu.inject.source" version="0.0.0.qualifier"/>
+  <bundle id="org.eclipse.sisu.inject.extender" version="0.0.0.qualifier"/>
+  <bundle id="org.eclipse.sisu.inject.extender.source" version="0.0.0.qualifier"/>
+</site>
