@@ -12,11 +12,17 @@
 -->
 
 <site>
-  <bundle id="javax.inject" version="1.0.0.v20091030"/>
-  <bundle id="org.aopalliance" version="1.0.0.v201105210816"/>
-  <bundle id="com.google.inject" version="3.0.0.v201203062045"/>
-  <bundle id="org.eclipse.sisu.inject" version="0.0.0.qualifier"/>
-  <bundle id="org.eclipse.sisu.inject.source" version="0.0.0.qualifier"/>
-  <bundle id="org.eclipse.sisu.inject.extender" version="0.0.0.qualifier"/>
-  <bundle id="org.eclipse.sisu.inject.extender.source" version="0.0.0.qualifier"/>
+  <category-def name="org.eclipse.sisu.inject.site" label="Sisu-Inject (Incubation)"/>
+  <bundle id="org.eclipse.sisu.inject" version="0.0.0.qualifier">
+    <category name="org.eclipse.sisu.inject.site"/>
+  </bundle>
+  <bundle id="org.eclipse.sisu.inject.source" version="0.0.0.qualifier">
+    <category name="org.eclipse.sisu.inject.site"/>
+  </bundle>
+  <bundle id="org.eclipse.sisu.inject.extender" version="0.0.0.qualifier">
+    <category name="org.eclipse.sisu.inject.site"/>
+  </bundle>
+  <bundle id="org.eclipse.sisu.inject.extender.source" version="0.0.0.qualifier">
+    <category name="org.eclipse.sisu.inject.site"/>
+  </bundle>
 </site>

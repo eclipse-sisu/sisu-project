@@ -3,7 +3,7 @@ Main-Class: org.eclipse.sisu.launch.Main
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.eclipse.sisu.inject;singleton:=true
 Bundle-Version: 0.0.0.qualifier
-Bundle-Name: Sisu-Inject
+Bundle-Name: Sisu-Inject (Incubation)
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6,J2SE-1.5,JavaSE-1.7
 Bundle-Vendor: The Eclipse Foundation
 Bundle-Copyright: Copyright (c) 2010, 2013 Sonatype, Inc. and others
