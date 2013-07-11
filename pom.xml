@@ -65,6 +65,7 @@
   <modules>
     <module>org.eclipse.sisu.plexus</module>
     <module>org.eclipse.sisu.plexus.tests</module>
+    <module>org.eclipse.sisu.plexus.site</module>
   </modules>
 
   <scm>
@@ -133,6 +134,34 @@
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>target-platform-configuration</artifactId>
           <version>${tycho-version}</version>
+          <configuration>
+            <executionEnvironment>JavaSE-1.6</executionEnvironment>
+            <target>
+              <artifact>
+                <groupId>org.eclipse.sisu</groupId>
+                <artifactId>org.eclipse.sisu.plexus</artifactId>
+                <version>${project.version}</version>
+                <classifier>build</classifier>
+              </artifact>
+            </target>
+            <environments>
+              <environment>
+                <os>win32</os>
+                <ws>win32</ws>
+                <arch>x86</arch>
+              </environment>
+              <environment>
+                <os>linux</os>
+                <ws>gtk</ws>
+                <arch>x86_64</arch>
+              </environment>
+              <environment>
+                <os>macosx</os>
+                <ws>cocoa</ws>
+                <arch>x86_64</arch>
+              </environment>
+            </environments>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
@@ -282,6 +311,15 @@
                         <goals><goal>enforce</goal></goals>
                       </pluginExecutionFilter>
                       <action><ignore /></action>
+                    </pluginExecution>
+                    <pluginExecution>
+                      <pluginExecutionFilter>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <versionRange>[1.0,)</versionRange>
+                        <goals><goal>attach-artifact</goal></goals>
+                      </pluginExecutionFilter>
+                      <action><ignore></ignore></action>
                     </pluginExecution>
                   </pluginExecutions>
                 </lifecycleMappingMetadata>

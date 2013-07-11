@@ -21,7 +21,11 @@
   </parent>
 
   <artifactId>org.eclipse.sisu.plexus</artifactId>
+  <packaging>eclipse-plugin</packaging>
 
+  <!--
+   | Minimum requirements
+  -->
   <dependencies>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -110,15 +114,48 @@
 
   <build>
     <sourceDirectory>src</sourceDirectory>
-    <resources>
-      <resource>
-        <directory>${basedir}</directory>
-        <includes>
-          <include>META-INF/</include>
-          <include>about.html</include>
-        </includes>
-      </resource>
-    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.8</version>
+        <executions>
+          <execution>
+            <id>attach-build-target</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>build.target</file>
+                  <classifier>build</classifier>
+                  <type>target</type>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>animal-sniffer-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-maven-plugin</artifactId>
+        <extensions>true</extensions>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-source-plugin</artifactId>
+      </plugin>
+    </plugins>
   </build>
 
 </project>
