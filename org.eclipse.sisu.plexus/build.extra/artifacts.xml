@@ -6,7 +6,7 @@
     <property name='p2.compressed' value='false'/>
   </properties>
   <mappings size='2'>
-    <rule filter='(&amp; (id=plexus-deps))' output='${repoUrl}/plexus-deps.jar'/>
+    <rule filter='(&amp; (id=plexus-deps))' output='http://git.eclipse.org/c/sisu/org.eclipse.sisu.plexus.git/plain/org.eclipse.sisu.plexus/build.extra/plexus-deps.jar'/>
     <rule filter='(&amp; (id=org.sonatype.sisu.guice))' output='http://central.maven.org/maven2/org/sonatype/sisu/sisu-guice/3.1.0/sisu-guice-3.1.0-no_aop.jar'/>
   </mappings>
   <artifacts size='2'>
