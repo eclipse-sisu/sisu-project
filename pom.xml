@@ -259,7 +259,7 @@
              | bootclasspath required by Sun's JVM
             -->
             <bootclasspath>${sun.boot.class.path}</bootclasspath>
-            <excludePackageNames>*.internal</excludePackageNames>
+            <excludePackageNames>*.internal,org.codehaus.*</excludePackageNames>
             <additionalparam>
               -quiet
               -federate JDK http://download.oracle.com/javase/6/docs/api/index.html?
