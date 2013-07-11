@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?artifactRepository version='1.1.0'?>
+<repository name='org.eclipse.sisu.plexus.extra' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='1'>
+  <properties size='2'>
+    <property name='p2.timestamp' value='1373501988230'/>
+    <property name='p2.compressed' value='false'/>
+  </properties>
+  <mappings size='1'>
+    <rule filter='(&amp; (id=plexus-deps))' output='${repoUrl}/${id}'/>
+  </mappings>
+  <artifacts size='1'>
+    <artifact classifier='osgi.bundle' id='plexus-deps' version='0.0.0'>
+      <properties size='2'>
+        <property name='artifact.size' value='204'/>
+        <property name='download.size' value='254502'/>
+      </properties>
+    </artifact>
+  </artifacts>
+</repository>
