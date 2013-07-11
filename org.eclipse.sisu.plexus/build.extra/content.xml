@@ -57,8 +57,7 @@
         <provided namespace='java.package' name='com.google.inject' version='1.4.0'/>
         <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
       </provides>
-      <requires size='2'>
-        <required namespace='osgi.bundle' name='org.sonatype.sisu.guava' range='0.0.0'/>
+      <requires size='1'>
         <required namespace='java.package' name='javax.inject' range='0.0.0'/>
       </requires>
       <artifacts size='1'>
