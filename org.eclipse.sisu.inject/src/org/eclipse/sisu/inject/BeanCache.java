@@ -36,15 +36,11 @@ final class BeanCache<Q extends Annotation, T>
 
     private static final long serialVersionUID = 1L;
 
-    private static final long REFRESH_MILLIS = 888L;
-
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
     private Map<Binding<T>, BeanEntry<Q, T>> readCache;
-
-    private long lastTimeMillis;
 
     private volatile boolean mutated;
 
@@ -112,15 +108,13 @@ final class BeanCache<Q extends Annotation, T>
 
     public Map<Binding<T>, BeanEntry<Q, T>> flush()
     {
-        long now = 0;
-        if ( mutated && ( null == readCache || ( now = System.currentTimeMillis() ) - lastTimeMillis > REFRESH_MILLIS ) )
+        if ( mutated )
         {
             synchronized ( this )
             {
                 if ( mutated )
                 {
                     readCache = (Map) ( (IdentityHashMap) get() ).clone();
-                    lastTimeMillis = now == 0 ? System.currentTimeMillis() : now;
                     mutated = false;
                 }
             }
