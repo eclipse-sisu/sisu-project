@@ -182,7 +182,6 @@ final class BeanCache<Q extends Annotation, T>
                     oldBean = ( (Map<?, LazyBeanEntry>) o ).remove( binding );
                     if ( null != oldBean )
                     {
-                        readCache = null;
                         mutated = true;
                     }
                     return oldBean;
