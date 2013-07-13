@@ -88,7 +88,7 @@ import java.lang.annotation.Annotation;
  * In this example as soon as MyTabbedPane is injected, Sisu will use SwingTabMediator to deliver all known JPanels
  * annotated with @Tab to the watching MyTabbedPane. Sisu will continue to send updates, which add or remove tabs as
  * appropriate, until the MyTabbedPane instance becomes unreachable. MyTabbedPane doesn't need to know anything about
- * Sisu APIs and vice-versa because SwingTabMediator takes care of the necessary interaction.
+ * Sisu APIs and vice-versa because SwingTabMediator takes care of the necessary translation.
  * 
  * @see org.eclipse.sisu.inject.BeanLocator
  */
