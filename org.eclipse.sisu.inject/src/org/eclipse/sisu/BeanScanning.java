@@ -12,6 +12,8 @@ package org.eclipse.sisu;
 
 /**
  * Various strategies for discovering bean implementations.
+ * 
+ * @see org.eclipse.sisu.space.SpaceModule
  */
 public enum BeanScanning
 {

@@ -18,6 +18,14 @@ import java.lang.annotation.Target;
 
 /**
  * Marks dependencies that can be {@code null}.
+ * <p>
+ * For example:
+ * 
+ * <pre>
+ * &#064;Inject
+ * &#064;Nullable
+ * Optional component;
+ * </pre>
  */
 @Target( value = { ElementType.FIELD, ElementType.PARAMETER } )
 @Retention( RetentionPolicy.RUNTIME )

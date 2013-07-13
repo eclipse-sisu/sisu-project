@@ -13,11 +13,11 @@ package org.eclipse.sisu;
 import java.lang.annotation.Annotation;
 
 /**
- * Implement this interface to {@link W}atch for {@link Q}ualified bean implementations of {@link T}.
+ * Implement this interface to {@link W}atch for {@link Q}ualified bean implementations of {@link T}. This
+ * implementation is then responsible for translating binding updates to whatever the watchers expect.
  * <p>
- * The {@link Mediator} is responsible for translating updates to whatever the watchers expect. Mediation only occurs
- * when there are updates to qualified bindings and at least <i>one</i> live watcher instance. So if no-one requests or
- * injects an instance of the watcher then the mediator will not be called.
+ * Important: mediation only occurs when bindings change and there is at least <i>one</i> live watcher instance. If
+ * no-one requests or injects an instance of W the mediator will <i>not</i> be called.
  * 
  * <pre>
  * &#064;Named
@@ -83,10 +83,12 @@ import java.lang.annotation.Annotation;
  * }
  * </pre>
  * 
- * As soon as MyTabbedPane is instantiated Sisu uses the declared SwingTabMediator to send all known JPanels annotated
- * with @Tab to the watching MyTabbedPane. Sisu will continue to send updates, which add or remove tabs as appropriate,
- * until the MyTabbedPane instance becomes unreachable. Note how MyTabbedPane doesn't need to know about Sisu APIs and
- * vice-versa, SwingTabMediator takes care of the necessary interaction.
+ * In this example, as soon as MyTabbedPane is instantiated Sisu uses SwingTabMediator to deliver all known JPanels
+ * annotated with @Tab to the watching MyTabbedPane. Sisu will continue to send updates, which add or remove tabs as
+ * appropriate, until the MyTabbedPane instance becomes unreachable. MyTabbedPane doesn't need to know anything about
+ * Sisu APIs and vice-versa because SwingTabMediator takes care of the necessary interaction.
+ * 
+ * @see org.eclipse.sisu.inject.BeanLocator
  */
 public interface Mediator<Q extends Annotation, T, W>
 {

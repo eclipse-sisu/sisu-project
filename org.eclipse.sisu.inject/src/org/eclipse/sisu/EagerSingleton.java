@@ -18,6 +18,17 @@ import java.lang.annotation.Target;
 
 /**
  * Marks beans that should be created as soon as possible.
+ * <p>
+ * For example:
+ * 
+ * <pre>
+ * &#064;Named
+ * &#064;EagerSingleton
+ * public class Startup
+ * {
+ *     // ...
+ * }
+ * </pre>
  */
 @Target( value = { ElementType.TYPE } )
 @Retention( RetentionPolicy.RUNTIME )

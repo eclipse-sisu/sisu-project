@@ -18,6 +18,17 @@ import java.lang.annotation.Target;
 
 /**
  * Describes a bean.
+ * <p>
+ * For example:
+ * 
+ * <pre>
+ * &#064;Named
+ * &#064;Description( &quot;Summarizes system status&quot; )
+ * public class SystemStatus
+ * {
+ *     // ...
+ * }
+ * </pre>
  */
 @Target( value = { ElementType.TYPE } )
 @Retention( RetentionPolicy.RUNTIME )
