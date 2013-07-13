@@ -14,7 +14,9 @@ import java.lang.annotation.Annotation;
 
 /**
  * Implement this interface to {@link W}atch for {@link Q}ualified bean implementations of {@link T}. This
- * implementation is then responsible for translating binding updates to whatever the watchers expect.
+ * implementation is then called on by Sisu to translate binding updates to whatever the watchers (of type W) expect.
+ * Mediator implementations must have a public default (no-arg) constructor. They are neither injected nor injectable,
+ * acting instead as stateless translators between injected beans.
  * <p>
  * Important: mediation only occurs when bindings change and there is at least <i>one</i> live watcher instance. If
  * no-one requests or injects an instance of W the mediator will <i>not</i> be called.
@@ -83,7 +85,7 @@ import java.lang.annotation.Annotation;
  * }
  * </pre>
  * 
- * In this example, as soon as MyTabbedPane is instantiated Sisu uses SwingTabMediator to deliver all known JPanels
+ * In this example as soon as MyTabbedPane is injected, Sisu will use SwingTabMediator to deliver all known JPanels
  * annotated with @Tab to the watching MyTabbedPane. Sisu will continue to send updates, which add or remove tabs as
  * appropriate, until the MyTabbedPane instance becomes unreachable. MyTabbedPane doesn't need to know anything about
  * Sisu APIs and vice-versa because SwingTabMediator takes care of the necessary interaction.
