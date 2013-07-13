@@ -13,10 +13,11 @@ package org.eclipse.sisu;
 import java.lang.annotation.Annotation;
 
 /**
- * Implement this interface to {@link W}atch for {@link Q}ualified bean implementations of {@link T}. This
- * implementation is then called on by Sisu to translate binding updates to whatever the watchers (of type W) expect.
- * Mediator implementations must have a public default (no-arg) constructor. They are neither injected nor injectable,
- * acting instead as stateless translators between injected beans.
+ * {@link W}atches for {@link Q}ualified bean implementations of {@link T}. Implement this interface when you have one
+ * or more beans of type W watching out for other beans of type T. Sisu will use the given mediator to translate
+ * {@link BeanEntry} events to whatever the watchers expect. Mediator implementations must have a public default
+ * (no-arg) constructor. They are neither injected nor injectable, acting instead as stateless translators between
+ * injected beans.
  * <p>
  * Important: mediation only occurs when bindings change and there is at least <i>one</i> live watcher instance. If
  * no-one requests or injects an instance of W the mediator will <i>not</i> be called.
