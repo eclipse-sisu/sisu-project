@@ -29,6 +29,8 @@ import java.lang.annotation.Target;
  *     // ...
  * }
  * </pre>
+ * 
+ * @see BeanEntry#getDescription()
  */
 @Target( value = { ElementType.TYPE } )
 @Retention( RetentionPolicy.RUNTIME )

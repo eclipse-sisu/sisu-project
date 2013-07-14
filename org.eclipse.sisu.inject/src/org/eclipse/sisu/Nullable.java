@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
  * <pre>
  * &#064;Inject
  * &#064;Nullable
- * Optional component;
+ * Component optional;
  * </pre>
  */
 @Target( value = { ElementType.FIELD, ElementType.PARAMETER } )

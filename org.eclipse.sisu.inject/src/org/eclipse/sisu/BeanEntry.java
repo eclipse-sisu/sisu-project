@@ -57,6 +57,7 @@ public interface BeanEntry<Q extends Annotation, T>
      * Returns a human-readable description of the bean; see @{@link Description}.
      * 
      * @return Human-readable description
+     * @see Description
      */
     String getDescription();
 
@@ -68,10 +69,9 @@ public interface BeanEntry<Q extends Annotation, T>
     Class<T> getImplementationClass();
 
     /**
-     * Returns an arbitrary object that describes where this bean was configured.
+     * Returns an arbitrary object that indicates where this bean was configured.
      * 
      * @return Source location
-     * @see Object#toString()
      */
     Object getSource();
 
@@ -79,6 +79,7 @@ public interface BeanEntry<Q extends Annotation, T>
      * Returns the bean's rank; higher ranked beans override lower ranked beans.
      * 
      * @return Assigned rank
+     * @see org.eclipse.sisu.inject.RankingFunction
      */
     int getRank();
 }
