@@ -27,7 +27,7 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 
 /**
- * {@link Module} that provides Plexus semantics without the full-blown Plexus container.
+ * Guice {@link Module} that provides Plexus semantics without the full-blown Plexus container.
  */
 public final class PlexusSpaceModule
     implements Module

@@ -37,7 +37,7 @@ import com.google.inject.Injector;
 import com.google.inject.ProvisionException;
 
 /**
- * {@link PlexusBeanModule} backed by a sequence of {@link ComponentDescriptor}s.
+ * {@link PlexusBeanModule} that binds Plexus components according to their {@link ComponentDescriptor}s.
  */
 public final class ComponentDescriptorBeanModule
     implements PlexusBeanModule

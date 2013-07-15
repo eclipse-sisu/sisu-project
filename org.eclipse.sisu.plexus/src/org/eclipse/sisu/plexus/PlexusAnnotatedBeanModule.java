@@ -22,7 +22,7 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 
 /**
- * {@link PlexusBeanModule} that registers Plexus beans by scanning classes for runtime annotations.
+ * {@link PlexusBeanModule} that binds Plexus components by scanning classes for runtime annotations.
  */
 public final class PlexusAnnotatedBeanModule
     implements PlexusBeanModule

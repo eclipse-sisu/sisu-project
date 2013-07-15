@@ -22,7 +22,7 @@ import org.eclipse.sisu.space.ClassSpace;
 import com.google.inject.Binder;
 
 /**
- * {@link PlexusBeanModule} that collects {@link PlexusBeanMetadata} by scanning XML resources.
+ * {@link PlexusBeanModule} that binds Plexus components by scanning XML resources.
  */
 public final class PlexusXmlBeanModule
     implements PlexusBeanModule

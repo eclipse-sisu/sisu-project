@@ -38,7 +38,7 @@ import com.google.inject.spi.TypeConverter;
 import com.google.inject.spi.TypeConverterBinding;
 
 /**
- * {@link PlexusBeanConverter} {@link Module} that converts Plexus formatted XML into beans.
+ * {@link PlexusBeanConverter} {@link Module} that converts Plexus XML configuration into beans.
  */
 @Singleton
 public final class PlexusXmlBeanConverter
