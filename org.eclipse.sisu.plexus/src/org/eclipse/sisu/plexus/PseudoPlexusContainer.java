@@ -28,6 +28,9 @@ import org.eclipse.sisu.wire.EntryMapAdapter;
 
 import com.google.inject.TypeLiteral;
 
+/**
+ * Delegating {@link PlexusContainer} wrapper that doesn't require an actual container instance.
+ */
 @Singleton
 @SuppressWarnings( { "unchecked", "rawtypes" } )
 final class PseudoPlexusContainer

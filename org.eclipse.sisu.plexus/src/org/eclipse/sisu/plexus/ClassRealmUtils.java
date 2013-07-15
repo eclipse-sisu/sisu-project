@@ -19,6 +19,9 @@ import java.util.Set;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.eclipse.sisu.inject.Weak;
 
+/**
+ * Utility methods for dealing with Plexus {@link ClassRealm}s.
+ */
 public final class ClassRealmUtils
 {
     // ----------------------------------------------------------------------

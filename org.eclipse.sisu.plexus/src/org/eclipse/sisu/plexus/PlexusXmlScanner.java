@@ -34,6 +34,9 @@ import org.eclipse.sisu.inject.Logs;
 import org.eclipse.sisu.space.ClassSpace;
 import org.eclipse.sisu.space.Streams;
 
+/**
+ * Helper class that can scan XML resources for Plexus metadata.
+ */
 final class PlexusXmlScanner
 {
     // ----------------------------------------------------------------------
@@ -65,7 +68,7 @@ final class PlexusXmlScanner
     }
 
     // ----------------------------------------------------------------------
-    // Local methods
+    // Locally-shared methods
     // ----------------------------------------------------------------------
 
     Map<Component, DeferredClass<?>> scan( final ClassSpace space, final boolean root )

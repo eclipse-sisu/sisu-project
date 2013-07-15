@@ -36,14 +36,25 @@ import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.ProvisionException;
 
+/**
+ * {@link PlexusBeanModule} backed by a sequence of {@link ComponentDescriptor}s.
+ */
 public final class ComponentDescriptorBeanModule
     implements PlexusBeanModule
 {
+    // ----------------------------------------------------------------------
+    // Implementation fields
+    // ----------------------------------------------------------------------
+
     private final ClassSpace space;
 
     private final Map<Component, DeferredClass<?>> componentMap = new HashMap<Component, DeferredClass<?>>();
 
     private final Map<String, PlexusBeanMetadata> metadataMap = new HashMap<String, PlexusBeanMetadata>();
+
+    // ----------------------------------------------------------------------
+    // Constructors
+    // ----------------------------------------------------------------------
 
     public ComponentDescriptorBeanModule( final ClassSpace space, final List<ComponentDescriptor<?>> descriptors )
     {
@@ -77,6 +88,10 @@ public final class ComponentDescriptorBeanModule
         }
     }
 
+    // ----------------------------------------------------------------------
+    // Public methods
+    // ----------------------------------------------------------------------
+
     public PlexusBeanSource configure( final Binder binder )
     {
         final PlexusTypeBinder plexusTypeBinder = new PlexusTypeBinder( binder );
@@ -86,6 +101,10 @@ public final class ComponentDescriptorBeanModule
         }
         return new PlexusDescriptorBeanSource( metadataMap );
     }
+
+    // ----------------------------------------------------------------------
+    // Implementation methods
+    // ----------------------------------------------------------------------
 
     static Component newComponent( final ComponentDescriptor<?> cd )
     {
@@ -99,9 +118,20 @@ public final class ComponentDescriptorBeanModule
                                     Collections.singletonList( cr.getRoleHint() ) );
     }
 
+    // ----------------------------------------------------------------------
+    // Implementation types
+    // ----------------------------------------------------------------------
+
+    /**
+     * {@link DeferredClass} backed by a {@link ComponentDescriptor} and {@link ComponentFactory} hint.
+     */
     private static final class DeferredFactoryClass
         implements DeferredClass<Object>, DeferredProvider<Object>
     {
+        // ----------------------------------------------------------------------
+        // Implementation fields
+        // ----------------------------------------------------------------------
+
         @Inject
         private PlexusContainer container;
 
@@ -112,11 +142,19 @@ public final class ComponentDescriptorBeanModule
 
         private final String hint;
 
+        // ----------------------------------------------------------------------
+        // Constructors
+        // ----------------------------------------------------------------------
+
         DeferredFactoryClass( final ComponentDescriptor<?> cd, final String hint )
         {
             this.cd = cd;
             this.hint = hint;
         }
+
+        // ----------------------------------------------------------------------
+        // Public methods
+        // ----------------------------------------------------------------------
 
         @SuppressWarnings( { "unchecked", "rawtypes" } )
         public Class load()
@@ -168,10 +206,21 @@ public final class ComponentDescriptorBeanModule
         }
     }
 
+    /**
+     * {@link PlexusBeanMetadata} backed by list of {@link ComponentRequirement}s.
+     */
     private static final class ComponentMetadata
         implements PlexusBeanMetadata
     {
+        // ----------------------------------------------------------------------
+        // Implementation fields
+        // ----------------------------------------------------------------------
+
         private Map<String, Requirement> requirementMap = new HashMap<String, Requirement>();
+
+        // ----------------------------------------------------------------------
+        // Constructors
+        // ----------------------------------------------------------------------
 
         ComponentMetadata( final ClassSpace space, final List<ComponentRequirement> requirements )
         {
@@ -181,6 +230,10 @@ public final class ComponentDescriptorBeanModule
                 requirementMap.put( cr.getFieldName(), newRequirement( space, cr ) );
             }
         }
+
+        // ----------------------------------------------------------------------
+        // Public methods
+        // ----------------------------------------------------------------------
 
         public boolean isEmpty()
         {
@@ -203,15 +256,30 @@ public final class ComponentDescriptorBeanModule
         }
     }
 
+    /**
+     * {@link PlexusBeanSource} backed by simple map of {@link PlexusBeanMetadata}.
+     */
     private static final class PlexusDescriptorBeanSource
         implements PlexusBeanSource
     {
+        // ----------------------------------------------------------------------
+        // Implementation fields
+        // ----------------------------------------------------------------------
+
         private Map<String, PlexusBeanMetadata> metadataMap;
+
+        // ----------------------------------------------------------------------
+        // Constructors
+        // ----------------------------------------------------------------------
 
         PlexusDescriptorBeanSource( final Map<String, PlexusBeanMetadata> metadataMap )
         {
             this.metadataMap = metadataMap;
         }
+
+        // ----------------------------------------------------------------------
+        // Public methods
+        // ----------------------------------------------------------------------
 
         public PlexusBeanMetadata getBeanMetadata( final Class<?> implementation )
         {

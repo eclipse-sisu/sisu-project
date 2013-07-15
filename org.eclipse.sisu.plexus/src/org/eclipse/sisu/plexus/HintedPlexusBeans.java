@@ -19,6 +19,9 @@ import org.eclipse.sisu.BeanEntry;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Named;
 
+/**
+ * Hint-driven sequence of {@link PlexusBean}s that uses {@link MissingPlexusBean}s to indicate missing hints.
+ */
 final class HintedPlexusBeans<T>
     implements Iterable<PlexusBean<T>>
 {
@@ -51,8 +54,10 @@ final class HintedPlexusBeans<T>
 
     public Iterator<PlexusBean<T>> iterator()
     {
+        // assume all hints are missing to begin with
         final List<PlexusBean<T>> plexusBeans = new ArrayList<PlexusBean<T>>( missingPlexusBeans );
 
+        // scan available beans and populate list according to hint
         final int size = plexusBeans.size();
         final Iterator<BeanEntry<Named, T>> itr = beans.iterator();
         for ( int numFound = 0; numFound < size && itr.hasNext(); )

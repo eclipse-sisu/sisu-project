@@ -14,10 +14,14 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.eclipse.sisu.BeanEntry;
 
 import com.google.inject.name.Named;
 
+/**
+ * Sequence of {@link BeanEntry}s filtered according to whether they are visible from the current {@link ClassRealm}.
+ */
 final class RealmFilter<T>
     implements Iterable<BeanEntry<Named, T>>
 {
@@ -54,19 +58,34 @@ final class RealmFilter<T>
     // Implementation types
     // ----------------------------------------------------------------------
 
+    /**
+     * {@link BeanEntry} iterator that only returns entries visible from the given set of named realms.
+     */
     final class FilteredItr
         implements Iterator<BeanEntry<Named, T>>
     {
+        // ----------------------------------------------------------------------
+        // Implementation fields
+        // ----------------------------------------------------------------------
+
         private final Iterator<BeanEntry<Named, T>> itr = beans.iterator();
 
         private final Set<String> realmNames;
 
         private BeanEntry<Named, T> nextBean;
 
+        // ----------------------------------------------------------------------
+        // Constructors
+        // ----------------------------------------------------------------------
+
         public FilteredItr( final Set<String> realmNames )
         {
             this.realmNames = realmNames;
         }
+
+        // ----------------------------------------------------------------------
+        // Public methods
+        // ----------------------------------------------------------------------
 
         public boolean hasNext()
         {

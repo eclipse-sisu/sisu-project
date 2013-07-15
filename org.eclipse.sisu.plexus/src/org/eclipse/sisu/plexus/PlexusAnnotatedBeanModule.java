@@ -99,15 +99,30 @@ public final class PlexusAnnotatedBeanModule
     // Implementation types
     // ----------------------------------------------------------------------
 
+    /**
+     * {@link PlexusBeanSource} backed by runtime annotation metadata.
+     */
     private static final class PlexusAnnotatedBeanSource
         implements PlexusBeanSource
     {
+        // ----------------------------------------------------------------------
+        // Implementation fields
+        // ----------------------------------------------------------------------
+
         private final PlexusBeanMetadata metadata;
+
+        // ----------------------------------------------------------------------
+        // Constructors
+        // ----------------------------------------------------------------------
 
         PlexusAnnotatedBeanSource( final Map<?, ?> variables )
         {
             metadata = new PlexusAnnotatedMetadata( variables );
         }
+
+        // ----------------------------------------------------------------------
+        // Public methods
+        // ----------------------------------------------------------------------
 
         public PlexusBeanMetadata getBeanMetadata( final Class<?> implementation )
         {

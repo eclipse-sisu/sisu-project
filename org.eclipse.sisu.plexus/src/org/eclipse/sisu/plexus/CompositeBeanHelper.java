@@ -34,9 +34,20 @@ import org.eclipse.sisu.bean.DeclaredMembers.View;
 
 import com.google.inject.TypeLiteral;
 
+/**
+ * Helper class that implements low-level Plexus configuration of composite beans.
+ */
 public final class CompositeBeanHelper
 {
+    // ----------------------------------------------------------------------
+    // Constants
+    // ----------------------------------------------------------------------
+
     private static final Type[] NO_TYPES = {};
+
+    // ----------------------------------------------------------------------
+    // Implementation fields
+    // ----------------------------------------------------------------------
 
     private final ConverterLookup lookup;
 
@@ -46,6 +57,10 @@ public final class CompositeBeanHelper
 
     private final ConfigurationListener listener;
 
+    // ----------------------------------------------------------------------
+    // Constructors
+    // ----------------------------------------------------------------------
+
     public CompositeBeanHelper( final ConverterLookup lookup, final ClassLoader loader,
                                 final ExpressionEvaluator evaluator, final ConfigurationListener listener )
     {
@@ -54,6 +69,10 @@ public final class CompositeBeanHelper
         this.evaluator = evaluator;
         this.listener = listener;
     }
+
+    // ----------------------------------------------------------------------
+    // Public methods
+    // ----------------------------------------------------------------------
 
     public void setDefault( final Object bean, final Object defaultValue, final PlexusConfiguration configuration )
         throws ComponentConfigurationException
@@ -218,6 +237,10 @@ public final class CompositeBeanHelper
             throw new ComponentConfigurationException( configuration, reason );
         }
     }
+
+    // ----------------------------------------------------------------------
+    // Implementation methods
+    // ----------------------------------------------------------------------
 
     private Object convertProperty( final Class<?> beanType, final Class<?> rawPropertyType,
                                     final Type genericPropertyType, final PlexusConfiguration configuration )

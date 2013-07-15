@@ -16,6 +16,9 @@ import org.eclipse.sisu.BeanEntry;
 
 import com.google.inject.name.Named;
 
+/**
+ * Sequence of {@link PlexusBean}s backed by {@link BeanEntry}s.
+ */
 final class DefaultPlexusBeans<T>
     implements Iterable<PlexusBean<T>>
 {
@@ -47,10 +50,21 @@ final class DefaultPlexusBeans<T>
     // Implementation types
     // ----------------------------------------------------------------------
 
+    /**
+     * {@link PlexusBean} iterator backed by {@link BeanEntry}s.
+     */
     final class Itr
         implements Iterator<PlexusBean<T>>
     {
+        // ----------------------------------------------------------------------
+        // Implementation fields
+        // ----------------------------------------------------------------------
+
         private final Iterator<BeanEntry<Named, T>> itr = beans.iterator();
+
+        // ----------------------------------------------------------------------
+        // Public methods
+        // ----------------------------------------------------------------------
 
         public boolean hasNext()
         {

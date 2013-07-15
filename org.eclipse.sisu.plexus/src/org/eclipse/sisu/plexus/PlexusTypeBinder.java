@@ -21,6 +21,9 @@ import com.google.inject.Key;
 import com.google.inject.Scopes;
 import com.google.inject.binder.ScopedBindingBuilder;
 
+/**
+ * {@link PlexusTypeListener} that binds Plexus {@link Component}s.
+ */
 public final class PlexusTypeBinder
     implements PlexusTypeListener
 {
@@ -110,18 +113,33 @@ public final class PlexusTypeBinder
     // Implementation types
     // ----------------------------------------------------------------------
 
+    /**
+     * {@link DescribedBinding} that captures Plexus descriptions.
+     */
     private static final class PlexusDescribedBinding
         implements DescribedBinding
     {
+        // ----------------------------------------------------------------------
+        // Implementation fields
+        // ----------------------------------------------------------------------
+
         private final Object source;
 
         private final String description;
+
+        // ----------------------------------------------------------------------
+        // Constructors
+        // ----------------------------------------------------------------------
 
         PlexusDescribedBinding( final Object source, final String description )
         {
             this.source = source;
             this.description = description;
         }
+
+        // ----------------------------------------------------------------------
+        // Public methods
+        // ----------------------------------------------------------------------
 
         public String getDescription()
         {

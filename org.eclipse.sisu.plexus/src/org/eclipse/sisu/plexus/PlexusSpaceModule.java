@@ -26,15 +26,30 @@ import org.eclipse.sisu.space.ClassSpace;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 
+/**
+ * {@link Module} that provides Plexus semantics without the full-blown Plexus container.
+ */
 public final class PlexusSpaceModule
     implements Module
 {
+    // ----------------------------------------------------------------------
+    // Implementation fields
+    // ----------------------------------------------------------------------
+
     private final ClassSpace space;
+
+    // ----------------------------------------------------------------------
+    // Constructors
+    // ----------------------------------------------------------------------
 
     public PlexusSpaceModule( final ClassSpace space )
     {
         this.space = space;
     }
+
+    // ----------------------------------------------------------------------
+    // Public methods
+    // ----------------------------------------------------------------------
 
     public void configure( final Binder binder )
     {
@@ -58,9 +73,20 @@ public final class PlexusSpaceModule
         binder.install( new PlexusBindingModule( manager, xmlModule ) );
     }
 
+    // ----------------------------------------------------------------------
+    // Implementation types
+    // ----------------------------------------------------------------------
+
+    /**
+     * {@link Context} backed by Sisu {@link Parameters}.
+     */
     static final class ParameterizedContext
         extends DefaultContext
     {
+        // ----------------------------------------------------------------------
+        // Implementation methods
+        // ----------------------------------------------------------------------
+
         @Inject
         protected void setParameters( @Parameters final Map<?, ?> parameters )
         {

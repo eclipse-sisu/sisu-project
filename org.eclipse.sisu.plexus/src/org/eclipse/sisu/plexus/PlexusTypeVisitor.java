@@ -122,12 +122,19 @@ public final class PlexusTypeVisitor
     }
 
     // ----------------------------------------------------------------------
-    // Component annotation scanner
+    // Implementation types
     // ----------------------------------------------------------------------
 
+    /**
+     * {@link AnnotationVisitor} that records details of @{@link Component} annotations.
+     */
     static final class ComponentAnnotationVisitor
         implements AnnotationVisitor
     {
+        // ----------------------------------------------------------------------
+        // Implementation fields
+        // ----------------------------------------------------------------------
+
         private String role;
 
         private String hint;
@@ -135,6 +142,10 @@ public final class PlexusTypeVisitor
         private String strategy;
 
         private String description;
+
+        // ----------------------------------------------------------------------
+        // Public methods
+        // ----------------------------------------------------------------------
 
         public void reset()
         {

@@ -202,7 +202,7 @@ public final class PlexusLifecycleManager
     }
 
     // ----------------------------------------------------------------------
-    // Shared implementation methods
+    // Locally-shared methods
     // ----------------------------------------------------------------------
 
     Logger getPlexusLogger( final Object bean )

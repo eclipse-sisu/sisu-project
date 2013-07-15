@@ -47,7 +47,7 @@ public final class PlexusDateTypeConverter
     }
 
     // ----------------------------------------------------------------------
-    // Guice binding
+    // Public methods
     // ----------------------------------------------------------------------
 
     public void configure( final Binder binder )
@@ -55,10 +55,6 @@ public final class PlexusDateTypeConverter
         // we're both matcher and converter
         binder.convertToTypes( this, this );
     }
-
-    // ----------------------------------------------------------------------
-    // Public methods
-    // ----------------------------------------------------------------------
 
     public boolean matches( final TypeLiteral<?> type )
     {

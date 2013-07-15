@@ -97,15 +97,30 @@ public final class PlexusXmlBeanModule
     // Implementation types
     // ----------------------------------------------------------------------
 
+    /**
+     * {@link PlexusBeanSource} backed by consumable XML metadata.
+     */
     private static final class PlexusXmlBeanSource
         implements PlexusBeanSource
     {
+        // ----------------------------------------------------------------------
+        // Implementation fields
+        // ----------------------------------------------------------------------
+
         private Map<String, PlexusBeanMetadata> metadataMap;
+
+        // ----------------------------------------------------------------------
+        // Constructors
+        // ----------------------------------------------------------------------
 
         PlexusXmlBeanSource( final Map<String, PlexusBeanMetadata> metadataMap )
         {
             this.metadataMap = metadataMap;
         }
+
+        // ----------------------------------------------------------------------
+        // Public methods
+        // ----------------------------------------------------------------------
 
         public PlexusBeanMetadata getBeanMetadata( final Class<?> implementation )
         {
