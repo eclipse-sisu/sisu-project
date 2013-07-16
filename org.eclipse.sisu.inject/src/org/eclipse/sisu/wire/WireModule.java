@@ -20,7 +20,7 @@ import com.google.inject.spi.Element;
 import com.google.inject.spi.Elements;
 
 /**
- * Guice {@link Module} that automatically adds {@link BeanLocator}-backed bindings for non-local bean dependencies.
+ * Guice {@link Module} that automatically adds {@link BeanLocator}-backed bindings for unresolved dependencies.
  */
 public final class WireModule
     implements Module
@@ -57,6 +57,12 @@ public final class WireModule
     // Public methods
     // ----------------------------------------------------------------------
 
+    /**
+     * Applies a new wiring {@link Strategy} to the current module.
+     * 
+     * @param _strategy The new strategy
+     * @return Updated module
+     */
     public Module with( final Strategy _strategy )
     {
         strategy = _strategy;
@@ -77,14 +83,27 @@ public final class WireModule
     // Public types
     // ----------------------------------------------------------------------
 
+    /**
+     * Wiring strategy.
+     */
     public interface Strategy
     {
+        /**
+         * Selects the {@link Wiring} to be used for the given {@link Binder}.
+         * 
+         * @param binder The binder
+         * @return Selected wiring
+         */
         Wiring wiring( Binder binder );
 
+        /**
+         * Default wiring strategy; route all unresolved dependencies to the {@link BeanLocator}.
+         */
         Strategy DEFAULT = new Strategy()
         {
             public Wiring wiring( final Binder binder )
             {
+                // basic File+URL type converters
                 for ( final Module m : CONVERTERS )
                 {
                     m.configure( binder );

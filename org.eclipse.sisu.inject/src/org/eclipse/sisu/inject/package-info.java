@@ -9,6 +9,7 @@
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
 /**
+ * Dynamic bean lookup across multiple injectors.
  */
 package org.eclipse.sisu.inject;
 

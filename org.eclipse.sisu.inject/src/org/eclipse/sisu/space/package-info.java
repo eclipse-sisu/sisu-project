@@ -9,6 +9,7 @@
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
 /**
+ * Customizable scanning of bean implementations.
  */
 package org.eclipse.sisu.space;
 

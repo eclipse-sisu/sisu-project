@@ -9,6 +9,7 @@
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
 /**
+ * Customizable injection of bean properties.
  */
 package org.eclipse.sisu.bean;
 

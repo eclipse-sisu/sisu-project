@@ -9,6 +9,7 @@
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
 /**
+ * Customizable wiring of unresolved dependencies.
  */
 package org.eclipse.sisu.wire;
 

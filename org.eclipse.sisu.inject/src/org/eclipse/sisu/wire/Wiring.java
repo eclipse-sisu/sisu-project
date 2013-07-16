@@ -13,9 +13,15 @@ package org.eclipse.sisu.wire;
 import com.google.inject.Key;
 
 /**
- * Supplies bindings for given dependency {@link Key}s.
+ * Something that can supply bindings for unresolved dependency {@link Key}s.
  */
 public interface Wiring
 {
+    /**
+     * Attempts to satisfy the given dependency by applying a local binding.
+     * 
+     * @param key The dependency key
+     * @return {@code true} if the wiring succeeded; otherwise {@code false}
+     */
     boolean wire( Key<?> key );
 }

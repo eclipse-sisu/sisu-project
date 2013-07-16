@@ -9,6 +9,7 @@
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
 /**
+ * Utilities to launch and test Sisu applications. 
  */
 package org.eclipse.sisu.launch;
 
