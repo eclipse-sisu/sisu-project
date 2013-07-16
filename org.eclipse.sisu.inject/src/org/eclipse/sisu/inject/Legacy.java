@@ -25,6 +25,9 @@ import org.sonatype.inject.Mediator;
 import com.google.inject.Key;
 import com.google.inject.Provider;
 
+/**
+ * Dynamic support for legacy types.
+ */
 @Deprecated
 public final class Legacy<S>
 {

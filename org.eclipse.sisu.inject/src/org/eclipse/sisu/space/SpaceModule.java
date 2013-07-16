@@ -103,6 +103,12 @@ public final class SpaceModule
     // Public methods
     // ----------------------------------------------------------------------
 
+    /**
+     * Applies a new wiring {@link Strategy} to the current module.
+     * 
+     * @param _strategy The new strategy
+     * @return Updated module
+     */
     public Module with( final Strategy _strategy )
     {
         strategy = _strategy;
@@ -127,10 +133,22 @@ public final class SpaceModule
     // Public types
     // ----------------------------------------------------------------------
 
+    /**
+     * Visitor strategy.
+     */
     public interface Strategy
     {
+        /**
+         * Selects the {@link SpaceVisitor} to be used for the given {@link Binder}.
+         * 
+         * @param binder The binder
+         * @return Selected visitor
+         */
         SpaceVisitor visitor( Binder binder );
 
+        /**
+         * Default visitor strategy; scan and bind implementations with {@link Qualifier}s.
+         */
         Strategy DEFAULT = new Strategy()
         {
             public SpaceVisitor visitor( final Binder binder )

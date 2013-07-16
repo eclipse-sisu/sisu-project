@@ -17,6 +17,9 @@ import com.google.inject.Module;
 import com.google.inject.spi.Element;
 import com.google.inject.spi.Elements;
 
+/**
+ * Guice {@link Module} that discards any duplicate or broken bindings.
+ */
 public final class MergedModule
     implements Module
 {

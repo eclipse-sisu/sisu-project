@@ -27,12 +27,23 @@ import com.google.inject.Binder;
 import com.google.inject.Key;
 import com.google.inject.Module;
 
+/**
+ * SPI mechanism for discovering {@link Module} and Strategy extensions.
+ */
 public final class SisuExtensions
     implements SpaceModule.Strategy, WireModule.Strategy
 {
+    // ----------------------------------------------------------------------
+    // Implementation fields
+    // ----------------------------------------------------------------------
+
     private final ClassSpace space;
 
     private final boolean global;
+
+    // ----------------------------------------------------------------------
+    // Constructors
+    // ----------------------------------------------------------------------
 
     private SisuExtensions( final ClassSpace space, final boolean global )
     {
@@ -40,21 +51,51 @@ public final class SisuExtensions
         this.global = global;
     }
 
+    // ----------------------------------------------------------------------
+    // Public methods
+    // ----------------------------------------------------------------------
+
+    /**
+     * Returns local {@link SisuExtensions} from the containing class space.
+     * 
+     * @param space The class space
+     * @return Local extensions
+     */
     public static SisuExtensions local( final ClassSpace space )
     {
         return new SisuExtensions( space, false );
     }
 
+    /**
+     * Returns global {@link SisuExtensions} from the surrounding class space.
+     * 
+     * @param space The class space
+     * @return Global extensions
+     */
     public static SisuExtensions global( final ClassSpace space )
     {
         return new SisuExtensions( space, true );
     }
 
+    /**
+     * Loads {@link Module} extensions from "META-INF/services/com.google.inject.Module"; implementations must have a
+     * public default (no-argument) constructor.
+     * 
+     * @param binder The current binder
+     */
     public <T> void install( final Binder binder )
     {
         install( binder, null, null );
     }
 
+    /**
+     * Loads {@link Module} extensions from "META-INF/services/com.google.inject.Module"; implementations may either
+     * have a public constructor that takes a single context argument or a public default (no-argument) constructor.
+     * 
+     * @param binder The current binder
+     * @param contextType Optional context type
+     * @param context Optional context instance
+     */
     public <T> void install( final Binder binder, final Class<T> contextType, final T context )
     {
         final String index = "META-INF/services/" + Module.class.getName();
@@ -88,6 +129,12 @@ public final class SisuExtensions
         }
     }
 
+    /**
+     * Delegates to wiring registered under "META-INF/services/org.eclipse.sisu.wire.Wiring"; first one wins.
+     * 
+     * @param binder The binder
+     * @return Extended wiring
+     */
     public Wiring wiring( final Binder binder )
     {
         final List<Wiring> customWiring = load( Wiring.class, binder );
@@ -108,6 +155,12 @@ public final class SisuExtensions
         };
     }
 
+    /**
+     * Delegates to visitors registered under "META-INF/services/org.eclipse.sisu.space.SpaceVisitor"; first one wins.
+     * 
+     * @param binder The binder
+     * @return Extended visitor
+     */
     public SpaceVisitor visitor( final Binder binder )
     {
         final List<SpaceVisitor> customVisitors = load( SpaceVisitor.class, binder );
@@ -148,15 +201,27 @@ public final class SisuExtensions
 
     }
 
-    private <T> List<T> load( final Class<T> api, final Binder binder )
+    // ----------------------------------------------------------------------
+    // Implementation methods
+    // ----------------------------------------------------------------------
+
+    /**
+     * Loads {@link Binder} extensions from "META-INF/services/{fully-qualified-SPI-name}"; implementations must have a
+     * public constructor that takes a single binder argument.
+     * 
+     * @param spi The extension SPI
+     * @param binder The current binder
+     * @return List of binder extensions
+     */
+    private <T> List<T> load( final Class<T> spi, final Binder binder )
     {
         final List<T> extensions = new ArrayList<T>();
-        final String index = "META-INF/services/" + api.getName();
+        final String index = "META-INF/services/" + spi.getName();
         for ( final String name : new IndexedClassFinder( index, global ).indexedNames( space ) )
         {
             try
             {
-                extensions.add( api.cast( space.loadClass( name ).getConstructor( Binder.class ).newInstance( binder ) ) );
+                extensions.add( spi.cast( space.loadClass( name ).getConstructor( Binder.class ).newInstance( binder ) ) );
             }
             catch ( final Exception e )
             {

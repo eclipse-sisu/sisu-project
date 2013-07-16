@@ -56,6 +56,12 @@ public final class ChildWireModule
     // Public methods
     // ----------------------------------------------------------------------
 
+    /**
+     * Applies a new wiring {@link Strategy} to the current module.
+     * 
+     * @param _strategy The new strategy
+     * @return Updated module
+     */
     public Module with( final Strategy _strategy )
     {
         strategy = _strategy;

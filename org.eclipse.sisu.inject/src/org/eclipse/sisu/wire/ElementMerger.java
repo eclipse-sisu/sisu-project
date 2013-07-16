@@ -20,7 +20,11 @@ import com.google.inject.Binding;
 import com.google.inject.Key;
 import com.google.inject.spi.DefaultElementVisitor;
 import com.google.inject.spi.Element;
+import com.google.inject.spi.ElementVisitor;
 
+/**
+ * {@link ElementVisitor} that verifies {@link Binding}s and merges any duplicates.
+ */
 final class ElementMerger
     extends DefaultElementVisitor<Void>
 {

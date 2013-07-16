@@ -106,6 +106,9 @@ final class BeanCache<Q extends Annotation, T>
         return newBean;
     }
 
+    /**
+     * @return Read-only snapshot of the cache
+     */
     public Map<Binding<T>, BeanEntry<Q, T>> flush()
     {
         if ( mutated )

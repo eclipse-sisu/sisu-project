@@ -88,6 +88,9 @@ public final class CloningClassSpace
     // Implementation types
     // ----------------------------------------------------------------------
 
+    /**
+     * {@link ClassLoader} that can define multiple copies of the same implementation type.
+     */
     private static final class CloningClassLoader
         extends ClassLoader
     {

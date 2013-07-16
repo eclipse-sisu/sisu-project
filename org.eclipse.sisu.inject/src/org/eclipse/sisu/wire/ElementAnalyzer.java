@@ -42,7 +42,7 @@ import com.google.inject.spi.ProviderLookup;
 import com.google.inject.spi.StaticInjectionRequest;
 
 /**
- * {@link ElementVisitor} that analyzes linked {@link Binding}s for non-local injection dependencies.
+ * {@link ElementVisitor} that analyzes {@link Binding}s for unresolved injection dependencies.
  */
 final class ElementAnalyzer
     extends DefaultElementVisitor<Void>

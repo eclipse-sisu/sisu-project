@@ -18,6 +18,9 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+/**
+ * Delegating {@link Map} that merges a series of {@link Map}s into one consistent view.
+ */
 final class MergedProperties
     extends AbstractMap<Object, Object>
 {

@@ -206,6 +206,9 @@ public final class TypeArguments
     // Implementation types
     // ----------------------------------------------------------------------
 
+    /**
+     * {@link Qualifier} of bindings that should be treated as implicit.
+     */
     @Qualifier
     @Retention( RetentionPolicy.RUNTIME )
     private static @interface Implicit

@@ -62,6 +62,9 @@ final class WildcardKey
     // Implementation types
     // ----------------------------------------------------------------------
 
+    /**
+     * {@link Qualifier} that captures a qualified implementation type.
+     */
     @Qualifier
     @Retention( RetentionPolicy.RUNTIME )
     private static @interface Qualified

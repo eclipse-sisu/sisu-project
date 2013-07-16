@@ -224,6 +224,9 @@ final class RankedSequence<T>
     // Implementation types
     // ----------------------------------------------------------------------
 
+    /**
+     * Represents an immutable snapshot of ranked elements.
+     */
     static final class Content
     {
         // ----------------------------------------------------------------------

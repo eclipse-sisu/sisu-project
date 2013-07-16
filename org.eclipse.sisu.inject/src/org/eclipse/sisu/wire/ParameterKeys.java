@@ -16,6 +16,9 @@ import org.eclipse.sisu.Parameters;
 
 import com.google.inject.Key;
 
+/**
+ * Useful {@link Key}s for binding {@link Parameters}.
+ */
 @SuppressWarnings( "rawtypes" )
 public interface ParameterKeys
 {

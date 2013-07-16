@@ -35,7 +35,7 @@ import com.google.inject.name.Named;
 import com.google.inject.spi.InjectionPoint;
 
 /**
- * Adds {@link BeanLocator}-backed bindings for non-local bean dependencies.
+ * Adds {@link BeanLocator}-backed bindings for unresolved bean dependencies.
  */
 @SuppressWarnings( { "unchecked", "rawtypes" } )
 public final class LocatorWiring
@@ -149,17 +149,23 @@ public final class LocatorWiring
         }
     }
 
+    /**
+     * Returns the appropriate {@link BeanEntry} provider for the given entry type.
+     * 
+     * @param entryType The entry type
+     * @return Provider of bean entries
+     */
     @SuppressWarnings( "deprecation" )
-    private static Provider getBeanEntriesProvider( final TypeLiteral<?> elementType )
+    private static Provider getBeanEntriesProvider( final TypeLiteral<?> entryType )
     {
-        final TypeLiteral<?>[] args = TypeArguments.get( elementType );
+        final TypeLiteral<?>[] args = TypeArguments.get( entryType );
         if ( 2 == args.length )
         {
             final Class qualifierType = args[0].getRawType();
             if ( qualifierType.isAnnotationPresent( Qualifier.class ) )
             {
                 final Key beanKey = Key.get( args[1], qualifierType );
-                if ( BeanEntry.class == elementType.getRawType() )
+                if ( BeanEntry.class == entryType.getRawType() )
                 {
                     return new BeanEntryProvider( beanKey );
                 }
