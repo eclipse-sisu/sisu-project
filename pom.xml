@@ -277,6 +277,7 @@
               -federationxml JDK http://doclava.googlecode.com/svn/static/api/openjdk-6.xml
               -federate Guice http://google-guice.googlecode.com/svn/trunk/javadoc/
               -hdf project.name "${project.name}"
+              -overview ${basedir}/../overview.html
               -templatedir ${basedir}/../doclava-style
               -d ${project.build.directory}/apidocs
             </additionalparam>
