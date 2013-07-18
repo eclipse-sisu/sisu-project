@@ -72,6 +72,9 @@ public final class ClassRealmUtils
     // Utility methods
     // ----------------------------------------------------------------------
 
+    /**
+     * @return Current context realm
+     */
     public static ClassRealm contextRealm()
     {
         for ( ClassLoader tccl = Thread.currentThread().getContextClassLoader(); tccl != null; tccl = tccl.getParent() )
@@ -84,6 +87,12 @@ public final class ClassRealmUtils
         return null;
     }
 
+    /**
+     * Walks the {@link ClassRealm} import graph to find all realms visible from the given realm.
+     * 
+     * @param contextRealm The initial realm
+     * @return Names of all realms visible from the given realm
+     */
     public static Set<String> visibleRealmNames( final ClassRealm contextRealm )
     {
         if ( GET_IMPORT_REALMS_SUPPORTED && null != contextRealm )

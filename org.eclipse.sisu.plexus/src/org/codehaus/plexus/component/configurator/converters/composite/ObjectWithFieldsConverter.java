@@ -89,16 +89,16 @@ public class ObjectWithFieldsConverter
         {
             final PlexusConfiguration element = configuration.getChild( i );
             final String propertyName = fromXML( element.getName() );
-            Class<?> implType;
+            Class<?> valueType;
             try
             {
-                implType = getClassForImplementationHint( null, element, loader );
+                valueType = getClassForImplementationHint( null, element, loader );
             }
             catch ( final ComponentConfigurationException e )
             {
-                implType = null;
+                valueType = null;
             }
-            helper.setProperty( bean, propertyName, implType, element );
+            helper.setProperty( bean, propertyName, valueType, element );
         }
     }
 }

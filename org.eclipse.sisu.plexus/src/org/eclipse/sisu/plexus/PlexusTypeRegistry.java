@@ -191,6 +191,12 @@ final class PlexusTypeRegistry
         return null;
     }
 
+    /**
+     * Clones an implementation so it can be bound again with different configuration.
+     * 
+     * @param implementation The implementation
+     * @return Cloned implementation
+     */
     private DeferredClass<?> cloneImplementation( final String implementation )
     {
         if ( null == clones )

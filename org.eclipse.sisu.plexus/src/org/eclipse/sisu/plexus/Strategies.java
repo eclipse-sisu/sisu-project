@@ -15,10 +15,6 @@ package org.eclipse.sisu.plexus;
  */
 public interface Strategies
 {
-    // ----------------------------------------------------------------------
-    // Constants
-    // ----------------------------------------------------------------------
-
     String LOAD_ON_START = "load-on-start";
 
     String PER_LOOKUP = "per-lookup";

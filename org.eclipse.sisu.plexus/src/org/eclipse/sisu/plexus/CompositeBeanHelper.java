@@ -74,6 +74,13 @@ public final class CompositeBeanHelper
     // Public methods
     // ----------------------------------------------------------------------
 
+    /**
+     * Calls the default "set" method on the bean; re-converts the configuration if necessary.
+     * 
+     * @param bean The bean being configured
+     * @param defaultValue The default value
+     * @param configuration The configuration
+     */
     public void setDefault( final Object bean, final Object defaultValue, final PlexusConfiguration configuration )
         throws ComponentConfigurationException
     {
@@ -125,7 +132,15 @@ public final class CompositeBeanHelper
         }
     }
 
-    public void setProperty( final Object bean, final String propertyName, final Class<?> implType,
+    /**
+     * Sets a property in the bean; looks for public setter/adder method before checking fields.
+     * 
+     * @param bean The bean being configured
+     * @param propertyName The property name
+     * @param valueType The value type
+     * @param configuration The configuration
+     */
+    public void setProperty( final Object bean, final String propertyName, final Class<?> valueType,
                              final PlexusConfiguration configuration )
         throws ComponentConfigurationException
     {
@@ -152,9 +167,9 @@ public final class CompositeBeanHelper
             {
                 final TypeLiteral<?> paramType = TypeLiteral.get( paramTypeHolder[0] );
                 Class<?> rawPropertyType = paramType.getRawType();
-                if ( null != implType && rawPropertyType.isAssignableFrom( implType ) )
+                if ( null != valueType && rawPropertyType.isAssignableFrom( valueType ) )
                 {
-                    rawPropertyType = implType; // pick more specific type
+                    rawPropertyType = valueType; // pick more specific type
                 }
                 value = convertProperty( beanType, rawPropertyType, paramType.getType(), configuration );
                 if ( null != value )
@@ -188,9 +203,9 @@ public final class CompositeBeanHelper
                 Class<?> rawPropertyType = fieldType.getRawType();
                 if ( !rawPropertyType.isInstance( value ) ) // only re-convert if we must
                 {
-                    if ( null != implType && rawPropertyType.isAssignableFrom( implType ) )
+                    if ( null != valueType && rawPropertyType.isAssignableFrom( valueType ) )
                     {
-                        rawPropertyType = implType; // pick more specific type
+                        rawPropertyType = valueType; // pick more specific type
                     }
                     value = convertProperty( beanType, rawPropertyType, fieldType.getType(), configuration );
                 }
