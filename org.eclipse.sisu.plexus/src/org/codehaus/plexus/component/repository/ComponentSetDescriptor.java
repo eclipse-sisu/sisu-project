@@ -83,7 +83,7 @@ public class ComponentSetDescriptor
     @Override
     public final String toString()
     {
-        final StringBuffer buf = new StringBuffer( "Component Descriptor: " );
+        final StringBuilder buf = new StringBuilder( "Component Descriptor: " );
         for ( final ComponentDescriptor<?> cd : components )
         {
             buf.append( cd.getHumanReadableKey() ).append( "\n" );
