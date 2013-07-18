@@ -1794,7 +1794,7 @@ final class MethodWriter extends MethodVisitor {
                     stackMap.putByte(v);
                 }
             } else {
-                StringBuffer buf = new StringBuffer();
+                StringBuilder buf = new StringBuilder();
                 d >>= 28;
                 while (d-- > 0) {
                     buf.append('[');
