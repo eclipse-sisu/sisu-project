@@ -19,6 +19,7 @@ import org.eclipse.sisu.space.ClassSpace;
 import org.eclipse.sisu.space.ClassVisitor;
 import org.eclipse.sisu.space.LoadedClass;
 import org.eclipse.sisu.space.QualifiedTypeVisitor;
+import org.eclipse.sisu.space.SpaceScanner;
 import org.eclipse.sisu.space.SpaceVisitor;
 
 /**
@@ -31,7 +32,7 @@ public final class PlexusTypeVisitor
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final String COMPONENT_DESC = 'L' + Component.class.getName().replace( '.', '/' ) + ';';
+    private static final String COMPONENT_DESC = SpaceScanner.jvmDescriptor( Component.class );
 
     // ----------------------------------------------------------------------
     // Implementation fields
