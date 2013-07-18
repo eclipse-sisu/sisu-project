@@ -13,6 +13,7 @@
 package org.codehaus.plexus.component.configurator.converters.special;
 
 import org.codehaus.classworlds.ClassRealmAdapter;
+import org.codehaus.classworlds.ClassRealmReverseAdapter;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ConfigurationListener;
@@ -29,6 +30,11 @@ public final class ClassRealmConverter
     public ClassRealmConverter( final ClassRealm realm )
     {
         this.realm = realm;
+    }
+
+    public ClassRealmConverter( final org.codehaus.classworlds.ClassRealm realm )
+    {
+        this.realm = ClassRealmReverseAdapter.getInstance( realm );
     }
 
     public boolean canConvert( final Class<?> type )
