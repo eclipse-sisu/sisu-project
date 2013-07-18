@@ -45,3 +45,12 @@ a:active, a:active code {
 a:visited, a:visited code {
   color: #558;
 }
+#jd-content h1 {
+  color:#111;
+}
+#jd-content h2 {
+  color:#111;
+}
+#jd-content h3 {
+  color:#111;
+}
