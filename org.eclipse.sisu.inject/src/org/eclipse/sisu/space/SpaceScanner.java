@@ -11,6 +11,7 @@
 package org.eclipse.sisu.space;
 
 import java.io.InputStream;
+import java.lang.annotation.Annotation;
 import java.net.URL;
 import java.util.Enumeration;
 
@@ -113,6 +114,18 @@ public final class SpaceScanner
         {
             Logs.trace( "Problem scanning: {}", url, e );
         }
+    }
+
+    /**
+     * Returns the JVM descriptor for the given annotation class, such as "Ljavax/inject/Qualifier;".
+     * 
+     * @param clazz The annotation class
+     * @return JVM descriptor of the class
+     * @see ClassVisitor#visitAnnotation(String)
+     */
+    public static String jvmDescriptor( final Class<? extends Annotation> clazz )
+    {
+        return 'L' + clazz.getName().replace( '.', '/' ) + ';';
     }
 
     // ----------------------------------------------------------------------

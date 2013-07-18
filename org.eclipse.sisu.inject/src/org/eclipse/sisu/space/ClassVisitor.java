@@ -37,6 +37,7 @@ public interface ClassVisitor
      * 
      * @param desc The JVM descriptor for the annotation class, such as "Ljavax/inject/Qualifier;"
      * @return Annotation visitor; {@code null} if it is not interested in visiting the annotation
+     * @see SpaceScanner#jvmDescriptor(Class)
      */
     AnnotationVisitor visitAnnotation( String desc );
 

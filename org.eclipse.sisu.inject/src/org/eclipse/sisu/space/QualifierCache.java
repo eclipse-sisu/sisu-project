@@ -25,7 +25,7 @@ final class QualifierCache
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final String QUALIFIER_DESC = 'L' + Qualifier.class.getName().replace( '.', '/' ) + ';';
+    private static final String QUALIFIER_DESC = SpaceScanner.jvmDescriptor( Qualifier.class );
 
     // ----------------------------------------------------------------------
     // Implementation fields
