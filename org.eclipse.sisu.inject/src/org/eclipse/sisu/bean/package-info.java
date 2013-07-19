@@ -24,7 +24,7 @@
  * <p><p>
  * Each PropertyBinder will in turn be asked for a {@link org.eclipse.sisu.bean.PropertyBinding} per-property.
  * <p><p>
- * The PropertyBindings are used to set properties in injected instances of the bean.
+ * The PropertyBindings are used to set values in any injected instances of the bean.
  */
 package org.eclipse.sisu.bean;
 
