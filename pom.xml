@@ -273,9 +273,9 @@
             <excludePackageNames>*.internal,org.codehaus.*</excludePackageNames>
             <additionalparam>
               -quiet
-              -federate JDK http://download.oracle.com/javase/6/docs/api/index.html?
+              -federate JDK http://docs.oracle.com/javase/6/docs/api/index.html?
               -federationxml JDK http://doclava.googlecode.com/svn/static/api/openjdk-6.xml
-              -federate Guice http://google-guice.googlecode.com/svn/trunk/javadoc/
+              -federate Guice http://google-guice.googlecode.com/git-history/3.0/javadoc
               -hdf project.name "${project.name}"
               -overview ${basedir}/overview.html
               -templatedir ${basedir}/../doclava-style
