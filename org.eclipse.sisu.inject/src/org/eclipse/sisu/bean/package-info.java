@@ -9,7 +9,7 @@
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
 /**
- * Customizable injection of bean properties.
+ * Customizable injection of bean properties, based on <a href="http://code.google.com/p/google-guice/wiki/CustomInjections">http://code.google.com/p/google-guice/wiki/CustomInjections</a>.
  * <p><p>
  * For example:
  * 
@@ -20,11 +20,11 @@
  *     bindListener( Matchers.any(), new BeanListener( new MyBeanBinder() ) );
  *   }
  * }</pre>
- * MyBeanBinder will be asked to supply a {@link org.eclipse.sisu.bean.PropertyBinder} per-bean type.
+ * MyBeanBinder will be asked to supply a {@link org.eclipse.sisu.bean.PropertyBinder} for each bean type, say Foo.
  * <p><p>
- * Each PropertyBinder will in turn be asked for a {@link org.eclipse.sisu.bean.PropertyBinding} per-property.
+ * That PropertyBinder will be asked to supply a {@link org.eclipse.sisu.bean.PropertyBinding} for each property (field or setter) in Foo.
  * <p><p>
- * The PropertyBindings are used to set values in any injected instances of the bean.
+ * Those PropertyBindings are then used to automatically configure any injected instances of Foo.
  */
 package org.eclipse.sisu.bean;
 
