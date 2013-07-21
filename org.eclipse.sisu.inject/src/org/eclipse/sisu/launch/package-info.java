@@ -9,7 +9,7 @@
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
 /**
- * Utilities to launch and test Sisu applications. 
+ * Utilities to test, launch, and extend Sisu applications. 
  * <p><p>
  * For example test classes that scan, bind, and auto-wire the test classpath:
  * <pre>
@@ -25,9 +25,9 @@
  * A {@link org.eclipse.sisu.launch.Main} class that launches Sisu applications from the command-line:
  * <p><p>
  * <pre>
- * java -classpath javax.inject.jar:aopalliance.jar:guice-3.0.jar:org.eclipse.sisu.inject.jar:myapp.jar org.eclipse.sisu.launch.Main</pre> 
+ * java -classpath myapp.jar:javax.inject.jar:aopalliance.jar:guice-3.0.jar:org.eclipse.sisu.inject.jar org.eclipse.sisu.launch.Main</pre> 
  * 
- * Extension {@link org.eclipse.sisu.launch.SisuExtensions strategies} for loading Modules, {@link org.eclipse.sisu.space.SpaceVisitor}s, and {@link org.eclipse.sisu.wire.Wiring} from {@code META-INF/services}.
+ * And a class that discovers {@link org.eclipse.sisu.launch.SisuExtensions Sisu extensions} registered under {@code META-INF/services}.
  */
 package org.eclipse.sisu.launch;
 

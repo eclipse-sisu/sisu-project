@@ -78,8 +78,8 @@ public final class SisuExtensions
     }
 
     /**
-     * Loads {@link Module} extensions from "META-INF/services/com.google.inject.Module"; implementations must have a
-     * public default (no-argument) constructor.
+     * Installs modules listed in {@code META-INF/services/com.google.inject.Module}; modules must have a public no-arg
+     * constructor.
      * 
      * @param binder The current binder
      */
@@ -89,8 +89,8 @@ public final class SisuExtensions
     }
 
     /**
-     * Loads {@link Module} extensions from "META-INF/services/com.google.inject.Module"; implementations may either
-     * have a public constructor that takes a single context argument or a public default (no-argument) constructor.
+     * Installs modules listed in {@code META-INF/services/com.google.inject.Module}; modules must either have a public
+     * no-arg constructor or one with the context type.
      * 
      * @param binder The current binder
      * @param contextType Optional context type
@@ -130,7 +130,8 @@ public final class SisuExtensions
     }
 
     /**
-     * Delegates to wiring registered under "META-INF/services/org.eclipse.sisu.wire.Wiring"; first one wins.
+     * {@link WireModule} strategy that lets {@code META-INF/services/org.eclipse.sisu.wire.Wiring} override the default
+     * wiring.
      * 
      * @param binder The binder
      * @return Extended wiring
@@ -156,7 +157,8 @@ public final class SisuExtensions
     }
 
     /**
-     * Delegates to visitors registered under "META-INF/services/org.eclipse.sisu.space.SpaceVisitor"; first one wins.
+     * {@link SpaceModule} strategy that lets {@code META-INF/services/org.eclipse.sisu.space.SpaceVisitor} override the
+     * default scanning.
      * 
      * @param binder The binder
      * @return Extended visitor
@@ -206,8 +208,8 @@ public final class SisuExtensions
     // ----------------------------------------------------------------------
 
     /**
-     * Loads {@link Binder} extensions from "META-INF/services/{fully-qualified-SPI-name}"; implementations must have a
-     * public constructor that takes a single binder argument.
+     * Loads {@link Binder} extensions from {@code META-INF/services/ fully-qualified-SPI-name} ; implementations must
+     * have a public constructor that takes a single binder argument.
      * 
      * @param spi The extension SPI
      * @param binder The current binder

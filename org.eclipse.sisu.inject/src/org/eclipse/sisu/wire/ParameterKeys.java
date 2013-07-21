@@ -22,7 +22,13 @@ import com.google.inject.Key;
 @SuppressWarnings( "rawtypes" )
 public interface ParameterKeys
 {
+    /**
+     * <code>{@link Key}.get( Map.class, {@link Parameters}.class );</code>
+     */
     Key<Map> PROPERTIES = Key.get( Map.class, Parameters.class );
 
+    /**
+     * <code>{@link Key}.get( String[].class, {@link Parameters}.class );</code>
+     */
     Key<String[]> ARGUMENTS = Key.get( String[].class, Parameters.class );
 }
