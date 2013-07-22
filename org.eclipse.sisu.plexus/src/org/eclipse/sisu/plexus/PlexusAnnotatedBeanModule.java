@@ -13,7 +13,7 @@ package org.eclipse.sisu.plexus;
 import java.util.Map;
 
 import org.codehaus.plexus.component.annotations.Component;
-import org.eclipse.sisu.BeanScanning;
+import org.eclipse.sisu.space.BeanScanning;
 import org.eclipse.sisu.space.ClassSpace;
 import org.eclipse.sisu.space.SpaceModule;
 import org.eclipse.sisu.space.SpaceVisitor;
