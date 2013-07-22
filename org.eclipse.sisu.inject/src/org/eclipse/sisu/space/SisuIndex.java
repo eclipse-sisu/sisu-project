@@ -28,6 +28,10 @@ import org.eclipse.sisu.inject.Logs;
 
 /**
  * Command-line utility that generates a qualified class index for a space-separated list of JARs.
+ * <p>
+ * The index consists of qualified class names listed in {@code META-INF/sisu/javax.inject.Named}.
+ * 
+ * @see <a href="http://eclipse.org/sisu/docs/api/org.eclipse.sisu.mojos/">sisu-maven-plugin</a>
  */
 public final class SisuIndex
     extends AbstractSisuIndex

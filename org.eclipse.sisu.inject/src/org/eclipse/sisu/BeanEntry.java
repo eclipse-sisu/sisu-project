@@ -20,11 +20,11 @@ import javax.inject.Qualifier;
  * Represents a {@link Q}ualified bean implementation of {@link T}. Use this when you want to know more about bean
  * implementations, especially if you want to avoid creating an actual instance during the process.
  * <p>
- * Available for injection as a List or Iterable sequence:
+ * Available for injection as an iterable sequence:
  * 
  * <pre>
  * &#064;Inject
- * List&lt;BeanEntry&lt;Named, Command&gt;&gt; commands;
+ * Iterable&lt;BeanEntry&lt;Named, Command&gt;&gt; commands;
  * </pre>
  * 
  * @see org.eclipse.sisu.inject.BeanLocator

@@ -9,7 +9,7 @@
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
 /**
- * Sisu extensions to <a href="http://jcp.org/en/jsr/detail?id=330">JSR330</a>.
+ * Injectable API for Sisu components (a.k.a beans).
  */
 package org.eclipse.sisu;
 

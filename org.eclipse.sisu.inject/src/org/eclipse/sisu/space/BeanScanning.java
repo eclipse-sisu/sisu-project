@@ -8,10 +8,10 @@
  * Contributors:
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sisu;
+package org.eclipse.sisu.space;
 
 /**
- * Various strategies for discovering bean implementations.
+ * Common techniques for discovering bean implementations.
  * 
  * @see org.eclipse.sisu.space.SpaceModule
  */

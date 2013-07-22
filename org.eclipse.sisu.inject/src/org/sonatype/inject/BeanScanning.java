@@ -11,7 +11,7 @@
 package org.sonatype.inject;
 
 /**
- * @deprecated Replaced by {@link org.eclipse.sisu.BeanScanning org.eclipse.sisu.BeanScanning}
+ * @deprecated Replaced by {@link org.eclipse.sisu.space.BeanScanning org.eclipse.sisu.space.BeanScanning}
  */
 @Deprecated
 public enum BeanScanning

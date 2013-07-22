@@ -16,7 +16,6 @@ import javax.inject.Named;
 
 import junit.framework.TestCase;
 
-import org.eclipse.sisu.BeanScanning;
 import org.junit.Ignore;
 
 import com.google.inject.AbstractModule;

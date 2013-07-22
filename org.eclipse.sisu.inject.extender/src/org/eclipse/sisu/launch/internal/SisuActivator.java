@@ -21,11 +21,11 @@ import java.util.Set;
 
 import javax.inject.Provider;
 
-import org.eclipse.sisu.BeanScanning;
 import org.eclipse.sisu.inject.DefaultBeanLocator;
 import org.eclipse.sisu.inject.Logs;
 import org.eclipse.sisu.launch.Main;
 import org.eclipse.sisu.launch.SisuExtensions;
+import org.eclipse.sisu.space.BeanScanning;
 import org.eclipse.sisu.space.BundleClassSpace;
 import org.eclipse.sisu.space.ClassSpace;
 import org.eclipse.sisu.space.SpaceModule;

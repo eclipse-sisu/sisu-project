@@ -16,8 +16,6 @@ import java.util.concurrent.ConcurrentMap;
 
 import javax.inject.Qualifier;
 
-import org.eclipse.sisu.BeanScanning;
-
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.spi.Element;

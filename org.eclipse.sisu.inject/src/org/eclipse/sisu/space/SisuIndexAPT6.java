@@ -34,6 +34,10 @@ import javax.tools.StandardLocation;
 
 /**
  * Java 6 Annotation {@link Processor} that generates a qualified class index for the current build.
+ * <p>
+ * The index consists of qualified class names listed in {@code META-INF/sisu/javax.inject.Named}.
+ * 
+ * @see <a href="http://eclipse.org/sisu/docs/api/org.eclipse.sisu.mojos/">sisu-maven-plugin</a>
  */
 public final class SisuIndexAPT6
     extends AbstractSisuIndex

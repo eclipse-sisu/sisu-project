@@ -20,8 +20,8 @@ import javax.inject.Inject;
 
 import junit.framework.TestCase;
 
-import org.eclipse.sisu.BeanScanning;
 import org.eclipse.sisu.inject.MutableBeanLocator;
+import org.eclipse.sisu.space.BeanScanning;
 import org.eclipse.sisu.space.ClassSpace;
 import org.eclipse.sisu.space.SpaceModule;
 import org.eclipse.sisu.space.URLClassSpace;
