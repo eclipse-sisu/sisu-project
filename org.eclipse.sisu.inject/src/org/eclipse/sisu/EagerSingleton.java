@@ -17,16 +17,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks beans that should be created as soon as possible.
- * <p>
- * For example:
+ * Marks beans that should be created as soon as possible:<br>
+ * <br>
  * 
  * <pre>
  * &#064;Named
  * &#064;EagerSingleton
  * public class Startup
  * {
- *     // ...
+ *     //
  * }
  * </pre>
  */

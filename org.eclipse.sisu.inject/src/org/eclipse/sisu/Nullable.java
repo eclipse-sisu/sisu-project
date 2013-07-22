@@ -17,9 +17,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks dependencies that can be {@code null}.
- * <p>
- * For example:
+ * Marks dependencies that can be {@code null}:<br>
+ * <br>
  * 
  * <pre>
  * &#064;Inject

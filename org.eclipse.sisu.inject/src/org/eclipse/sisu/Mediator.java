@@ -13,14 +13,40 @@ package org.eclipse.sisu;
 import java.lang.annotation.Annotation;
 
 /**
- * {@link W}atches for {@link Q}ualified bean implementations of {@link T}. Implement this interface when you have one
- * or more beans of type W watching out for other beans of type T. Sisu will use the given mediator to translate
- * {@link BeanEntry} events to whatever the watchers expect. Mediator implementations must have a public default
- * (no-arg) constructor. They are neither injected nor injectable, acting instead as stateless translators between
- * injected beans.
+ * {@link W}atches for {@link Q}ualified bean implementations of {@link T}:<br>
+ * <br>
+ * 
+ * <pre>
+ * &#064;Named
+ * public class MyMediator
+ *     implements Mediator&lt;Named, MyType, MyWatcher&gt;
+ * {
+ *     public void add( BeanEntry&lt;Named, MyType&gt; entry, MyWatcher watcher )
+ *         throws Exception
+ *     {
+ *         // translate event to whatever the watcher expects
+ *     }
+ * 
+ *     public void remove( BeanEntry&lt;Named, MyType&gt; entry, MyWatcher watcher )
+ *         throws Exception
+ *     {
+ *         // translate event to whatever the watcher expects
+ *     }
+ * }
+ * </pre>
+ * 
+ * Mediator implementations must have a public no-arg constructor; they are neither injected nor injectable, acting
+ * instead as stateless translators.
  * <p>
- * Important: mediation only occurs when bindings change and there is at least <i>one</i> live watcher instance. If
- * no-one requests or injects an instance of W the mediator will <i>not</i> be called.
+ * <p>
+ * IMPORTANT: mediation occurs when bindings change and there is at least <b>one</b> live watcher. If no-one requests or
+ * injects an instance of the watcher type then the mediator will <b>not</b> be called.
+ * <p>
+ * <p>
+ * In the following example as soon as MyTabbedPane is injected, Sisu will use the SwingTabMediator to deliver all known
+ * JPanels annotated with @Tab to the watching MyTabbedPane. Sisu will continue to send updates, which add or remove
+ * tabs as appropriate, until the MyTabbedPane instance becomes unreachable. MyTabbedPane doesn't need to know anything
+ * about Sisu APIs and vice-versa because SwingTabMediator takes care of the necessary translation.
  * 
  * <pre>
  * &#064;Named
@@ -85,11 +111,6 @@ import java.lang.annotation.Annotation;
  *     }
  * }
  * </pre>
- * 
- * In this example as soon as MyTabbedPane is injected, Sisu will use SwingTabMediator to deliver all known JPanels
- * annotated with @Tab to the watching MyTabbedPane. Sisu will continue to send updates, which add or remove tabs as
- * appropriate, until the MyTabbedPane instance becomes unreachable. MyTabbedPane doesn't need to know anything about
- * Sisu APIs and vice-versa because SwingTabMediator takes care of the necessary translation.
  * 
  * @see org.eclipse.sisu.inject.BeanLocator
  */

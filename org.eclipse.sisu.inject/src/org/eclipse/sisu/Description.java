@@ -17,16 +17,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Describes a bean.
- * <p>
- * For example:
+ * Describes a bean:<br>
+ * <br>
  * 
  * <pre>
  * &#064;Named
  * &#064;Description( &quot;Summarizes system status&quot; )
  * public class SystemStatus
  * {
- *     // ...
+ *     //
  * }
  * </pre>
  * 

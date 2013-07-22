@@ -17,15 +17,15 @@ import javax.inject.Provider;
 import javax.inject.Qualifier;
 
 /**
- * Represents a {@link Q}ualified bean implementation of {@link T}. Use this when you want to know more about bean
- * implementations, especially if you want to avoid creating an actual instance during the process.
- * <p>
- * Available for injection as an iterable sequence:
+ * Describes {@link Q}ualified bean implementations of {@link T}:<br>
+ * <br>
  * 
  * <pre>
  * &#064;Inject
  * Iterable&lt;BeanEntry&lt;Named, Command&gt;&gt; commands;
  * </pre>
+ * 
+ * Use this when you want to know more about available beans; especially if you want to avoid creating instances.
  * 
  * @see org.eclipse.sisu.inject.BeanLocator
  */
