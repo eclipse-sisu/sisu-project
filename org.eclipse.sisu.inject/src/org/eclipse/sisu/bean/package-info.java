@@ -15,16 +15,15 @@
  * 
  * <pre>
  * new AbstractModule() {
- *   &#064;Override
- *   protected void configure() {
+ *   &#064;Override protected void configure() {
  *     bindListener( Matchers.any(), new BeanListener( new MyBeanBinder() ) );
  *   }
  * }</pre>
- * MyBeanBinder will be asked to supply a {@link org.eclipse.sisu.bean.PropertyBinder} for each bean type, say Foo.
+ * <code>MyBeanBinder</code> will be asked to supply a {@link org.eclipse.sisu.bean.PropertyBinder} for each bean type, say Foo.
  * <p><p>
- * That PropertyBinder will be asked to supply a {@link org.eclipse.sisu.bean.PropertyBinding} for each property (field or setter) in Foo.
+ * That <code>PropertyBinder</code> will be asked to supply a {@link org.eclipse.sisu.bean.PropertyBinding} for each property (field or setter) in Foo.
  * <p><p>
- * Those PropertyBindings are then used to automatically configure any injected instances of Foo.
+ * Those <code>PropertyBinding</code>s are then used to automatically configure any injected instances of Foo.
  */
 package org.eclipse.sisu.bean;
 

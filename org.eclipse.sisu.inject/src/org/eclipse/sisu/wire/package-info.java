@@ -20,10 +20,10 @@
  * <p><p>
  * <pre>
  * injector.createChildInjector( new ChildWireModule( serviceModule, subModule ) );</pre>
+ * <hr>
+ * The default wiring strategy is to use {@link org.eclipse.sisu.wire.LocatorWiring} which can supply the following bindings via the {@link org.eclipse.sisu.inject.BeanLocator}:
  * 
- * The default {@link org.eclipse.sisu.wire.LocatorWiring} can supply the following bindings on-demand:
- * 
- * <h5>Instances</h5>
+ * <h4>Instances</h4>
  * <pre>
  * &#064;Inject MyType bean
  * 
@@ -33,7 +33,7 @@
  * 
  * &#064;Inject Provider&lt;MyType&gt; beanProvider</pre>
  * 
- * <h5>Configuration</h5>
+ * <h4>Configuration</h4>
  * <pre>
  * &#064;Inject &#064;Named("${my.property.name}") File file                      // supports basic type conversion
  * 
@@ -47,7 +47,7 @@
  * <pre>
  * bind( {@link org.eclipse.sisu.wire.ParameterKeys#PROPERTIES ParameterKeys.PROPERTIES} ).toInstance( myConfiguration );      // multiple bindings are merged into one view</pre>
  * 
- * <h5>Collections</h5>
+ * <h4>Collections</h4>
  * The following collections are both dynamic and thread-safe, elements may come and go as injectors are added or removed from the {@link org.eclipse.sisu.inject.BeanLocator}.
  * <p>They are also <b>lazy</b>, meaning instances are created as you access elements of the collection; the elements are then re-used for the same collection.
  * <p></p>
@@ -65,7 +65,7 @@
  * 
  * &#064;Inject Map&lt;MyQualifier, MyType&gt; qualifiedMap
  * 
- * &#064;Inject Map&lt;MyQualifier, Provider&lt;MyType&gt;&gt; providerMap</pre>
+ * &#064;Inject Map&lt;String, Provider&lt;MyType&gt;&gt; providerMap</pre>
  */
 package org.eclipse.sisu.wire;
 
