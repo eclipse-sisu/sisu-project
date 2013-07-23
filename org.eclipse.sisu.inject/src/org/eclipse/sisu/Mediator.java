@@ -17,7 +17,7 @@ import java.lang.annotation.Annotation;
  * <br>
  * 
  * <pre>
- * &#064;Named
+ * // add @Named for automatic registration
  * public class MyMediator
  *     implements Mediator&lt;Named, MyType, MyWatcher&gt;
  * {

@@ -21,7 +21,7 @@
  * <pre>
  * Guice.createInjector( new SpaceModule( new URLClassSpace( classloader ), BeanScanning.INDEX ) );</pre>
  * <hr>
- * The default visitor strategy is to use {@link org.eclipse.sisu.space.QualifiedTypeVisitor} with {@link org.eclipse.sisu.space.QualifiedTypeBinder} to find types annotated with <code>&#064;Named</code> or other <code>&#064;Qualifier</code>s and bind them as follows:
+ * The default visitor strategy is to use {@link org.eclipse.sisu.space.QualifiedTypeVisitor} with {@link org.eclipse.sisu.space.QualifiedTypeBinder} to find types annotated with {@code @Named} or other {@code @Qualifier}s and bind them as follows:
  * 
  * <h4>Components</h4>
  * Any qualified components are bound using a special "wildcard" key that the {@link org.eclipse.sisu.inject.BeanLocator} uses to check type compatibility at lookup time:
@@ -31,10 +31,10 @@
  * &#064;Named("example") public class MyTypeImpl implements MyType {
  *   // ...
  * }</pre>
- * If you use an empty <code>&#064;Named</code> or a different <code>&#064;Qualifier</code> annotation then Sisu will pick a canonical name based on the implementation type.
+ * If you use an empty {@code @Named} or a different {@code @Qualifier} annotation then Sisu will pick a canonical name based on the implementation type.
  * 
  * <p><p>
- * Sometimes you need explicit typed bindings for external integration; you can list the types in a <code>&#064;Typed</code> annotation or leave it empty to use the declared interfaces:
+ * Sometimes you need explicit typed bindings for external integration; you can list the types in a {@code @Typed} annotation or leave it empty to use the declared interfaces:
  * <p><p>
  * <pre>
  * &#064;Named &#064;Typed public class MyTypeImpl implements MyType {
@@ -66,7 +66,7 @@
  *     // ...
  *   }
  * }</pre>
- * Use <code>&#064;Singleton</code> to scope the provided binding(s) as a singleton:
+ * Use {@code @Singleton} to scope the provided binding(s) as a singleton:
  * <p><p>
  * <pre>
  * &#064;Named &#064;Singleton public class MyProvider implements Provider&lt;MyType&gt; {

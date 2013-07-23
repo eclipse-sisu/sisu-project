@@ -48,6 +48,7 @@ public interface MutableBeanLocator
      * 
      * @param injector The new injector
      * @param rank The assigned rank
+     * @deprecated injectors are normally added automatically, clients should not need to call this method
      */
     @Deprecated
     void add( Injector injector, int rank );

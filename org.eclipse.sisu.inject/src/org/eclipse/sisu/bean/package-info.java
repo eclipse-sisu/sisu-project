@@ -19,11 +19,11 @@
  *     bindListener( Matchers.any(), new BeanListener( new MyBeanBinder() ) );
  *   }
  * }</pre>
- * <code>MyBeanBinder</code> will be asked to supply a {@link org.eclipse.sisu.bean.PropertyBinder} for each bean type, say Foo.
+ * {@code MyBeanBinder} will be asked to supply a {@link org.eclipse.sisu.bean.PropertyBinder} for each bean type, say Foo.
  * <p><p>
- * That <code>PropertyBinder</code> will be asked to supply a {@link org.eclipse.sisu.bean.PropertyBinding} for each property (field or setter) in Foo.
+ * That {@code PropertyBinder} will be asked to supply a {@link org.eclipse.sisu.bean.PropertyBinding} for each property (field or setter) in Foo.
  * <p><p>
- * Those <code>PropertyBinding</code>s are then used to automatically configure any injected instances of Foo.
+ * Those {@code PropertyBinding}s are then used to automatically configure any injected instances of Foo.
  */
 package org.eclipse.sisu.bean;
 

@@ -26,7 +26,7 @@ import com.google.inject.Key;
 import com.google.inject.Provider;
 
 /**
- * Dynamic support for legacy types.
+ * @deprecated Limited support for migrating legacy types.
  */
 @Deprecated
 public final class Legacy<S>
