@@ -25,6 +25,7 @@ import org.eclipse.sisu.inject.Logs;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.inject.RankingFunction;
 import org.eclipse.sisu.inject.TypeArguments;
+import org.eclipse.sisu.wire.WireModule.Strategy;
 
 import com.google.inject.Binder;
 import com.google.inject.Binding;
@@ -111,11 +112,13 @@ final class ElementAnalyzer
         localKeys.addAll( keys );
     }
 
-    public void apply( final Wiring wiring )
+    public void apply( final Strategy strategy )
     {
         // calculate which dependencies are missing from the module elements
         final Set<Key<?>> missingKeys = analyzer.findMissingKeys( localKeys );
         final Map<?, ?> mergedProperties = new MergedProperties( properties );
+
+        final Wiring wiring = strategy.wiring( binder );
         for ( final Key<?> key : missingKeys )
         {
             if ( isParameters( key ) )
@@ -133,7 +136,7 @@ final class ElementAnalyzer
             // ignore parent local/wired dependencies
             privateAnalyzer.ignoreKeys( localKeys );
             privateAnalyzer.ignoreKeys( missingKeys );
-            privateAnalyzer.apply( wiring );
+            privateAnalyzer.apply( strategy );
         }
     }
 

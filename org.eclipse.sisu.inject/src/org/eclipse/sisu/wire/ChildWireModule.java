@@ -85,6 +85,6 @@ public final class ChildWireModule
         {
             e.acceptVisitor( analyzer );
         }
-        analyzer.apply( strategy.wiring( binder ) );
+        analyzer.apply( strategy );
     }
 }

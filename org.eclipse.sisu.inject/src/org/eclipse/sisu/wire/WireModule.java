@@ -76,7 +76,7 @@ public final class WireModule
         {
             e.acceptVisitor( analyzer );
         }
-        analyzer.apply( strategy.wiring( binder ) );
+        analyzer.apply( strategy );
     }
 
     // ----------------------------------------------------------------------
