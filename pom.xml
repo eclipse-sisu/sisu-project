@@ -79,7 +79,6 @@
   <properties>
     <maven.compiler.source>1.5</maven.compiler.source>
     <maven.compiler.target>1.5</maven.compiler.target>
-    <tycho-version>0.18.0</tycho-version>
   </properties>
 
   <dependencies>
