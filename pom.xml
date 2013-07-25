@@ -87,7 +87,7 @@
     <maven.compiler.source>1.5</maven.compiler.source>
     <maven.compiler.target>1.5</maven.compiler.target>
     <tycho.scmUrl>scm:git:http://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.inject.git</tycho.scmUrl>
-    <tycho-version>0.18.0</tycho-version>
+    <tycho-version>0.18.1</tycho-version>
   </properties>
 
   <build>
@@ -254,7 +254,7 @@
         <plugin>
           <groupId>org.sonatype.plugins</groupId>
           <artifactId>nexus-staging-maven-plugin</artifactId>
-          <version>1.4.4</version>
+          <version>1.4.5</version>
         </plugin>
         <plugin>
           <artifactId>maven-release-plugin</artifactId>
