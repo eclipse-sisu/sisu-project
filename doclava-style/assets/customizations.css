@@ -54,3 +54,6 @@ a:visited, a:visited code {
 #jd-content h3 {
   color:#111;
 }
+#searchForm {
+  width:210px;
+}
