@@ -34,6 +34,26 @@
         <artifactId>tycho-maven-plugin</artifactId>
         <extensions>true</extensions>
       </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.7</version>
+        <executions>
+          <execution>
+            <id>add-notices</id>
+            <phase>package</phase>
+            <configuration>
+              <target>
+                <zip destfile="${project.build.directory}/${project.build.finalName}.zip" update="true">
+                  <fileset dir="${basedir}" includes="notice.html,epl-v10.html"/>
+                </zip>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
