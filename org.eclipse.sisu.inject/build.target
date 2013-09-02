@@ -12,11 +12,14 @@
 <unit id="javax.el" version="2.2.0.v201108011116"/>
 <unit id="org.slf4j.api" version="1.6.4.v20120130-2120"/>
 <unit id="org.aopalliance" version="1.0.0.v201105210816"/>
-<unit id="com.google.guava" version="10.0.1.v201203051515"/>
 <unit id="com.google.inject" version="3.0.0.v201203062045"/>
 <unit id="org.junit" version="4.10.0.v4_10_0_v20120426-0900"/>
 <unit id="org.hamcrest.core" version="1.1.0.v20090501071000"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/"/>
+</location>
+<location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
+<unit id="com.google.guava" version="11.0.2.v201303041551"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="org.testng" version="6.7.0"/>
