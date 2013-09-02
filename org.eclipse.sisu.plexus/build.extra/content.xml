@@ -38,8 +38,8 @@
         </instructions>
       </touchpointData>
     </unit>
-    <unit id='org.sonatype.sisu.guice' version='3.1.0'>
-      <update id='org.sonatype.sisu.guice' range='[0.0.0,3.1.0)' severity='0'/>
+    <unit id='org.sonatype.sisu.guice' version='3.1.6'>
+      <update id='org.sonatype.sisu.guice' range='[0.0.0,3.1.6)' severity='0'/>
       <properties size='4'>
         <property name='org.eclipse.equinox.p2.name' value='sisu-guice (no_aop)'/>
         <property name='org.eclipse.equinox.p2.description' value='Patched build of Guice: a lightweight dependency injection framework for Java 5 and above'/>
@@ -47,8 +47,8 @@
         <property name='org.eclipse.equinox.p2.doc.url' value='http://code.google.com/p/google-guice/'/>
       </properties>
       <provides size='9'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.sonatype.sisu.guice' version='3.1.0'/>
-        <provided namespace='osgi.bundle' name='org.sonatype.sisu.guice' version='3.1.0'/>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.sonatype.sisu.guice' version='3.1.6'/>
+        <provided namespace='osgi.bundle' name='org.sonatype.sisu.guice' version='3.1.6'/>
         <provided namespace='java.package' name='com.google.inject.name' version='1.4.0'/>
         <provided namespace='java.package' name='com.google.inject.binder' version='1.4.0'/>
         <provided namespace='java.package' name='com.google.inject.spi' version='1.4.0'/>
@@ -61,13 +61,13 @@
         <required namespace='java.package' name='javax.inject' range='0.0.0'/>
       </requires>
       <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='org.sonatype.sisu.guice' version='3.1.0'/>
+        <artifact classifier='osgi.bundle' id='org.sonatype.sisu.guice' version='3.1.6'/>
       </artifacts>
       <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
       <touchpointData size='1'>
         <instructions size='1'>
           <instruction key='manifest'>
-            Bundle-SymbolicName: org.sonatype.sisu.guice;singleton:=true&#xA;Bundle-Version: 3.1.0&#xA;
+            Bundle-SymbolicName: org.sonatype.sisu.guice;singleton:=true&#xA;Bundle-Version: 3.1.6&#xA;
           </instruction>
         </instructions>
       </touchpointData>

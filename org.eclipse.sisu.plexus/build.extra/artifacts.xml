@@ -7,7 +7,7 @@
   </properties>
   <mappings size='2'>
     <rule filter='(&amp; (id=plexus-deps))' output='http://git.eclipse.org/c/sisu/org.eclipse.sisu.plexus.git/plain/org.eclipse.sisu.plexus/build.extra/plexus-deps.jar'/>
-    <rule filter='(&amp; (id=org.sonatype.sisu.guice))' output='http://central.maven.org/maven2/org/sonatype/sisu/sisu-guice/3.1.0/sisu-guice-3.1.0-no_aop.jar'/>
+    <rule filter='(&amp; (id=org.sonatype.sisu.guice))' output='http://central.maven.org/maven2/org/sonatype/sisu/sisu-guice/3.1.6/sisu-guice-3.1.6-no_aop.jar'/>
   </mappings>
   <artifacts size='2'>
     <artifact classifier='osgi.bundle' id='plexus-deps' version='0.0.0'>
@@ -16,11 +16,11 @@
         <property name='download.size' value='254502'/>
       </properties>
     </artifact>
-    <artifact classifier='osgi.bundle' id='org.sonatype.sisu.guice' version='3.1.0'>
+    <artifact classifier='osgi.bundle' id='org.sonatype.sisu.guice' version='3.1.6'>
       <properties size='3'>
-        <property name='artifact.size' value='357425'/>
-        <property name='download.size' value='357425'/>
-        <property name='download.md5' value='19f877ae736fa153a545d0cf801dcec9'/>
+        <property name='artifact.size' value='367536'/>
+        <property name='download.size' value='367536'/>
+        <property name='download.md5' value='dfa999c68ba9c0dd371b13ec55ee0989'/>
       </properties>
     </artifact>
   </artifacts>
