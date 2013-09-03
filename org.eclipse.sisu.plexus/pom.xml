@@ -68,6 +68,12 @@
       <artifactId>sisu-guice</artifactId>
       <classifier>no_aop</classifier>
       <version>3.1.6</version>
+      <exclusions>
+        <exclusion>
+          <groupId>aopalliance</groupId>
+          <artifactId>aopalliance</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.eclipse.sisu</groupId>
