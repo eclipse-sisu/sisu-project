@@ -56,13 +56,8 @@
       </exclusions>
     </dependency>
     <!--
-     | Swap in sisu-guice for ProvisionListener API
+     | Swap in sisu-guice for ProvisionListener API; No-AOP flavour is faster
     -->
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>11.0.2</version>
-    </dependency>
     <dependency>
       <groupId>org.sonatype.sisu</groupId>
       <artifactId>sisu-guice</artifactId>
