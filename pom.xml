@@ -82,21 +82,9 @@
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.6.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-nop</artifactId>
-      <version>1.6.4</version>
-    </dependency>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>11.0.2</version>
-    </dependency>
+    <!--
+     | sisu-guice is better for embedding/Maven; No-AOP flavour is faster
+    -->
     <dependency>
       <groupId>org.sonatype.sisu</groupId>
       <artifactId>sisu-guice</artifactId>
@@ -120,6 +108,17 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <!--
+     | Avoid internal log spam; use -Dsisu.debug to get detailed logging
+    -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-nop</artifactId>
+      <version>1.6.4</version>
+    </dependency>
+    <!--
+     | Maven APIs and components used to analyze the project dependencies
+    -->
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
