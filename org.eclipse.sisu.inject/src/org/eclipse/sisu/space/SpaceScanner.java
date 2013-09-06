@@ -37,23 +37,23 @@ public final class SpaceScanner
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final ClassFinder finder;
-
     private final ClassSpace space;
+
+    private final ClassFinder finder;
 
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
-    public SpaceScanner( final ClassFinder finder, final ClassSpace space )
+    public SpaceScanner( final ClassSpace space, final ClassFinder finder )
     {
-        this.finder = finder;
         this.space = space;
+        this.finder = finder;
     }
 
     public SpaceScanner( final ClassSpace space )
     {
-        this( DEFAULT_FINDER, space );
+        this( space, DEFAULT_FINDER );
     }
 
     // ----------------------------------------------------------------------

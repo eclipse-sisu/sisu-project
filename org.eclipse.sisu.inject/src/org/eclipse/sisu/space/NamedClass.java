@@ -30,7 +30,7 @@ final class NamedClass<T>
     // Constructors
     // ----------------------------------------------------------------------
 
-    public NamedClass( final ClassSpace space, final String name )
+    NamedClass( final ClassSpace space, final String name )
     {
         this.space = space;
         this.name = name;

@@ -162,7 +162,7 @@ public final class SpaceModule
 
     void scanForElements( final Binder binder )
     {
-        new SpaceScanner( finder, space ).accept( strategy.visitor( binder ) );
+        new SpaceScanner( space, finder ).accept( strategy.visitor( binder ) );
     }
 
     private void recordAndReplayElements( final Binder binder )

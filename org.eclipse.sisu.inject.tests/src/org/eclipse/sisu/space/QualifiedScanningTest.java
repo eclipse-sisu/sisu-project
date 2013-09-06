@@ -150,13 +150,13 @@ public class QualifiedScanningTest
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );
         final SpaceVisitor visitor = new QualifiedTypeVisitor( listener );
-        new SpaceScanner( new ClassFinder()
+        new SpaceScanner( space, new ClassFinder()
         {
             public Enumeration<URL> findClasses( final ClassSpace space2 )
             {
                 return space2.findEntries( null, "*D.class", true );
             }
-        }, space ).accept( visitor );
+        } ).accept( visitor );
 
         assertEquals( 1, listener.clazzes.size() );
 
@@ -170,7 +170,7 @@ public class QualifiedScanningTest
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );
         final SpaceVisitor visitor = new QualifiedTypeVisitor( listener );
-        new SpaceScanner( SpaceModule.LOCAL_INDEX, space ).accept( visitor );
+        new SpaceScanner( space, SpaceModule.LOCAL_INDEX ).accept( visitor );
 
         // we deliberately use a partial index
 
