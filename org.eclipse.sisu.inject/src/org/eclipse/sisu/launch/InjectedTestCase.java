@@ -58,7 +58,7 @@ public abstract class InjectedTestCase
     protected void setUp()
         throws Exception
     {
-        Guice.createInjector( new WireModule( new SetUpModule(), new SpaceModule( space(), scanning() ) ) );
+        Guice.createInjector( new WireModule( new SetUpModule(), spaceModule() ) );
     }
 
     @Override
@@ -83,6 +83,11 @@ public abstract class InjectedTestCase
 
             binder.requestInjection( InjectedTestCase.this );
         }
+    }
+
+    public SpaceModule spaceModule()
+    {
+        return new SpaceModule( space(), scanning() );
     }
 
     public ClassSpace space()
