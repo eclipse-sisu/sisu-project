@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.sisu.inject;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 
 import com.google.inject.Binding;
@@ -24,10 +25,36 @@ public final class InjectorPublisher
     implements BindingPublisher
 {
     // ----------------------------------------------------------------------
+    // Static initialization
+    // ----------------------------------------------------------------------
+
+    static
+    {
+        Method getDeclaringSource;
+        try
+        {
+            // support future where binding.getSource() returns ElementSource and not the original declaring source
+            final Class<?> clazz = Binding.class.getClassLoader().loadClass( "com.google.inject.spi.ElementSource" );
+            getDeclaringSource = clazz.getMethod( "getDeclaringSource" );
+        }
+        catch ( final Exception e )
+        {
+            getDeclaringSource = null;
+        }
+        catch ( final LinkageError e )
+        {
+            getDeclaringSource = null;
+        }
+        GET_DECLARING_SOURCE = getDeclaringSource;
+    }
+
+    // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
 
     private static final TypeLiteral<?> OBJECT_TYPE_LITERAL = TypeLiteral.get( Object.class );
+
+    private static final Method GET_DECLARING_SOURCE;
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -113,9 +140,30 @@ public final class InjectorPublisher
     // Local methods
     // ----------------------------------------------------------------------
 
+    static Object getDeclaringSource( final Binding<?> binding )
+    {
+        final Object source = binding.getSource();
+        if ( null != GET_DECLARING_SOURCE && GET_DECLARING_SOURCE.getDeclaringClass().isInstance( source ) )
+        {
+            try
+            {
+                return GET_DECLARING_SOURCE.invoke( source );
+            }
+            catch ( final Exception e )
+            {
+                // ignore
+            }
+            catch ( final LinkageError e )
+            {
+                // ignore
+            }
+        }
+        return source;
+    }
+
     static boolean isVisible( final Binding<?> binding )
     {
-        return false == binding.getSource() instanceof HiddenBinding;
+        return false == getDeclaringSource( binding ) instanceof HiddenBinding;
     }
 
     // ----------------------------------------------------------------------

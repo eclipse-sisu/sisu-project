@@ -95,7 +95,7 @@ final class LazyBeanEntry<Q extends Annotation, T>
     @SuppressWarnings( "deprecation" )
     public String getDescription()
     {
-        final Object source = binding.getSource();
+        final Object source = getSource();
         if ( source instanceof DescribedBinding )
         {
             return ( (DescribedBinding) source ).getDescription();
@@ -125,7 +125,7 @@ final class LazyBeanEntry<Q extends Annotation, T>
 
     public Object getSource()
     {
-        return binding.getSource();
+        return InjectorPublisher.getDeclaringSource( binding );
     }
 
     public int getRank()
