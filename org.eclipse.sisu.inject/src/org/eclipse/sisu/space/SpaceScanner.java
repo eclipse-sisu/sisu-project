@@ -96,7 +96,7 @@ public final class SpaceScanner
         }
         try
         {
-            final InputStream in = Streams.open( url );
+            final InputStream in = url.openStream();
             try
             {
                 new ClassReader( in ).accept( adapt( visitor ), ASM_FLAGS );
