@@ -69,7 +69,7 @@ public final class Main
 
     public static Injector boot( final Map<?, ?> properties, final String... args )
     {
-        final BeanScanning scanning = selectScanning( properties );
+        final BeanScanning scanning = BeanScanning.selectScanning( properties );
         final Module app = wire( scanning, new Main( properties, args ) );
         final Injector injector = Guice.createInjector( app );
 
@@ -108,21 +108,17 @@ public final class Main
         return args.clone();
     }
 
+    /**
+     * Deprecated. Use {@link BeanScanning#selectScanning(Map)}.
+     * 
+     * @param properties the map of properties
+     * @return the BeanScanning value
+     * @throws IllegalArgumentException if the properties map contains an invalid value
+     */
+    @Deprecated
     public static BeanScanning selectScanning( final Map<?, ?> properties )
     {
-        final String option = (String) properties.get( BeanScanning.class.getName() );
-        if ( null == option || option.length() == 0 )
-        {
-            return BeanScanning.ON;
-        }
-        for ( final BeanScanning value : BeanScanning.values() )
-        {
-            if ( value.name().equalsIgnoreCase( option ) )
-            {
-                return value;
-            }
-        }
-        throw new IllegalArgumentException( "Unknown BeanScanning option: " + option );
+        return BeanScanning.selectScanning( properties );
     }
 
     // ----------------------------------------------------------------------

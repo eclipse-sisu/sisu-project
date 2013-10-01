@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.sisu.space;
 
+import java.util.Map;
+
 /**
  * Common techniques for discovering bean implementations.
  * 
@@ -40,5 +42,28 @@ public enum BeanScanning
     /**
      * Use global index (application)
      */
-    GLOBAL_INDEX
+    GLOBAL_INDEX;
+
+    /**
+     * Selects the {@link BeanScanning} strategy from the given properties map. <br>
+     * Checks whether the map contains a property named {@link org.eclipse.sisu.space.BeanScanning} whose value
+     * corresponds to the string representation of one of the literals of the {@link BeanScanning} enumeration. If the
+     * property is not present in the map, {@link #ON} is selected. If the map contains an invalid value an
+     * {@link IllegalAccessException} is thrown.
+     * 
+     * @param properties the map of properties
+     * @return the BeanScanning value
+     * @throws IllegalArgumentException if the properties map contains an invalid value
+     */
+    public static BeanScanning selectScanning( final Map<?, ?> properties )
+    {
+        final String option = (String) properties.get( BeanScanning.class.getName() );
+        if ( null == option || option.length() == 0 )
+        {
+            return BeanScanning.ON;
+        }
+
+        return valueOf( option );
+    }
+
 }
