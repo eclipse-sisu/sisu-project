@@ -48,23 +48,24 @@ public class BundleModule
      * @param locator the bean locator
      * @param bundle the new bundle
      */
-    public BundleModule( BeanLocator locator, Bundle bundle )
+    public BundleModule( final BeanLocator locator, final Bundle bundle )
     {
         this.locator = locator;
         this.bundle = bundle;
-        this.space = new BundleClassSpace( bundle );
-        this.extensions = SisuExtensions.local( space );
+        space = new BundleClassSpace( bundle );
+        extensions = SisuExtensions.local( space );
     }
 
     /**
      * Returns the {@link Bundle} of this bundle module.
+     * 
      * @return the bundle
      */
     public Bundle getBundle()
     {
         return bundle;
     }
-    
+
     /**
      * Returns the {@link ClassSpace} instance created for the given bundle.
      * 
@@ -92,7 +93,7 @@ public class BundleModule
     @Override
     protected void configure()
     {
-        BundleContext bundleContext = bundle.getBundleContext();
+        final BundleContext bundleContext = bundle.getBundleContext();
         bind( BeanLocator.class ).toInstance( locator );
         bind( BundleContext.class ).toInstance( bundleContext );
         bind( ParameterKeys.PROPERTIES ).toInstance( System.getProperties() );

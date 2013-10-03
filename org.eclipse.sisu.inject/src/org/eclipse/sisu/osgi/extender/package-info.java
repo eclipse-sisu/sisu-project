@@ -48,4 +48,3 @@
  */
 package org.eclipse.sisu.osgi.extender;
 
-

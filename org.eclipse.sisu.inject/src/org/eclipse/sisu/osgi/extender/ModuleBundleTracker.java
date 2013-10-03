@@ -76,10 +76,10 @@ public class ModuleBundleTracker
      * 
      * @param locator the shared bean locator.
      */
-    public ModuleBundleTracker( MutableBeanLocator locator )
+    public ModuleBundleTracker( final MutableBeanLocator locator )
     {
         this.locator = locator;
-        this.selector = createSelector();
+        selector = createSelector();
     }
 
     /**
@@ -91,16 +91,17 @@ public class ModuleBundleTracker
     protected BundleSelector createSelector()
     {
         BundleSelector tmpSelector = null;
-        String className = System.getProperty( BundleSelector.class.getName(), DefaultBundleSelector.class.getName() );
+        final String className =
+            System.getProperty( BundleSelector.class.getName(), DefaultBundleSelector.class.getName() );
         try
         {
-            Class maybeSelector = getClass().getClassLoader().loadClass( className );
+            final Class<?> maybeSelector = getClass().getClassLoader().loadClass( className );
             if ( BundleSelector.class.isAssignableFrom( maybeSelector ) )
             {
                 tmpSelector = (BundleSelector) maybeSelector.newInstance();
             }
         }
-        catch ( Exception e )
+        catch ( final Exception e )
         {
             Logs.warn( "Invalid BundleSelector option: {}", className, e );
         }
@@ -118,7 +119,7 @@ public class ModuleBundleTracker
      * @see org.osgi.util.tracker.BundleTrackerCustomizer#addingBundle(org.osgi.framework.Bundle,
      * org.osgi.framework.BundleEvent)
      */
-    public Object addingBundle( Bundle bundle, BundleEvent event )
+    public Object addingBundle( final Bundle bundle, final BundleEvent event )
     {
         if ( SYMBOLIC_NAME.equals( bundle.getSymbolicName() ) )
         {
@@ -129,13 +130,13 @@ public class ModuleBundleTracker
         {
             try
             {
-                BindingPublisher publisher = createBindingPublisher( bundle );
+                final BindingPublisher publisher = createBindingPublisher( bundle );
 
-                Dictionary<String, Object> metadata = createServiceMetadata( bundle );
+                final Dictionary<String, Object> metadata = createServiceMetadata( bundle );
                 bundle.getBundleContext().registerService( BindingPublisher.class.getName(), publisher, metadata );
 
             }
-            catch ( RuntimeException e )
+            catch ( final RuntimeException e )
             {
                 Logs.warn( "Problem starting: {}", bundle, e );
             }
@@ -150,15 +151,15 @@ public class ModuleBundleTracker
      * @param bundle the extended bundle.
      * @return the {@link BindingPublisher} instance.
      */
-    protected BindingPublisher createBindingPublisher( Bundle bundle )
+    protected BindingPublisher createBindingPublisher( final Bundle bundle )
     {
-        BundleModule module = new BundleModule( locator, bundle );
-        ClassSpace space = module.getSpace();
-        SisuExtensions extensions = module.getExtensions();
+        final BundleModule module = new BundleModule( locator, bundle );
+        final ClassSpace space = module.getSpace();
+        final SisuExtensions extensions = module.getExtensions();
 
-        BeanScanning scanning = createScanning( module );
+        final BeanScanning scanning = createScanning( module );
 
-        Injector injector =
+        final Injector injector =
             Guice.createInjector( new WireModule( module, new SpaceModule( space, scanning ).with( extensions ) ).with( extensions ) );
 
         return new InjectorPublisher( injector, new DefaultRankingFunction() );
@@ -170,7 +171,7 @@ public class ModuleBundleTracker
      * @param module the {@link BundleModule}
      * @return
      */
-    protected BeanScanning createScanning( BundleModule module )
+    protected BeanScanning createScanning( final BundleModule module )
     {
         return BeanScanning.select( System.getProperties() );
     }
@@ -182,9 +183,9 @@ public class ModuleBundleTracker
      * @param bundle the extended bundle
      * @return the meta-data
      */
-    protected Dictionary<String, Object> createServiceMetadata( Bundle bundle )
+    protected Dictionary<String, Object> createServiceMetadata( final Bundle bundle )
     {
-        Dictionary<String, Object> metadata = new Hashtable<String, Object>();
+        final Dictionary<String, Object> metadata = new Hashtable<String, Object>();
         metadata.put( Constants.SERVICE_PID, SYMBOLIC_NAME );
         metadata.put( REGISTERED_BY_EXTENDER_PROPERTY, Boolean.TRUE.toString() );
         return metadata;
@@ -195,7 +196,7 @@ public class ModuleBundleTracker
      * @see org.osgi.util.tracker.BundleTrackerCustomizer#modifiedBundle(org.osgi.framework.Bundle,
      * org.osgi.framework.BundleEvent, java.lang.Object)
      */
-    public void modifiedBundle( Bundle bundle, BundleEvent event, Object object )
+    public void modifiedBundle( final Bundle bundle, final BundleEvent event, final Object object )
     {
         // nothing to do
     }
@@ -205,7 +206,7 @@ public class ModuleBundleTracker
      * @see org.osgi.util.tracker.BundleTrackerCustomizer#removedBundle(org.osgi.framework.Bundle,
      * org.osgi.framework.BundleEvent, java.lang.Object)
      */
-    public void removedBundle( Bundle bundle, BundleEvent event, Object object )
+    public void removedBundle( final Bundle bundle, final BundleEvent event, final Object object )
     {
         /*
          * nothing to do, clean-up is performed by the service tracker when the BundleInjector is removed from the
@@ -232,15 +233,15 @@ public class ModuleBundleTracker
      * @param bundle the extended bundle
      * @return true if the service has already been registered, false otherwise.
      */
-    protected boolean isBindingPublisherRegistered( Bundle bundle )
+    protected boolean isBindingPublisherRegistered( final Bundle bundle )
     {
-        ServiceReference[] serviceReferences = bundle.getRegisteredServices();
+        final ServiceReference[] serviceReferences = bundle.getRegisteredServices();
         if ( null != serviceReferences )
         {
             for ( final ServiceReference ref : serviceReferences )
             {
-                Object pid = ref.getProperty( Constants.SERVICE_PID );
-                boolean registeredByExtender =
+                final Object pid = ref.getProperty( Constants.SERVICE_PID );
+                final boolean registeredByExtender =
                     Boolean.parseBoolean( (String) ref.getProperty( REGISTERED_BY_EXTENDER_PROPERTY ) );
                 if ( registeredByExtender && SYMBOLIC_NAME.equals( pid ) )
                 {

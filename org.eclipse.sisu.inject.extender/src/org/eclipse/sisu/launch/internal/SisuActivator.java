@@ -35,7 +35,7 @@ public final class SisuActivator
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private static Reference LOCATOR_REF;
+    private static Reference<DefaultBeanLocator> LOCATOR_REF;
 
     private DefaultBeanLocator locator;
 
@@ -53,11 +53,11 @@ public final class SisuActivator
         {
             if ( null != LOCATOR_REF )
             {
-                locator = (DefaultBeanLocator) LOCATOR_REF.get();
+                locator = LOCATOR_REF.get();
             }
             if ( null == locator )
             {
-                LOCATOR_REF = new WeakReference( locator = new DefaultBeanLocator() );
+                LOCATOR_REF = new WeakReference<DefaultBeanLocator>( locator = new DefaultBeanLocator() );
             }
         }
 
@@ -66,7 +66,9 @@ public final class SisuActivator
 
     private void createTrackers( final BundleContext context )
     {
-        serviceTracker = new ServiceTracker( context, BindingPublisher.class.getName(), new PublisherServiceTracker( context, locator ) );
+        serviceTracker =
+            new ServiceTracker( context, BindingPublisher.class.getName(), new PublisherServiceTracker( context,
+                                                                                                        locator ) );
         serviceTracker.open( true );
         bundleTracker = new BundleTracker( context, Bundle.ACTIVE, new ModuleBundleTracker( locator ) );
         bundleTracker.open();

@@ -17,7 +17,7 @@ public class DefaultBundleSelector
      * (non-Javadoc)
      * @see org.eclipse.sisu.osgi.extender.BundleSelector#select(org.osgi.framework.Bundle)
      */
-    public boolean select( Bundle bundle )
+    public boolean select( final Bundle bundle )
     {
         final Dictionary<?, ?> headers = bundle.getHeaders();
         final String host = (String) headers.get( Constants.FRAGMENT_HOST );

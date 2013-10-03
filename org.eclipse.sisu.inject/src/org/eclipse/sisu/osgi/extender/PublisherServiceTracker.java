@@ -19,8 +19,7 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
- * A service tracker customiser used to locate all {@link BindingPublisher} services registered in the
- * OSGi registry.
+ * A service tracker customiser used to locate all {@link BindingPublisher} services registered in the OSGi registry.
  */
 public class PublisherServiceTracker
     implements ServiceTrackerCustomizer
@@ -36,7 +35,7 @@ public class PublisherServiceTracker
      * @param context the extender bundle {@link BundleContext}
      * @param locator the shared {@link BeanLocator}
      */
-    public PublisherServiceTracker( BundleContext context, MutableBeanLocator locator )
+    public PublisherServiceTracker( final BundleContext context, final MutableBeanLocator locator )
     {
         this.context = context;
         this.locator = locator;
@@ -46,7 +45,7 @@ public class PublisherServiceTracker
      * (non-Javadoc)
      * @see org.osgi.util.tracker.ServiceTrackerCustomizer#addingService(org.osgi.framework.ServiceReference)
      */
-    public Object addingService( ServiceReference reference )
+    public Object addingService( final ServiceReference reference )
     {
         if ( !ModuleBundleTracker.SYMBOLIC_NAME.equals( reference.getProperty( Constants.SERVICE_PID ) ) )
         {
@@ -57,9 +56,9 @@ public class PublisherServiceTracker
 
         if ( service instanceof BindingPublisher )
         {
-            BindingPublisher publisher = (BindingPublisher) service;
+            final BindingPublisher publisher = (BindingPublisher) service;
             locator.add( publisher, 0 );
-            return (BindingPublisher) publisher;
+            return publisher;
         }
         return null;
     }
@@ -83,7 +82,7 @@ public class PublisherServiceTracker
      * @see org.osgi.util.tracker.ServiceTrackerCustomizer#modifiedService(org.osgi.framework.ServiceReference,
      * java.lang.Object)
      */
-    public void modifiedService( ServiceReference reference, Object service )
+    public void modifiedService( final ServiceReference reference, final Object service )
     {
         // nothing to do
     }
