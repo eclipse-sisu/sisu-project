@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.sisu.space;
 
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -45,25 +46,21 @@ public enum BeanScanning
     GLOBAL_INDEX;
 
     /**
-     * Selects the {@link BeanScanning} strategy from the given properties map. <br>
-     * Checks whether the map contains a property named {@link org.eclipse.sisu.space.BeanScanning} whose value
-     * corresponds to the string representation of one of the literals of the {@link BeanScanning} enumeration. If the
-     * property is not present in the map, {@link #ON} is selected. If the map contains an invalid value an
-     * {@link IllegalAccessException} is thrown.
+     * Selects the property named <i>"org.eclipse.sisu.space.BeanScanning"</i> and attempts to map its value to a
+     * {@link BeanScanning} literal, ignoring case. Defaults to {@link BeanScanning#ON} for blank or null values.
      * 
-     * @param properties the map of properties
-     * @return the BeanScanning value
-     * @throws IllegalArgumentException if the properties map contains an invalid value
+     * @param properties The properties
+     * @return Selected scanning option
+     * @throws IllegalArgumentException if the property value cannot be mapped
      */
-    public static BeanScanning selectScanning( final Map<?, ?> properties )
+    public static BeanScanning select( final Map<?, ?> properties )
+        throws IllegalArgumentException
     {
         final String option = (String) properties.get( BeanScanning.class.getName() );
-        if ( null == option || option.length() == 0 )
+        if ( null == option || option.trim().length() == 0 )
         {
             return BeanScanning.ON;
         }
-
-        return valueOf( option );
+        return Enum.valueOf( BeanScanning.class, option.toUpperCase( Locale.ENGLISH ) );
     }
-
 }

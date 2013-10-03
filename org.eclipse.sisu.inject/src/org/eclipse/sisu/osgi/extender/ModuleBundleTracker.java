@@ -172,7 +172,7 @@ public class ModuleBundleTracker
      */
     protected BeanScanning createScanning( BundleModule module )
     {
-        return BeanScanning.selectScanning( System.getProperties() );
+        return BeanScanning.select( System.getProperties() );
     }
 
     /**
