@@ -30,20 +30,42 @@ import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.bean.PropertyBinding;
 import org.eclipse.sisu.inject.Logs;
 
-import com.google.inject.spi.ProvisionListener;
+import com.google.inject.Binder;
+import com.google.inject.Module;
+import com.google.inject.matcher.Matchers;
 
 /**
  * {@link PlexusBeanManager} that manages Plexus components requiring lifecycle management.
  */
 public final class PlexusLifecycleManager
-    implements PlexusBeanManager, ProvisionListener
+    implements PlexusBeanManager, Module
 {
+    // ----------------------------------------------------------------------
+    // Static initialization
+    // ----------------------------------------------------------------------
+
+    static
+    {
+        boolean hasProvisionListener;
+        try
+        {
+            hasProvisionListener = com.google.inject.spi.ProvisionListener.class.isInterface();
+        }
+        catch ( final LinkageError e )
+        {
+            hasProvisionListener = false;
+        }
+        HAS_PROVISION_LISTENER = hasProvisionListener;
+    }
+
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
 
     private static final Class<?>[] LIFECYCLE_TYPES = { LogEnabled.class, Contextualizable.class, Initializable.class,
         Startable.class, Disposable.class };
+
+    private static final boolean HAS_PROVISION_LISTENER;
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -79,6 +101,14 @@ public final class PlexusLifecycleManager
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
+
+    public void configure( final Binder binder )
+    {
+        if ( HAS_PROVISION_LISTENER )
+        {
+            binder.bindListener( Matchers.any(), new PlexusProvisionListener() );
+        }
+    }
 
     public boolean manage( final Class<?> clazz )
     {
@@ -121,30 +151,6 @@ public final class PlexusLifecycleManager
         return null;
     }
 
-    public <T> void onProvision( final ProvisionInvocation<T> pi )
-    {
-        final List<?>[] holder = getPendingHolder();
-        if ( null == holder[0] )
-        {
-            List<?> beans;
-            holder[0] = Collections.EMPTY_LIST;
-            try
-            {
-                pi.provision();
-            }
-            finally
-            {
-                beans = holder[0];
-                holder[0] = null;
-            }
-
-            for ( int i = 0, size = beans.size(); i < size; i++ )
-            {
-                manageLifecycle( beans.get( i ) );
-            }
-        }
-    }
-
     @SuppressWarnings( { "rawtypes", "unchecked" } )
     public boolean manage( final Object bean )
     {
@@ -158,13 +164,20 @@ public final class PlexusLifecycleManager
         }
         if ( bean instanceof Contextualizable || bean instanceof Initializable || bean instanceof Startable )
         {
-            final List<?>[] holder = getPendingHolder();
-            List beans = holder[0];
-            if ( null == beans || beans.isEmpty() )
+            if ( HAS_PROVISION_LISTENER )
             {
-                holder[0] = beans = new ArrayList<Object>();
+                final List<?>[] holder = getPendingHolder();
+                List beans = holder[0];
+                if ( null == beans || beans.isEmpty() )
+                {
+                    holder[0] = beans = new ArrayList<Object>();
+                }
+                beans.add( bean );
             }
-            beans.add( bean );
+            else
+            {
+                manageLifecycle( bean );
+            }
         }
         return true;
     }
@@ -231,11 +244,7 @@ public final class PlexusLifecycleManager
         }
     }
 
-    // ----------------------------------------------------------------------
-    // Implementation methods
-    // ----------------------------------------------------------------------
-
-    private List<?>[] getPendingHolder()
+    List<?>[] getPendingHolder()
     {
         List<?>[] holder = pendingHolder.get();
         if ( null == holder )
@@ -245,36 +254,7 @@ public final class PlexusLifecycleManager
         return holder;
     }
 
-    private static <T> boolean synchronizedAdd( final List<T> list, final T element )
-    {
-        synchronized ( list )
-        {
-            return list.add( element );
-        }
-    }
-
-    private static boolean synchronizedRemove( final List<?> list, final Object element )
-    {
-        synchronized ( list )
-        {
-            return list.remove( element );
-        }
-    }
-
-    private static <T> T synchronizedRemoveLast( final List<T> list )
-    {
-        synchronized ( list )
-        {
-            final int size = list.size();
-            if ( size > 0 )
-            {
-                return list.remove( size - 1 );
-            }
-            return null;
-        }
-    }
-
-    private void manageLifecycle( final Object bean )
+    void manageLifecycle( final Object bean )
     {
         final ClassLoader tccl = Thread.currentThread().getContextClassLoader();
         try
@@ -311,6 +291,39 @@ public final class PlexusLifecycleManager
         finally
         {
             Thread.currentThread().setContextClassLoader( tccl );
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    // Implementation methods
+    // ----------------------------------------------------------------------
+
+    private static <T> boolean synchronizedAdd( final List<T> list, final T element )
+    {
+        synchronized ( list )
+        {
+            return list.add( element );
+        }
+    }
+
+    private static boolean synchronizedRemove( final List<?> list, final Object element )
+    {
+        synchronized ( list )
+        {
+            return list.remove( element );
+        }
+    }
+
+    private static <T> T synchronizedRemoveLast( final List<T> list )
+    {
+        synchronized ( list )
+        {
+            final int size = list.size();
+            if ( size > 0 )
+            {
+                return list.remove( size - 1 );
+            }
+            return null;
         }
     }
 
@@ -417,6 +430,38 @@ public final class PlexusLifecycleManager
             finally
             {
                 return; // ignore any logging exceptions and continue with shutdown
+            }
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    // Implementation types
+    // ----------------------------------------------------------------------
+
+    final class PlexusProvisionListener
+        implements com.google.inject.spi.ProvisionListener
+    {
+        public <T> void onProvision( final ProvisionInvocation<T> pi )
+        {
+            final List<?>[] holder = getPendingHolder();
+            if ( null == holder[0] )
+            {
+                List<?> beans;
+                holder[0] = Collections.EMPTY_LIST;
+                try
+                {
+                    pi.provision();
+                }
+                finally
+                {
+                    beans = holder[0];
+                    holder[0] = null;
+                }
+
+                for ( int i = 0, size = beans.size(); i < size; i++ )
+                {
+                    manageLifecycle( beans.get( i ) );
+                }
             }
         }
     }

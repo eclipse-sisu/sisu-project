@@ -19,7 +19,6 @@ import org.eclipse.sisu.bean.BeanListener;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.matcher.Matchers;
-import com.google.inject.spi.ProvisionListener;
 
 /**
  * Guice {@link Module} that supports registration, injection, and management of Plexus beans.
@@ -70,9 +69,9 @@ public final class PlexusBindingModule
         // attach custom logic to support Plexus requirements/configuration/lifecycle
         final PlexusBeanBinder plexusBinder = new PlexusBeanBinder( manager, sources );
         binder.bindListener( Matchers.any(), new BeanListener( plexusBinder ) );
-        if ( manager instanceof ProvisionListener )
+        if ( manager instanceof Module )
         {
-            binder.bindListener( Matchers.any(), (ProvisionListener) manager );
+            ( (Module) manager ).configure( binder );
         }
     }
 }
