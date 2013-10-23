@@ -80,7 +80,7 @@ public final class PlexusTypeVisitor
     {
         componentVisitor.reset();
         implementation = null;
-        qualifiedTypeVisitor.visitClass( url );
+        qualifiedTypeVisitor.visitClass( null ); // disable detailed source location (see realm filtering)
         return this;
     }
 

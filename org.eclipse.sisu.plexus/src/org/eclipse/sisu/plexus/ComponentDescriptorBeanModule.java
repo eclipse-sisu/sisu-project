@@ -94,10 +94,11 @@ public final class ComponentDescriptorBeanModule
 
     public PlexusBeanSource configure( final Binder binder )
     {
+        final String source = space.toString();
         final PlexusTypeBinder plexusTypeBinder = new PlexusTypeBinder( binder );
         for ( final Entry<Component, DeferredClass<?>> entry : componentMap.entrySet() )
         {
-            plexusTypeBinder.hear( entry.getKey(), entry.getValue(), space );
+            plexusTypeBinder.hear( entry.getKey(), entry.getValue(), source );
         }
         return new PlexusDescriptorBeanSource( metadataMap );
     }
