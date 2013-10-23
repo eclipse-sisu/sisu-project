@@ -125,6 +125,26 @@ public final class QualifiedTypeVisitor
     {
         if ( qualified )
         {
+            listener.hear( space.loadClass( clazzName.replace( '/', '.' ) ), findSource() );
+        }
+    }
+
+    public void leaveSpace()
+    {
+        // no-op
+    }
+
+    // ----------------------------------------------------------------------
+    // Implementation methods
+    // ----------------------------------------------------------------------
+
+    /**
+     * Finds source of current class; detailed location or {@link ClassSpace#toString()}.
+     */
+    private String findSource()
+    {
+        if ( null != location )
+        {
             // compressed record of class location
             final String path = location.getPath();
             if ( null == source || !path.startsWith( source ) )
@@ -132,13 +152,11 @@ public final class QualifiedTypeVisitor
                 final int i = path.indexOf( clazzName );
                 source = i <= 0 ? path : path.substring( 0, i );
             }
-
-            listener.hear( space.loadClass( clazzName.replace( '/', '.' ) ), source );
         }
-    }
-
-    public void leaveSpace()
-    {
-        // no-op
+        else if ( null == source )
+        {
+            source = space.toString();
+        }
+        return source;
     }
 }
