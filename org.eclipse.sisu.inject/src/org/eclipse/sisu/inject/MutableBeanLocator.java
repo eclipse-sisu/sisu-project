@@ -19,22 +19,24 @@ import com.google.inject.Injector;
  */
 @ImplementedBy( DefaultBeanLocator.class )
 public interface MutableBeanLocator
-    extends BeanLocator
+    extends BeanLocator, Iterable<BindingPublisher>
 {
     /**
      * Adds the given ranked {@link BindingPublisher} and distributes its {@link Binding}s.
      * 
      * @param publisher The new publisher
      * @param rank The assigned rank
+     * @return {@code true} if the publisher was added; otherwise {@code false}
      */
-    void add( BindingPublisher publisher, int rank );
+    boolean add( BindingPublisher publisher, int rank );
 
     /**
      * Removes the given {@link BindingPublisher} and its {@link Binding}s.
      * 
      * @param publisher The old publisher
+     * @return {@code true} if the publisher was removed; otherwise {@code false}
      */
-    void remove( BindingPublisher publisher );
+    boolean remove( BindingPublisher publisher );
 
     /**
      * Removes all known {@link BindingPublisher}s and their {@link Binding}s.

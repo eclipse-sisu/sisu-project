@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.sisu.inject;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
@@ -71,14 +72,14 @@ public final class DefaultBeanLocator
     public synchronized void watch( final Key key, final Mediator mediator, final Object watcher )
     {
         final WatchedBeans beans = new WatchedBeans( key, mediator, watcher );
-        for ( final BindingPublisher p : publishers.snapshot() )
+        for ( final BindingPublisher p : this )
         {
             p.subscribe( beans );
         }
         cachedWatchers.put( beans, watcher );
     }
 
-    public synchronized void add( final BindingPublisher publisher, final int rank )
+    public synchronized boolean add( final BindingPublisher publisher, final int rank )
     {
         if ( !publishers.contains( publisher ) )
         {
@@ -92,10 +93,12 @@ public final class DefaultBeanLocator
             {
                 publisher.subscribe( beans );
             }
+            return true;
         }
+        return false;
     }
 
-    public synchronized void remove( final BindingPublisher publisher )
+    public synchronized boolean remove( final BindingPublisher publisher )
     {
         if ( publishers.remove( publisher ) )
         {
@@ -108,15 +111,22 @@ public final class DefaultBeanLocator
             {
                 publisher.unsubscribe( beans );
             }
+            return true;
         }
+        return false;
     }
 
     public synchronized void clear()
     {
-        for ( final BindingPublisher p : publishers.snapshot() )
+        for ( final BindingPublisher p : this )
         {
             remove( p );
         }
+    }
+
+    public Iterator<BindingPublisher> iterator()
+    {
+        return publishers.snapshot().iterator();
     }
 
     public void add( final Injector injector, final int rank )
