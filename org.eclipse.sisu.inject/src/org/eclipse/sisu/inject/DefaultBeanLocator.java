@@ -56,7 +56,7 @@ public final class DefaultBeanLocator
         RankedBindings bindings = cachedBindings.get( type );
         if ( null == bindings )
         {
-            synchronized ( this )
+            synchronized ( cachedBindings ) // perform new lookup
             {
                 bindings = new RankedBindings( type, publishers );
                 final RankedBindings oldBindings = cachedBindings.putIfAbsent( type, bindings );
@@ -85,10 +85,13 @@ public final class DefaultBeanLocator
         if ( !publishers.contains( publisher ) )
         {
             Logs.trace( "Add publisher: {}", publisher, null );
-            publishers.insert( publisher, rank );
-            for ( final RankedBindings bindings : cachedBindings.values() )
+            synchronized ( cachedBindings ) // block new lookup while we update the cache
             {
-                bindings.add( publisher, rank );
+                publishers.insert( publisher, rank );
+                for ( final RankedBindings bindings : cachedBindings.values() )
+                {
+                    bindings.add( publisher, rank );
+                }
             }
             // take defensive copy in case publisher.subscribe has side-effect that triggers 'watch'
             for ( final WatchedBeans beans : new ArrayList<WatchedBeans>( cachedWatchers.keySet() ) )
@@ -102,14 +105,21 @@ public final class DefaultBeanLocator
 
     public synchronized boolean remove( final BindingPublisher publisher )
     {
-        final BindingPublisher oldPublisher = publishers.remove( publisher );
+        final BindingPublisher oldPublisher;
+        synchronized ( cachedBindings ) // block new lookup while we update the cache
+        {
+            oldPublisher = publishers.remove( publisher );
+            if ( null != oldPublisher )
+            {
+                Logs.trace( "Remove publisher: {}", oldPublisher, null );
+                for ( final RankedBindings bindings : cachedBindings.values() )
+                {
+                    bindings.remove( oldPublisher );
+                }
+            }
+        }
         if ( null != oldPublisher )
         {
-            Logs.trace( "Remove publisher: {}", oldPublisher, null );
-            for ( final RankedBindings bindings : cachedBindings.values() )
-            {
-                bindings.remove( oldPublisher );
-            }
             for ( final WatchedBeans beans : cachedWatchers.keySet() )
             {
                 oldPublisher.unsubscribe( beans );
