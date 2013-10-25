@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.sisu.inject;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
@@ -89,7 +90,8 @@ public final class DefaultBeanLocator
             {
                 bindings.add( publisher, rank );
             }
-            for ( final WatchedBeans beans : cachedWatchers.keySet() )
+            // take defensive copy in case publisher.subscribe has side-effect that triggers 'watch'
+            for ( final WatchedBeans beans : new ArrayList<WatchedBeans>( cachedWatchers.keySet() ) )
             {
                 publisher.subscribe( beans );
             }
