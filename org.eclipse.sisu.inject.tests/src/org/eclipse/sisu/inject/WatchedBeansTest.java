@@ -93,7 +93,7 @@ public class WatchedBeansTest
 
         public void remove( final BeanEntry<Named, Bean> entry, final RankedSequence<String> names )
         {
-            assertTrue( names.remove( entry.getKey().value() ) );
+            assertNotNull( names.remove( entry.getKey().value() ) );
         }
     }
 

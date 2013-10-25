@@ -118,7 +118,7 @@ final class RankedBindings<T>
          */
         synchronized ( pendingPublishers )
         {
-            if ( !pendingPublishers.remove( publisher ) )
+            if ( !pendingPublishers.removeThis( publisher ) )
             {
                 publisher.unsubscribe( this );
             }

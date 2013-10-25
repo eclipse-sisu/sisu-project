@@ -95,21 +95,22 @@ final class RankedSequence<T>
         return null != content && content.indexOfThis( element ) >= 0;
     }
 
-    public boolean remove( final Object element )
+    @SuppressWarnings( "unchecked" )
+    public T remove( final Object element )
     {
         Content o, n;
+        int index;
         do
         {
-            final int index;
             if ( null == ( o = get() ) || ( index = o.indexOf( element ) ) < 0 )
             {
-                return false;
+                return null;
             }
             n = o.remove( index );
         }
         while ( !compareAndSet( o, n ) );
 
-        return true;
+        return (T) o.objs[index];
     }
 
     public boolean removeThis( final T element )

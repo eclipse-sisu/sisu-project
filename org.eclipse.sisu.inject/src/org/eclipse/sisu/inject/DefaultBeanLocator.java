@@ -102,16 +102,17 @@ public final class DefaultBeanLocator
 
     public synchronized boolean remove( final BindingPublisher publisher )
     {
-        if ( publishers.remove( publisher ) )
+        final BindingPublisher oldPublisher = publishers.remove( publisher );
+        if ( null != oldPublisher )
         {
-            Logs.trace( "Remove publisher: {}", publisher, null );
+            Logs.trace( "Remove publisher: {}", oldPublisher, null );
             for ( final RankedBindings bindings : cachedBindings.values() )
             {
-                bindings.remove( publisher );
+                bindings.remove( oldPublisher );
             }
             for ( final WatchedBeans beans : cachedWatchers.keySet() )
             {
-                publisher.unsubscribe( beans );
+                oldPublisher.unsubscribe( beans );
             }
             return true;
         }
