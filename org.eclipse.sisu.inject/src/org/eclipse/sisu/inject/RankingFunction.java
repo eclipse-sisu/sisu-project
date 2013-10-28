@@ -20,9 +20,10 @@ import com.google.inject.ImplementedBy;
 public interface RankingFunction
 {
     /**
-     * Estimates the maximum possible rank for this function; used to arrange injectors in order of ranking probability.
+     * Estimates the maximum rank this function may assign to a {@link Binding}.
      * 
      * @return Maximum rank
+     * @see BindingPublisher#maxBindingRank()
      */
     int maxRank();
 

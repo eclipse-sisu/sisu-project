@@ -82,25 +82,25 @@ public final class DefaultBeanLocator
 
     public synchronized boolean add( final BindingPublisher publisher, final int rank )
     {
-        if ( !publishers.contains( publisher ) )
+        if ( publishers.contains( publisher ) )
         {
-            Logs.trace( "Add publisher: {}", publisher, null );
-            synchronized ( cachedBindings ) // block new lookup while we update the cache
-            {
-                publishers.insert( publisher, rank );
-                for ( final RankedBindings bindings : cachedBindings.values() )
-                {
-                    bindings.add( publisher, rank );
-                }
-            }
-            // take defensive copy in case publisher.subscribe has side-effect that triggers 'watch'
-            for ( final WatchedBeans beans : new ArrayList<WatchedBeans>( cachedWatchers.keySet() ) )
-            {
-                publisher.subscribe( beans );
-            }
-            return true;
+            return false;
         }
-        return false;
+        Logs.trace( "Add publisher: {}", publisher, null );
+        synchronized ( cachedBindings ) // block new lookup while we update the cache
+        {
+            publishers.insert( publisher, rank );
+            for ( final RankedBindings bindings : cachedBindings.values() )
+            {
+                bindings.add( publisher, rank );
+            }
+        }
+        // take defensive copy in case publisher.subscribe has side-effect that triggers 'watch'
+        for ( final WatchedBeans beans : new ArrayList<WatchedBeans>( cachedWatchers.keySet() ) )
+        {
+            publisher.subscribe( beans );
+        }
+        return true;
     }
 
     public synchronized boolean remove( final BindingPublisher publisher )
@@ -109,24 +109,21 @@ public final class DefaultBeanLocator
         synchronized ( cachedBindings ) // block new lookup while we update the cache
         {
             oldPublisher = publishers.remove( publisher );
-            if ( null != oldPublisher )
+            if ( null == oldPublisher )
             {
-                Logs.trace( "Remove publisher: {}", oldPublisher, null );
-                for ( final RankedBindings bindings : cachedBindings.values() )
-                {
-                    bindings.remove( oldPublisher );
-                }
+                return false;
+            }
+            Logs.trace( "Remove publisher: {}", oldPublisher, null );
+            for ( final RankedBindings bindings : cachedBindings.values() )
+            {
+                bindings.remove( oldPublisher );
             }
         }
-        if ( null != oldPublisher )
+        for ( final WatchedBeans beans : cachedWatchers.keySet() )
         {
-            for ( final WatchedBeans beans : cachedWatchers.keySet() )
-            {
-                oldPublisher.unsubscribe( beans );
-            }
-            return true;
+            oldPublisher.unsubscribe( beans );
         }
-        return false;
+        return true;
     }
 
     public synchronized void clear()

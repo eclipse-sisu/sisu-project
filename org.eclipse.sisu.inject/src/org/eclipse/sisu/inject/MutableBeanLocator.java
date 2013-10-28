@@ -49,7 +49,7 @@ public interface MutableBeanLocator
      * automatically added to that locator as part of the bootstrapping process.
      * 
      * @param injector The new injector
-     * @param rank The assigned rank
+     * @param rank The assigned rank; should reflect the injector's {@link RankingFunction}
      * @deprecated injectors are normally added automatically, clients should not need to call this method
      */
     @Deprecated
