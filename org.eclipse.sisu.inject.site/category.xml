@@ -22,4 +22,7 @@
   <bundle id="org.eclipse.sisu.inject.extender" version="0.0.0.qualifier">
     <category name="org.eclipse.sisu.inject"/>
   </bundle>
+  <bundle id="org.eclipse.sisu.inject.extender.source" version="0.0.0.qualifier">
+    <category name="org.eclipse.sisu.inject"/>
+  </bundle>
 </site>
