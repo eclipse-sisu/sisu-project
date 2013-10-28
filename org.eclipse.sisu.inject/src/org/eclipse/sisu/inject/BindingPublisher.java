@@ -30,4 +30,11 @@ public interface BindingPublisher
      * @param subscriber The subscriber
      */
     <T> void unsubscribe( BindingSubscriber<T> subscriber );
+
+    /**
+     * Estimates the maximum rank this publisher may assign to a {@link Binding}.
+     * 
+     * @return Maximum binding rank
+     */
+    int maxBindingRank();
 }

@@ -127,6 +127,11 @@ public class WatchedBeansTest
             {
                 subscriberHolder[0] = null;
             }
+
+            public int maxBindingRank()
+            {
+                return 0;
+            }
         };
 
         locator.add( subscriberHook, Integer.MIN_VALUE );
@@ -212,6 +217,11 @@ public class WatchedBeansTest
             public <T> void unsubscribe( final BindingSubscriber<T> subscriber )
             {
                 subscriberHolder[0] = null;
+            }
+
+            public int maxBindingRank()
+            {
+                return 0;
             }
         };
 

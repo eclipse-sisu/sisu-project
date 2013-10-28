@@ -25,7 +25,7 @@ public interface MutableBeanLocator
      * Adds the given ranked {@link BindingPublisher} and distributes its {@link Binding}s.
      * 
      * @param publisher The new publisher
-     * @param rank The assigned rank
+     * @param rank The assigned rank; should ideally reflect {@link BindingPublisher#maxBindingRank()}
      * @return {@code true} if the publisher was added; otherwise {@code false}
      */
     boolean add( BindingPublisher publisher, int rank );

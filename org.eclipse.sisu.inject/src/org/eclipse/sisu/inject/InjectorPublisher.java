@@ -110,6 +110,11 @@ public final class InjectorPublisher
         }
     }
 
+    public int maxBindingRank()
+    {
+        return function.maxRank();
+    }
+
     @Override
     public int hashCode()
     {

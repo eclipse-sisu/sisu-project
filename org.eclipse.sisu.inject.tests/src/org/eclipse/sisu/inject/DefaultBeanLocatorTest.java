@@ -162,6 +162,11 @@ public class DefaultBeanLocatorTest
             public <T> void unsubscribe( final BindingSubscriber<T> subscriber )
             {
             }
+
+            public int maxBindingRank()
+            {
+                return 0;
+            }
         }.equals( new InjectorPublisher( child1, function1 ) ) );
 
         assertFalse( new InjectorPublisher( child2, function2 ).equals( new BindingPublisher()
@@ -172,6 +177,11 @@ public class DefaultBeanLocatorTest
 
             public <T> void unsubscribe( final BindingSubscriber<T> subscriber )
             {
+            }
+
+            public int maxBindingRank()
+            {
+                return 0;
             }
         } ) );
 
