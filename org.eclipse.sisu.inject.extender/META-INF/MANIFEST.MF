@@ -3,14 +3,10 @@ Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.eclipse.sisu.inject.extender;singleton:=true
 Bundle-Version: 0.0.0.qualifier
 Bundle-Name: Sisu-Inject Extender (Incubation)
-Bundle-Activator: org.eclipse.sisu.launch.internal.SisuActivator
+Bundle-Activator: org.eclipse.sisu.osgi.SisuExtender
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6,J2SE-1.5,JavaSE-1.7
 Bundle-Vendor: Eclipse Sisu
 Bundle-Copyright: Copyright (c) 2010, 2013 Sonatype, Inc. and others
 Bundle-DocURL: http://www.eclipse.org/sisu/
 Bundle-License: http://www.eclipse.org/legal/epl-v10.html
-Import-Package: org.eclipse.sisu.inject,
- org.eclipse.sisu.osgi.extender,
- com.google.inject;version="1.3",
- org.osgi.framework;version="1.5",
- org.osgi.util.tracker;version="1.4"
+Import-Package: org.eclipse.sisu.osgi
