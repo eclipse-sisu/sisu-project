@@ -22,8 +22,8 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 /**
- * OSGi extender that watches for JSR330 component bundles and publishes them to the {@link BeanLocator}.<br>
- * Extend this class to customize the selection/publication process, then use it as your Bundle-Activator.
+ * OSGi extender that watches for JSR330 bundles and publishes them to the {@link BeanLocator}.<br>
+ * Extend this class to customize the publication process and use it as your Bundle-Activator.
  */
 public class SisuExtender
     implements BundleActivator
@@ -55,7 +55,7 @@ public class SisuExtender
     }
 
     /**
-     * Finds the {@link BeanLocator} associated with this extender.
+     * Finds the {@link BeanLocator} associated with this extender; creates one if none exist.
      * 
      * @param context The extender context
      * @return Associated bean locator
@@ -67,7 +67,7 @@ public class SisuExtender
         MutableBeanLocator locator = locators.get( extenderId );
         if ( null == locator )
         {
-            locators.put( extenderId, locator = createLocator() );
+            locators.put( extenderId, locator = createLocator( context ) );
         }
         return locator;
     }
@@ -77,7 +77,9 @@ public class SisuExtender
     // ----------------------------------------------------------------------
 
     /**
-     * @return Mask of bundle states this extender is interested in
+     * Returns the mask of bundle states this extender is interested in.
+     * 
+     * @return State mask
      */
     protected int bundleStateMask()
     {
@@ -88,7 +90,7 @@ public class SisuExtender
      * Creates a customised {@link BundleScanner} for this extender.
      * 
      * @param context The extender context
-     * @return New scanner of JSR330 bundles
+     * @return New bundle scanner
      */
     protected BundleScanner createScanner( final BundleContext context )
     {
@@ -96,9 +98,12 @@ public class SisuExtender
     }
 
     /**
-     * @return New locator of JSR330 components
+     * Returns a new locator of bound components for this extender.
+     * 
+     * @param context The extender context
+     * @return New bean locator
      */
-    protected MutableBeanLocator createLocator()
+    protected MutableBeanLocator createLocator( final BundleContext context )
     {
         return new DefaultBeanLocator();
     }

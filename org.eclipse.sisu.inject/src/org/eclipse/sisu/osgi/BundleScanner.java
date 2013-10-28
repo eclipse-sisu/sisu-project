@@ -31,6 +31,9 @@ import org.osgi.util.tracker.BundleTracker;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
+/**
+ * {@link BundleTracker} that tracks JSR330 bundles and uses {@link BundleModule} to bind components.
+ */
 public class BundleScanner
     extends BundleTracker
 {
@@ -67,8 +70,14 @@ public class BundleScanner
     private static final Map<Long, BindingPublisher> publishers =
         Collections.synchronizedMap( Weak.<Long, BindingPublisher> values() );
 
+    /**
+     * Mask of bundle states being tracked.
+     */
     protected final int stateMask;
 
+    /**
+     * Shared locator of bound components.
+     */
     protected final MutableBeanLocator locator;
 
     // ----------------------------------------------------------------------
@@ -91,7 +100,7 @@ public class BundleScanner
     {
         super.open();
 
-        purgeBundles();
+        purgeBundles(); // catch-up with any events we've missed
     }
 
     @Override
@@ -130,6 +139,9 @@ public class BundleScanner
         }
     }
 
+    /**
+     * Purges any previously published bundles that are no longer valid.
+     */
     public final void purgeBundles()
     {
         for ( final Long bundleId : new ArrayList<Long>( publishers.keySet() ) )
@@ -148,6 +160,8 @@ public class BundleScanner
     // ----------------------------------------------------------------------
 
     /**
+     * Inspects the bundle to see if it deserves in-depth scanning.
+     * 
      * @param bundle The candidate bundle
      * @return {@code true} if the bundle should be scanned; otherwise {@code false}
      */
@@ -173,8 +187,10 @@ public class BundleScanner
     }
 
     /**
-     * @param bundle The scanned bundle
-     * @return New publisher of bindings for the bundle
+     * Creates a new {@link BindingPublisher} for the given bundle.
+     * 
+     * @param bundle The bundle to publish
+     * @return New publisher of bindings
      */
     protected BindingPublisher publishBundle( final Bundle bundle )
     {
@@ -184,7 +200,9 @@ public class BundleScanner
     }
 
     /**
-     * @param bundle The scanned bundle
+     * Determines if the given bundle should now be unpublished.
+     * 
+     * @param bundle The published bundle
      * @return {@code true} if the bundle should be unpublished; otherwise {@code false}
      */
     protected boolean unpublishBundle( final Bundle bundle )
@@ -193,8 +211,10 @@ public class BundleScanner
     }
 
     /**
-     * @param bundle The scanned bundle
-     * @return New Guice injector for the bundle
+     * Creates a new Guice {@link Injector} for the given bundle.
+     * 
+     * @param bundle The bundle to scan
+     * @return New bundle injector
      */
     protected Injector createInjector( final Bundle bundle )
     {
@@ -202,8 +222,10 @@ public class BundleScanner
     }
 
     /**
+     * Returns the chosen {@link RankingFunction} for the bundle.
+     * 
      * @param injector The bundle's injector
-     * @return Function that ranks bindings
+     * @return Function to rank bindings
      */
     protected RankingFunction getRanking( final Injector injector )
     {
