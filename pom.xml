@@ -283,9 +283,11 @@
               -federate JDK http://docs.oracle.com/javase/6/docs/api/index.html?
               -federationxml JDK http://doclava.googlecode.com/svn/static/api/openjdk-6.xml
               -federate Guice http://google-guice.googlecode.com/git-history/3.0/javadoc
+              -federate OSGi http://www.osgi.org/javadoc/r4v42/index.html?
+              -federationxml OSGi ${basedir}/../doclava/api/osgi.xml
               -hdf project.name "${project.name}"
               -overview ${basedir}/overview.html
-              -templatedir ${basedir}/../doclava-style
+              -templatedir ${basedir}/../doclava
               -d ${project.build.directory}/apidocs
             </additionalparam>
             <useStandardDocletOptions>false</useStandardDocletOptions>
