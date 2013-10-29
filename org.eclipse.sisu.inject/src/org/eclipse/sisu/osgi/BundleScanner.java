@@ -32,7 +32,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 /**
- * {@link BundleTracker} that tracks JSR330 bundles and uses {@link BundleModule} to bind components.
+ * OSGi {@link BundleTracker} that tracks JSR330 bundles and uses {@link BundleModule} to bind components.
  */
 public class BundleScanner
     extends BundleTracker
