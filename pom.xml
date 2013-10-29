@@ -278,7 +278,7 @@
               -federate Guice http://google-guice.googlecode.com/git-history/3.0/javadoc
               -hdf project.name "${project.name}"
               -overview ${basedir}/overview.html
-              -templatedir ${basedir}/../doclava-style
+              -templatedir ${basedir}/../doclava
               -d ${project.build.directory}/apidocs
             </additionalparam>
             <useStandardDocletOptions>false</useStandardDocletOptions>
