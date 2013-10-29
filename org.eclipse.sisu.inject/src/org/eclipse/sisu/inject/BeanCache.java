@@ -122,7 +122,7 @@ final class BeanCache<Q extends Annotation, T>
                 }
             }
         }
-        return readCache;
+        return readCache; // NOSONAR
     }
 
     /**
