@@ -19,13 +19,13 @@ import com.google.inject.Injector;
  */
 @ImplementedBy( DefaultBeanLocator.class )
 public interface MutableBeanLocator
-    extends BeanLocator, Iterable<BindingPublisher>
+    extends BeanLocator
 {
     /**
      * Adds the given ranked {@link BindingPublisher} and distributes its {@link Binding}s.
      * 
      * @param publisher The new publisher
-     * @param rank The assigned rank; should ideally reflect {@link BindingPublisher#maxBindingRank()}
+     * @param rank The assigned rank; should reflect {@link BindingPublisher#maxBindingRank()}
      * @return {@code true} if the publisher was added; otherwise {@code false}
      */
     boolean add( BindingPublisher publisher, int rank );
@@ -39,17 +39,24 @@ public interface MutableBeanLocator
     boolean remove( BindingPublisher publisher );
 
     /**
+     * Snapshot of currently registered {@link BindingPublisher}s.
+     * 
+     * @return The registered {@link BindingPublisher}s
+     */
+    Iterable<BindingPublisher> publishers();
+
+    /**
      * Removes all known {@link BindingPublisher}s and their {@link Binding}s.
      */
     void clear();
 
     /**
      * Adds the given ranked {@link Injector} and distributes its {@link Binding}s. Marked as deprecated because most
-     * clients should <b>not</b> call this method; any injector that contains a binding to the {@link BeanLocator} is
+     * clients should <b>not</b> call this method; any injector with an instance binding to a {@link BeanLocator} is
      * automatically added to that locator as part of the bootstrapping process.
      * 
      * @param injector The new injector
-     * @param rank The assigned rank; should reflect the injector's {@link RankingFunction}
+     * @param rank The assigned rank; should reflect the injector's {@link RankingFunction#maxRank()}
      * @deprecated injectors are normally added automatically, clients should not need to call this method
      */
     @Deprecated

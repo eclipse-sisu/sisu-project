@@ -41,9 +41,9 @@ public interface BindingSubscriber<T>
     void remove( Binding<T> binding );
 
     /**
-     * Reports any {@link Binding}s that are currently in use.
+     * Snapshot of currently subscribed {@link Binding}s.
      * 
-     * @return The used {@link Binding}s
+     * @return The subscribed {@link Binding}s
      */
     Iterable<Binding<T>> bindings();
 }

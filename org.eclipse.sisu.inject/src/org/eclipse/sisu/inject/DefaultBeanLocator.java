@@ -11,7 +11,6 @@
 package org.eclipse.sisu.inject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
@@ -73,7 +72,7 @@ public final class DefaultBeanLocator
     public synchronized void watch( final Key key, final Mediator mediator, final Object watcher )
     {
         final WatchedBeans beans = new WatchedBeans( key, mediator, watcher );
-        for ( final BindingPublisher p : this )
+        for ( final BindingPublisher p : publishers() )
         {
             p.subscribe( beans );
         }
@@ -126,17 +125,17 @@ public final class DefaultBeanLocator
         return true;
     }
 
+    public Iterable<BindingPublisher> publishers()
+    {
+        return publishers.snapshot();
+    }
+
     public synchronized void clear()
     {
-        for ( final BindingPublisher p : this )
+        for ( final BindingPublisher p : publishers() )
         {
             remove( p );
         }
-    }
-
-    public Iterator<BindingPublisher> iterator()
-    {
-        return publishers.snapshot().iterator();
     }
 
     public void add( final Injector injector, final int rank )
