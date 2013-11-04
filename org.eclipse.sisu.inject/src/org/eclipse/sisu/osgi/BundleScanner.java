@@ -13,14 +13,15 @@ package org.eclipse.sisu.osgi;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
-import org.eclipse.sisu.inject.BindingPublisher;
-import org.eclipse.sisu.inject.BindingSubscriber;
+import javax.inject.Inject;
+
 import org.eclipse.sisu.inject.InjectorPublisher;
 import org.eclipse.sisu.inject.MutableBeanLocator;
-import org.eclipse.sisu.inject.RankingFunction;
-import org.eclipse.sisu.inject.Weak;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
@@ -41,34 +42,23 @@ public class BundleScanner
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final BindingPublisher PENDING_PUBLISHER = new BindingPublisher()
+    private static final Set<String> SUPPORT_BUNDLE_NAMES = new HashSet<String>();
+
+    static
     {
-        public <T> void unsubscribe( final BindingSubscriber<T> subscriber )
+        final Class<?>[] supportTypes = { Inject.class, Guice.class, SisuExtender.class };
+        for ( final Class<?> type : supportTypes )
         {
-            // no-op, publisher is pending
+            SUPPORT_BUNDLE_NAMES.add( FrameworkUtil.getBundle( type ).getSymbolicName() );
         }
-
-        public <T> void subscribe( final BindingSubscriber<T> subscriber )
-        {
-            // no-op, publisher is pending
-        }
-
-        public int maxBindingRank()
-        {
-            return Integer.MIN_VALUE;
-        }
-    };
-
-    private static final String GUICE_SYMBOLIC_NAME = FrameworkUtil.getBundle( Guice.class ).getSymbolicName();
-
-    private static final String SISU_SYMBOLIC_NAME = FrameworkUtil.getBundle( SisuExtender.class ).getSymbolicName();
+    }
 
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private static final Map<Long, BindingPublisher> publishers =
-        Collections.synchronizedMap( Weak.<Long, BindingPublisher> values() );
+    private static final Map<Long, Injector> bundleInjectors =
+        Collections.synchronizedMap( new HashMap<Long, Injector>() );
 
     /**
      * Mask of bundle states being tracked.
@@ -106,51 +96,45 @@ public class BundleScanner
     @Override
     public final Object addingBundle( final Bundle bundle, final BundleEvent event )
     {
-        if ( !needsScanning( bundle ) )
+        if ( inject( bundle ) )
         {
-            return null; // don't bother tracking this bundle
-        }
-        @SuppressWarnings( "boxing" )
-        final Long bundleId = bundle.getBundleId();
-        if ( null == publishers.get( bundleId ) )
-        {
-            // placeholder in case we re-enter this method
-            publishers.put( bundleId, PENDING_PUBLISHER );
-            final BindingPublisher publisher = publishBundle( bundle );
-            publishers.put( bundleId, publisher );
-
-            if ( null != publisher )
+            @SuppressWarnings( "boxing" )
+            final Long bundleId = bundle.getBundleId();
+            if ( !bundleInjectors.containsKey( bundleId ) )
             {
-                // rank publisher based on highest rank it may assign
-                locator.add( publisher, publisher.maxBindingRank() );
+                // placeholder in case we re-enter this method
+                bundleInjectors.put( bundleId, null );
+                final Injector injector = createInjector( bundle );
+                bundleInjectors.put( bundleId, injector );
             }
+            return bundle;
         }
-        return bundle;
+        return null; // don't bother tracking this bundle
     }
 
     @Override
     public final void removedBundle( final Bundle bundle, final BundleEvent event, final Object object )
     {
-        if ( unpublishBundle( bundle ) )
+        @SuppressWarnings( "boxing" )
+        final Long bundleId = bundle.getBundleId();
+        if ( uninject( bundle, bundleInjectors.get( bundleId ) ) )
         {
-            @SuppressWarnings( "boxing" )
-            final Long bundleId = bundle.getBundleId();
-            locator.remove( publishers.remove( bundleId ) );
+            destroyInjector( bundle, bundleInjectors.remove( bundleId ) );
         }
     }
 
     /**
-     * Purges any previously published bundles that are no longer valid.
+     * Purges any bundles that are no longer valid.
      */
     public final void purgeBundles()
     {
-        for ( final Long bundleId : new ArrayList<Long>( publishers.keySet() ) )
+        for ( final Long bundleId : new ArrayList<Long>( bundleInjectors.keySet() ) )
         {
             @SuppressWarnings( "boxing" )
             final Bundle bundle = context.getBundle( bundleId );
-            if ( null == bundle || unpublishBundle( bundle ) )
+            if ( uninject( bundle, bundleInjectors.get( bundleId ) ) )
             {
-                locator.remove( publishers.remove( bundleId ) );
+                destroyInjector( bundle, bundleInjectors.remove( bundleId ) );
             }
         }
     }
@@ -160,17 +144,17 @@ public class BundleScanner
     // ----------------------------------------------------------------------
 
     /**
-     * Inspects the bundle to see if it deserves in-depth scanning.
+     * Determines whether we should create an {@link Injector} for the given bundle.
      * 
-     * @param bundle The candidate bundle
-     * @return {@code true} if the bundle should be scanned; otherwise {@code false}
+     * @param bundle The bundle
+     * @return {@code true} if an injector should be created; otherwise {@code false}
      */
-    protected boolean needsScanning( final Bundle bundle )
+    protected boolean inject( final Bundle bundle )
     {
         final String symbolicName = bundle.getSymbolicName();
-        if ( SISU_SYMBOLIC_NAME.equals( symbolicName ) || GUICE_SYMBOLIC_NAME.equals( symbolicName ) )
+        if ( SUPPORT_BUNDLE_NAMES.contains( symbolicName ) )
         {
-            return false; // we know these bundles won't require any scanning
+            return false; // ignore our main support bundles
         }
         final Dictionary<?, ?> headers = bundle.getHeaders();
         final String host = (String) headers.get( Constants.FRAGMENT_HOST );
@@ -181,54 +165,47 @@ public class BundleScanner
         final String imports = (String) headers.get( Constants.IMPORT_PACKAGE );
         if ( null == imports )
         {
-            return false; // doesn't import any interesting injection packages
+            return false; // doesn't import any interesting packages
         }
         return imports.contains( "javax.inject" ) || imports.contains( "com.google.inject" );
     }
 
     /**
-     * Creates a new {@link BindingPublisher} for the given bundle.
+     * Creates a new {@link Injector} for the given bundle.
      * 
-     * @param bundle The bundle to publish
-     * @return New publisher of bindings
-     */
-    protected BindingPublisher publishBundle( final Bundle bundle )
-    {
-        final Injector injector = createInjector( bundle );
-        final RankingFunction ranking = getRanking( injector );
-        return new InjectorPublisher( injector, ranking );
-    }
-
-    /**
-     * Determines if the given bundle should now be unpublished.
-     * 
-     * @param bundle The published bundle
-     * @return {@code true} if the bundle should be unpublished; otherwise {@code false}
-     */
-    protected boolean unpublishBundle( final Bundle bundle )
-    {
-        return ( bundle.getState() & stateMask ) == 0;
-    }
-
-    /**
-     * Creates a new Guice {@link Injector} for the given bundle.
-     * 
-     * @param bundle The bundle to scan
-     * @return New bundle injector
+     * @param bundle The bundle
+     * @return New injector
      */
     protected Injector createInjector( final Bundle bundle )
     {
+        // the BundleModule will auto-register the injector as a publisher
         return Guice.createInjector( new BundleModule( bundle, locator ) );
     }
 
     /**
-     * Returns the chosen {@link RankingFunction} for the bundle.
+     * Determines whether we should destroy the {@link Injector} of the given bundle.
      * 
-     * @param injector The bundle's injector
-     * @return Function to rank bindings
+     * @param bundle The bundle
+     * @param injector The injector
+     * @return {@code true} if the injector should be destroyed; otherwise {@code false}
      */
-    protected RankingFunction getRanking( final Injector injector )
+    protected boolean uninject( final Bundle bundle, final Injector injector )
     {
-        return injector.getInstance( RankingFunction.class );
+        return null == bundle || ( bundle.getState() & stateMask ) == 0; // missing or inactive
+    }
+
+    /**
+     * Destroys the old Guice {@link Injector} for the given bundle.
+     * 
+     * @param bundle The bundle
+     * @param injector Old injector
+     */
+    protected void destroyInjector( final Bundle bundle, final Injector injector )
+    {
+        if ( null != injector ) // might be placeholder
+        {
+            // this will match against the original auto-registered publisher
+            locator.remove( new InjectorPublisher( injector, null /* unused */) );
+        }
     }
 }

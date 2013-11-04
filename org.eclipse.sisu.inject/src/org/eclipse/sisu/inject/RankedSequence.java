@@ -264,6 +264,10 @@ final class RankedSequence<T>
 
         public int indexOf( final Object element )
         {
+            if ( null == element )
+            {
+                return indexOfThis( element );
+            }
             for ( int i = 0; i < objs.length; i++ )
             {
                 if ( element.equals( objs[i] ) )

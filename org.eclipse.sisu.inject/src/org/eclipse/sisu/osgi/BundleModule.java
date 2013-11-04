@@ -25,7 +25,6 @@ import org.osgi.framework.BundleContext;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
-import com.google.inject.util.Providers;
 
 /**
  * Guice module that uses classpath-scanning and auto-wiring to bind JSR330 components from OSGi bundles.
@@ -94,7 +93,13 @@ public class BundleModule
      */
     protected Module extensionsModule()
     {
-        return new ExtensionsModule();
+        return new Module()
+        {
+            public void configure( final Binder binder )
+            {
+                extensions.install( binder, Bundle.class, space.getBundle() );
+            }
+        };
     }
 
     /**
@@ -104,7 +109,20 @@ public class BundleModule
      */
     protected Module contextModule()
     {
-        return new ContextModule();
+        return new Module()
+        {
+            public void configure( final Binder binder )
+            {
+                // This instance binding will also auto-register the injector with the locator as a publisher.
+                // If you don't want this feature, replace the binding with toProvider(Providers.of(locator))
+                binder.bind( MutableBeanLocator.class ).toInstance( locator );
+
+                final Bundle bundle = space.getBundle();
+
+                binder.bind( ParameterKeys.PROPERTIES ).toInstance( System.getProperties() );
+                binder.bind( BundleContext.class ).toInstance( bundle.getBundleContext() );
+            }
+        };
     }
 
     /**
@@ -115,40 +133,5 @@ public class BundleModule
     protected Module spaceModule()
     {
         return new SpaceModule( space, BeanScanning.select( System.getProperties() ) ).with( extensions );
-    }
-
-    // ----------------------------------------------------------------------
-    // Implementation types
-    // ----------------------------------------------------------------------
-
-    /**
-     * Guice module that installs modules listed in {@code META-INF/services/com.google.inject.Module}.
-     */
-    final class ExtensionsModule
-        implements Module
-    {
-        public void configure( final Binder binder )
-        {
-            extensions.install( binder, Bundle.class, space.getBundle() );
-        }
-    }
-
-    /**
-     * Guice module that provides common context bindings for the bundle.
-     */
-    final class ContextModule
-        implements Module
-    {
-        public void configure( final Binder binder )
-        {
-            // wrap locator inside provider to disable auto-registration of injector
-            // because we will be registering it explicitly via the bundle publisher
-            binder.bind( MutableBeanLocator.class ).toProvider( Providers.of( locator ) );
-
-            final Bundle bundle = space.getBundle();
-
-            binder.bind( ParameterKeys.PROPERTIES ).toInstance( System.getProperties() );
-            binder.bind( BundleContext.class ).toInstance( bundle.getBundleContext() );
-        }
     }
 }

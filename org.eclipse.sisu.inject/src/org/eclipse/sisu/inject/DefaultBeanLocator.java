@@ -145,7 +145,7 @@ public final class DefaultBeanLocator
 
     public void remove( final Injector injector )
     {
-        remove( new InjectorPublisher( injector, null ) );
+        remove( new InjectorPublisher( injector, null /* unused */) );
     }
 
     // ----------------------------------------------------------------------
