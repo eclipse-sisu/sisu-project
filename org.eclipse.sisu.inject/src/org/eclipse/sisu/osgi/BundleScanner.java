@@ -195,7 +195,7 @@ public class BundleScanner
     }
 
     /**
-     * Destroys the old Guice {@link Injector} for the given bundle.
+     * Destroys the old {@link Injector} for the given bundle.
      * 
      * @param bundle The bundle
      * @param injector Old injector

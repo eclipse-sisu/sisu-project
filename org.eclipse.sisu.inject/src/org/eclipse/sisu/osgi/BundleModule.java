@@ -12,6 +12,7 @@ package org.eclipse.sisu.osgi;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.launch.SisuExtensions;
@@ -77,6 +78,16 @@ public class BundleModule
     // ----------------------------------------------------------------------
 
     /**
+     * Returns the properties associated with the current context.
+     * 
+     * @return The properties
+     */
+    protected Map<?, ?> getProperties()
+    {
+        return System.getProperties();
+    }
+
+    /**
      * Returns the list of configured binding modules for this bundle.
      * 
      * @return The bundle's modules
@@ -119,7 +130,7 @@ public class BundleModule
 
                 final Bundle bundle = space.getBundle();
 
-                binder.bind( ParameterKeys.PROPERTIES ).toInstance( System.getProperties() );
+                binder.bind( ParameterKeys.PROPERTIES ).toInstance( getProperties() );
                 binder.bind( BundleContext.class ).toInstance( bundle.getBundleContext() );
             }
         };
@@ -132,6 +143,6 @@ public class BundleModule
      */
     protected Module spaceModule()
     {
-        return new SpaceModule( space, BeanScanning.select( System.getProperties() ) ).with( extensions );
+        return new SpaceModule( space, BeanScanning.select( getProperties() ) ).with( extensions );
     }
 }
