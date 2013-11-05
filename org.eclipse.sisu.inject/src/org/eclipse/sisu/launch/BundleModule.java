@@ -8,14 +8,13 @@
  * Contributors:
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sisu.osgi;
+package org.eclipse.sisu.launch;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.sisu.inject.MutableBeanLocator;
-import org.eclipse.sisu.launch.SisuExtensions;
 import org.eclipse.sisu.space.BeanScanning;
 import org.eclipse.sisu.space.BundleClassSpace;
 import org.eclipse.sisu.space.SpaceModule;

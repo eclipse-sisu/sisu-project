@@ -8,7 +8,7 @@
  * Contributors:
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sisu.osgi;
+package org.eclipse.sisu.launch;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -96,13 +96,13 @@ public class BundleScanner
     @Override
     public final Object addingBundle( final Bundle bundle, final BundleEvent event )
     {
-        if ( inject( bundle ) )
+        if ( injectBundle( bundle ) )
         {
             @SuppressWarnings( "boxing" )
             final Long bundleId = bundle.getBundleId();
             if ( !bundleInjectors.containsKey( bundleId ) )
             {
-                // placeholder in case we re-enter this method
+                // placeholder in case we re-enter this method while creating the injector
                 bundleInjectors.put( bundleId, null );
                 final Injector injector = createInjector( bundle );
                 bundleInjectors.put( bundleId, injector );
@@ -117,7 +117,7 @@ public class BundleScanner
     {
         @SuppressWarnings( "boxing" )
         final Long bundleId = bundle.getBundleId();
-        if ( uninject( bundle, bundleInjectors.get( bundleId ) ) )
+        if ( evictBundle( bundle, bundleInjectors.get( bundleId ) ) )
         {
             destroyInjector( bundle, bundleInjectors.remove( bundleId ) );
         }
@@ -132,7 +132,7 @@ public class BundleScanner
         {
             @SuppressWarnings( "boxing" )
             final Bundle bundle = context.getBundle( bundleId );
-            if ( uninject( bundle, bundleInjectors.get( bundleId ) ) )
+            if ( evictBundle( bundle, bundleInjectors.get( bundleId ) ) )
             {
                 destroyInjector( bundle, bundleInjectors.remove( bundleId ) );
             }
@@ -149,7 +149,7 @@ public class BundleScanner
      * @param bundle The bundle
      * @return {@code true} if an injector should be created; otherwise {@code false}
      */
-    protected boolean inject( final Bundle bundle )
+    protected boolean injectBundle( final Bundle bundle )
     {
         final String symbolicName = bundle.getSymbolicName();
         if ( SUPPORT_BUNDLE_NAMES.contains( symbolicName ) )
@@ -189,7 +189,7 @@ public class BundleScanner
      * @param injector The injector
      * @return {@code true} if the injector should be destroyed; otherwise {@code false}
      */
-    protected boolean uninject( final Bundle bundle, final Injector injector )
+    protected boolean evictBundle( final Bundle bundle, final Injector injector )
     {
         return null == bundle || ( bundle.getState() & stateMask ) == 0; // missing or inactive
     }

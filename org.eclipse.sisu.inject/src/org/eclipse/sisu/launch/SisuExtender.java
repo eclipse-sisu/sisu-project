@@ -8,7 +8,7 @@
  * Contributors:
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sisu.osgi;
+package org.eclipse.sisu.launch;
 
 import java.util.Collections;
 import java.util.Map;
