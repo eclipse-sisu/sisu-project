@@ -14,16 +14,16 @@ set -e
 VERSION=$1
 MESSAGE=$2
 
-if [[ ! "${VERSION}" =~ ^0.([0-9]+).([0-9]+).M([0-9]+)$ || "${MESSAGE}" =~ ^\ *$ ]]
+if [[ ! "${VERSION}" =~ ^0.([0-9]+).([0-9]+)$ || "${MESSAGE}" =~ ^\ *$ ]]
 then
-  echo "Usage: perform_milestone.sh <0.?.?.M?> <message>"
+  echo "Usage: perform_release.sh <0.?.?> <message>"
   exit 1
 fi
 
 git fetch --tags
-if git show-ref -q --tags refs/tags/milestones/${VERSION}
+if git show-ref -q --tags refs/tags/releases/${VERSION}
 then
-  echo "Tag milestones/${VERSION} already exists"
+  echo "Tag releases/${VERSION} already exists"
   exit 1
 fi
 
@@ -42,13 +42,16 @@ GPG_KEYNAME=${GPG_KEYNAME:-${USER}}
 mvn deploy -Psonatype-oss-release -Dgpg.keyname=${GPG_KEYNAME} -f target/checkout/pom.xml \
   -Ddescription="${PWD##*/}/${VERSION} : ${MESSAGE}"
 
-git tag -u ${GPG_KEYNAME} milestones/${VERSION} staging-${VERSION} -m "${MESSAGE}"
+git tag -u ${GPG_KEYNAME} releases/${VERSION} staging-${VERSION} -m "${MESSAGE}"
 
-git tag -v milestones/${VERSION}
+git tag -v releases/${VERSION}
 
 git checkout master ; git merge staging-${VERSION}
 
-mvn org.eclipse.tycho:tycho-versions-plugin:0.17.0:set-version -DnewVersion=${VERSION%%.M*}-SNAPSHOT
+MINOR_MICRO=${VERSION#*.}
+NEW_VERSION=${VERSION%%.*}.$((${MINOR_MICRO%%.*}+1)).0-SNAPSHOT
+
+mvn org.eclipse.tycho:tycho-versions-plugin:0.17.0:set-version -DnewVersion=${NEW_VERSION}
 
 git add . ; git commit -m "Prepare for next round of development"
 

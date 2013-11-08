@@ -13,16 +13,16 @@ set -e
 
 VERSION=$1
 
-if [[ ! "${VERSION}" =~ ^0.([0-9]+).([0-9]+).M([0-9]+)$ ]]
+if [[ ! "${VERSION}" =~ ^0.([0-9]+).([0-9]+)$ ]]
 then
-  echo "Usage: prepare_milestone.sh <0.?.?.M?>"
+  echo "Usage: prepare_release.sh <0.?.?>"
   exit 1
 fi
 
 git fetch --tags
-if git show-ref -q --tags refs/tags/milestones/${VERSION}
+if git show-ref -q --tags refs/tags/releases/${VERSION}
 then
-  echo "Tag milestones/${VERSION} already exists"
+  echo "Tag releases/${VERSION} already exists"
   exit 1
 fi
 
@@ -36,5 +36,5 @@ git checkout --no-track -b staging-${VERSION} master
 
 mvn org.eclipse.tycho:tycho-versions-plugin:0.17.0:set-version -DnewVersion=${VERSION}
 
-git add . ; git commit -m "Milestone ${VERSION}"
+git add . ; git commit -m "Release ${VERSION}"
 
