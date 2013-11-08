@@ -48,7 +48,9 @@ git tag -v milestones/${VERSION}
 
 git checkout master ; git merge staging-${VERSION}
 
-mvn org.eclipse.tycho:tycho-versions-plugin:0.17.0:set-version -DnewVersion=${VERSION%%.M*}-SNAPSHOT
+NEW_VERSION=${VERSION%%.M*}-SNAPSHOT
+
+mvn org.eclipse.tycho:tycho-versions-plugin:0.17.0:set-version -DnewVersion=${NEW_VERSION}
 
 git add . ; git commit -m "Prepare for next round of development"
 
