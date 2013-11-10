@@ -27,7 +27,9 @@
  * <pre>
  * java -classpath myapp.jar:javax.inject.jar:aopalliance.jar:guice-3.0.jar:org.eclipse.sisu.inject.jar org.eclipse.sisu.launch.Main</pre> 
  * 
- * And a class that discovers {@link org.eclipse.sisu.launch.SisuExtensions Sisu extensions} registered under {@code META-INF/services}.
+ * An OSGi {@link org.eclipse.sisu.launch.SisuExtender extender} that assembles Sisu applications from OSGi bundles containing JSR330 components.
+ * <p><p>
+ * And a helper class that discovers Sisu {@link org.eclipse.sisu.launch.SisuExtensions extensions} registered under {@code META-INF/services}.
  */
 package org.eclipse.sisu.launch;
 

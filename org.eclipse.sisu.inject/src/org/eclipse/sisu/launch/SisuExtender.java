@@ -22,8 +22,8 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 /**
- * OSGi extender that watches for JSR330 bundles and publishes them to the {@link BeanLocator}.<br>
- * Extend this class to customize the publication process and use it as your Bundle-Activator.
+ * Basic OSGi extender for Sisu that watches for JSR330 bundles and publishes them to the {@link BeanLocator}.<br>
+ * To activate install {@code org.eclipse.sisu.inject.extender}, or adapt it for your own extender bundle.
  */
 public class SisuExtender
     implements BundleActivator
