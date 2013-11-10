@@ -13,10 +13,10 @@
 
 <site>
   <category-def name="org.eclipse.sisu.plexus" label="Sisu-Plexus (Incubation)"/>
-  <bundle id="org.eclipse.sisu.plexus" version="0.0.0.qualifier">
+  <bundle id="org.eclipse.sisu.plexus" version="0.0.0">
     <category name="org.eclipse.sisu.plexus"/>
   </bundle>
-  <bundle id="org.eclipse.sisu.plexus.source" version="0.0.0.qualifier">
+  <bundle id="org.eclipse.sisu.plexus.source" version="0.0.0">
     <category name="org.eclipse.sisu.plexus"/>
   </bundle>
 </site>
