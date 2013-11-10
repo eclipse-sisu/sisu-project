@@ -13,16 +13,16 @@
 
 <site>
   <category-def name="org.eclipse.sisu.inject" label="Sisu-Inject (Incubation)"/>
-  <bundle id="org.eclipse.sisu.inject" version="0.0.0.qualifier">
+  <bundle id="org.eclipse.sisu.inject" version="0.0.0">
     <category name="org.eclipse.sisu.inject"/>
   </bundle>
-  <bundle id="org.eclipse.sisu.inject.source" version="0.0.0.qualifier">
+  <bundle id="org.eclipse.sisu.inject.source" version="0.0.0">
     <category name="org.eclipse.sisu.inject"/>
   </bundle>
-  <bundle id="org.eclipse.sisu.inject.extender" version="0.0.0.qualifier">
+  <bundle id="org.eclipse.sisu.inject.extender" version="0.0.0">
     <category name="org.eclipse.sisu.inject"/>
   </bundle>
-  <bundle id="org.eclipse.sisu.inject.extender.source" version="0.0.0.qualifier">
+  <bundle id="org.eclipse.sisu.inject.extender.source" version="0.0.0">
     <category name="org.eclipse.sisu.inject"/>
   </bundle>
 </site>
