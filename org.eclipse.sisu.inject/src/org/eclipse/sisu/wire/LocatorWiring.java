@@ -58,6 +58,8 @@ public final class LocatorWiring
     // Implementation fields
     // ----------------------------------------------------------------------
 
+    private final Provider<BeanLocator> locator;
+
     private final Binder binder;
 
     // ----------------------------------------------------------------------
@@ -66,6 +68,7 @@ public final class LocatorWiring
 
     public LocatorWiring( final Binder binder )
     {
+        locator = binder.getProvider( BeanLocator.class );
         this.binder = binder.withSource( HIDDEN_SOURCE );
     }
 
@@ -112,11 +115,11 @@ public final class LocatorWiring
             final Class qualifierType = args[0].getRawType();
             if ( String.class == qualifierType )
             {
-                binder.bind( key ).toProvider( new NamedBeanMapProvider( args[1] ) );
+                binder.bind( key ).toProvider( new NamedBeanMapProvider( locator, args[1] ) );
             }
             else if ( qualifierType.isAnnotationPresent( Qualifier.class ) )
             {
-                binder.bind( key ).toProvider( new BeanMapProvider( Key.get( args[1], qualifierType ) ) );
+                binder.bind( key ).toProvider( new BeanMapProvider( locator, Key.get( args[1], qualifierType ) ) );
             }
         }
     }
@@ -144,7 +147,7 @@ public final class LocatorWiring
             }
             else
             {
-                binder.bind( key ).toProvider( new BeanListProvider( Key.get( elementType ) ) );
+                binder.bind( key ).toProvider( new BeanListProvider( locator, Key.get( elementType ) ) );
             }
         }
     }
@@ -156,7 +159,7 @@ public final class LocatorWiring
      * @return Provider of bean entries
      */
     @SuppressWarnings( "deprecation" )
-    private static Provider getBeanEntriesProvider( final TypeLiteral<?> entryType )
+    private Provider getBeanEntriesProvider( final TypeLiteral<?> entryType )
     {
         final TypeLiteral<?>[] args = TypeArguments.get( entryType );
         if ( 2 == args.length )
@@ -167,7 +170,7 @@ public final class LocatorWiring
                 final Key beanKey = Key.get( args[1], qualifierType );
                 if ( BeanEntry.class == entryType.getRawType() )
                 {
-                    return new BeanEntryProvider( beanKey );
+                    return new BeanEntryProvider( locator, beanKey );
                 }
                 return org.eclipse.sisu.inject.Legacy.beanEntriesProvider( beanKey );
             }
@@ -185,7 +188,7 @@ public final class LocatorWiring
         final TypeLiteral<?>[] args = TypeArguments.get( key.getTypeLiteral() );
         if ( 1 == args.length && null == key.getAnnotation() )
         {
-            binder.bind( key ).toProvider( new BeanSetProvider( Key.get( args[0] ) ) );
+            binder.bind( key ).toProvider( new BeanSetProvider( locator, Key.get( args[0] ) ) );
         }
     }
 
@@ -202,16 +205,16 @@ public final class LocatorWiring
             if ( ( (Named) qualifier ).value().length() == 0 )
             {
                 // special case for wildcard @Named dependencies: match any @Named bean regardless of actual name
-                binder.bind( key ).toProvider( new BeanProvider<T>( Key.get( key.getTypeLiteral(), Named.class ) ) );
+                binder.bind( key ).toProvider( new BeanProvider<T>( locator, Key.get( key.getTypeLiteral(), Named.class ) ) );
             }
             else
             {
-                binder.bind( key ).toProvider( new PlaceholderBeanProvider<T>( key ) );
+                binder.bind( key ).toProvider( new PlaceholderBeanProvider<T>( locator, key ) );
             }
         }
         else
         {
-            binder.bind( key ).toProvider( new BeanProvider<T>( key ) );
+            binder.bind( key ).toProvider( new BeanProvider<T>( locator, key ) );
 
             // capture original implicit binding?
             if ( null == key.getAnnotationType() )

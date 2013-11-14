@@ -51,8 +51,7 @@ final class BeanEntryProvider<K extends Annotation, V>
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    @Inject
-    private BeanLocator locator;
+    private final Provider<BeanLocator> locator;
 
     private final Key<V> key;
 
@@ -60,8 +59,9 @@ final class BeanEntryProvider<K extends Annotation, V>
     // Constructors
     // ----------------------------------------------------------------------
 
-    BeanEntryProvider( final Key<V> key )
+    BeanEntryProvider( final Provider<BeanLocator> locator, final Key<V> key )
     {
+        this.locator = locator;
         this.key = key;
     }
 
@@ -71,7 +71,7 @@ final class BeanEntryProvider<K extends Annotation, V>
 
     public Iterable<? extends BeanEntry<K, V>> get()
     {
-        return locator.locate( key );
+        return locator.get().locate( key );
     }
 }
 
@@ -86,8 +86,7 @@ class AbstractBeans<K extends Annotation, V>
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    @Inject
-    private BeanLocator locator;
+    private final Provider<BeanLocator> locator;
 
     private final Key<?> key;
 
@@ -97,8 +96,9 @@ class AbstractBeans<K extends Annotation, V>
     // Constructors
     // ----------------------------------------------------------------------
 
-    AbstractBeans( final Key<V> key )
+    AbstractBeans( final Provider<BeanLocator> locator, final Key<V> key )
     {
+        this.locator = locator;
         final TypeLiteral<V> type = key.getTypeLiteral();
         final Class<?> clazz = type.getRawType();
         isProvider = javax.inject.Provider.class == clazz || com.google.inject.Provider.class == clazz;
@@ -119,7 +119,7 @@ class AbstractBeans<K extends Annotation, V>
     @SuppressWarnings( { "rawtypes", "unchecked" } )
     protected final Iterable<Entry<K, V>> beans()
     {
-        final Iterable beans = locator.locate( key );
+        final Iterable beans = locator.get().locate( key );
         return isProvider ? new ProviderIterableAdapter( beans ) : beans;
     }
 }
@@ -137,9 +137,9 @@ final class BeanListProvider<K extends Annotation, V>
     // Constructors
     // ----------------------------------------------------------------------
 
-    BeanListProvider( final Key<V> key )
+    BeanListProvider( final Provider<BeanLocator> locator, final Key<V> key )
     {
-        super( key );
+        super( locator, key );
     }
 
     // ----------------------------------------------------------------------
@@ -165,9 +165,9 @@ final class BeanSetProvider<K extends Annotation, V>
     // Constructors
     // ----------------------------------------------------------------------
 
-    BeanSetProvider( final Key<V> key )
+    BeanSetProvider( final Provider<BeanLocator> locator, final Key<V> key )
     {
-        super( key );
+        super( locator, key );
     }
 
     // ----------------------------------------------------------------------
@@ -193,9 +193,9 @@ final class BeanMapProvider<K extends Annotation, V>
     // Constructors
     // ----------------------------------------------------------------------
 
-    BeanMapProvider( final Key<V> key )
+    BeanMapProvider( final Provider<BeanLocator> locator, final Key<V> key )
     {
-        super( key );
+        super( locator, key );
     }
 
     // ----------------------------------------------------------------------
@@ -221,9 +221,9 @@ final class NamedBeanMapProvider<V>
     // Constructors
     // ----------------------------------------------------------------------
 
-    NamedBeanMapProvider( final TypeLiteral<V> type )
+    NamedBeanMapProvider( final Provider<BeanLocator> locator, final TypeLiteral<V> type )
     {
-        super( Key.get( type, Named.class ) );
+        super( locator, Key.get( type, Named.class ) );
     }
 
     // ----------------------------------------------------------------------
@@ -248,8 +248,7 @@ final class BeanProvider<V>
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    @Inject
-    private BeanLocator locator;
+    private final Provider<BeanLocator> locator;
 
     private final Key<V> key;
 
@@ -257,8 +256,9 @@ final class BeanProvider<V>
     // Constructors
     // ----------------------------------------------------------------------
 
-    BeanProvider( final Key<V> key )
+    BeanProvider( final Provider<BeanLocator> locator, final Key<V> key )
     {
+        this.locator = locator;
         this.key = key;
     }
 
@@ -275,9 +275,9 @@ final class BeanProvider<V>
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    static <T> T get( final BeanLocator locator, final Key<T> key )
+    static <T> T get( final Provider<BeanLocator> locator, final Key<T> key )
     {
-        final Iterator<? extends Entry<Annotation, T>> i = locator.locate( key ).iterator();
+        final Iterator<? extends Entry<Annotation, T>> i = locator.get().locate( key ).iterator();
         return i.hasNext() ? i.next().getValue() : null; // TODO: dynamic proxy??
     }
 }
@@ -349,8 +349,7 @@ final class PlaceholderBeanProvider<V>
     @Inject
     private TypeConverterMap converterMap;
 
-    @Inject
-    private BeanLocator locator;
+    private final Provider<BeanLocator> locator;
 
     private final Key<V> placeholderKey;
 
@@ -358,8 +357,9 @@ final class PlaceholderBeanProvider<V>
     // Constructors
     // ----------------------------------------------------------------------
 
-    PlaceholderBeanProvider( final Key<V> key )
+    PlaceholderBeanProvider( final Provider<BeanLocator> locator, final Key<V> key )
     {
+        this.locator = locator;
         placeholderKey = key;
     }
 
