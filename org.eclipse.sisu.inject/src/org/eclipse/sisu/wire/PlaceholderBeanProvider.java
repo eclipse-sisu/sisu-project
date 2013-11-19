@@ -87,7 +87,7 @@ final class PlaceholderBeanProvider<V>
         final Key<V> lookupKey = Key.get( expectedType, Names.named( (String) value ) );
         if ( String.class != clazz )
         {
-            final V bean = BeanProvider.get( locator, lookupKey );
+            final V bean = lookup( lookupKey );
             if ( null != bean )
             {
                 return bean; // found non-String binding
@@ -98,8 +98,8 @@ final class PlaceholderBeanProvider<V>
 
         if ( template == value )
         {
-            // same reference, so no interpolation occurred; is this perhaps a Guice constant?
-            value = normalize( BeanProvider.get( locator, lookupKey.ofType( String.class ) ) );
+            // no interpolation occurred; is this perhaps a Guice constant?
+            value = nullify( lookup( lookupKey.ofType( String.class ) ) );
         }
         if ( value instanceof String )
         {
@@ -120,7 +120,12 @@ final class PlaceholderBeanProvider<V>
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    private static <T> T normalize( final T value )
+    private <T> T lookup( final Key<T> key )
+    {
+        return BeanProviders.firstOf( locator.get().locate( key ) );
+    }
+
+    private static String nullify( final String value )
     {
         return "null".equals( value ) ? null : value;
     }
@@ -168,6 +173,6 @@ final class PlaceholderBeanProvider<V>
             buf.replace( x, y, String.valueOf( value ) );
             expressionEnd += buf.length() - len;
         }
-        return normalize( buf.toString() );
+        return nullify( buf.toString() );
     }
 }

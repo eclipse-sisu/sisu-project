@@ -11,7 +11,6 @@
 package org.eclipse.sisu.wire;
 
 import java.lang.annotation.Annotation;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -27,249 +26,155 @@ import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Named;
 
-// ----------------------------------------------------------------------
-// BeanLocator-backed Providers that can provide dynamic bean lookups
-// ----------------------------------------------------------------------
-
 /**
- * Provides an {@link Iterable} sequence of {@link BeanEntry}s.
+ * Supplies various bean {@link Provider}s backed by dynamic bean lookups.
  */
-final class BeanEntryProvider<K extends Annotation, V>
-    implements Provider<Iterable<? extends BeanEntry<K, V>>>
+final class BeanProviders
 {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final Provider<BeanLocator> locator;
-
-    private final Key<V> key;
+    final Provider<BeanLocator> locator;
 
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
-    BeanEntryProvider( final Provider<BeanLocator> locator, final Key<V> key )
+    BeanProviders( final Provider<BeanLocator> locator )
     {
         this.locator = locator;
-        this.key = key;
     }
 
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
 
-    public Iterable<? extends BeanEntry<K, V>> get()
+    /**
+     * Provides {@link Iterable} sequences of raw {@link BeanEntry}s.
+     */
+    public <K extends Annotation, V> Provider<Iterable<? extends BeanEntry<K, V>>> beanEntriesOf( final Key<V> key )
     {
-        return locator.get().locate( key );
+        return new Provider<Iterable<? extends BeanEntry<K, V>>>()
+        {
+            public Iterable<? extends BeanEntry<K, V>> get()
+            {
+                return locator.get().locate( key );
+            }
+        };
     }
-}
 
-// ----------------------------------------------------------------------
-
-/**
- * Base class for {@link Collection}s of qualified beans.
- */
-class AbstractBeans<K extends Annotation, V>
-{
-    // ----------------------------------------------------------------------
-    // Implementation fields
-    // ----------------------------------------------------------------------
-
-    private final Provider<BeanLocator> locator;
-
-    private final Key<?> key;
-
-    private final boolean isProvider;
-
-    // ----------------------------------------------------------------------
-    // Constructors
-    // ----------------------------------------------------------------------
-
-    AbstractBeans( final Provider<BeanLocator> locator, final Key<V> key )
+    /**
+     * Provides {@link Iterable} sequences of bean/provider mappings
+     */
+    @SuppressWarnings( { "rawtypes", "unchecked" } )
+    public <K extends Annotation, V> Provider<Iterable<Entry<K, V>>> entriesOf( final Key key )
     {
-        this.locator = locator;
         final TypeLiteral<V> type = key.getTypeLiteral();
         final Class<?> clazz = type.getRawType();
-        isProvider = javax.inject.Provider.class == clazz || com.google.inject.Provider.class == clazz;
-        if ( isProvider )
+        if ( javax.inject.Provider.class != clazz && com.google.inject.Provider.class != clazz )
         {
-            this.key = key.ofType( TypeArguments.get( type, 0 ) );
+            return beanEntriesOf( key );
         }
-        else
+        final Provider<Iterable<BeanEntry>> beanEntries = beanEntriesOf( key.ofType( TypeArguments.get( type, 0 ) ) );
+        return new Provider<Iterable<Entry<K, V>>>()
         {
-            this.key = key;
-        }
+            public Iterable<Entry<K, V>> get()
+            {
+                return new ProviderIterableAdapter( beanEntries.get() );
+            }
+        };
     }
 
-    // ----------------------------------------------------------------------
-    // Public methods
-    // ----------------------------------------------------------------------
-
-    @SuppressWarnings( { "rawtypes", "unchecked" } )
-    protected final Iterable<Entry<K, V>> beans()
+    /**
+     * Provides {@link List}s of qualified beans/providers.
+     */
+    public <K extends Annotation, V> Provider<List<V>> listOf( final Key<V> key )
     {
-        final Iterable beans = locator.get().locate( key );
-        return isProvider ? new ProviderIterableAdapter( beans ) : beans;
+        final Provider<Iterable<Entry<K, V>>> entries = entriesOf( key );
+        return new Provider<List<V>>()
+        {
+            public List<V> get()
+            {
+                return new EntryListAdapter<K, V>( entries.get() );
+            }
+        };
+    }
+
+    /**
+     * Provides {@link Set}s of qualified beans/providers.
+     */
+    public <K extends Annotation, V> Provider<Set<V>> setOf( final Key<V> key )
+    {
+        final Provider<Iterable<Entry<K, V>>> entries = entriesOf( key );
+        return new Provider<Set<V>>()
+        {
+            public Set<V> get()
+            {
+                return new EntrySetAdapter<K, V>( entries.get() );
+            }
+        };
+    }
+
+    /**
+     * Provides {@link Map}s of qualified beans/providers.
+     */
+    public <K extends Annotation, V> Provider<Map<K, V>> mapOf( final Key<V> key )
+    {
+        final Provider<Iterable<Entry<K, V>>> entries = entriesOf( key );
+        return new Provider<Map<K, V>>()
+        {
+            public Map<K, V> get()
+            {
+                return new EntryMapAdapter<K, V>( entries.get() );
+            }
+        };
+    }
+
+    /**
+     * Provides string {@link Map}s of named beans/providers.
+     */
+    public <V> Provider<Map<String, V>> stringMapOf( final TypeLiteral<V> type )
+    {
+        final Provider<Iterable<Entry<Named, V>>> entries = entriesOf( Key.get( type, Named.class ) );
+        return new Provider<Map<String, V>>()
+        {
+            public Map<String, V> get()
+            {
+                return new EntryMapAdapter<String, V>( new NamedIterableAdapter<V>( entries.get() ) );
+            }
+        };
+    }
+
+    /**
+     * Provides single qualified beans/providers.
+     */
+    <V> Provider<V> firstOf( final Key<V> key )
+    {
+        final Provider<Iterable<? extends BeanEntry<Annotation, V>>> beanEntries = beanEntriesOf( key );
+        return new Provider<V>()
+        {
+            public V get()
+            {
+                return firstOf( beanEntries.get() );
+            }
+        };
+    }
+
+    /**
+     * Provides placeholder beans/providers.
+     */
+    public <V> Provider<V> placeholderOf( final Key<V> key )
+    {
+        return new PlaceholderBeanProvider<V>( locator, key );
+    }
+
+    /**
+     * Selects first bean from the sequence; or null if none is available.
+     */
+    public static <V> V firstOf( final Iterable<? extends Entry<?, V>> entries )
+    {
+        final Iterator<? extends Entry<?, V>> itr = entries.iterator();
+        return itr.hasNext() ? itr.next().getValue() : null; // TODO: dynamic proxy??
     }
 }
-
-// ----------------------------------------------------------------------
-
-/**
- * Provides a {@link List} of qualified beans.
- */
-final class BeanListProvider<K extends Annotation, V>
-    extends AbstractBeans<K, V>
-    implements Provider<List<V>>
-{
-    // ----------------------------------------------------------------------
-    // Constructors
-    // ----------------------------------------------------------------------
-
-    BeanListProvider( final Provider<BeanLocator> locator, final Key<V> key )
-    {
-        super( locator, key );
-    }
-
-    // ----------------------------------------------------------------------
-    // Public methods
-    // ----------------------------------------------------------------------
-
-    public List<V> get()
-    {
-        return new EntryListAdapter<K, V>( beans() );
-    }
-}
-
-// ----------------------------------------------------------------------
-
-/**
- * Provides a {@link Set} of qualified beans.
- */
-final class BeanSetProvider<K extends Annotation, V>
-    extends AbstractBeans<K, V>
-    implements Provider<Set<V>>
-{
-    // ----------------------------------------------------------------------
-    // Constructors
-    // ----------------------------------------------------------------------
-
-    BeanSetProvider( final Provider<BeanLocator> locator, final Key<V> key )
-    {
-        super( locator, key );
-    }
-
-    // ----------------------------------------------------------------------
-    // Public methods
-    // ----------------------------------------------------------------------
-
-    public Set<V> get()
-    {
-        return new EntrySetAdapter<K, V>( beans() );
-    }
-}
-
-// ----------------------------------------------------------------------
-
-/**
- * Provides a {@link Map} of qualified beans.
- */
-final class BeanMapProvider<K extends Annotation, V>
-    extends AbstractBeans<K, V>
-    implements Provider<Map<K, V>>
-{
-    // ----------------------------------------------------------------------
-    // Constructors
-    // ----------------------------------------------------------------------
-
-    BeanMapProvider( final Provider<BeanLocator> locator, final Key<V> key )
-    {
-        super( locator, key );
-    }
-
-    // ----------------------------------------------------------------------
-    // Public methods
-    // ----------------------------------------------------------------------
-
-    public Map<K, V> get()
-    {
-        return new EntryMapAdapter<K, V>( beans() );
-    }
-}
-
-// ----------------------------------------------------------------------
-
-/**
- * Provides a {@link Map} of named beans.
- */
-final class NamedBeanMapProvider<V>
-    extends AbstractBeans<Named, V>
-    implements Provider<Map<String, V>>
-{
-    // ----------------------------------------------------------------------
-    // Constructors
-    // ----------------------------------------------------------------------
-
-    NamedBeanMapProvider( final Provider<BeanLocator> locator, final TypeLiteral<V> type )
-    {
-        super( locator, Key.get( type, Named.class ) );
-    }
-
-    // ----------------------------------------------------------------------
-    // Public methods
-    // ----------------------------------------------------------------------
-
-    public Map<String, V> get()
-    {
-        return new EntryMapAdapter<String, V>( new NamedIterableAdapter<V>( beans() ) );
-    }
-}
-
-// ----------------------------------------------------------------------
-
-/**
- * Provides a single qualified bean.
- */
-final class BeanProvider<V>
-    implements Provider<V>
-{
-    // ----------------------------------------------------------------------
-    // Implementation fields
-    // ----------------------------------------------------------------------
-
-    private final Provider<BeanLocator> locator;
-
-    private final Key<V> key;
-
-    // ----------------------------------------------------------------------
-    // Constructors
-    // ----------------------------------------------------------------------
-
-    BeanProvider( final Provider<BeanLocator> locator, final Key<V> key )
-    {
-        this.locator = locator;
-        this.key = key;
-    }
-
-    // ----------------------------------------------------------------------
-    // Public methods
-    // ----------------------------------------------------------------------
-
-    public V get()
-    {
-        return get( locator, key );
-    }
-
-    // ----------------------------------------------------------------------
-    // Implementation methods
-    // ----------------------------------------------------------------------
-
-    static <T> T get( final Provider<BeanLocator> locator, final Key<T> key )
-    {
-        final Iterator<? extends Entry<Annotation, T>> i = locator.get().locate( key ).iterator();
-        return i.hasNext() ? i.next().getValue() : null; // TODO: dynamic proxy??
-    }
-}
-
-// ----------------------------------------------------------------------
