@@ -54,4 +54,5 @@ Export-Package: org.eclipse.sisu;uses:="javax.inject",
    javax.inject,
    com.google.inject,
    javax.annotation.processing",
- org.eclipse.sisu.wire;uses:="com.google.inject.spi,com.google.inject"
+ org.eclipse.sisu.wire;uses:="com.google.inject.spi,com.google.inject",
+ org.sonatype.inject;x-internal:=true;uses:="org.eclipse.sisu"
