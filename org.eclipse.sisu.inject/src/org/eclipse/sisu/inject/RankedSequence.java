@@ -266,7 +266,7 @@ final class RankedSequence<T>
         {
             if ( null == element )
             {
-                return indexOfThis( element );
+                return indexOfThis( null );
             }
             for ( int i = 0; i < objs.length; i++ )
             {
