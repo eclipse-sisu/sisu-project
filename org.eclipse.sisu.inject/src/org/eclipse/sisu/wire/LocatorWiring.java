@@ -169,11 +169,8 @@ public final class LocatorWiring
             {
                 final Key beanKey = Key.get( args[1], qualifierType );
                 final Provider beanEntries = beanProviders.beanEntriesOf( beanKey );
-                if ( BeanEntry.class == entryType.getRawType() )
-                {
-                    return beanEntries;
-                }
-                return org.eclipse.sisu.inject.Legacy.adapt( beanEntries );
+                return BeanEntry.class == entryType.getRawType() ? beanEntries
+                                : org.eclipse.sisu.inject.Legacy.adapt( beanEntries );
             }
         }
         return null;
