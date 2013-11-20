@@ -125,6 +125,17 @@ public final class Legacy<S>
         };
     }
 
+    public static <Q extends Annotation, T> Provider<Iterable<BeanEntry<Q, T>>> adapt( final Provider<Iterable<? extends org.eclipse.sisu.BeanEntry<Q, T>>> delegate )
+    {
+        return new Provider<Iterable<BeanEntry<Q, T>>>()
+        {
+            public Iterable<BeanEntry<Q, T>> get()
+            {
+                return Legacy.adapt( delegate.get() );
+            }
+        };
+    }
+
     public static <Q extends Annotation, T, W> org.eclipse.sisu.Mediator<Q, T, W> adapt( final Mediator<Q, T, W> delegate )
     {
         return null == delegate ? null : new org.eclipse.sisu.Mediator<Q, T, W>()
@@ -139,17 +150,6 @@ public final class Legacy<S>
                 throws Exception
             {
                 delegate.remove( Legacy.adapt( entry ), watcher );
-            }
-        };
-    }
-
-    public static <Q extends Annotation, T> Provider<Iterable<BeanEntry<Q, T>>> adapt( final Provider<Iterable<? extends org.eclipse.sisu.BeanEntry<Q, T>>> delegate )
-    {
-        return new Provider<Iterable<BeanEntry<Q, T>>>()
-        {
-            public Iterable<BeanEntry<Q, T>> get()
-            {
-                return Legacy.adapt( delegate.get() );
             }
         };
     }
