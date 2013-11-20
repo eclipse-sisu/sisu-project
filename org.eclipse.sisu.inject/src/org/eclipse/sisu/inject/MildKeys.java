@@ -180,9 +180,9 @@ class MildKeys<K, V>
     /**
      * @return Temporary {@link Reference} for the given key; used in queries.
      */
-    static final Reference<?> tempKey( final Object key )
+    static final <K> Reference<K> tempKey( final K key )
     {
-        return new Weak<Object>( key, null );
+        return new Weak<K>( key, null );
     }
 
     /**

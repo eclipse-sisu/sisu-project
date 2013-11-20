@@ -182,9 +182,9 @@ class MildValues<K, V>
     /**
      * @return Temporary {@link Reference} for the given value; used in queries.
      */
-    static final Reference<?> tempValue( final Object value )
+    static final <V> Reference<V> tempValue( final V value )
     {
-        return new Weak<Object, Object>( null, value, null );
+        return new Weak<V, V>( null, value, null );
     }
 
     /**

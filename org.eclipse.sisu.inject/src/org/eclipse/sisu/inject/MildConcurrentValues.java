@@ -75,7 +75,7 @@ final class MildConcurrentValues<K, V>
     {
         compact();
 
-        return concurrentMap.replace( key, mildValue( null, oldValue ), mildValue( key, newValue ) );
+        return concurrentMap.replace( key, tempValue( oldValue ), mildValue( key, newValue ) );
     }
 
     public boolean remove( final Object key, final Object value )
