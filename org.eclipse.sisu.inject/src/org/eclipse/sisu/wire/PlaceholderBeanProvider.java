@@ -101,17 +101,14 @@ final class PlaceholderBeanProvider<V>
             // no interpolation occurred; is this perhaps a Guice constant?
             value = nullify( lookup( lookupKey.ofType( String.class ) ) );
         }
-        if ( value instanceof String )
+        if ( null == value || String.class == clazz )
         {
-            if ( String.class == clazz )
-            {
-                return (V) value; // no conversion required
-            }
-            final TypeConverter converter = converterMap.getTypeConverter( expectedType );
-            if ( null != converter )
-            {
-                return (V) converter.convert( (String) value, expectedType );
-            }
+            return (V) value; // no conversion required
+        }
+        final TypeConverter converter = converterMap.getTypeConverter( expectedType );
+        if ( null != converter )
+        {
+            return (V) converter.convert( (String) value, expectedType );
         }
         return null;
     }
