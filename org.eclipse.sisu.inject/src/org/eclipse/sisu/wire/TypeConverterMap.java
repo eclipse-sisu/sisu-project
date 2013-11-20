@@ -31,17 +31,26 @@ final class TypeConverterMap
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    @Inject
-    private Injector injector;
-
     private final Map<TypeLiteral<?>, TypeConverter> converterMap =
         new ConcurrentHashMap<TypeLiteral<?>, TypeConverter>( 16, 0.75f, 1 );
 
+    private final Injector injector;
+
     // ----------------------------------------------------------------------
-    // Shared methods
+    // Constructors
     // ----------------------------------------------------------------------
 
-    TypeConverter getTypeConverter( final TypeLiteral<?> type )
+    @Inject
+    TypeConverterMap( final Injector injector )
+    {
+        this.injector = injector;
+    }
+
+    // ----------------------------------------------------------------------
+    // Public methods
+    // ----------------------------------------------------------------------
+
+    public TypeConverter getTypeConverter( final TypeLiteral<?> type )
     {
         TypeConverter converter = converterMap.get( type );
         if ( null == converter )
