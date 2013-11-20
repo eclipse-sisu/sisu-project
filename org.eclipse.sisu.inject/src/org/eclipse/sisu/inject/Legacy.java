@@ -17,12 +17,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Iterator;
 
-import javax.inject.Inject;
-
 import org.sonatype.inject.BeanEntry;
 import org.sonatype.inject.Mediator;
 
-import com.google.inject.Key;
 import com.google.inject.Provider;
 
 /**
@@ -146,16 +143,13 @@ public final class Legacy<S>
         };
     }
 
-    public static <K extends Annotation, V> Provider<Iterable<BeanEntry<K, V>>> beanEntriesProvider( final Key<V> key )
+    public static <Q extends Annotation, T> Provider<Iterable<BeanEntry<Q, T>>> adapt( final Provider<Iterable<? extends org.eclipse.sisu.BeanEntry<Q, T>>> delegate )
     {
-        return new Provider<Iterable<BeanEntry<K, V>>>()
+        return new Provider<Iterable<BeanEntry<Q, T>>>()
         {
-            @Inject
-            private BeanLocator locator;
-
-            public Iterable<BeanEntry<K, V>> get()
+            public Iterable<BeanEntry<Q, T>> get()
             {
-                return Legacy.adapt( locator.<K, V> locate( key ) );
+                return Legacy.adapt( delegate.get() );
             }
         };
     }

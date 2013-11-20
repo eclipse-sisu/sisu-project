@@ -168,11 +168,12 @@ public final class LocatorWiring
             if ( qualifierType.isAnnotationPresent( Qualifier.class ) )
             {
                 final Key beanKey = Key.get( args[1], qualifierType );
+                final Provider beanEntries = beanProviders.beanEntriesOf( beanKey );
                 if ( BeanEntry.class == entryType.getRawType() )
                 {
-                    return beanProviders.beanEntriesOf( beanKey );
+                    return beanEntries;
                 }
-                return org.eclipse.sisu.inject.Legacy.beanEntriesProvider( beanKey );
+                return org.eclipse.sisu.inject.Legacy.adapt( beanEntries );
             }
         }
         return null;
