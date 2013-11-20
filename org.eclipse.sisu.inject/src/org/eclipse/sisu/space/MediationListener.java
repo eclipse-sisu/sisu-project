@@ -14,11 +14,12 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
+import javax.inject.Provider;
 
 import org.eclipse.sisu.Mediator;
 import org.eclipse.sisu.inject.BeanLocator;
 
+import com.google.inject.Binder;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.InjectionListener;
@@ -35,10 +36,19 @@ final class MediationListener
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final List<Mediation<?, ?, ?>> mediation = new ArrayList<Mediation<?, ?, ?>>();
+    private final List<Mediation<?, ?, ?>> mediation;
 
-    @Inject
-    private BeanLocator locator;
+    private final Provider<BeanLocator> locator;
+
+    // ----------------------------------------------------------------------
+    // Constructors
+    // ----------------------------------------------------------------------
+
+    public MediationListener( final Binder binder )
+    {
+        mediation = new ArrayList<Mediation<?, ?, ?>>();
+        locator = binder.getProvider( BeanLocator.class );
+    }
 
     // ----------------------------------------------------------------------
     // Public methods
@@ -75,7 +85,7 @@ final class MediationListener
         {
             if ( m.watcherType.isInstance( watcher ) )
             {
-                locator.watch( m.watchedKey, m.mediator, watcher );
+                locator.get().watch( m.watchedKey, m.mediator, watcher );
             }
         }
     }

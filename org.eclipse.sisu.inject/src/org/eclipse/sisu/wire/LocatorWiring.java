@@ -68,7 +68,7 @@ public final class LocatorWiring
 
     public LocatorWiring( final Binder binder )
     {
-        beanProviders = new BeanProviders( binder.getProvider( BeanLocator.class ) );
+        beanProviders = new BeanProviders( binder );
         this.binder = binder.withSource( HIDDEN_SOURCE );
     }
 

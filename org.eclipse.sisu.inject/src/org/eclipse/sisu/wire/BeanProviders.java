@@ -21,6 +21,7 @@ import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.inject.BeanLocator;
 import org.eclipse.sisu.inject.TypeArguments;
 
+import com.google.inject.Binder;
 import com.google.inject.Key;
 import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
@@ -41,9 +42,9 @@ final class BeanProviders
     // Constructors
     // ----------------------------------------------------------------------
 
-    BeanProviders( final Provider<BeanLocator> locator )
+    BeanProviders( final Binder binder )
     {
-        this.locator = locator;
+        locator = binder.getProvider( BeanLocator.class );
     }
 
     // ----------------------------------------------------------------------

@@ -203,9 +203,8 @@ public final class QualifiedTypeBinder
     {
         if ( null == mediationListener )
         {
-            mediationListener = new MediationListener();
+            mediationListener = new MediationListener( binder );
             binder.bindListener( Matchers.any(), mediationListener );
-            binder.requestInjection( mediationListener );
         }
         mediationListener.mediate( key, mediator, watcherType );
     }
