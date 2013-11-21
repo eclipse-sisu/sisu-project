@@ -54,7 +54,17 @@ public final class PlexusXmlBeanConverter
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private Collection<TypeConverterBinding> typeConverterBindings;
+    private final Collection<TypeConverterBinding> typeConverterBindings;
+
+    // ----------------------------------------------------------------------
+    // Constructors
+    // ----------------------------------------------------------------------
+
+    @Inject
+    PlexusXmlBeanConverter( final Injector injector )
+    {
+        typeConverterBindings = injector.getTypeConverterBindings();
+    }
 
     // ----------------------------------------------------------------------
     // Public methods
@@ -85,17 +95,6 @@ public final class PlexusXmlBeanConverter
     // ----------------------------------------------------------------------
     // Implementation methods
     // ----------------------------------------------------------------------
-
-    /**
-     * Records all {@link TypeConverterBinding}s registered with the {@link Injector}.
-     * 
-     * @param injector The injector
-     */
-    @Inject
-    void setTypeConverterBindings( final Injector injector )
-    {
-        typeConverterBindings = injector.getTypeConverterBindings();
-    }
 
     /**
      * Parses a sequence of XML elements and converts them to the given target type.
