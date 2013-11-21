@@ -844,8 +844,6 @@ public final class DefaultPlexusContainer
 
         private final PlexusDateTypeConverter dateConverter = new PlexusDateTypeConverter();
 
-        private final PlexusXmlBeanConverter beanConverter = new PlexusXmlBeanConverter();
-
         public void configure( final Binder binder )
         {
             binder.bind( LoggerManager.class ).toProvider( loggerManagerProvider );
@@ -858,7 +856,7 @@ public final class DefaultPlexusContainer
 
             binder.install( dateConverter );
 
-            binder.bind( PlexusBeanConverter.class ).toInstance( beanConverter );
+            binder.bind( PlexusBeanConverter.class ).to( PlexusXmlBeanConverter.class );
         }
     }
 
