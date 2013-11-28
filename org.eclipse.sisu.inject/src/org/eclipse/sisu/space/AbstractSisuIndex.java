@@ -21,8 +21,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.inject.Named;
-
 /**
  * Skeleton class that generates a qualified class index.
  */
@@ -34,7 +32,7 @@ abstract class AbstractSisuIndex
 
     static final String INDEX_FOLDER = "META-INF/sisu/";
 
-    static final String NAMED = Named.class.getName();
+    static final String NAMED = "javax.inject.Named";
 
     // ----------------------------------------------------------------------
     // Implementation fields

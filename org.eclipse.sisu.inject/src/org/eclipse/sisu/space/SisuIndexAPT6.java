@@ -21,7 +21,6 @@ import javax.annotation.processing.Completion;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
-import javax.inject.Qualifier;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
@@ -44,6 +43,24 @@ public final class SisuIndexAPT6
     implements Processor
 {
     // ----------------------------------------------------------------------
+    // Static initialization
+    // ----------------------------------------------------------------------
+
+    static
+    {
+        boolean hasQualifier;
+        try
+        {
+            hasQualifier = javax.inject.Qualifier.class.isAnnotation();
+        }
+        catch ( final LinkageError e )
+        {
+            hasQualifier = false;
+        }
+        HAS_QUALIFIER = hasQualifier;
+    }
+
+    // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
 
@@ -52,6 +69,8 @@ public final class SisuIndexAPT6
     private static final String ALL = "all";
 
     private static final String NONE = "none";
+
+    private static final boolean HAS_QUALIFIER;
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -76,7 +95,7 @@ public final class SisuIndexAPT6
         final Elements elementUtils = environment.getElementUtils();
         for ( final TypeElement anno : annotations )
         {
-            if ( null != anno.getAnnotation( Qualifier.class ) )
+            if ( HAS_QUALIFIER && null != anno.getAnnotation( javax.inject.Qualifier.class ) )
             {
                 for ( final Element elem : round.getElementsAnnotatedWith( anno ) )
                 {
