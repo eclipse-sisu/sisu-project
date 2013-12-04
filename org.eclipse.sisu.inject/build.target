@@ -20,9 +20,9 @@
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20130827064939/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
-<!--<unit id="org.sonatype.sisu.guice" version="3.1.6"/>-->
+<unit id="org.sonatype.sisu.guice" version="3.1.6"/>
 <unit id="org.testng" version="6.7.0"/>
-<repository location="http://git.eclipse.org/c/sisu/org.eclipse.sisu.inject.git/plain/org.eclipse.sisu.inject/build.extra?id=567103a544cb97541f5af583b1dc392d1928883e"/>
+<repository location="http://git.eclipse.org/c/sisu/org.eclipse.sisu.inject.git/plain/org.eclipse.sisu.inject/build.extra?id=fef2d19ac7e3422791504570929c7c4cf1995543"/>
 </location>
 <location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="org.eclipse.osgi" version="3.6.2.R36x_v20110210"/>
