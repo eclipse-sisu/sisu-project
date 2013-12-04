@@ -1,11 +1,45 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <?metadataRepository version='1.1.0'?>
-<repository name='org.eclipse.sisu.inject.extra' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='1'>
+<repository name='org.eclipse.sisu.inject.extra' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='2'>
   <properties size='2'>
-    <property name='p2.timestamp' value='1351285171321'/>
+    <property name='p2.timestamp' value='1386180355000'/>
     <property name='p2.compressed' value='false'/>
   </properties>
-  <units size='1'>
+  <units size='2'>
+    <unit id='org.sonatype.sisu.guice' version='3.1.6'>
+      <update id='org.sonatype.sisu.guice' range='[0.0.0,3.1.6)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='sisu-guice (no_aop)'/>
+        <property name='org.eclipse.equinox.p2.description' value='Patched build of Guice: a lightweight dependency injection framework for Java 5 and above'/>
+        <property name='org.eclipse.equinox.p2.provider' value='Sonatype, Inc.'/>
+        <property name='org.eclipse.equinox.p2.doc.url' value='http://code.google.com/p/google-guice/'/>
+      </properties>
+      <provides size='9'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.sonatype.sisu.guice' version='3.1.6'/>
+        <provided namespace='osgi.bundle' name='org.sonatype.sisu.guice' version='3.1.6'/>
+        <provided namespace='java.package' name='com.google.inject.name' version='1.4.0'/>
+        <provided namespace='java.package' name='com.google.inject.binder' version='1.4.0'/>
+        <provided namespace='java.package' name='com.google.inject.spi' version='1.4.0'/>
+        <provided namespace='java.package' name='com.google.inject.matcher' version='1.4.0'/>
+        <provided namespace='java.package' name='com.google.inject.util' version='1.4.0'/>
+        <provided namespace='java.package' name='com.google.inject' version='1.4.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='java.package' name='javax.inject' range='0.0.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.sonatype.sisu.guice' version='3.1.6'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.sonatype.sisu.guice;singleton:=true&#xA;Bundle-Version: 3.1.6&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
     <unit id='org.testng' version='6.7.0' singleton='false'>
       <update id='org.testng' range='[0.0.0,6.7.0)' severity='0'/>
       <properties size='2'>
