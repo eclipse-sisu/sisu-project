@@ -26,7 +26,7 @@
 </location>
 <location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="plexus-deps" version="0.0.0"/>
-<repository location="http://git.eclipse.org/c/sisu/org.eclipse.sisu.plexus.git/plain/org.eclipse.sisu.plexus/build.extra?id=c7c14e27224bafab8769351d8bad068782a4d414"/>
+<repository location="http://git.eclipse.org/c/sisu/org.eclipse.sisu.plexus.git/plain/org.eclipse.sisu.plexus/build.extra?id=9664ac3ade7e9457ce0f2a8a495287a0bc7ce20b"/>
 </location>
 <location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="org.eclipse.osgi" version="3.6.2.R36x_v20110210"/>
