@@ -1,26 +1,18 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <?artifactRepository version='1.1.0'?>
-<repository name='org.eclipse.sisu.plexus.extra' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='1'>
+<repository name='org.eclipse.sisu.plexus.extra' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='2'>
   <properties size='2'>
-    <property name='p2.timestamp' value='1373503829247'/>
+    <property name='p2.timestamp' value='1386180355000'/>
     <property name='p2.compressed' value='false'/>
   </properties>
-  <mappings size='2'>
+  <mappings size='1'>
     <rule filter='(&amp; (id=plexus-deps))' output='http://git.eclipse.org/c/sisu/org.eclipse.sisu.plexus.git/plain/org.eclipse.sisu.plexus/build.extra/plexus-deps.jar'/>
-    <rule filter='(&amp; (id=org.sonatype.sisu.guice))' output='http://central.maven.org/maven2/org/sonatype/sisu/sisu-guice/3.1.6/sisu-guice-3.1.6-no_aop.jar'/>
   </mappings>
-  <artifacts size='2'>
+  <artifacts size='1'>
     <artifact classifier='osgi.bundle' id='plexus-deps' version='0.0.0'>
       <properties size='2'>
         <property name='artifact.size' value='204'/>
         <property name='download.size' value='254502'/>
-      </properties>
-    </artifact>
-    <artifact classifier='osgi.bundle' id='org.sonatype.sisu.guice' version='3.1.6'>
-      <properties size='3'>
-        <property name='artifact.size' value='367536'/>
-        <property name='download.size' value='367536'/>
-        <property name='download.md5' value='dfa999c68ba9c0dd371b13ec55ee0989'/>
       </properties>
     </artifact>
   </artifacts>
