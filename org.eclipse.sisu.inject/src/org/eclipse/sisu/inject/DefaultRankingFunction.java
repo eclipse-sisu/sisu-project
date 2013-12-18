@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.sisu.inject;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+
 import javax.inject.Inject;
 
 import org.eclipse.sisu.Priority;
@@ -24,6 +27,35 @@ import com.google.inject.Binding;
 public final class DefaultRankingFunction
     implements RankingFunction
 {
+    // ----------------------------------------------------------------------
+    // Static initialization
+    // ----------------------------------------------------------------------
+
+    static
+    {
+        Method jsr250PriorityValue;
+        try
+        {
+            final Class<?> clazz = Priority.class.getClassLoader().loadClass( "javax.annotation.Priority" );
+            jsr250PriorityValue = clazz.getMethod( "value" );
+        }
+        catch ( final Exception e )
+        {
+            jsr250PriorityValue = null;
+        }
+        catch ( final LinkageError e )
+        {
+            jsr250PriorityValue = null;
+        }
+        JSR250_PRIORITY_VALUE = jsr250PriorityValue;
+    }
+
+    // ----------------------------------------------------------------------
+    // Constants
+    // ----------------------------------------------------------------------
+
+    private static final Method JSR250_PRIORITY_VALUE;
+
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -63,6 +95,14 @@ public final class DefaultRankingFunction
         final Class<?> implementation = binding.acceptTargetVisitor( ImplementationVisitor.THIS );
         if ( null != implementation )
         {
+            if ( null != JSR250_PRIORITY_VALUE )
+            {
+                final Object value = getJSR250PriorityValue( implementation );
+                if ( value instanceof Number )
+                {
+                    return ( (Number) value ).intValue();
+                }
+            }
             final Priority priority = implementation.getAnnotation( Priority.class );
             if ( null != priority )
             {
@@ -74,5 +114,31 @@ public final class DefaultRankingFunction
             return primaryRank;
         }
         return primaryRank + Integer.MIN_VALUE; // shifts primary range of [0,MAX_VALUE] down to [MIN_VALUE,-1]
+    }
+
+    // ----------------------------------------------------------------------
+    // Implementation methods
+    // ----------------------------------------------------------------------
+
+    private static Object getJSR250PriorityValue( final Class<?> clazz )
+    {
+        @SuppressWarnings( "unchecked" )
+        final Object priority = clazz.getAnnotation( (Class<Annotation>) JSR250_PRIORITY_VALUE.getDeclaringClass() );
+        if ( null != priority )
+        {
+            try
+            {
+                return JSR250_PRIORITY_VALUE.invoke( priority );
+            }
+            catch ( final Exception e )
+            {
+                // ignore
+            }
+            catch ( final LinkageError e )
+            {
+                // ignore
+            }
+        }
+        return null;
     }
 }
