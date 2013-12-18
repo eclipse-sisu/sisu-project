@@ -12,6 +12,8 @@ package org.eclipse.sisu.inject;
 
 import javax.inject.Inject;
 
+import org.eclipse.sisu.Priority;
+
 import com.google.inject.Binding;
 
 /**
@@ -58,6 +60,15 @@ public final class DefaultRankingFunction
 
     public <T> int rank( final Binding<T> binding )
     {
+        final Class<?> implementation = binding.acceptTargetVisitor( ImplementationVisitor.THIS );
+        if ( null != implementation )
+        {
+            final Priority priority = implementation.getAnnotation( Priority.class );
+            if ( null != priority )
+            {
+                return priority.value();
+            }
+        }
         if ( QualifyingStrategy.DEFAULT_QUALIFIER.equals( QualifyingStrategy.qualify( binding.getKey() ) ) )
         {
             return primaryRank;
