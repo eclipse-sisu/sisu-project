@@ -195,7 +195,7 @@ public class ComponentDescriptor<T>
     {
         try
         {
-            return classRealm.loadClass( getRole() );
+            return (Class<T>) classRealm.loadClass( getRole() );
         }
         catch ( final Exception e )
         {
