@@ -127,6 +127,7 @@
               <enforceBytecodeVersion>
                 <maxJdkVersion>1.5</maxJdkVersion>
                 <excludes>
+                  <exclude>*:javax.annotation-api</exclude>
                   <exclude>*:javax.el</exclude>
                 </excludes>
               </enforceBytecodeVersion>

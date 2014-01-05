@@ -15,8 +15,6 @@ import java.util.Map.Entry;
 
 import junit.framework.TestCase;
 
-import org.eclipse.sisu.Priority;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -36,7 +34,13 @@ public class PriorityTest
     {
     }
 
-    @Priority( 1000 )
+    @org.eclipse.sisu.Priority( 1000 )
+    static class MediumPriorityBean
+        implements Bean
+    {
+    }
+
+    @javax.annotation.Priority( 2000 )
     static class HighPriorityBean
         implements Bean
     {
@@ -53,8 +57,9 @@ public class PriorityTest
         protected void configure()
         {
             bind( Bean.class ).annotatedWith( Names.named( "LO" ) ).to( LowPriorityBean.class );
-            bind( Bean.class ).to( DefaultBean.class );
             bind( Bean.class ).annotatedWith( Names.named( "HI" ) ).to( HighPriorityBean.class );
+            bind( Bean.class ).to( DefaultBean.class );
+            bind( Bean.class ).annotatedWith( Names.named( "MM" ) ).to( MediumPriorityBean.class );
         }
     } );
 
@@ -68,6 +73,7 @@ public class PriorityTest
 
         assertTrue( i.hasNext() );
         assertEquals( Names.named( "HI" ), i.next().getKey() );
+        assertEquals( Names.named( "MM" ), i.next().getKey() );
         assertEquals( Names.named( "default" ), i.next().getKey() );
         assertEquals( Names.named( "LO" ), i.next().getKey() );
         assertFalse( i.hasNext() );
