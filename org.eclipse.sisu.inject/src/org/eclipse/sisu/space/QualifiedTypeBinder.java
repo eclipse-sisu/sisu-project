@@ -169,7 +169,7 @@ public final class QualifiedTypeBinder
             final Mediator mediator = newInstance( mediatorType );
             if ( null != mediator )
             {
-                mediate( Key.get( args[1], (Class) args[0].getRawType() ), mediator, args[2].getRawType() );
+                mediate( watchedKey( args[1], (Class) args[0].getRawType() ), mediator, args[2].getRawType() );
             }
         }
     }
@@ -187,7 +187,7 @@ public final class QualifiedTypeBinder
             final Mediator mediator = org.eclipse.sisu.inject.Legacy.adapt( newInstance( mediatorType ) );
             if ( null != mediator )
             {
-                mediate( Key.get( args[1], (Class) args[0].getRawType() ), mediator, args[2].getRawType() );
+                mediate( watchedKey( args[1], (Class) args[0].getRawType() ), mediator, args[2].getRawType() );
             }
         }
     }
@@ -195,18 +195,18 @@ public final class QualifiedTypeBinder
     /**
      * Uses the given mediator to mediate updates between the {@link BeanLocator} and associated watchers.
      * 
-     * @param key The watched key
+     * @param watchedKey The watched key
      * @param mediator The bean mediator
      * @param watcherType The watcher type
      */
-    private void mediate( final Key key, final Mediator mediator, final Class watcherType )
+    private void mediate( final Key watchedKey, final Mediator mediator, final Class watcherType )
     {
         if ( null == mediationListener )
         {
             mediationListener = new MediationListener( binder );
             binder.bindListener( Matchers.any(), mediationListener );
         }
-        mediationListener.mediate( key, mediator, watcherType );
+        mediationListener.mediate( watchedKey, mediator, watcherType );
     }
 
     /**
@@ -386,5 +386,10 @@ public final class QualifiedTypeBinder
     {
         return type.isAnnotationPresent( EagerSingleton.class )
             || type.isAnnotationPresent( org.sonatype.inject.EagerSingleton.class );
+    }
+
+    private static <T> Key<T> watchedKey( final TypeLiteral<T> type, final Class<? extends Annotation> annotationType )
+    {
+        return Key.get( type, Annotation.class != annotationType ? annotationType : Named.class );
     }
 }

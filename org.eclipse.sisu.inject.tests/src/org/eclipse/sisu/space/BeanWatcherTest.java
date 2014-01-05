@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.sisu.space;
 
+import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.net.URL;
@@ -93,6 +94,12 @@ public class BeanWatcherTest
     }
 
     @javax.inject.Named
+    static class AnnotatedItemWatcher
+    {
+        Map<Annotation, Item> items = new HashMap<Annotation, Item>();
+    }
+
+    @javax.inject.Named
     static class NamedItemMediator
         implements Mediator<javax.inject.Named, Item, NamedItemWatcher>
     {
@@ -126,11 +133,31 @@ public class BeanWatcherTest
         }
     }
 
+    @javax.inject.Named
+    static class AnnotatedItemMediator
+        implements Mediator<Annotation, Item, AnnotatedItemWatcher>
+    {
+        public void add( final BeanEntry<Annotation, Item> bean, final AnnotatedItemWatcher watcher )
+            throws Exception
+        {
+            assertNull( watcher.items.put( bean.getKey(), bean.getValue() ) );
+        }
+
+        public void remove( final BeanEntry<Annotation, Item> bean, final AnnotatedItemWatcher watcher )
+            throws Exception
+        {
+            assertEquals( watcher.items.remove( bean.getKey() ), bean.getValue() );
+        }
+    }
+
     @Inject
     private NamedItemWatcher namedItemWatcher;
 
     @Inject
     private MarkedItemWatcher markedItemWatcher;
+
+    @Inject
+    private AnnotatedItemWatcher annotatedItemWatcher;
 
     @Inject
     private Injector injector;
@@ -145,12 +172,13 @@ public class BeanWatcherTest
     }
 
     @SuppressWarnings( "deprecation" )
-    public void testNamedWatcher()
+    public void testWatchers()
     {
         assertTrue( CItem.initialized );
 
         assertEquals( 4, namedItemWatcher.items.size() );
         assertEquals( 2, markedItemWatcher.items.size() );
+        assertEquals( 4, annotatedItemWatcher.items.size() );
 
         assertTrue( namedItemWatcher.items.get( AItem.class.getName() ) instanceof AItem );
         assertTrue( namedItemWatcher.items.get( BItem.class.getName() ) instanceof BItem );
@@ -159,6 +187,7 @@ public class BeanWatcherTest
 
         assertNotSame( namedItemWatcher.items.get( AItem.class.getName() ), injector.getInstance( AItem.class ) );
         assertSame( namedItemWatcher.items.get( CItem.class.getName() ), injector.getInstance( CItem.class ) );
+
         assertTrue( markedItemWatcher.items.get( Integer.valueOf( 0 ) ) instanceof BItem );
         assertTrue( markedItemWatcher.items.get( Integer.valueOf( 1 ) ) instanceof DItem );
 
@@ -166,5 +195,6 @@ public class BeanWatcherTest
 
         assertEquals( 0, namedItemWatcher.items.size() );
         assertEquals( 0, markedItemWatcher.items.size() );
+        assertEquals( 0, annotatedItemWatcher.items.size() );
     }
 }

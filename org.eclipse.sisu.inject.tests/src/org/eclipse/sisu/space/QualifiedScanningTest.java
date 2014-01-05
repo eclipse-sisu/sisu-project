@@ -103,7 +103,7 @@ public class QualifiedScanningTest
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );
         new SpaceScanner( space ).accept( new QualifiedTypeVisitor( listener ) );
-        assertEquals( 35, listener.clazzes.size() );
+        assertEquals( 37, listener.clazzes.size() );
 
         assertTrue( listener.clazzes.contains( C.class ) );
         assertTrue( listener.clazzes.contains( D.class ) );
@@ -138,7 +138,7 @@ public class QualifiedScanningTest
             }
         } );
 
-        assertEquals( 34, listener.clazzes.size() );
+        assertEquals( 36, listener.clazzes.size() );
 
         assertTrue( listener.clazzes.contains( C.class ) );
         assertTrue( listener.clazzes.contains( E.class ) );
