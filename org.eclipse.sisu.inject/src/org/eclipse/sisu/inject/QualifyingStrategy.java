@@ -19,6 +19,7 @@ import com.google.inject.Binding;
 import com.google.inject.Key;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
+import com.google.inject.spi.ProviderKeyBinding;
 
 /**
  * Enumerates the different strategies for qualifying {@link Binding}s against requirement {@link Key}s.
@@ -67,6 +68,12 @@ enum QualifyingStrategy
             if ( markerType.isInstance( qualifier ) )
             {
                 return qualifier;
+            }
+
+            if ( binding instanceof ProviderKeyBinding<?> )
+            {
+                final Key<?> providerKey = ( (ProviderKeyBinding<?>) binding ).getProviderKey();
+                return providerKey.getTypeLiteral().getRawType().getAnnotation( markerType );
             }
 
             final Class<?> implementation = binding.acceptTargetVisitor( ImplementationVisitor.THIS );

@@ -17,6 +17,7 @@ import java.lang.annotation.Retention;
 import java.util.Iterator;
 
 import javax.inject.Named;
+import javax.inject.Provider;
 import javax.inject.Qualifier;
 
 import junit.framework.TestCase;
@@ -55,6 +56,16 @@ public class LocatedBeansTest
     {
     }
 
+    @Marked( "MarkedBean3" )
+    static class MarkedBeanProvider
+        implements Provider<Bean>
+    {
+        public Bean get()
+        {
+            return new MarkedBeanImpl1();
+        }
+    }
+
     Injector injector;
 
     @Override
@@ -77,6 +88,7 @@ public class LocatedBeansTest
 
                 bind( Bean.class ).annotatedWith( MarkedBeanImpl1.class.getAnnotation( Marked.class ) ).to( MarkedBeanImpl1.class );
                 bind( Bean.class ).annotatedWith( Names.named( "Marked2" ) ).to( MarkedBeanImpl2.class );
+                bind( Bean.class ).annotatedWith( Names.named( "Marked3" ) ).toProvider( MarkedBeanProvider.class );
             }
         } );
     }
@@ -135,6 +147,8 @@ public class LocatedBeansTest
         assertEquals( MarkedBeanImpl1.class.getAnnotation( Marked.class ), itr.next().getKey() );
         assertTrue( itr.hasNext() );
         assertEquals( Names.named( "Marked2" ), itr.next().getKey() );
+        assertTrue( itr.hasNext() );
+        assertEquals( Names.named( "Marked3" ), itr.next().getKey() );
         assertFalse( itr.hasNext() );
     }
 
@@ -151,6 +165,8 @@ public class LocatedBeansTest
         assertEquals( Names.named( "Named2" ), itr.next().getKey() );
         assertTrue( itr.hasNext() );
         assertEquals( Names.named( "Marked2" ), itr.next().getKey() );
+        assertTrue( itr.hasNext() );
+        assertEquals( Names.named( "Marked3" ), itr.next().getKey() );
         assertFalse( itr.hasNext() );
     }
 
@@ -173,6 +189,8 @@ public class LocatedBeansTest
         assertEquals( MarkedBeanImpl1.class.getAnnotation( Marked.class ), itr.next().getKey() );
         assertTrue( itr.hasNext() );
         assertEquals( MarkedBeanImpl2.class.getAnnotation( Marked.class ), itr.next().getKey() );
+        assertTrue( itr.hasNext() );
+        assertEquals( MarkedBeanProvider.class.getAnnotation( Marked.class ), itr.next().getKey() );
         assertFalse( itr.hasNext() );
     }
 
