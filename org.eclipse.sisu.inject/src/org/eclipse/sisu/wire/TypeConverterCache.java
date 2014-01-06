@@ -25,7 +25,7 @@ import com.google.inject.spi.TypeConverterBinding;
  * Lazy cache of known {@link TypeConverter}s.
  */
 @Singleton
-final class TypeConverterMap
+final class TypeConverterCache
 {
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -41,7 +41,7 @@ final class TypeConverterMap
     // ----------------------------------------------------------------------
 
     @Inject
-    TypeConverterMap( final Injector injector )
+    TypeConverterCache( final Injector injector )
     {
         this.injector = injector;
     }

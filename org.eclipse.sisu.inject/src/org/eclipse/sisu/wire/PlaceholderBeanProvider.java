@@ -47,7 +47,7 @@ final class PlaceholderBeanProvider<V>
     private Map properties;
 
     @Inject
-    private TypeConverterMap converterMap;
+    private TypeConverterCache converterCache;
 
     private final Provider<BeanLocator> locator;
 
@@ -105,7 +105,7 @@ final class PlaceholderBeanProvider<V>
         {
             return (V) value; // no conversion required
         }
-        final TypeConverter converter = converterMap.getTypeConverter( expectedType );
+        final TypeConverter converter = converterCache.getTypeConverter( expectedType );
         if ( null != converter )
         {
             return (V) converter.convert( (String) value, expectedType );

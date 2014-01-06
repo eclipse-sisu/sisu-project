@@ -21,6 +21,8 @@ import java.util.Set;
 
 import org.eclipse.sisu.Parameters;
 import org.eclipse.sisu.inject.BeanLocator;
+import org.eclipse.sisu.inject.DefaultBeanLocator;
+import org.eclipse.sisu.inject.DefaultRankingFunction;
 import org.eclipse.sisu.inject.Logs;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.inject.RankingFunction;
@@ -30,16 +32,19 @@ import org.eclipse.sisu.wire.WireModule.Strategy;
 import com.google.inject.Binder;
 import com.google.inject.Binding;
 import com.google.inject.Key;
+import com.google.inject.Module;
 import com.google.inject.PrivateBinder;
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.DefaultElementVisitor;
 import com.google.inject.spi.Element;
 import com.google.inject.spi.ElementVisitor;
+import com.google.inject.spi.Elements;
 import com.google.inject.spi.InjectionRequest;
 import com.google.inject.spi.InstanceBinding;
 import com.google.inject.spi.PrivateElements;
 import com.google.inject.spi.ProviderInstanceBinding;
 import com.google.inject.spi.ProviderLookup;
+import com.google.inject.spi.RequireExplicitBindingsOption;
 import com.google.inject.spi.StaticInjectionRequest;
 
 /**
@@ -78,6 +83,17 @@ final class ElementAnalyzer
 
     private static final Map<Key<?>, Key<?>> LEGACY_KEY_ALIASES;
 
+    private static final List<Element> JIT_BINDINGS = Elements.getElements( new Module()
+    {
+        public void configure( final Binder binder )
+        {
+            binder.bind( BeanLocator.class ).to( MutableBeanLocator.class );
+            binder.bind( MutableBeanLocator.class ).to( DefaultBeanLocator.class );
+            binder.bind( RankingFunction.class ).to( DefaultRankingFunction.class );
+            binder.bind( TypeConverterCache.class );
+        }
+    } );
+
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -93,6 +109,8 @@ final class ElementAnalyzer
     private final List<String> arguments = new ArrayList<String>();
 
     private final Binder binder;
+
+    private boolean requireExplicitBindings;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -114,6 +132,11 @@ final class ElementAnalyzer
 
     public void apply( final Strategy strategy )
     {
+        if ( requireExplicitBindings )
+        {
+            makeJitBindingsExplicit();
+        }
+
         // calculate which dependencies are missing from the module elements
         final Set<Key<?>> missingKeys = analyzer.findMissingKeys( localKeys );
         final Map<?, ?> mergedProperties = new MergedProperties( properties );
@@ -231,6 +254,14 @@ final class ElementAnalyzer
     }
 
     @Override
+    public Void visit( final RequireExplicitBindingsOption option )
+    {
+        requireExplicitBindings = true;
+        option.applyTo( binder );
+        return null;
+    }
+
+    @Override
     public Void visitOther( final Element element )
     {
         element.applyTo( binder );
@@ -240,6 +271,17 @@ final class ElementAnalyzer
     // ----------------------------------------------------------------------
     // Implementation methods
     // ----------------------------------------------------------------------
+
+    private void makeJitBindingsExplicit()
+    {
+        for ( final Element element : JIT_BINDINGS )
+        {
+            if ( element instanceof Binding<?> && localKeys.add( ( (Binding<?>) element ).getKey() ) )
+            {
+                element.applyTo( binder );
+            }
+        }
+    }
 
     private void mergeParameters( final Binding<?> binding )
     {
@@ -301,7 +343,7 @@ final class ElementAnalyzer
         final String name = key.getTypeLiteral().getRawType().getName();
         if ( name.startsWith( "org.eclipse.sisu.inject" ) || name.startsWith( "org.sonatype.guice.bean.locators" ) )
         {
-            return name.endsWith( "BeanLocator" );
+            return name.endsWith( "BeanLocator" ) || name.endsWith( "RankingFunction" );
         }
         return "org.slf4j.Logger".equals( name );
     }
