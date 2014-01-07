@@ -223,7 +223,12 @@ public final class QualifiedTypeBinder
         }
         else
         {
-            final Key key = getBindingKey( args[0], getBindingName( providerType ) );
+            binder.bind( providerType ).in( Scopes.SINGLETON );
+
+            final Named bindingName = getBindingName( providerType );
+            final Class<?>[] types = getBindingTypes( providerType );
+
+            final Key key = getBindingKey( args[0], bindingName );
             final ScopedBindingBuilder sbb = binder.bind( key ).toProvider( providerType );
             if ( isEagerSingleton( providerType ) )
             {
@@ -234,7 +239,6 @@ public final class QualifiedTypeBinder
                 sbb.in( Scopes.SINGLETON );
             }
 
-            final Class<?>[] types = getBindingTypes( providerType );
             if ( null != types )
             {
                 for ( final Class bindingType : types )
