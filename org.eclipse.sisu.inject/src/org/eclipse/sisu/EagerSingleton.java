@@ -16,6 +16,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import javax.inject.Scope;
+
 /**
  * Marks beans that should be created as soon as possible:<br>
  * <br>
@@ -29,6 +31,7 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  */
+@Scope
 @Target( value = { ElementType.TYPE } )
 @Retention( RetentionPolicy.RUNTIME )
 @Documented
