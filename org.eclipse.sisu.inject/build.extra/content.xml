@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <?metadataRepository version='1.1.0'?>
-<repository name='org.eclipse.sisu.inject.extra' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='2'>
+<repository name='org.eclipse.sisu.inject.extra' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='3'>
   <properties size='2'>
-    <property name='p2.timestamp' value='1386180355000'/>
+    <property name='p2.timestamp' value='1390318035129'/>
     <property name='p2.compressed' value='false'/>
   </properties>
-  <units size='2'>
-    <unit id='org.sonatype.sisu.guice' version='3.1.6'>
+  <units size='3'>
+    <unit id='org.sonatype.sisu.guice' version='3.1.6' singleton='false'>
       <update id='org.sonatype.sisu.guice' range='[0.0.0,3.1.6)' severity='0'/>
       <properties size='4'>
         <property name='org.eclipse.equinox.p2.name' value='sisu-guice (no_aop)'/>
@@ -25,7 +25,9 @@
         <provided namespace='java.package' name='com.google.inject' version='1.4.0'/>
         <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
       </provides>
-      <requires size='1'>
+      <requires size='3'>
+        <required namespace='java.package' name='com.google.common.base' range='0.0.0'/>
+        <required namespace='java.package' name='com.google.common.collect' range='0.0.0'/>
         <required namespace='java.package' name='javax.inject' range='0.0.0'/>
       </requires>
       <artifacts size='1'>
@@ -35,7 +37,39 @@
       <touchpointData size='1'>
         <instructions size='1'>
           <instruction key='manifest'>
-            Bundle-SymbolicName: org.sonatype.sisu.guice;singleton:=true&#xA;Bundle-Version: 3.1.6&#xA;
+            Bundle-SymbolicName: org.sonatype.sisu.guice&#xA;Bundle-Version: 3.1.6&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='com.google.inject.servlet' version='3.0.0' singleton='false'>
+      <update id='com.google.inject.servlet' range='[0.0.0,3.0.0)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='guice-servlet'/>
+        <property name='org.eclipse.equinox.p2.description' value='Guice is a lightweight dependency injection framework for Java 5 and above'/>
+        <property name='org.eclipse.equinox.p2.provider' value='Google, Inc.'/>
+        <property name='org.eclipse.equinox.p2.doc.url' value='http://code.google.com/p/google-guice/'/>
+      </properties>
+      <provides size='5'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='com.google.inject.servlet' version='3.0.0'/>
+        <provided namespace='osgi.bundle' name='com.google.inject.servlet' version='3.0.0'/>
+        <provided namespace='java.package' name='com.google.inject.servlet' version='1.3.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+        <provided namespace='osgi.fragment' name='com.google.inject' version='3.0.0'/>
+      </provides>
+      <requires size='3'>
+        <required namespace='osgi.bundle' name='com.google.inject' range='0.0.0'/>
+        <required namespace='java.package' name='javax.servlet' range='0.0.0'/>
+        <required namespace='java.package' name='javax.servlet.http' range='0.0.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='com.google.inject.servlet' version='3.0.0'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: com.google.inject.servlet&#xA;Bundle-Version: 3.0.0&#xA;Fragment-Host: com.google.inject&#xA;
           </instruction>
         </instructions>
       </touchpointData>
