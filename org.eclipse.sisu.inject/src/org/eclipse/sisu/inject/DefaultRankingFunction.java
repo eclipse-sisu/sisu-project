@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import org.eclipse.sisu.Priority;
 
 import com.google.inject.Binding;
+import com.google.inject.spi.BindingTargetVisitor;
 
 /**
  * Simple {@link RankingFunction} that partitions qualified bindings into two main groups.
@@ -33,6 +34,17 @@ public final class DefaultRankingFunction
 
     static
     {
+        ImplementationVisitor servletVisitor;
+        try
+        {
+            servletVisitor = new ServletVisitor();
+        }
+        catch ( final LinkageError e )
+        {
+            servletVisitor = null;
+        }
+        SERVLET_VISITOR = servletVisitor;
+
         Method jsr250PriorityValue;
         try
         {
@@ -53,6 +65,11 @@ public final class DefaultRankingFunction
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
+
+    private static final BindingTargetVisitor<Object, Class<?>> SERVLET_VISITOR;
+
+    private static final BindingTargetVisitor<Object, Class<?>> TARGET_VISITOR =
+        SERVLET_VISITOR == null ? ImplementationVisitor.THIS : SERVLET_VISITOR;
 
     private static final Method JSR250_PRIORITY_VALUE;
 
@@ -92,7 +109,7 @@ public final class DefaultRankingFunction
 
     public <T> int rank( final Binding<T> binding )
     {
-        final Class<?> implementation = binding.acceptTargetVisitor( ImplementationVisitor.THIS );
+        final Class<?> implementation = binding.acceptTargetVisitor( TARGET_VISITOR );
         if ( null != implementation )
         {
             if ( null != JSR250_PRIORITY_VALUE )
@@ -140,5 +157,39 @@ public final class DefaultRankingFunction
             }
         }
         return null;
+    }
+
+    // ----------------------------------------------------------------------
+    // Implementation types
+    // ----------------------------------------------------------------------
+
+    /**
+     * {@link ImplementationVisitor} that can also peek behind filter/servlet bindings.
+     */
+    static final class ServletVisitor
+        extends ImplementationVisitor
+        implements com.google.inject.servlet.ServletModuleTargetVisitor<Object, Class<?>>
+    {
+        public Class<?> visit( final com.google.inject.servlet.InstanceFilterBinding binding )
+        {
+            return binding.getFilterInstance().getClass();
+        }
+
+        public Class<?> visit( final com.google.inject.servlet.InstanceServletBinding binding )
+        {
+            return binding.getServletInstance().getClass();
+        }
+
+        public Class<?> visit( final com.google.inject.servlet.LinkedFilterBinding binding )
+        {
+            // this assumes only one level of indirection: api-->impl
+            return binding.getLinkedKey().getTypeLiteral().getRawType();
+        }
+
+        public Class<?> visit( final com.google.inject.servlet.LinkedServletBinding binding )
+        {
+            // this assumes only one level of indirection: api-->impl
+            return binding.getLinkedKey().getTypeLiteral().getRawType();
+        }
     }
 }

@@ -21,8 +21,9 @@
 </location>
 <location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="org.sonatype.sisu.guice" version="3.1.6"/>
+<unit id="com.google.inject.servlet" version="3.0.0"/>
 <unit id="org.testng" version="6.7.0"/>
-<repository location="http://git.eclipse.org/c/sisu/org.eclipse.sisu.inject.git/plain/org.eclipse.sisu.inject/build.extra?id=fef2d19ac7e3422791504570929c7c4cf1995543"/>
+<repository location="http://git.eclipse.org/c/sisu/org.eclipse.sisu.inject.git/plain/org.eclipse.sisu.inject/build.extra?id=153878ea8159d0f9795a37dd05f9d2224d624c19"/>
 </location>
 <location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="org.eclipse.osgi" version="3.6.2.R36x_v20110210"/>

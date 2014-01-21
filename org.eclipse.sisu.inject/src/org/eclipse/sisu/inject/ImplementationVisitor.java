@@ -23,7 +23,7 @@ import com.google.inject.spi.UntargettedBinding;
 /**
  * {@link BindingTargetVisitor} that attempts to discover implementations behind bindings.
  */
-final class ImplementationVisitor
+class ImplementationVisitor
     extends DefaultBindingTargetVisitor<Object, Class<?>>
 {
     // ----------------------------------------------------------------------
