@@ -73,7 +73,7 @@
   </issueManagement>
   <ciManagement>
     <system>Hudson</system>
-    <url>https://hudson.eclipse.org/hudson/job/sisu-mojos-nightly/</url>
+    <url>https://hudson.eclipse.org/sisu/job/sisu-mojos-nightly/</url>
   </ciManagement>
 
   <properties>
