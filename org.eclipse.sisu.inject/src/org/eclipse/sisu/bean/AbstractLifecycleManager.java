@@ -126,7 +126,7 @@ public abstract class AbstractLifecycleManager
     // ----------------------------------------------------------------------
 
     @SuppressWarnings( "serial" )
-    final class PendingBeans
+    static final class PendingBeans
         extends ArrayList<Object>
     {
         // subclass to make it unique
