@@ -23,6 +23,7 @@ import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.context.Context;
+import org.eclipse.sisu.bean.BeanManager;
 import org.eclipse.sisu.wire.EntryListAdapter;
 import org.eclipse.sisu.wire.EntryMapAdapter;
 
@@ -42,7 +43,7 @@ final class PseudoPlexusContainer
 
     final PlexusBeanLocator locator;
 
-    final PlexusBeanManager manager;
+    final BeanManager manager;
 
     final Context context;
 
@@ -51,7 +52,7 @@ final class PseudoPlexusContainer
     // ----------------------------------------------------------------------
 
     @Inject
-    PseudoPlexusContainer( final PlexusBeanLocator locator, final PlexusBeanManager manager, final Context context )
+    PseudoPlexusContainer( final PlexusBeanLocator locator, final BeanManager manager, final Context context )
     {
         this.locator = locator;
         this.manager = manager;

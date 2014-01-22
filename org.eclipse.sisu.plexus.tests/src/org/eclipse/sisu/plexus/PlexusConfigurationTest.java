@@ -17,6 +17,7 @@ import junit.framework.TestCase;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.eclipse.sisu.bean.BeanProperty;
+import org.eclipse.sisu.bean.BeanManager;
 import org.eclipse.sisu.bean.PropertyBinding;
 
 import com.google.inject.AbstractModule;
@@ -34,7 +35,7 @@ public class PlexusConfigurationTest
     Injector injector;
 
     static class ComponentManager
-        implements PlexusBeanManager
+        implements BeanManager
     {
         static int SEEN;
 

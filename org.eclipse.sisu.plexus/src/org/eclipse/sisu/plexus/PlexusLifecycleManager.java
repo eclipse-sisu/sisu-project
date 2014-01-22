@@ -27,6 +27,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.eclipse.sisu.bean.BeanProperty;
+import org.eclipse.sisu.bean.BeanManager;
 import org.eclipse.sisu.bean.PropertyBinding;
 import org.eclipse.sisu.inject.Logs;
 
@@ -35,10 +36,10 @@ import com.google.inject.Module;
 import com.google.inject.matcher.Matchers;
 
 /**
- * {@link PlexusBeanManager} that manages Plexus components requiring lifecycle management.
+ * {@link BeanManager} that manages Plexus components requiring lifecycle management.
  */
 public final class PlexusLifecycleManager
-    implements PlexusBeanManager, Module
+    implements BeanManager, Module
 {
     // ----------------------------------------------------------------------
     // Static initialization
@@ -209,7 +210,7 @@ public final class PlexusLifecycleManager
         return true;
     }
 
-    public PlexusBeanManager manageChild()
+    public BeanManager manageChild()
     {
         return this;
     }
