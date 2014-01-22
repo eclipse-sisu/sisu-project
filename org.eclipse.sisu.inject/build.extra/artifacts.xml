@@ -7,7 +7,7 @@
   </properties>
   <mappings size='3'>
     <rule filter='(&amp; (id=org.sonatype.sisu.guice))' output='http://central.maven.org/maven2/org/sonatype/sisu/sisu-guice/3.1.6/sisu-guice-3.1.6-no_aop.jar'/>
-    <rule filter='(&amp; (id=com.google.inject.servlet))' output='http://central.maven.org/maven2/com/google/inject/extensions/guice-servlet/3.0/guice-servlet-3.0.jar'/>
+    <rule filter='(&amp; (id=org.sonatype.sisu.inject.guice-servlet))' output='http://central.maven.org/maven2/org/sonatype/sisu/inject/guice-servlet/3.1.6/guice-servlet-3.1.6.jar'/>
     <rule filter='(&amp; (id=org.testng))' output='http://central.maven.org/maven2/org/testng/testng/6.7/testng-6.7.jar'/>
   </mappings>
   <artifacts size='3'>
@@ -18,11 +18,11 @@
         <property name='download.md5' value='dfa999c68ba9c0dd371b13ec55ee0989'/>
       </properties>
     </artifact>
-    <artifact classifier='osgi.bundle' id='com.google.inject.servlet' version='3.0'>
+    <artifact classifier='osgi.bundle' id='org.sonatype.sisu.inject.guice-servlet' version='3.1.6'>
       <properties size='3'>
-        <property name='artifact.size' value='65012'/>
-        <property name='download.size' value='65012'/>
-        <property name='download.md5' value='c9f66a5f6a0d840d9057b30853f25b85'/>
+        <property name='artifact.size' value='72206'/>
+        <property name='download.size' value='72206'/>
+        <property name='download.md5' value='dc684e1ca0d2a68af824b1da946517fa'/>
       </properties>
     </artifact>
     <artifact classifier='osgi.bundle' id='org.testng' version='6.7.0'>
