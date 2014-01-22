@@ -12,7 +12,6 @@ package org.eclipse.sisu.plexus;
 
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Provider;
@@ -26,39 +25,18 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
-import org.eclipse.sisu.bean.BeanProperty;
+import org.eclipse.sisu.bean.AbstractLifecycleManager;
 import org.eclipse.sisu.bean.BeanManager;
+import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.bean.PropertyBinding;
 import org.eclipse.sisu.inject.Logs;
-
-import com.google.inject.Binder;
-import com.google.inject.Module;
-import com.google.inject.matcher.Matchers;
 
 /**
  * {@link BeanManager} that manages Plexus components requiring lifecycle management.
  */
 public final class PlexusLifecycleManager
-    implements BeanManager, Module
+    extends AbstractLifecycleManager
 {
-    // ----------------------------------------------------------------------
-    // Static initialization
-    // ----------------------------------------------------------------------
-
-    static
-    {
-        boolean hasProvisionListener;
-        try
-        {
-            hasProvisionListener = com.google.inject.spi.ProvisionListener.class.isInterface();
-        }
-        catch ( final LinkageError e )
-        {
-            hasProvisionListener = false;
-        }
-        HAS_PROVISION_LISTENER = hasProvisionListener;
-    }
-
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
@@ -66,13 +44,9 @@ public final class PlexusLifecycleManager
     private static final Class<?>[] LIFECYCLE_TYPES = { LogEnabled.class, Contextualizable.class, Initializable.class,
         Startable.class, Disposable.class };
 
-    private static final boolean HAS_PROVISION_LISTENER;
-
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
-
-    private final ThreadLocal<List<?>[]> pendingHolder = new ThreadLocal<List<?>[]>();
 
     private final List<Startable> startableBeans = new ArrayList<Startable>();
 
@@ -102,14 +76,6 @@ public final class PlexusLifecycleManager
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
-
-    public void configure( final Binder binder )
-    {
-        if ( HAS_PROVISION_LISTENER )
-        {
-            binder.bindListener( Matchers.any(), new PlexusProvisionListener() );
-        }
-    }
 
     public boolean manage( final Class<?> clazz )
     {
@@ -152,7 +118,6 @@ public final class PlexusLifecycleManager
         return null;
     }
 
-    @SuppressWarnings( { "rawtypes", "unchecked" } )
     public boolean manage( final Object bean )
     {
         if ( bean instanceof Disposable )
@@ -165,20 +130,7 @@ public final class PlexusLifecycleManager
         }
         if ( bean instanceof Contextualizable || bean instanceof Initializable || bean instanceof Startable )
         {
-            if ( HAS_PROVISION_LISTENER )
-            {
-                final List<?>[] holder = getPendingHolder();
-                List beans = holder[0];
-                if ( null == beans || beans.isEmpty() )
-                {
-                    holder[0] = beans = new ArrayList<Object>();
-                }
-                beans.add( bean );
-            }
-            else
-            {
-                manageLifecycle( bean );
-            }
+            schedule( bean );
         }
         return true;
     }
@@ -196,6 +148,7 @@ public final class PlexusLifecycleManager
         return true;
     }
 
+    @Override
     public boolean unmanage()
     {
         for ( Startable bean; ( bean = synchronizedRemoveLast( startableBeans ) ) != null; )
@@ -206,56 +159,15 @@ public final class PlexusLifecycleManager
         {
             dispose( bean );
         }
-        pendingHolder.remove();
-        return true;
-    }
-
-    public BeanManager manageChild()
-    {
-        return this;
+        return super.unmanage();
     }
 
     // ----------------------------------------------------------------------
-    // Locally-shared methods
+    // Customized methods
     // ----------------------------------------------------------------------
 
-    Logger getPlexusLogger( final Object bean )
-    {
-        final String name = bean.getClass().getName();
-        try
-        {
-            return plexusLoggerManagerProvider.get().getLoggerForComponent( name, null );
-        }
-        catch ( final RuntimeException e )
-        {
-            return consoleLogger;
-        }
-    }
-
-    Object getSLF4JLogger( final Object bean )
-    {
-        final String name = bean.getClass().getName();
-        try
-        {
-            return ( (org.slf4j.ILoggerFactory) slf4jLoggerFactoryProvider.get() ).getLogger( name );
-        }
-        catch ( final RuntimeException e )
-        {
-            return org.slf4j.LoggerFactory.getLogger( name );
-        }
-    }
-
-    List<?>[] getPendingHolder()
-    {
-        List<?>[] holder = pendingHolder.get();
-        if ( null == holder )
-        {
-            pendingHolder.set( holder = new List[1] );
-        }
-        return holder;
-    }
-
-    void manageLifecycle( final Object bean )
+    @Override
+    protected void activate( final Object bean )
     {
         final ClassLoader tccl = Thread.currentThread().getContextClassLoader();
         try
@@ -298,6 +210,32 @@ public final class PlexusLifecycleManager
     // ----------------------------------------------------------------------
     // Implementation methods
     // ----------------------------------------------------------------------
+
+    Logger getPlexusLogger( final Object bean )
+    {
+        final String name = bean.getClass().getName();
+        try
+        {
+            return plexusLoggerManagerProvider.get().getLoggerForComponent( name, null );
+        }
+        catch ( final RuntimeException e )
+        {
+            return consoleLogger;
+        }
+    }
+
+    Object getSLF4JLogger( final Object bean )
+    {
+        final String name = bean.getClass().getName();
+        try
+        {
+            return ( (org.slf4j.ILoggerFactory) slf4jLoggerFactoryProvider.get() ).getLogger( name );
+        }
+        catch ( final RuntimeException e )
+        {
+            return org.slf4j.LoggerFactory.getLogger( name );
+        }
+    }
 
     private static <T> boolean synchronizedAdd( final List<T> list, final T element )
     {
@@ -431,38 +369,6 @@ public final class PlexusLifecycleManager
             finally
             {
                 return; // ignore any logging exceptions and continue with shutdown
-            }
-        }
-    }
-
-    // ----------------------------------------------------------------------
-    // Implementation types
-    // ----------------------------------------------------------------------
-
-    final class PlexusProvisionListener
-        implements com.google.inject.spi.ProvisionListener
-    {
-        public <T> void onProvision( final ProvisionInvocation<T> pi )
-        {
-            final List<?>[] holder = getPendingHolder();
-            if ( null == holder[0] )
-            {
-                List<?> beans;
-                holder[0] = Collections.EMPTY_LIST;
-                try
-                {
-                    pi.provision();
-                }
-                finally
-                {
-                    beans = holder[0];
-                    holder[0] = null;
-                }
-
-                for ( int i = 0, size = beans.size(); i < size; i++ )
-                {
-                    manageLifecycle( beans.get( i ) );
-                }
             }
         }
     }
