@@ -19,6 +19,7 @@
 </location>
 <location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="org.sonatype.sisu.guice" version="3.1.6"/>
+<unit id="org.sonatype.sisu.inject.guice-servlet" version="3.1.6"/>
 <unit id="org.testng" version="6.7.0"/>
 <repository location="http://git.eclipse.org/c/sisu/org.eclipse.sisu.inject.git/plain/org.eclipse.sisu.inject/build.extra?id=5bcf85d8df6ac30ba72ce5cde1cbfd35d71cb73b"/>
 </location>
