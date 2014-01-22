@@ -80,7 +80,7 @@
   </issueManagement>
   <ciManagement>
     <system>Hudson</system>
-    <url>https://hudson.eclipse.org/hudson/job/sisu-inject-nightly/</url>
+    <url>https://hudson.eclipse.org/sisu/job/sisu-inject-nightly/</url>
   </ciManagement>
 
   <properties>
