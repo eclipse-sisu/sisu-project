@@ -13,8 +13,6 @@
 <unit id="org.slf4j.api" version="1.6.4.v20120130-2120"/>
 <unit id="org.aopalliance" version="1.0.0.v201105210816"/>
 <unit id="com.google.guava" version="11.0.2.v201303041551"/>
-<unit id="com.google.inject" version="3.0.0.v201203062045"/>
-<unit id="com.google.inject.source" version="3.0.0.v201203062045"/>
 <unit id="org.junit" version="4.10.0.v4_10_0_v20130308-0414"/>
 <unit id="org.hamcrest.core" version="1.1.0.v20090501071000"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20130827064939/repository/"/>
@@ -22,7 +20,7 @@
 <location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="org.sonatype.sisu.guice" version="3.1.6"/>
 <unit id="org.testng" version="6.7.0"/>
-<repository location="http://git.eclipse.org/c/sisu/org.eclipse.sisu.inject.git/plain/org.eclipse.sisu.inject/build.extra?id=fef2d19ac7e3422791504570929c7c4cf1995543"/>
+<repository location="http://git.eclipse.org/c/sisu/org.eclipse.sisu.inject.git/plain/org.eclipse.sisu.inject/build.extra?id=5bcf85d8df6ac30ba72ce5cde1cbfd35d71cb73b"/>
 </location>
 <location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="plexus-deps" version="0.0.0"/>
