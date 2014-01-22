@@ -11,8 +11,6 @@
 package org.eclipse.sisu.bean;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
@@ -48,11 +46,13 @@ public abstract class AbstractLifecycleManager
 
     private static final boolean HAS_PROVISION_LISTENER;
 
+    static final Object PLACEHOLDER = new Object();
+
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final ThreadLocal<List<?>[]> pendingHolder = new ThreadLocal<List<?>[]>();
+    private final ThreadLocal<Object[]> pendingHolder = new ThreadLocal<Object[]>();
 
     // ----------------------------------------------------------------------
     // Public methods
@@ -66,18 +66,28 @@ public abstract class AbstractLifecycleManager
         }
     }
 
-    @SuppressWarnings( { "rawtypes", "unchecked" } )
     public final void schedule( final Object bean )
     {
         if ( HAS_PROVISION_LISTENER )
         {
-            final List<?>[] holder = getPendingHolder();
-            List beans = holder[0];
-            if ( null == beans || beans.isEmpty() )
+            final Object[] holder = getPendingHolder();
+            final Object pending = holder[0];
+            if ( pending == PLACEHOLDER )
             {
-                holder[0] = beans = new ArrayList<Object>();
+                holder[0] = bean; // most common case
             }
-            beans.add( bean );
+            else if ( false == pending instanceof PendingBeans )
+            {
+                // we have a cycle so upgrade to a sequence
+                final PendingBeans beans = new PendingBeans();
+                beans.add( pending );
+                beans.add( bean );
+                holder[0] = beans;
+            }
+            else
+            {
+                ( (PendingBeans) pending ).add( bean );
+            }
         }
         else
         {
@@ -101,12 +111,12 @@ public abstract class AbstractLifecycleManager
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    List<?>[] getPendingHolder()
+    Object[] getPendingHolder()
     {
-        List<?>[] holder = pendingHolder.get();
+        Object[] holder = pendingHolder.get();
         if ( null == holder )
         {
-            pendingHolder.set( holder = new List[1] );
+            pendingHolder.set( holder = new Object[1] );
         }
         return holder;
     }
@@ -115,26 +125,49 @@ public abstract class AbstractLifecycleManager
     // Implementation types
     // ----------------------------------------------------------------------
 
+    @SuppressWarnings( "serial" )
+    final class PendingBeans
+        extends ArrayList<Object>
+    {
+        // subclass to make it unique
+    }
+
     final class LifecycleListener
         implements com.google.inject.spi.ProvisionListener
     {
         public <T> void onProvision( final ProvisionInvocation<T> pi )
         {
-            final List<?>[] holder = getPendingHolder();
+            final Object[] holder = getPendingHolder();
             if ( null == holder[0] )
             {
-                List<?> beans;
-                holder[0] = Collections.EMPTY_LIST;
+                final Object pending;
+                holder[0] = PLACEHOLDER;
                 try
                 {
                     pi.provision();
                 }
                 finally
                 {
-                    beans = holder[0];
+                    pending = holder[0];
                     holder[0] = null;
                 }
+                if ( pending != PLACEHOLDER )
+                {
+                    trigger( pending );
+                }
+            }
+        }
 
+        private void trigger( final Object pending )
+        {
+            if ( false == pending instanceof PendingBeans )
+            {
+                activate( pending ); // most common case
+            }
+            else
+            {
+                // all beans in the cycle are ready to be activated
+                final PendingBeans beans = (PendingBeans) pending;
                 for ( int i = 0, size = beans.size(); i < size; i++ )
                 {
                     activate( beans.get( i ) );
