@@ -148,7 +148,6 @@ public final class PlexusLifecycleManager
         return true;
     }
 
-    @Override
     public boolean unmanage()
     {
         for ( Startable bean; ( bean = synchronizedRemoveLast( startableBeans ) ) != null; )
@@ -159,7 +158,7 @@ public final class PlexusLifecycleManager
         {
             dispose( bean );
         }
-        return super.unmanage();
+        return true;
     }
 
     // ----------------------------------------------------------------------
