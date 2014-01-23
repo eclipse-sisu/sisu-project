@@ -28,23 +28,23 @@ public abstract class AbstractLifecycleManager
 
     static
     {
-        Object lifecycleListener;
+        Object loopDetector;
         try
         {
-            lifecycleListener = new LifecycleListener();
+            loopDetector = new LoopDetector();
         }
         catch ( final LinkageError e )
         {
-            lifecycleListener = null;
+            loopDetector = null;
         }
-        LIFECYCLE_LISTENER = lifecycleListener;
+        LOOP_DETECTOR = loopDetector;
     }
 
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final Object LIFECYCLE_LISTENER;
+    private static final Object LOOP_DETECTOR;
 
     static final Object PLACEHOLDER = new Object();
 
@@ -71,15 +71,15 @@ public abstract class AbstractLifecycleManager
 
     public void configure( final Binder binder )
     {
-        if ( null != LIFECYCLE_LISTENER && detectLoops )
+        if ( null != LOOP_DETECTOR && detectLoops )
         {
-            binder.bindListener( Matchers.any(), (com.google.inject.spi.ProvisionListener) LIFECYCLE_LISTENER );
+            binder.bindListener( Matchers.any(), (com.google.inject.spi.ProvisionListener) LOOP_DETECTOR );
         }
     }
 
     public final void schedule( final Object bean )
     {
-        if ( null != LIFECYCLE_LISTENER && detectLoops )
+        if ( null != LOOP_DETECTOR && detectLoops )
         {
             final Object[] holder = getPendingHolder();
             final Object pending = holder[0];
@@ -139,7 +139,7 @@ public abstract class AbstractLifecycleManager
         }
     }
 
-    static final class LifecycleListener
+    static final class LoopDetector
         implements com.google.inject.spi.ProvisionListener
     {
         public <T> void onProvision( final ProvisionInvocation<T> pi )
