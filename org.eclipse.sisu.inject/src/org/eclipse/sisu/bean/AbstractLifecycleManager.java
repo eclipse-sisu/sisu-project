@@ -28,23 +28,23 @@ public abstract class AbstractLifecycleManager
 
     static
     {
-        boolean hasProvisionListener;
+        Object lifecycleListener;
         try
         {
-            hasProvisionListener = com.google.inject.spi.ProvisionListener.class.isInterface();
+            lifecycleListener = new LifecycleListener();
         }
         catch ( final LinkageError e )
         {
-            hasProvisionListener = false;
+            lifecycleListener = null;
         }
-        HAS_PROVISION_LISTENER = hasProvisionListener;
+        LIFECYCLE_LISTENER = lifecycleListener;
     }
 
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final boolean HAS_PROVISION_LISTENER;
+    private static final Object LIFECYCLE_LISTENER;
 
     static final Object PLACEHOLDER = new Object();
 
@@ -52,7 +52,7 @@ public abstract class AbstractLifecycleManager
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final ThreadLocal<Object[]> pendingHolder = new ThreadLocal<Object[]>();
+    private static final ThreadLocal<Object[]> pendingHolder = new ThreadLocal<Object[]>();
 
     // ----------------------------------------------------------------------
     // Public methods
@@ -60,45 +60,30 @@ public abstract class AbstractLifecycleManager
 
     public void configure( final Binder binder )
     {
-        if ( HAS_PROVISION_LISTENER )
+        if ( null != LIFECYCLE_LISTENER )
         {
-            binder.bindListener( Matchers.any(), new LifecycleListener() );
+            binder.bindListener( Matchers.any(), (com.google.inject.spi.ProvisionListener) LIFECYCLE_LISTENER );
         }
     }
 
     public final void schedule( final Object bean )
     {
-        if ( HAS_PROVISION_LISTENER )
+        if ( null != LIFECYCLE_LISTENER )
         {
             final Object[] holder = getPendingHolder();
             final Object pending = holder[0];
             if ( pending == PLACEHOLDER )
             {
-                holder[0] = bean; // most common case
+                holder[0] = new PendingBeans( bean );
+                return; // will be activated later
             }
-            else if ( false == pending instanceof PendingBeans )
-            {
-                // we have a cycle so upgrade to a sequence
-                final PendingBeans beans = new PendingBeans();
-                beans.add( pending );
-                beans.add( bean );
-                holder[0] = beans;
-            }
-            else
+            else if ( pending instanceof PendingBeans )
             {
                 ( (PendingBeans) pending ).add( bean );
+                return; // will be activated later
             }
         }
-        else
-        {
-            activate( bean );
-        }
-    }
-
-    public boolean unmanage()
-    {
-        pendingHolder.remove();
-        return true;
+        activate( bean );
     }
 
     // ----------------------------------------------------------------------
@@ -111,7 +96,7 @@ public abstract class AbstractLifecycleManager
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    Object[] getPendingHolder()
+    static Object[] getPendingHolder()
     {
         Object[] holder = pendingHolder.get();
         if ( null == holder )
@@ -126,13 +111,24 @@ public abstract class AbstractLifecycleManager
     // ----------------------------------------------------------------------
 
     @SuppressWarnings( "serial" )
-    static final class PendingBeans
+    private final class PendingBeans
         extends ArrayList<Object>
     {
-        // subclass to make it unique
+        PendingBeans( final Object bean )
+        {
+            add( bean );
+        }
+
+        public void activateGroup()
+        {
+            for ( int i = 0, size = size(); i < size; i++ )
+            {
+                activate( get( i ) );
+            }
+        }
     }
 
-    final class LifecycleListener
+    static final class LifecycleListener
         implements com.google.inject.spi.ProvisionListener
     {
         public <T> void onProvision( final ProvisionInvocation<T> pi )
@@ -151,26 +147,9 @@ public abstract class AbstractLifecycleManager
                     pending = holder[0];
                     holder[0] = null;
                 }
-                if ( pending != PLACEHOLDER )
+                if ( pending instanceof PendingBeans )
                 {
-                    trigger( pending );
-                }
-            }
-        }
-
-        private void trigger( final Object pending )
-        {
-            if ( false == pending instanceof PendingBeans )
-            {
-                activate( pending ); // most common case
-            }
-            else
-            {
-                // all beans in the cycle are ready to be activated
-                final PendingBeans beans = (PendingBeans) pending;
-                for ( int i = 0, size = beans.size(); i < size; i++ )
-                {
-                    activate( beans.get( i ) );
+                    ( (PendingBeans) pending ).activateGroup();
                 }
             }
         }
