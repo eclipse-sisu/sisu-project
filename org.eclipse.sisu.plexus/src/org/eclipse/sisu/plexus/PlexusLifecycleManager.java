@@ -68,6 +68,8 @@ public final class PlexusLifecycleManager
                                    final Provider<LoggerManager> plexusLoggerManagerProvider,
                                    final Provider<?> slf4jLoggerFactoryProvider )
     {
+        super( true );
+
         this.plexusContextProvider = plexusContextProvider;
         this.plexusLoggerManagerProvider = plexusLoggerManagerProvider;
         this.slf4jLoggerFactoryProvider = slf4jLoggerFactoryProvider;
