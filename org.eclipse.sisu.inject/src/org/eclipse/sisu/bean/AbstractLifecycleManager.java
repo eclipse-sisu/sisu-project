@@ -54,13 +54,24 @@ public abstract class AbstractLifecycleManager
 
     private static final ThreadLocal<Object[]> pendingHolder = new ThreadLocal<Object[]>();
 
+    private final boolean detectLoops;
+
+    // ----------------------------------------------------------------------
+    // Constructors
+    // ----------------------------------------------------------------------
+
+    protected AbstractLifecycleManager( final boolean detectLoops )
+    {
+        this.detectLoops = detectLoops;
+    }
+
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
 
     public void configure( final Binder binder )
     {
-        if ( null != LIFECYCLE_LISTENER )
+        if ( null != LIFECYCLE_LISTENER && detectLoops )
         {
             binder.bindListener( Matchers.any(), (com.google.inject.spi.ProvisionListener) LIFECYCLE_LISTENER );
         }
@@ -68,7 +79,7 @@ public abstract class AbstractLifecycleManager
 
     public final void schedule( final Object bean )
     {
-        if ( null != LIFECYCLE_LISTENER )
+        if ( null != LIFECYCLE_LISTENER && detectLoops )
         {
             final Object[] holder = getPendingHolder();
             final Object pending = holder[0];
