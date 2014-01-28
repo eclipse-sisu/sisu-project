@@ -16,11 +16,7 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.matcher.Matchers;
 
-/**
- * {@link BeanManager} that manages components requiring lifecycle scheduling.
- */
-public abstract class AbstractLifecycleManager
-    implements BeanManager, Module
+public abstract class BeanScheduler
 {
     // ----------------------------------------------------------------------
     // Static initialization
@@ -28,25 +24,36 @@ public abstract class AbstractLifecycleManager
 
     static
     {
-        Object loopDetector;
+        Object activator;
         try
         {
-            loopDetector = new LoopDetector();
+            activator = new Activator();
         }
         catch ( final LinkageError e )
         {
-            loopDetector = null;
+            activator = null;
         }
-        LOOP_DETECTOR = loopDetector;
+        ACTIVATOR = activator;
     }
 
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final Object LOOP_DETECTOR;
+    static final Object ACTIVATOR;
 
     static final Object PLACEHOLDER = new Object();
+
+    public static final Module MODULE = new Module()
+    {
+        public void configure( final Binder binder )
+        {
+            if ( null != ACTIVATOR )
+            {
+                binder.bindListener( Matchers.any(), (com.google.inject.spi.ProvisionListener) ACTIVATOR );
+            }
+        }
+    };
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -54,32 +61,13 @@ public abstract class AbstractLifecycleManager
 
     private static final ThreadLocal<Object[]> pendingHolder = new ThreadLocal<Object[]>();
 
-    private final boolean detectLoops;
-
-    // ----------------------------------------------------------------------
-    // Constructors
-    // ----------------------------------------------------------------------
-
-    protected AbstractLifecycleManager( final boolean detectLoops )
-    {
-        this.detectLoops = detectLoops;
-    }
-
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
 
-    public void configure( final Binder binder )
-    {
-        if ( null != LOOP_DETECTOR && detectLoops )
-        {
-            binder.bindListener( Matchers.any(), (com.google.inject.spi.ProvisionListener) LOOP_DETECTOR );
-        }
-    }
-
     public final void schedule( final Object bean )
     {
-        if ( null != LOOP_DETECTOR && detectLoops )
+        if ( null != ACTIVATOR )
         {
             final Object[] holder = getPendingHolder();
             final Object pending = holder[0];
@@ -130,16 +118,16 @@ public abstract class AbstractLifecycleManager
             add( bean );
         }
 
-        public void activateGroup()
+        public void activate()
         {
             for ( int i = 0, size = size(); i < size; i++ )
             {
-                activate( get( i ) );
+                BeanScheduler.this.activate( get( i ) );
             }
         }
     }
 
-    static final class LoopDetector
+    static final class Activator
         implements com.google.inject.spi.ProvisionListener
     {
         public <T> void onProvision( final ProvisionInvocation<T> pi )
@@ -160,7 +148,7 @@ public abstract class AbstractLifecycleManager
                 }
                 if ( pending instanceof PendingBeans )
                 {
-                    ( (PendingBeans) pending ).activateGroup();
+                    ( (PendingBeans) pending ).activate();
                 }
             }
         }
