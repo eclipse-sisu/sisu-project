@@ -14,10 +14,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -28,11 +26,19 @@ import com.google.inject.matcher.AbstractMatcher;
 final class LifecycleMatcher
     extends AbstractMatcher<TypeLiteral<?>>
 {
+    // ----------------------------------------------------------------------
+    // Implementation fields
+    // ----------------------------------------------------------------------
+
+    private final Map<Class<?>, Boolean> results = new HashMap<Class<?>, Boolean>();
+
     private final Map<Class<?>, Method> startMethods = new HashMap<Class<?>, Method>();
 
     private final Map<Class<?>, Method> stopMethods = new HashMap<Class<?>, Method>();
 
-    private final Set<Class<?>> processedTypes = new HashSet<Class<?>>();
+    // ----------------------------------------------------------------------
+    // Public methods
+    // ----------------------------------------------------------------------
 
     public boolean matches( final TypeLiteral<?> type )
     {
@@ -41,20 +47,18 @@ final class LifecycleMatcher
 
     public synchronized boolean matches( final Class<?> clazz )
     {
-        boolean hasLifecycle = false;
-        for ( Class<?> c = clazz; null != c && c != Object.class; c = c.getSuperclass() )
+        if ( null == clazz || clazz == Object.class )
         {
-            if ( startMethods.containsKey( c ) || stopMethods.containsKey( c ) )
-            {
-                return true; // safe to short-circuit; has lifecycle and already processed
-            }
-            if ( processedTypes.add( c ) )
-            {
-                // continue to process unseen hierarchy for additional methods
-                hasLifecycle = declaresLifecycleMethod( c ) || hasLifecycle;
-            }
+            return false;
         }
-        return hasLifecycle;
+        Boolean hasLifecycle = results.get( clazz );
+        if ( null == hasLifecycle )
+        {
+            final boolean declaresLifecycle = declaresLifecycleMethod( clazz );
+            hasLifecycle = Boolean.valueOf( declaresLifecycle || matches( clazz.getSuperclass() ) );
+            results.put( clazz, hasLifecycle );
+        }
+        return hasLifecycle.booleanValue();
     }
 
     public synchronized List<Method> getStartMethods( final Class<?> clazz )
@@ -66,6 +70,10 @@ final class LifecycleMatcher
     {
         return filterMethods( stopMethods, clazz );
     }
+
+    // ----------------------------------------------------------------------
+    // Implementation methods
+    // ----------------------------------------------------------------------
 
     private static boolean isStartMethod( final Method method )
     {
