@@ -25,17 +25,20 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
-import org.eclipse.sisu.bean.AbstractLifecycleManager;
-import org.eclipse.sisu.bean.BeanManager;
 import org.eclipse.sisu.bean.BeanProperty;
+import org.eclipse.sisu.bean.BeanScheduler;
 import org.eclipse.sisu.bean.PropertyBinding;
 import org.eclipse.sisu.inject.Logs;
 
+import com.google.inject.Binder;
+import com.google.inject.Module;
+
 /**
- * {@link BeanManager} that manages Plexus components requiring lifecycle management.
+ * {@link PlexusBeanManager} that manages Plexus components requiring lifecycle management.
  */
 public final class PlexusLifecycleManager
-    extends AbstractLifecycleManager
+    extends BeanScheduler
+    implements PlexusBeanManager, Module
 {
     // ----------------------------------------------------------------------
     // Constants
@@ -68,8 +71,6 @@ public final class PlexusLifecycleManager
                                    final Provider<LoggerManager> plexusLoggerManagerProvider,
                                    final Provider<?> slf4jLoggerFactoryProvider )
     {
-        super( true );
-
         this.plexusContextProvider = plexusContextProvider;
         this.plexusLoggerManagerProvider = plexusLoggerManagerProvider;
         this.slf4jLoggerFactoryProvider = slf4jLoggerFactoryProvider;
@@ -78,6 +79,11 @@ public final class PlexusLifecycleManager
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
+
+    public void configure( final Binder binder )
+    {
+        BeanScheduler.MODULE.configure( binder );
+    }
 
     public boolean manage( final Class<?> clazz )
     {

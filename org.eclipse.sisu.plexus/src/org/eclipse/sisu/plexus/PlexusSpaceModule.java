@@ -21,7 +21,6 @@ import org.codehaus.plexus.context.ContextMapAdapter;
 import org.codehaus.plexus.context.DefaultContext;
 import org.codehaus.plexus.logging.LoggerManager;
 import org.eclipse.sisu.Parameters;
-import org.eclipse.sisu.bean.BeanManager;
 import org.eclipse.sisu.space.ClassSpace;
 
 import com.google.inject.Binder;
@@ -64,11 +63,11 @@ public final class PlexusSpaceModule
         binder.bind( PlexusBeanLocator.class ).to( DefaultPlexusBeanLocator.class );
         binder.bind( PlexusContainer.class ).to( PseudoPlexusContainer.class );
 
-        final BeanManager manager = new PlexusLifecycleManager( binder.getProvider( Context.class ), //
+        final PlexusBeanManager manager = new PlexusLifecycleManager( binder.getProvider( Context.class ), //
                                                                       binder.getProvider( LoggerManager.class ), //
                                                                       slf4jLoggerFactoryProvider ); // SLF4J (optional)
 
-        binder.bind( BeanManager.class ).toInstance( manager );
+        binder.bind( PlexusBeanManager.class ).toInstance( manager );
 
         final PlexusBeanModule xmlModule = new PlexusXmlBeanModule( space, new ContextMapAdapter( context ) );
         binder.install( new PlexusBindingModule( manager, xmlModule ) );

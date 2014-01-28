@@ -15,7 +15,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.sisu.bean.BeanListener;
-import org.eclipse.sisu.bean.BeanManager;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
@@ -31,7 +30,7 @@ public final class PlexusBindingModule
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final BeanManager manager;
+    private final PlexusBeanManager manager;
 
     private final PlexusBeanModule[] modules;
 
@@ -39,13 +38,13 @@ public final class PlexusBindingModule
     // Constructors
     // ----------------------------------------------------------------------
 
-    public PlexusBindingModule( final BeanManager manager, final PlexusBeanModule... modules )
+    public PlexusBindingModule( final PlexusBeanManager manager, final PlexusBeanModule... modules )
     {
         this.manager = manager;
         this.modules = modules.clone();
     }
 
-    public PlexusBindingModule( final BeanManager manager, final Collection<? extends PlexusBeanModule> modules )
+    public PlexusBindingModule( final PlexusBeanManager manager, final Collection<? extends PlexusBeanModule> modules )
     {
         this.manager = manager;
         this.modules = modules.toArray( new PlexusBeanModule[modules.size()] );

@@ -15,7 +15,6 @@ import javax.inject.Provider;
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.bean.BeanProperty;
-import org.eclipse.sisu.bean.BeanManager;
 import org.eclipse.sisu.bean.PropertyBinder;
 import org.eclipse.sisu.bean.PropertyBinding;
 
@@ -60,7 +59,7 @@ final class PlexusPropertyBinder
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final BeanManager manager;
+    private final PlexusBeanManager manager;
 
     private final PlexusBeanMetadata metadata;
 
@@ -72,7 +71,7 @@ final class PlexusPropertyBinder
     // Constructors
     // ----------------------------------------------------------------------
 
-    PlexusPropertyBinder( final BeanManager manager, final TypeEncounter<?> encounter,
+    PlexusPropertyBinder( final PlexusBeanManager manager, final TypeEncounter<?> encounter,
                           final PlexusBeanMetadata metadata )
     {
         this.manager = manager;

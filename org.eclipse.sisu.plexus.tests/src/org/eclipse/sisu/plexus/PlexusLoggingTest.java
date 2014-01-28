@@ -17,7 +17,6 @@ import junit.framework.TestCase;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.bean.BeanProperty;
-import org.eclipse.sisu.bean.BeanManager;
 import org.eclipse.sisu.bean.PropertyBinding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +28,7 @@ public class PlexusLoggingTest
     extends TestCase
 {
     static class LoggerManager
-        implements BeanManager
+        implements PlexusBeanManager
     {
         public boolean manage( final Class<?> clazz )
         {
