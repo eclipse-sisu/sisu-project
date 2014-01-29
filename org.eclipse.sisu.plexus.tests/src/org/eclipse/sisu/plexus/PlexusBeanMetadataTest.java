@@ -18,6 +18,7 @@ import junit.framework.TestCase;
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.bean.BeanProperty;
+import org.eclipse.sisu.bean.BeanManager;
 import org.eclipse.sisu.bean.PropertyBinding;
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.space.URLClassSpace;
@@ -54,7 +55,7 @@ public class PlexusBeanMetadataTest
 
                 bindConstant().annotatedWith( Names.named( "KEY1" ) ).to( "REQUIREMENT" );
 
-                final PlexusBeanManager manager = new TestBeanManager();
+                final BeanManager manager = new TestBeanManager();
 
                 install( new PlexusBindingModule( null, new BeanSourceA() ) );
                 install( new PlexusBindingModule( manager, new BeanSourceB() ) );
@@ -67,7 +68,7 @@ public class PlexusBeanMetadataTest
     }
 
     static class TestBeanManager
-        implements PlexusBeanManager
+        implements BeanManager
     {
         public boolean manage( final Class<?> clazz )
         {

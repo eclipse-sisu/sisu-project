@@ -25,6 +25,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+import org.eclipse.sisu.bean.BeanManager;
 import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.bean.BeanScheduler;
 import org.eclipse.sisu.bean.PropertyBinding;
@@ -34,11 +35,11 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 
 /**
- * {@link PlexusBeanManager} that manages Plexus components requiring lifecycle management.
+ * {@link BeanManager} that manages Plexus components requiring lifecycle management.
  */
 public final class PlexusLifecycleManager
     extends BeanScheduler
-    implements PlexusBeanManager, Module
+    implements BeanManager, Module
 {
     // ----------------------------------------------------------------------
     // Constants

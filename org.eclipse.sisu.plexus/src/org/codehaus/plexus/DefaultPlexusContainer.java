@@ -43,6 +43,7 @@ import org.codehaus.plexus.context.DefaultContext;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.LoggerManager;
 import org.codehaus.plexus.logging.console.ConsoleLoggerManager;
+import org.eclipse.sisu.bean.BeanManager;
 import org.eclipse.sisu.inject.DefaultBeanLocator;
 import org.eclipse.sisu.inject.DefaultRankingFunction;
 import org.eclipse.sisu.inject.DeferredClass;
@@ -57,7 +58,6 @@ import org.eclipse.sisu.plexus.PlexusAnnotatedBeanModule;
 import org.eclipse.sisu.plexus.PlexusBean;
 import org.eclipse.sisu.plexus.PlexusBeanConverter;
 import org.eclipse.sisu.plexus.PlexusBeanLocator;
-import org.eclipse.sisu.plexus.PlexusBeanManager;
 import org.eclipse.sisu.plexus.PlexusBeanModule;
 import org.eclipse.sisu.plexus.PlexusBindingModule;
 import org.eclipse.sisu.plexus.PlexusDateTypeConverter;
@@ -133,7 +133,7 @@ public final class DefaultPlexusContainer
 
     final PlexusBeanLocator plexusBeanLocator;
 
-    final PlexusBeanManager plexusBeanManager;
+    final BeanManager plexusBeanManager;
 
     private final String componentVisibility;
 
@@ -827,7 +827,7 @@ public final class DefaultPlexusContainer
 
             binder.bind( MutableBeanLocator.class ).toInstance( qualifiedBeanLocator );
             binder.bind( PlexusBeanLocator.class ).toInstance( plexusBeanLocator );
-            binder.bind( PlexusBeanManager.class ).toInstance( plexusBeanManager );
+            binder.bind( BeanManager.class ).toInstance( plexusBeanManager );
 
             binder.bind( PlexusContainer.class ).to( MutablePlexusContainer.class );
             binder.bind( MutablePlexusContainer.class ).to( DefaultPlexusContainer.class );

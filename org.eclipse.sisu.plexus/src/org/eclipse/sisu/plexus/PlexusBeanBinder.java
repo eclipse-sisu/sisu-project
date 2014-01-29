@@ -13,6 +13,7 @@ package org.eclipse.sisu.plexus;
 import java.util.List;
 
 import org.eclipse.sisu.bean.BeanBinder;
+import org.eclipse.sisu.bean.BeanManager;
 import org.eclipse.sisu.bean.PropertyBinder;
 
 import com.google.inject.TypeLiteral;
@@ -29,7 +30,7 @@ final class PlexusBeanBinder
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final PlexusBeanManager manager;
+    private final BeanManager manager;
 
     private final PlexusBeanSource[] sources;
 
@@ -37,7 +38,7 @@ final class PlexusBeanBinder
     // Constructors
     // ----------------------------------------------------------------------
 
-    PlexusBeanBinder( final PlexusBeanManager manager, final List<PlexusBeanSource> sources )
+    PlexusBeanBinder( final BeanManager manager, final List<PlexusBeanSource> sources )
     {
         this.manager = manager;
         this.sources = sources.toArray( new PlexusBeanSource[sources.size()] );
