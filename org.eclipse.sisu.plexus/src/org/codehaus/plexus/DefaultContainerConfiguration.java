@@ -44,6 +44,8 @@ public final class DefaultContainerConfiguration
 
     private Context contextComponent;
 
+    private boolean jsr250Lifecycle;
+
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
@@ -154,5 +156,16 @@ public final class DefaultContainerConfiguration
     public Context getContextComponent()
     {
         return contextComponent;
+    }
+
+    public ContainerConfiguration setJSR250Lifecycle( final boolean jsr250Lifecycle )
+    {
+        this.jsr250Lifecycle = jsr250Lifecycle;
+        return this;
+    }
+
+    public boolean getJSR250Lifecycle()
+    {
+        return jsr250Lifecycle;
     }
 }

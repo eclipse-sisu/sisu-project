@@ -44,6 +44,7 @@ import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.LoggerManager;
 import org.codehaus.plexus.logging.console.ConsoleLoggerManager;
 import org.eclipse.sisu.bean.BeanManager;
+import org.eclipse.sisu.bean.LifecycleManager;
 import org.eclipse.sisu.inject.DefaultBeanLocator;
 import org.eclipse.sisu.inject.DefaultRankingFunction;
 import org.eclipse.sisu.inject.DeferredClass;
@@ -185,8 +186,9 @@ public final class DefaultPlexusContainer
         scanning = parseScanningOption( configuration.getClassPathScanning() );
 
         plexusBeanLocator = new DefaultPlexusBeanLocator( qualifiedBeanLocator, componentVisibility );
+        final BeanManager jsr250Lifecycle = configuration.getJSR250Lifecycle() ? new LifecycleManager() : null;
         plexusBeanManager = new PlexusLifecycleManager( Providers.of( context ), loggerManagerProvider, //
-                                                        new SLF4JLoggerFactoryProvider() ); // SLF4J (optional)
+                                                        new SLF4JLoggerFactoryProvider(), jsr250Lifecycle );
 
         realmIds.add( containerRealm.getId() );
         setLookupRealm( containerRealm );

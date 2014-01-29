@@ -64,17 +64,22 @@ public final class PlexusLifecycleManager
 
     private final Provider<?> slf4jLoggerFactoryProvider;
 
+    private final BeanManager delegate;
+
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
     public PlexusLifecycleManager( final Provider<Context> plexusContextProvider,
                                    final Provider<LoggerManager> plexusLoggerManagerProvider,
-                                   final Provider<?> slf4jLoggerFactoryProvider )
+                                   final Provider<?> slf4jLoggerFactoryProvider, //
+                                   final BeanManager delegate )
     {
         this.plexusContextProvider = plexusContextProvider;
         this.plexusLoggerManagerProvider = plexusLoggerManagerProvider;
         this.slf4jLoggerFactoryProvider = slf4jLoggerFactoryProvider;
+
+        this.delegate = delegate;
     }
 
     // ----------------------------------------------------------------------
@@ -95,7 +100,7 @@ public final class PlexusLifecycleManager
                 return true;
             }
         }
-        return false;
+        return null != delegate ? delegate.manage( clazz ) : false;
     }
 
     @SuppressWarnings( "rawtypes" )
@@ -124,7 +129,7 @@ public final class PlexusLifecycleManager
                 }
             };
         }
-        return null;
+        return null != delegate ? delegate.manage( property ) : null;
     }
 
     public boolean manage( final Object bean )
@@ -141,7 +146,7 @@ public final class PlexusLifecycleManager
         {
             schedule( bean );
         }
-        return true;
+        return null != delegate ? delegate.manage( bean ) : true;
     }
 
     public boolean unmanage( final Object bean )
@@ -154,7 +159,7 @@ public final class PlexusLifecycleManager
         {
             dispose( (Disposable) bean );
         }
-        return true;
+        return null != delegate ? delegate.unmanage( bean ) : true;
     }
 
     public boolean unmanage()
@@ -167,7 +172,7 @@ public final class PlexusLifecycleManager
         {
             dispose( bean );
         }
-        return true;
+        return null != delegate ? delegate.unmanage() : true;
     }
 
     // ----------------------------------------------------------------------

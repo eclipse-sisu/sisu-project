@@ -58,4 +58,8 @@ public interface ContainerConfiguration
     ContainerConfiguration setContextComponent( Context context );
 
     Context getContextComponent();
+
+    ContainerConfiguration setJSR250Lifecycle( boolean on );
+
+    boolean getJSR250Lifecycle();
 }

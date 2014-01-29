@@ -66,7 +66,7 @@ public final class PlexusSpaceModule
 
         final BeanManager manager = new PlexusLifecycleManager( binder.getProvider( Context.class ), //
                                                                 binder.getProvider( LoggerManager.class ), //
-                                                                slf4jLoggerFactoryProvider ); // SLF4J (optional)
+                                                                slf4jLoggerFactoryProvider, null );
 
         binder.bind( BeanManager.class ).toInstance( manager );
 
