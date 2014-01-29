@@ -12,93 +12,125 @@ package org.eclipse.sisu.bean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-import com.google.inject.spi.InjectionListener;
-
-final class LifecycleManager
+public final class LifecycleManager
     extends BeanScheduler
-    implements InjectionListener<Object>, BeanDisposer
+    implements BeanManager
 {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final BeanStarter starter;
+    private final LifecycleBuilder builder = new LifecycleBuilder();
 
-    private final BeanStopper stopper;
+    private final Map<Class<?>, BeanLifecycle> lifecycles = new ConcurrentHashMap<Class<?>, BeanLifecycle>();
 
-    private List<Object> stoppableBeans;
-
-    // ----------------------------------------------------------------------
-    // Constructors
-    // ----------------------------------------------------------------------
-
-    LifecycleManager( final BeanStarter starter, final BeanStopper stopper )
-    {
-        this.starter = starter;
-        this.stopper = stopper;
-
-        if ( null != stopper )
-        {
-            stoppableBeans = new ArrayList<Object>();
-        }
-    }
+    private final List<Object> stoppableBeans = new ArrayList<Object>();
 
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
 
-    public void afterInjection( final Object bean )
+    public boolean manage( final Class<?> clazz )
     {
-        if ( null != stopper )
+        return hasLifecycle( clazz );
+    }
+
+    public PropertyBinding manage( final BeanProperty<?> property )
+    {
+        return null;
+    }
+
+    public boolean manage( final Object bean )
+    {
+        final BeanLifecycle lifecycle = lifecycleFor( bean );
+        if ( lifecycle.isStoppable() )
         {
             pushStoppable( bean );
         }
-        if ( null != starter )
+        if ( lifecycle.isStartable() )
         {
             schedule( bean );
         }
+        return true;
     }
 
-    @Override
-    public void activate( final Object bean )
-    {
-        starter.start( bean );
-    }
-
-    public void dispose( final Object bean )
+    public boolean unmanage( final Object bean )
     {
         if ( removeStoppable( bean ) )
         {
-            stopper.stop( bean );
+            lifecycleFor( bean ).stop( bean );
         }
+        return true;
     }
 
-    public void dispose()
+    public boolean unmanage()
     {
         for ( Object bean; ( bean = popStoppable() ) != null; )
         {
-            stopper.stop( bean );
+            lifecycleFor( bean ).stop( bean );
         }
+        return true;
+    }
+
+    // ----------------------------------------------------------------------
+    // Customized methods
+    // ----------------------------------------------------------------------
+
+    @Override
+    protected void activate( final Object bean )
+    {
+        lifecycleFor( bean ).start( bean );
     }
 
     // ----------------------------------------------------------------------
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    private synchronized void pushStoppable( final Object bean )
+    private boolean hasLifecycle( final Class<?> clazz )
     {
-        stoppableBeans.add( bean );
+        if ( !lifecycles.containsKey( clazz ) )
+        {
+            lifecycles.put( clazz, builder.build( clazz ) );
+        }
+        return lifecycles.get( clazz ) != null;
     }
 
-    private synchronized boolean removeStoppable( final Object bean )
+    private BeanLifecycle lifecycleFor( final Object bean )
     {
-        return stoppableBeans.remove( bean );
+        return lifecycleFor( null != bean ? bean.getClass() : null );
     }
 
-    private synchronized Object popStoppable()
+    private BeanLifecycle lifecycleFor( final Class<?> clazz )
     {
-        final int size = stoppableBeans.size();
-        return size > 0 ? stoppableBeans.remove( size - 1 ) : null;
+        final BeanLifecycle lifecycle = lifecycles.get( clazz );
+        return null != lifecycle ? lifecycle : BeanLifecycle.NO_OP;
+    }
+
+    private boolean pushStoppable( final Object bean )
+    {
+        synchronized ( stoppableBeans )
+        {
+            return stoppableBeans.add( bean );
+        }
+    }
+
+    private boolean removeStoppable( final Object bean )
+    {
+        synchronized ( stoppableBeans )
+        {
+            return stoppableBeans.remove( bean );
+        }
+    }
+
+    private Object popStoppable()
+    {
+        synchronized ( stoppableBeans )
+        {
+            final int size = stoppableBeans.size();
+            return size > 0 ? stoppableBeans.remove( size - 1 ) : null;
+        }
     }
 }

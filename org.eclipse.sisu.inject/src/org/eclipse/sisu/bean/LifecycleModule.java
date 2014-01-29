@@ -10,27 +10,47 @@
  *******************************************************************************/
 package org.eclipse.sisu.bean;
 
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.TypeLiteral;
+import com.google.inject.matcher.AbstractMatcher;
+import com.google.inject.matcher.Matcher;
+import com.google.inject.spi.InjectionListener;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 
 public final class LifecycleModule
-    implements Module, TypeListener
+    implements Module
 {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final LifecycleMatcher matcher = new LifecycleMatcher();
+    private final Matcher<TypeLiteral<?>> matcher = new AbstractMatcher<TypeLiteral<?>>()
+    {
+        public boolean matches( final TypeLiteral<?> type )
+        {
+            return manager.manage( type.getRawType() );
+        }
+    };
 
-    private final Disposer disposer = new Disposer();
+    private final TypeListener typeListener = new TypeListener()
+    {
+        private final InjectionListener<Object> listener = new InjectionListener<Object>()
+        {
+            public void afterInjection( final Object bean )
+            {
+                manager.manage( bean );
+            }
+        };
+
+        public <B> void hear( final TypeLiteral<B> type, final TypeEncounter<B> encounter )
+        {
+            encounter.register( listener );
+        }
+    };
+
+    final LifecycleManager manager = new LifecycleManager();
 
     // ----------------------------------------------------------------------
     // Public methods
@@ -39,61 +59,7 @@ public final class LifecycleModule
     public void configure( final Binder binder )
     {
         BeanScheduler.MODULE.configure( binder );
-        binder.bind( BeanDisposer.class ).toInstance( disposer );
-        binder.bindListener( matcher, this );
-    }
-
-    public <B> void hear( final TypeLiteral<B> type, final TypeEncounter<B> encounter )
-    {
-        final Class<?> clazz = type.getRawType();
-        final LifecycleManager manager = manage( clazz );
-        disposer.register( clazz, manager );
-        encounter.register( manager );
-    }
-
-    public LifecycleManager manage( final Class<?> clazz )
-    {
-        final List<Method> startMethods = matcher.getStartMethods( clazz );
-        final List<Method> stopMethods = matcher.getStopMethods( clazz );
-
-        final BeanStarter starter = startMethods.isEmpty() ? null : new BeanStarter( startMethods );
-        final BeanStopper stopper = stopMethods.isEmpty() ? null : new BeanStopper( stopMethods );
-
-        return new LifecycleManager( starter, stopper );
-    }
-
-    // ----------------------------------------------------------------------
-    // Implementation types
-    // ----------------------------------------------------------------------
-
-    static final class Disposer
-        implements BeanDisposer
-    {
-        private final Map<Class<?>, LifecycleManager> managers = new ConcurrentHashMap<Class<?>, LifecycleManager>();
-
-        public void dispose( final Object bean )
-        {
-            if ( null != bean )
-            {
-                final LifecycleManager m = managers.get( bean.getClass() );
-                if ( null != m )
-                {
-                    m.dispose( bean );
-                }
-            }
-        }
-
-        public void dispose()
-        {
-            for ( final LifecycleManager m : managers.values() )
-            {
-                m.dispose();
-            }
-        }
-
-        void register( final Class<?> clazz, final LifecycleManager manager )
-        {
-            managers.put( clazz, manager );
-        }
+        binder.bind( BeanManager.class ).toInstance( manager );
+        binder.bindListener( matcher, typeListener );
     }
 }

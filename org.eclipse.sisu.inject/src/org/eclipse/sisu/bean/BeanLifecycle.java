@@ -19,22 +19,33 @@ import java.util.List;
 
 import org.eclipse.sisu.inject.Logs;
 
-final class BeanStarter
+final class BeanLifecycle
     implements PrivilegedAction<Void>
 {
+    // ----------------------------------------------------------------------
+    // Constants
+    // ----------------------------------------------------------------------
+
+    private static final Method[] NO_METHODS = {};
+
+    static final BeanLifecycle NO_OP = new BeanLifecycle( null, null );
+
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final Method[] methods;
+    private final Method[] startMethods;
+
+    private final Method[] stopMethods;
 
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
-    BeanStarter( final List<Method> methods )
+    BeanLifecycle( final List<Method> startMethods, final List<Method> stopMethods )
     {
-        this.methods = methods.toArray( new Method[methods.size()] );
+        this.startMethods = toArray( startMethods );
+        this.stopMethods = toArray( stopMethods );
 
         // ensure we can invoke all methods
         AccessController.doPrivileged( this );
@@ -44,14 +55,24 @@ final class BeanStarter
     // Public methods
     // ----------------------------------------------------------------------
 
+    public boolean isStartable()
+    {
+        return startMethods.length > 0;
+    }
+
+    public boolean isStoppable()
+    {
+        return stopMethods.length > 0;
+    }
+
     public void start( final Object bean )
     {
         int i = 0;
         try
         {
-            for ( ; i < methods.length; i++ )
+            for ( ; i < startMethods.length; i++ )
             {
-                methods[i].invoke( bean );
+                startMethods[i].invoke( bean );
             }
         }
         catch ( final Throwable e )
@@ -60,11 +81,36 @@ final class BeanStarter
             Logs.catchThrowable( cause );
             try
             {
-                Logs.warn( "Error starting: {}", methods[i], cause );
+                Logs.warn( "Error starting: {}", startMethods[i], cause );
             }
             finally
             {
                 Logs.throwUnchecked( cause );
+            }
+        }
+    }
+
+    @SuppressWarnings( "finally" )
+    public void stop( final Object bean )
+    {
+        for ( int i = stopMethods.length - 1; i >= 0; i-- )
+        {
+            try
+            {
+                stopMethods[i].invoke( bean );
+            }
+            catch ( final Throwable e )
+            {
+                final Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
+                Logs.catchThrowable( cause );
+                try
+                {
+                    Logs.warn( "Problem stopping: {}", stopMethods[i], cause );
+                }
+                finally
+                {
+                    continue; // ignore any logging exceptions and continue stopping
+                }
             }
         }
     }
@@ -75,7 +121,18 @@ final class BeanStarter
 
     public Void run()
     {
-        AccessibleObject.setAccessible( methods, true );
+        AccessibleObject.setAccessible( startMethods, true );
+        AccessibleObject.setAccessible( stopMethods, true );
+
         return null;
+    }
+
+    // ----------------------------------------------------------------------
+    // Implementation methods
+    // ----------------------------------------------------------------------
+
+    private static Method[] toArray( final List<Method> methods )
+    {
+        return null != methods && !methods.isEmpty() ? methods.toArray( new Method[methods.size()] ) : NO_METHODS;
     }
 }

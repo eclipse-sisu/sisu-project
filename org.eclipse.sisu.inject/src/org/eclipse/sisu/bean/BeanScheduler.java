@@ -73,12 +73,12 @@ public abstract class BeanScheduler
             final Object pending = holder[0];
             if ( pending == PLACEHOLDER )
             {
-                holder[0] = new PendingBeans( bean );
+                holder[0] = new Pending( bean );
                 return; // will be activated later
             }
-            else if ( pending instanceof PendingBeans )
+            else if ( pending instanceof Pending )
             {
-                ( (PendingBeans) pending ).add( bean );
+                ( (Pending) pending ).add( bean );
                 return; // will be activated later
             }
         }
@@ -110,10 +110,10 @@ public abstract class BeanScheduler
     // ----------------------------------------------------------------------
 
     @SuppressWarnings( "serial" )
-    private final class PendingBeans
+    private final class Pending
         extends ArrayList<Object>
     {
-        PendingBeans( final Object bean )
+        Pending( final Object bean )
         {
             add( bean );
         }
@@ -146,9 +146,9 @@ public abstract class BeanScheduler
                     pending = holder[0];
                     holder[0] = null;
                 }
-                if ( pending instanceof PendingBeans )
+                if ( pending instanceof Pending )
                 {
-                    ( (PendingBeans) pending ).activate();
+                    ( (Pending) pending ).activate();
                 }
             }
         }
