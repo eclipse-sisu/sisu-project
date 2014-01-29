@@ -67,10 +67,10 @@ final class BeanLifecycle
 
     public void start( final Object bean )
     {
-        int i = 0;
+        int i = startMethods.length - 1;
         try
         {
-            for ( ; i < startMethods.length; i++ )
+            for ( ; i >= 0; i-- )
             {
                 startMethods[i].invoke( bean );
             }
@@ -93,7 +93,7 @@ final class BeanLifecycle
     @SuppressWarnings( "finally" )
     public void stop( final Object bean )
     {
-        for ( int i = stopMethods.length - 1; i >= 0; i-- )
+        for ( int i = 0; i < stopMethods.length; i++ )
         {
             try
             {

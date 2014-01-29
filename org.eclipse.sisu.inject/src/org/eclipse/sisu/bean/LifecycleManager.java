@@ -95,7 +95,7 @@ public final class LifecycleManager
         {
             lifecycles.put( clazz, builder.build( clazz ) );
         }
-        return lifecycles.get( clazz ) != null;
+        return lifecycles.get( clazz ) != BeanLifecycle.NO_OP;
     }
 
     private BeanLifecycle lifecycleFor( final Object bean )

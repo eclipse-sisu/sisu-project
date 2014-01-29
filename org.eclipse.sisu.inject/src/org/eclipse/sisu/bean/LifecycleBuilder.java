@@ -41,7 +41,7 @@ final class LifecycleBuilder
             {
                 hasLifecycle = addLifecycleMethods( c ) || hasLifecycle;
             }
-            return hasLifecycle ? new BeanLifecycle( startMethods, stopMethods ) : null;
+            return hasLifecycle ? new BeanLifecycle( startMethods, stopMethods ) : BeanLifecycle.NO_OP;
         }
         finally
         {
@@ -59,7 +59,7 @@ final class LifecycleBuilder
         boolean foundStartMethod = false, foundStopMethod = false;
         for ( final Method m : clazz.getDeclaredMethods() )
         {
-            if ( m.getReturnType() == Void.class )
+            if ( m.getReturnType() == void.class )
             {
                 final int modifiers = m.getModifiers();
                 if ( Modifier.isStatic( modifiers ) || Modifier.isAbstract( modifiers ) || m.isSynthetic() )
