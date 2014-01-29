@@ -28,6 +28,8 @@ final class LifecycleBuilder
 
     private final List<Method> stopMethods = new ArrayList<Method>();
 
+    private final List<Class<?>> hierarchy = new ArrayList<Class<?>>();
+
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
@@ -36,17 +38,21 @@ final class LifecycleBuilder
     {
         try
         {
-            boolean hasLifecycle = false;
             for ( Class<?> c = clazz; null != c && c != Object.class; c = c.getSuperclass() )
             {
-                hasLifecycle = addLifecycleMethods( c ) || hasLifecycle;
+                addLifecycleMethods( c );
             }
-            return hasLifecycle ? new BeanLifecycle( startMethods, stopMethods ) : BeanLifecycle.NO_OP;
+            if ( startMethods.isEmpty() && stopMethods.isEmpty() )
+            {
+                return BeanLifecycle.NO_OP;
+            }
+            return new BeanLifecycle( startMethods, stopMethods );
         }
         finally
         {
             startMethods.clear();
             stopMethods.clear();
+            hierarchy.clear();
         }
     }
 
@@ -54,34 +60,75 @@ final class LifecycleBuilder
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    private boolean addLifecycleMethods( final Class<?> clazz )
+    private void addLifecycleMethods( final Class<?> clazz )
     {
         boolean foundStartMethod = false, foundStopMethod = false;
         for ( final Method m : clazz.getDeclaredMethods() )
         {
-            if ( m.getReturnType() == void.class )
+            if ( isCandidateMethod( m ) )
             {
-                final int modifiers = m.getModifiers();
-                if ( Modifier.isStatic( modifiers ) || Modifier.isAbstract( modifiers ) || m.isSynthetic() )
+                if ( m.isAnnotationPresent( PostConstruct.class ) )
                 {
-                    continue; // lifecycle methods must be non-static and concrete
-                }
-                else if ( m.isAnnotationPresent( PostConstruct.class ) )
-                {
-                    startMethods.add( m );
                     foundStartMethod = true;
+                    if ( !isOverridden( m ) )
+                    {
+                        startMethods.add( m );
+                    }
                 }
                 else if ( m.isAnnotationPresent( PreDestroy.class ) )
                 {
-                    stopMethods.add( m );
                     foundStopMethod = true;
+                    if ( !isOverridden( m ) )
+                    {
+                        stopMethods.add( m );
+                    }
                 }
                 if ( foundStartMethod && foundStopMethod )
                 {
-                    break; // only one start and/or stop method per declaring class
+                    break; // stop once we've seen both annotations
                 }
             }
         }
-        return foundStartMethod || foundStopMethod;
+        hierarchy.add( clazz );
+    }
+
+    private boolean isOverridden( final Method method )
+    {
+        final String name = method.getName();
+        for ( int i = hierarchy.size() - 1; i >= 0; i-- )
+        {
+            for ( final Method m : hierarchy.get( i ).getDeclaredMethods() )
+            {
+                if ( name.equals( m.getName() ) && isCandidateMethod( m ) )
+                {
+                    final int modifiers = m.getModifiers();
+                    if ( Modifier.isPublic( modifiers ) || Modifier.isProtected( modifiers )
+                        || ( !Modifier.isPrivate( modifiers ) && samePackage( method, m ) ) )
+                    {
+                        return true;
+                    }
+                    break;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean isCandidateMethod( final Method method )
+    {
+        if ( method.getReturnType() == void.class )
+        {
+            final int modifiers = method.getModifiers();
+            if ( !( Modifier.isStatic( modifiers ) || Modifier.isAbstract( modifiers ) || method.isSynthetic() ) )
+            {
+                return method.getParameterTypes().length == 0;
+            }
+        }
+        return false;
+    }
+
+    private static boolean samePackage( final Method lhs, final Method rhs )
+    {
+        return lhs.getDeclaringClass().getPackage().equals( rhs.getDeclaringClass().getPackage() );
     }
 }
