@@ -83,8 +83,7 @@ final class MildElements<T>
      */
     private void compact()
     {
-        Reference<? extends T> ref;
-        while ( ( ref = queue.poll() ) != null )
+        for ( Reference<? extends T> ref; ( ref = queue.poll() ) != null; )
         {
             evict( ref );
         }

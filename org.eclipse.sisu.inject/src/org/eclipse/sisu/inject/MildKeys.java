@@ -190,8 +190,7 @@ class MildKeys<K, V>
      */
     final void compact()
     {
-        Reference<? extends K> ref;
-        while ( ( ref = queue.poll() ) != null )
+        for ( Reference<? extends K> ref; ( ref = queue.poll() ) != null; )
         {
             map.remove( ref );
         }

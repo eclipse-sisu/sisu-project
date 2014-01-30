@@ -131,7 +131,7 @@ public class URLClassSpace
         try
         {
             final Enumeration<URL> resources = loader.getResources( name );
-            return null != resources ? resources : NO_ENTRIES; // NOSONAR
+            return null != resources ? resources : NO_ENTRIES; // NOPMD
         }
         catch ( final IOException e )
         {

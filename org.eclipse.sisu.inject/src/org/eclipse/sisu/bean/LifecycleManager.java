@@ -45,14 +45,17 @@ public final class LifecycleManager
 
     public boolean manage( final Object bean )
     {
-        final BeanLifecycle lifecycle = lifecycleFor( bean );
-        if ( lifecycle.isStoppable() )
+        if ( null != bean )
         {
-            pushStoppable( bean );
-        }
-        if ( lifecycle.isStartable() )
-        {
-            schedule( bean );
+            final BeanLifecycle lifecycle = lifecycleFor( bean.getClass() );
+            if ( lifecycle.isStoppable() )
+            {
+                pushStoppable( bean );
+            }
+            if ( lifecycle.isStartable() )
+            {
+                schedule( bean );
+            }
         }
         return true;
     }
@@ -61,7 +64,7 @@ public final class LifecycleManager
     {
         if ( removeStoppable( bean ) )
         {
-            lifecycleFor( bean ).stop( bean );
+            lifecycleFor( bean.getClass() ).stop( bean );
         }
         return true;
     }
@@ -70,7 +73,7 @@ public final class LifecycleManager
     {
         for ( Object bean; ( bean = popStoppable() ) != null; )
         {
-            lifecycleFor( bean ).stop( bean );
+            lifecycleFor( bean.getClass() ).stop( bean );
         }
         return true;
     }
@@ -82,7 +85,7 @@ public final class LifecycleManager
     @Override
     protected void activate( final Object bean )
     {
-        lifecycleFor( bean ).start( bean );
+        lifecycleFor( bean.getClass() ).start( bean );
     }
 
     // ----------------------------------------------------------------------
@@ -96,11 +99,6 @@ public final class LifecycleManager
             lifecycles.put( clazz, builder.build( clazz ) );
         }
         return lifecycles.get( clazz ) != BeanLifecycle.NO_OP;
-    }
-
-    private BeanLifecycle lifecycleFor( final Object bean )
-    {
-        return lifecycleFor( null != bean ? bean.getClass() : null );
     }
 
     private BeanLifecycle lifecycleFor( final Class<?> clazz )

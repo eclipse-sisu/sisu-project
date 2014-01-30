@@ -192,8 +192,7 @@ class MildValues<K, V>
      */
     void compact()
     {
-        Reference<? extends V> ref;
-        while ( ( ref = queue.poll() ) != null )
+        for ( Reference<? extends V> ref; ( ref = queue.poll() ) != null; )
         {
             // only remove this specific key-value mapping
             final Object key = ( (InverseMapping) ref ).key();

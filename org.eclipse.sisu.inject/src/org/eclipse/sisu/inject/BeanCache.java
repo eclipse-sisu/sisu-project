@@ -122,7 +122,7 @@ final class BeanCache<Q extends Annotation, T>
                 }
             }
         }
-        return readCache; // NOSONAR
+        return readCache; // NOPMD see 'happens-before' condition above
     }
 
     /**

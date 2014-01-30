@@ -75,7 +75,7 @@ final class BeanLifecycle
                 startMethods[i].invoke( bean );
             }
         }
-        catch ( final Throwable e )
+        catch ( final Throwable e ) // NOPMD see Logs.catchThrowable
         {
             final Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
             Logs.catchThrowable( cause );
@@ -99,7 +99,7 @@ final class BeanLifecycle
             {
                 stopMethods[i].invoke( bean );
             }
-            catch ( final Throwable e )
+            catch ( final Throwable e ) // NOPMD see Logs.catchThrowable
             {
                 final Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
                 Logs.catchThrowable( cause );

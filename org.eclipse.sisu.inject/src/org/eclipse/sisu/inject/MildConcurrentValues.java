@@ -50,8 +50,7 @@ final class MildConcurrentValues<K, V>
         /*
          * We must either add our value to the map, or return a non-null existing value.
          */
-        Reference<V> oldRef;
-        while ( ( oldRef = concurrentMap.putIfAbsent( key, ref ) ) != null )
+        for ( Reference<V> oldRef; ( oldRef = concurrentMap.putIfAbsent( key, ref ) ) != null; )
         {
             final V oldValue = oldRef.get();
             if ( null != oldValue )
@@ -80,7 +79,7 @@ final class MildConcurrentValues<K, V>
 
     public boolean remove( final Object key, final Object value )
     {
-        compact();
+        compact(); // NOPMD ignore nullable false-positive
 
         return concurrentMap.remove( key, tempValue( value ) );
     }
@@ -92,8 +91,7 @@ final class MildConcurrentValues<K, V>
     @Override
     void compact()
     {
-        Reference<? extends V> ref;
-        while ( ( ref = queue.poll() ) != null )
+        for ( Reference<? extends V> ref; ( ref = queue.poll() ) != null; )
         {
             // only remove this specific key-value mapping; thread-safe
             concurrentMap.remove( ( (InverseMapping) ref ).key(), ref );
