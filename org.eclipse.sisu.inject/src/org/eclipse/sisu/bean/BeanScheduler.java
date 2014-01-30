@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
+import com.google.inject.matcher.Matcher;
 import com.google.inject.matcher.Matchers;
 
 public abstract class BeanScheduler
@@ -27,7 +28,14 @@ public abstract class BeanScheduler
         Object activator;
         try
         {
+            // extra check in case we have both old and new versions of guice overlapping on the runtime classpath
+            Binder.class.getMethod( "bindListener", Matcher.class, com.google.inject.spi.ProvisionListener[].class );
+
             activator = new Activator();
+        }
+        catch ( final Exception e )
+        {
+            activator = null;
         }
         catch ( final LinkageError e )
         {
