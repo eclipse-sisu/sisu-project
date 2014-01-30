@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * {@link BeanManager} that manages JSR250 beans and schedules lifecycle events.
+ */
 public final class LifecycleManager
     extends BeanScheduler
     implements BeanManager
@@ -35,12 +38,12 @@ public final class LifecycleManager
 
     public boolean manage( final Class<?> clazz )
     {
-        return hasLifecycle( clazz );
+        return buildLifecycle( clazz );
     }
 
     public PropertyBinding manage( final BeanProperty<?> property )
     {
-        return null;
+        return null; // no custom property bindings
     }
 
     public boolean manage( final Object bean )
@@ -92,7 +95,13 @@ public final class LifecycleManager
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    private boolean hasLifecycle( final Class<?> clazz )
+    /**
+     * Attempts to build a JSR250 lifecycle for the given bean type.
+     * 
+     * @param clazz The bean type
+     * @return {@code true} if the bean defines a lifecycle; otherwise {@code false}
+     */
+    private boolean buildLifecycle( final Class<?> clazz )
     {
         if ( !lifecycles.containsKey( clazz ) )
         {
@@ -101,6 +110,12 @@ public final class LifecycleManager
         return lifecycles.get( clazz ) != BeanLifecycle.NO_OP;
     }
 
+    /**
+     * Looks up the JSR250 lifecycle built for the given bean type.
+     * 
+     * @param clazz The bean type
+     * @return Lifecycle for the bean
+     */
     private BeanLifecycle lifecycleFor( final Class<?> clazz )
     {
         final BeanLifecycle lifecycle = lifecycles.get( clazz );

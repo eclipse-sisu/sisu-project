@@ -18,6 +18,9 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+/**
+ * Builds {@link BeanLifecycle}s by searching class hierarchies for JSR250 annotations.
+ */
 final class LifecycleBuilder
 {
     // ----------------------------------------------------------------------
@@ -34,10 +37,17 @@ final class LifecycleBuilder
     // Public methods
     // ----------------------------------------------------------------------
 
+    /**
+     * Builds a new {@link BeanLifecycle} for the given bean type.
+     * 
+     * @param clazz The bean type
+     * @return Lifecycle for the bean
+     */
     public synchronized BeanLifecycle build( final Class<?> clazz )
     {
         try
         {
+            // process subclass methods before superclass
             for ( Class<?> c = clazz; null != c && c != Object.class; c = c.getSuperclass() )
             {
                 addLifecycleMethods( c );
@@ -60,6 +70,12 @@ final class LifecycleBuilder
     // Implementation methods
     // ----------------------------------------------------------------------
 
+    /**
+     * Adds any declared {@link PostConstruct} and {@link PreDestroy} methods to the current lifecycle.<br>
+     * Ignores methods overridden in subclasses, as well as multiple declarations of each annotation.
+     * 
+     * @param clazz
+     */
     private void addLifecycleMethods( final Class<?> clazz )
     {
         boolean foundStartMethod = false, foundStopMethod = false;
@@ -92,13 +108,21 @@ final class LifecycleBuilder
         hierarchy.add( clazz );
     }
 
+    /**
+     * Tests to see if the given method is overridden in the subclass hierarchy.
+     * 
+     * @param method The method to test
+     * @return {@code true} if the method was overridden; otherwise {@code false}
+     */
     private boolean isOverridden( final Method method )
     {
+        // walk back down the cached hierarchy
         final String name = method.getName();
         for ( int i = hierarchy.size() - 1; i >= 0; i-- )
         {
             for ( final Method m : hierarchy.get( i ).getDeclaredMethods() )
             {
+                // method with same name, void return, and no parameters
                 if ( name.equals( m.getName() ) && isCandidateMethod( m ) )
                 {
                     final int modifiers = m.getModifiers();
@@ -107,15 +131,22 @@ final class LifecycleBuilder
                     {
                         return true;
                     }
-                    break;
+                    break; // can't have two candidates in same class, so proceed to subclass
                 }
             }
         }
         return false;
     }
 
+    /**
+     * Tests to see if this method is a lifecycle candidate: void return, not static/abstract, no parameters.
+     * 
+     * @param method The method to test
+     * @return {@code true} if the method is acceptable; otherwise {@code false}
+     */
     private static boolean isCandidateMethod( final Method method )
     {
+        // order tests by performance/result ratio
         if ( method.getReturnType() == void.class )
         {
             final int modifiers = method.getModifiers();
@@ -127,6 +158,9 @@ final class LifecycleBuilder
         return false;
     }
 
+    /**
+     * @return {@code true} if the methods were declared in the same package; otherwise {@code false}
+     */
     private static boolean samePackage( final Method lhs, final Method rhs )
     {
         return lhs.getDeclaringClass().getPackage().equals( rhs.getDeclaringClass().getPackage() );

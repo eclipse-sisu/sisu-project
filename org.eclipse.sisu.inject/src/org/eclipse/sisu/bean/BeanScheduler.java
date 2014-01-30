@@ -17,6 +17,10 @@ import com.google.inject.Module;
 import com.google.inject.matcher.Matcher;
 import com.google.inject.matcher.Matchers;
 
+/**
+ * Schedules safe activation of beans even when cyclic dependencies are involved.<br>
+ * Takes advantage of the new Guice ProvisionListener SPI, if available at runtime.
+ */
 public abstract class BeanScheduler
 {
     // ----------------------------------------------------------------------
@@ -73,6 +77,11 @@ public abstract class BeanScheduler
     // Public methods
     // ----------------------------------------------------------------------
 
+    /**
+     * Schedules activation of the given bean at the next safe activation point.
+     * 
+     * @param bean The managed bean
+     */
     public final void schedule( final Object bean )
     {
         if ( null != ACTIVATOR )
@@ -90,19 +99,27 @@ public abstract class BeanScheduler
                 return; // will be activated later
             }
         }
-        activate( bean );
+        activate( bean ); // no ProvisionListener, so activate immediately
     }
 
     // ----------------------------------------------------------------------
     // Customizable methods
     // ----------------------------------------------------------------------
 
+    /**
+     * Customized activation of the given bean.
+     * 
+     * @param bean The bean to activate
+     */
     protected abstract void activate( final Object bean );
 
     // ----------------------------------------------------------------------
     // Implementation methods
     // ----------------------------------------------------------------------
 
+    /**
+     * @return Thread-local holder of any pending beans
+     */
     static Object[] getPendingHolder()
     {
         Object[] holder = pendingHolder.get();
@@ -117,6 +134,9 @@ public abstract class BeanScheduler
     // Implementation types
     // ----------------------------------------------------------------------
 
+    /**
+     * Collects pending beans waiting for activation.
+     */
     @SuppressWarnings( "serial" )
     private final class Pending
         extends ArrayList<Object>
@@ -126,6 +146,9 @@ public abstract class BeanScheduler
             add( bean );
         }
 
+        /**
+         * Activates all pending beans in order of registration.
+         */
         public void activate()
         {
             for ( int i = 0, size = size(); i < size; i++ )
@@ -135,6 +158,9 @@ public abstract class BeanScheduler
         }
     }
 
+    /**
+     * Listens to provisioning events in order to determine safe activation points.
+     */
     static final class Activator
         implements com.google.inject.spi.ProvisionListener
     {
@@ -147,7 +173,7 @@ public abstract class BeanScheduler
                 holder[0] = PLACEHOLDER;
                 try
                 {
-                    pi.provision();
+                    pi.provision(); // may involve nested calls/cycles
                 }
                 finally
                 {

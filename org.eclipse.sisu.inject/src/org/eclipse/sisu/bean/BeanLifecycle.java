@@ -19,6 +19,9 @@ import java.util.List;
 
 import org.eclipse.sisu.inject.Logs;
 
+/**
+ * Represents the JSR250 lifecycle for a particular bean type.
+ */
 final class BeanLifecycle
     implements PrivilegedAction<Void>
 {
@@ -42,6 +45,12 @@ final class BeanLifecycle
     // Constructors
     // ----------------------------------------------------------------------
 
+    /**
+     * Creates a new lifecycle based on the given start and stop methods.
+     * 
+     * @param startMethods The methods used to start the bean; from subclass to superclass
+     * @param stopMethods The methods used to stop the bean; from subclass to superclass
+     */
     BeanLifecycle( final List<Method> startMethods, final List<Method> stopMethods )
     {
         this.startMethods = toArray( startMethods );
@@ -55,18 +64,30 @@ final class BeanLifecycle
     // Public methods
     // ----------------------------------------------------------------------
 
+    /**
+     * @return {@code true} if this lifecycle can be started; otherwise {@code false}
+     */
     public boolean isStartable()
     {
         return startMethods.length > 0;
     }
 
+    /**
+     * @return {@code true} if this lifecycle can be stopped; otherwise {@code false}
+     */
     public boolean isStoppable()
     {
         return stopMethods.length > 0;
     }
 
+    /**
+     * Starts the given bean by invoking the methods defined in this lifecycle.
+     * 
+     * @param bean The bean to start
+     */
     public void start( final Object bean )
     {
+        // start superclass before subclass, bail out at the first failure
         int i = startMethods.length - 1;
         try
         {
@@ -90,9 +111,15 @@ final class BeanLifecycle
         }
     }
 
+    /**
+     * Stops the given bean by invoking the methods defined in this lifecycle.
+     * 
+     * @param bean The bean to stop
+     */
     @SuppressWarnings( "finally" )
     public void stop( final Object bean )
     {
+        // stop subclass before superclass, log any failures along the way
         for ( int i = 0; i < stopMethods.length; i++ )
         {
             try
