@@ -17,8 +17,8 @@ import junit.framework.TestCase;
 
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.bean.BeanManager;
+import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.bean.PropertyBinding;
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.space.URLClassSpace;
