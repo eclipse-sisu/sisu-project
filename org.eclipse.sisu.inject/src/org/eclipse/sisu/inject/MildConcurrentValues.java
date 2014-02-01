@@ -79,7 +79,7 @@ final class MildConcurrentValues<K, V>
 
     public boolean remove( final Object key, final Object value )
     {
-        compact(); // NOPMD ignore nullable false-positive
+        compact(); // NOSONAR ignore nullable false-positive
 
         return concurrentMap.remove( key, tempValue( value ) );
     }
