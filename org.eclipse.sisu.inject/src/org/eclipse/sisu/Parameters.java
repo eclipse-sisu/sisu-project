@@ -30,6 +30,41 @@ import javax.inject.Qualifier;
  * &#064;Parameters
  * Map&lt;?, ?&gt; properties;
  * </pre>
+ * 
+ * This qualifier marks collections of values that act as overall application parameters, like the {@code String[]}
+ * argument array passed into the main method or the {@code Map} of system properties. Custom parameter values can be
+ * bound by using the appropriate type along with the {@link Parameters} binding annotation:
+ * 
+ * <pre>
+ * // add @Named for automatic installation
+ * public class MyParametersModule
+ *     extends AbstractModule
+ * {
+ *     &#064;Provides
+ *     &#064;Parameters
+ *     String[] customArgs()
+ *     {
+ *         return myArgs;
+ *     }
+ * 
+ *     &#064;Provides
+ *     &#064;Parameters
+ *     Map&lt;?, ?&gt; customProperties()
+ *     {
+ *         return myProperties;
+ *     }
+ * 
+ *     &#064;Override
+ *     protected void configure()
+ *     {
+ *         // other setup
+ *     }
+ * }
+ * </pre>
+ * 
+ * Tip: if you wrap {@link org.eclipse.sisu.wire.WireModule WireModule} around your application modules then it will
+ * merge multiple &#064;{@link Parameters} bindings; for maps by providing an aggregate view over all bound maps, for
+ * arrays by simply appending their elements into a single argument array.
  */
 @Target( value = { ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD } )
 @Retention( RetentionPolicy.RUNTIME )
