@@ -6,12 +6,12 @@ Sisu is a modular <a href="http://atinject.googlecode.com/svn/trunk/javadoc/java
 Sisu uses <a href="http://code.google.com/p/google-guice/">Google-Guice</a> to perform dependency injection and provide the core JSR330 support, but removes the need to write explicit bindings in Guice modules:
 <p><pre>
 Guice.createInjector(
-  new {@link org.eclipse.sisu.wire.WireModule}(                       // auto-wires unresolved dependencies
-    new {@link org.eclipse.sisu.space.SpaceModule}(                     // scans and binds @Named components
-      new {@link org.eclipse.sisu.space.URLClassSpace}( classloader )    // abstracts class/resource finding
+  new {@link org.eclipse.sisu.wire WireModule}(                       // auto-wires unresolved dependencies
+    new {@link org.eclipse.sisu.space SpaceModule}(                     // scans and binds @Named components
+      new {@link org.eclipse.sisu.space URLClassSpace}( classloader )    // abstracts class/resource finding
 ) ) );
 </pre>
-Unresolved dependencies are wired up through the {@link org.eclipse.sisu.inject.BeanLocator} which provides a dynamic lookup service across one or more injectors or {@link org.eclipse.sisu.inject.BindingPublisher}s.
+Unresolved dependencies are wired up through the {@link org.eclipse.sisu.inject BeanLocator} which provides a dynamic lookup service across one or more injectors or {@link org.eclipse.sisu.inject BindingPublisher}s.
 <h2>Packages</h2>
 </body>
 </html>
