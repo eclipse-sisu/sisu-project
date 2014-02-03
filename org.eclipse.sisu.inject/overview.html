@@ -11,7 +11,14 @@ Guice.createInjector(
       new {@link org.eclipse.sisu.space URLClassSpace}( classloader )    // abstracts class/resource finding
 ) ) );
 </pre>
-Unresolved dependencies are wired up through the {@link org.eclipse.sisu.inject BeanLocator} which provides a dynamic lookup service across one or more injectors or {@link org.eclipse.sisu.inject BindingPublisher}s.
+In the example above the {@code SpaceModule} scans the classpath using the {@code ClassSpace} abstraction. Any classes annotated with a {@code @Qualifier} annotation like {@code @Named}
+will be bound as components, making them visible to the {@link org.eclipse.sisu.inject BeanLocator} and surrounding {@code WireModule} (constructed around the set of modules making up
+the application; in this example there is only one, the {@code SpaceModule}).
+<p><p>
+The {@code WireModule} uses the Guice introspection SPI to analyze all bindings in the application and apply various rules to finish wiring the configuration. Unsatisfied {@code @Inject}
+requirements are populated using the {@code BeanLocator} which provides a lookup service across all injectors it knows about, allowing for plugin-style solutions. As well as individual
+components, the {@code WireModule} can satisfy requests for component collections like Lists and Maps (using {@code @Named} values as keys). It also cleans up duplicate and overridden
+bindings, and merges {@link org.eclipse.sisu.Parameters} bindings.
 <h2>Packages</h2>
 </body>
 </html>

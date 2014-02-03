@@ -18,7 +18,7 @@ import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
 /**
- * {@link Qualifier} of parameters passed into Sisu:<br>
+ * {@link Qualifier} of application parameters:<br>
  * <br>
  * 
  * <pre>
@@ -32,8 +32,9 @@ import javax.inject.Qualifier;
  * </pre>
  * 
  * This qualifier marks collections of values that act as overall application parameters, like the {@code String[]}
- * argument array passed into the main method or the {@code Map} of system properties. Custom parameter values can be
- * bound by using the appropriate type along with the {@link Parameters} binding annotation:
+ * argument array passed into the main method or the {@code Map} of system properties. External parameters can be
+ * supplied to Sisu by using the appropriate type along with the {@link Parameters} binding annotation.
+ * <p>
  * 
  * <pre>
  * // add @Named for automatic installation
@@ -62,9 +63,9 @@ import javax.inject.Qualifier;
  * }
  * </pre>
  * 
- * Tip: if you wrap {@link org.eclipse.sisu.wire.WireModule WireModule} around your application modules then it will
- * merge multiple &#064;{@link Parameters} bindings; for maps by providing an aggregate view over all bound maps, for
- * arrays by simply appending their elements into a single argument array.
+ * Tip: if you wrap {@link org.eclipse.sisu.wire.WireModule WireModule} around your set of application modules then it
+ * will merge multiple &#064;{@link Parameters} bindings; for maps by providing an aggregate view over all bound maps,
+ * for arrays by appending their elements into a single argument array.
  */
 @Target( value = { ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD } )
 @Retention( RetentionPolicy.RUNTIME )
