@@ -21,6 +21,7 @@ import org.apache.maven.project.MavenProject;
  * @goal main-index
  * @phase process-classes
  * @requiresDependencyResolution compile
+ * @threadSafe
  */
 public class MainIndexMojo
     extends AbstractMojo

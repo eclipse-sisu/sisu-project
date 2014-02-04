@@ -21,6 +21,7 @@ import org.apache.maven.project.MavenProject;
  * @goal test-index
  * @phase process-test-classes
  * @requiresDependencyResolution test
+ * @threadSafe
  */
 public class TestIndexMojo
     extends AbstractMojo

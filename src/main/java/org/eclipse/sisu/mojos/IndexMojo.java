@@ -37,6 +37,7 @@ import org.eclipse.sisu.space.URLClassSpace;
  * 
  * @goal index
  * @requiresDependencyResolution test
+ * @threadSafe
  */
 public class IndexMojo
     extends AbstractMojo
@@ -176,7 +177,10 @@ public class IndexMojo
 
     public void execute()
     {
-        new SisuIndex( outputDirectory ).index( new URLClassSpace( getProjectClassLoader(), getIndexPath() ) );
+        synchronized ( project )
+        {
+            new SisuIndex( outputDirectory ).index( new URLClassSpace( getProjectClassLoader(), getIndexPath() ) );
+        }
     }
 
     // ----------------------------------------------------------------------
