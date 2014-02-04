@@ -17,7 +17,7 @@ import org.codehaus.plexus.component.annotations.Component;
 /**
  * Partial runtime implementation of Plexus @{@link Component} annotation, supporting the most common attributes.
  */
-final class ComponentImpl
+public final class ComponentImpl
     implements Component
 {
     // ----------------------------------------------------------------------

@@ -21,7 +21,7 @@ import org.eclipse.sisu.space.LoadedClass;
 /**
  * Runtime implementation of Plexus @{@link Requirement} annotation.
  */
-final class RequirementImpl
+public final class RequirementImpl
     implements Requirement
 {
     // ----------------------------------------------------------------------

@@ -17,7 +17,7 @@ import org.codehaus.plexus.component.annotations.Configuration;
 /**
  * Runtime implementation of Plexus @{@link Configuration} annotation.
  */
-final class ConfigurationImpl
+public final class ConfigurationImpl
     implements Configuration
 {
     // ----------------------------------------------------------------------
