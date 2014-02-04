@@ -19,6 +19,9 @@ import java.util.List;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.artifact.filter.collection.ArtifactFilterException;
 import org.apache.maven.shared.artifact.filter.collection.ArtifactIdFilter;
@@ -34,11 +37,8 @@ import org.eclipse.sisu.space.URLClassSpace;
 
 /**
  * Generates a qualified class index for the current project and its dependencies.
- * 
- * @goal index
- * @requiresDependencyResolution test
- * @threadSafe
  */
+@Mojo( name = "index", requiresDependencyResolution = ResolutionScope.TEST, threadSafe = true )
 public class IndexMojo
     extends AbstractMojo
 {
@@ -47,105 +47,81 @@ public class IndexMojo
     // ----------------------------------------------------------------------
 
     /**
-     * @parameter property="outputDirectory" default-value="${project.build.outputDirectory}"
-     * @optional
+     * The output directory.
      */
+    @Parameter( property = "outputDirectory", defaultValue = "${project.build.outputDirectory}" )
     protected File outputDirectory;
 
     /**
      * If we should include project dependencies when indexing.
-     * 
-     * @parameter property="includeDependencies" default-value="true"
-     * @optional
      */
+    @Parameter( property = "includeDependencies", defaultValue = "true" )
     protected boolean includeDependencies;
 
     /**
      * Comma separated list of GroupIds to exclude when indexing.
-     * 
-     * @parameter property="excludeGroupIds" default-value=""
-     * @optional
      */
+    @Parameter( property = "excludeGroupIds", defaultValue = "" )
     protected String excludeGroupIds;
 
     /**
      * Comma separated list of GroupIds to include when indexing.
-     * 
-     * @parameter property="includeGroupIds" default-value=""
-     * @optional
      */
+    @Parameter( property = "includeGroupIds", defaultValue = "" )
     protected String includeGroupIds;
 
     /**
      * Comma separated list of ArtifactIds to exclude when indexing.
-     * 
-     * @parameter property="excludeArtifactIds" default-value=""
-     * @optional
      */
+    @Parameter( property = "excludeArtifactIds", defaultValue = "" )
     protected String excludeArtifactIds;
 
     /**
      * Comma separated list of ArtifactIds to include when indexing.
-     * 
-     * @parameter property="includeArtifactIds" default-value=""
-     * @optional
      */
+    @Parameter( property = "includeArtifactIds", defaultValue = "" )
     protected String includeArtifactIds;
 
     /**
      * Comma Separated list of Classifiers to exclude when indexing.
-     * 
-     * @parameter property="excludeClassifiers" default-value=""
-     * @optional
      */
+    @Parameter( property = "excludeClassifiers", defaultValue = "" )
     protected String excludeClassifiers;
 
     /**
      * Comma Separated list of Classifiers to include when indexing.
-     * 
-     * @parameter property="includeClassifiers" default-value=""
-     * @optional
      */
+    @Parameter( property = "includeClassifiers", defaultValue = "" )
     protected String includeClassifiers;
 
     /**
      * Comma Separated list of Types to exclude when indexing.
-     * 
-     * @parameter property="excludeTypes" default-value=""
-     * @optional
      */
+    @Parameter( property = "excludeTypes", defaultValue = "" )
     protected String excludeTypes;
 
     /**
      * Comma Separated list of Types to include when indexing.
-     * 
-     * @parameter property="includeTypes" default-value=""
-     * @optional
      */
+    @Parameter( property = "includeTypes", defaultValue = "" )
     protected String includeTypes;
 
     /**
      * Scope to exclude. Empty string indicates no scopes (default).
-     * 
-     * @parameter property="excludeScope" default-value=""
-     * @optional
      */
+    @Parameter( property = "excludeScope", defaultValue = "" )
     protected String excludeScope;
 
     /**
      * Scope to include. Empty string indicates all scopes (default).
-     * 
-     * @parameter property="includeScope" default-value=""
-     * @optional
      */
+    @Parameter( property = "includeScope", defaultValue = "" )
     protected String includeScope;
 
     /**
      * If we should exclude transitive dependencies when indexing.
-     * 
-     * @parameter property="excludeTransitive" default-value="false"
-     * @optional
      */
+    @Parameter( property = "excludeTransitive", defaultValue = "false" )
     protected boolean excludeTransitive;
 
     // ----------------------------------------------------------------------
@@ -154,11 +130,8 @@ public class IndexMojo
 
     /**
      * The Maven project to index.
-     * 
-     * @parameter property="project"
-     * @required
-     * @readonly
      */
+    @Parameter( property = "project", required = true, readonly = true )
     private MavenProject project;
 
     // ----------------------------------------------------------------------

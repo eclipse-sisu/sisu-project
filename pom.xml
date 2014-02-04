@@ -129,6 +129,12 @@
       </exclusions>
     </dependency>
     <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <version>3.3</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.apache.maven.shared</groupId>
       <artifactId>maven-common-artifact-filters</artifactId>
       <version>1.4</version>
@@ -157,16 +163,24 @@
       <plugins>
         <plugin>
           <artifactId>maven-plugin-plugin</artifactId>
-          <version>3.2</version>
+          <version>3.3</version>
           <configuration>
             <goalPrefix>sisu</goalPrefix>
             <helpPackageName>org.eclipse.sisu.mojos</helpPackageName>
+            <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
           </configuration>
           <executions>
             <execution>
               <id>generated-helpmojo</id>
               <goals>
                 <goal>helpmojo</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>default-descriptor</id>
+              <phase>process-classes</phase>
+              <goals>
+                <goal>descriptor</goal>
               </goals>
             </execution>
           </executions>

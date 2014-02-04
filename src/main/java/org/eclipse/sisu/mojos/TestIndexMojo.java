@@ -13,16 +13,16 @@ package org.eclipse.sisu.mojos;
 import java.io.File;
 
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
 /**
  * Generates a qualified class index for test classes compiled by the current project.
- * 
- * @goal test-index
- * @phase process-test-classes
- * @requiresDependencyResolution test
- * @threadSafe
  */
+@Mojo( name = "test-index", defaultPhase = LifecyclePhase.PROCESS_TEST_CLASSES, requiresDependencyResolution = ResolutionScope.TEST, threadSafe = true )
 public class TestIndexMojo
     extends AbstractMojo
 {
@@ -32,11 +32,8 @@ public class TestIndexMojo
 
     /**
      * The Maven project to index.
-     * 
-     * @parameter property="project"
-     * @required
-     * @readonly
      */
+    @Parameter( property = "project", required = true, readonly = true )
     private MavenProject project;
 
     // ----------------------------------------------------------------------
