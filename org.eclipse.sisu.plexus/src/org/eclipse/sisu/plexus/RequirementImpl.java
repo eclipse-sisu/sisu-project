@@ -40,7 +40,7 @@ public final class RequirementImpl
     // Constructors
     // ----------------------------------------------------------------------
 
-    RequirementImpl( final DeferredClass<?> role, final boolean optional, final List<String> hints )
+    public RequirementImpl( final DeferredClass<?> role, final boolean optional, final List<String> hints )
     {
         if ( null == role || null == hints || hints.contains( null ) )
         {

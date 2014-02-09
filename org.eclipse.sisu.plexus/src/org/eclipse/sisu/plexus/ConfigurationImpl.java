@@ -32,7 +32,7 @@ public final class ConfigurationImpl
     // Constructors
     // ----------------------------------------------------------------------
 
-    ConfigurationImpl( final String name, final String value )
+    public ConfigurationImpl( final String name, final String value )
     {
         if ( null == name || null == value )
         {

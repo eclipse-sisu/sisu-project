@@ -43,7 +43,7 @@ public final class ComponentImpl
     // Constructors
     // ----------------------------------------------------------------------
 
-    ComponentImpl( final Class<?> role, final String hint, final String instantiationStrategy, final String description )
+    public ComponentImpl( final Class<?> role, final String hint, final String instantiationStrategy, final String description )
     {
         if ( null == role || null == hint || null == instantiationStrategy || null == description )
         {
