@@ -27,6 +27,7 @@ import org.eclipse.sisu.EagerSingleton;
 import org.eclipse.sisu.Mediator;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 
+import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -77,6 +78,11 @@ public class BeanWatcherTest
 
     @Marked( 1 )
     static class DItem
+        extends SomeItem
+    {
+    }
+
+    static class EItem
         extends SomeItem
     {
     }
@@ -168,7 +174,15 @@ public class BeanWatcherTest
     {
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );
-        Guice.createInjector( new SpaceModule( space ) ).injectMembers( this );
+
+        Guice.createInjector( new SpaceModule( space ), new AbstractModule()
+        {
+            @Override
+            protected void configure()
+            {
+                bind( Item.class ).annotatedWith( new QualifiedTypesTest.LegacyImpl() ).to( EItem.class );
+            }
+        } ).injectMembers( this );
     }
 
     @SuppressWarnings( "deprecation" )
@@ -178,7 +192,7 @@ public class BeanWatcherTest
 
         assertEquals( 4, namedItemWatcher.items.size() );
         assertEquals( 2, markedItemWatcher.items.size() );
-        assertEquals( 4, annotatedItemWatcher.items.size() );
+        assertEquals( 5, annotatedItemWatcher.items.size() );
 
         assertTrue( namedItemWatcher.items.get( AItem.class.getName() ) instanceof AItem );
         assertTrue( namedItemWatcher.items.get( BItem.class.getName() ) instanceof BItem );

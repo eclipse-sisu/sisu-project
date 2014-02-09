@@ -394,6 +394,6 @@ public final class QualifiedTypeBinder
 
     private static <T> Key<T> watchedKey( final TypeLiteral<T> type, final Class<? extends Annotation> annotationType )
     {
-        return Key.get( type, Annotation.class != annotationType ? annotationType : Named.class );
+        return Annotation.class != annotationType ? Key.get( type, annotationType ) : Key.get( type );
     }
 }
