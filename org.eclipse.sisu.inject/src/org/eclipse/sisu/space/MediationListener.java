@@ -22,6 +22,7 @@ import org.eclipse.sisu.inject.BeanLocator;
 import com.google.inject.Binder;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
+import com.google.inject.matcher.AbstractMatcher;
 import com.google.inject.spi.InjectionListener;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
@@ -30,6 +31,7 @@ import com.google.inject.spi.TypeListener;
  * {@link InjectionListener} that listens for mediated watchers and registers them with the {@link BeanLocator}.
  */
 final class MediationListener
+    extends AbstractMatcher<TypeLiteral<?>>
     implements TypeListener, InjectionListener<Object>
 {
     // ----------------------------------------------------------------------
@@ -67,15 +69,21 @@ final class MediationListener
         mediation.add( new Mediation( key, mediator, watcherType ) );
     }
 
-    public <T> void hear( final TypeLiteral<T> type, final TypeEncounter<T> encounter )
+    public boolean matches( final TypeLiteral<?> type )
     {
         for ( final Mediation<?, ?, ?> m : mediation )
         {
             if ( m.watcherType.isAssignableFrom( type.getRawType() ) )
             {
-                encounter.register( this ); // look out for watcher instances
+                return true;
             }
         }
+        return false;
+    }
+
+    public <T> void hear( final TypeLiteral<T> type, final TypeEncounter<T> encounter )
+    {
+        encounter.register( this ); // look out for watcher instances
     }
 
     @SuppressWarnings( { "unchecked", "rawtypes" } )
