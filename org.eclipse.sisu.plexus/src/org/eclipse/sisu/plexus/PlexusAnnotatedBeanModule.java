@@ -43,7 +43,7 @@ public final class PlexusAnnotatedBeanModule
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final Module spaceModule;
+    private Module spaceModule;
 
     private final PlexusBeanSource beanSource;
 
@@ -85,6 +85,15 @@ public final class PlexusAnnotatedBeanModule
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
+
+    public PlexusBeanModule with( final SpaceModule.Strategy _strategy )
+    {
+        if ( spaceModule instanceof SpaceModule )
+        {
+            spaceModule = ( (SpaceModule) spaceModule ).with( _strategy );
+        }
+        return this;
+    }
 
     public PlexusBeanSource configure( final Binder binder )
     {
