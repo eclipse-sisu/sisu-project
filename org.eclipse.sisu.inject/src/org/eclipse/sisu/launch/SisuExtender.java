@@ -23,7 +23,7 @@ import org.osgi.framework.BundleContext;
 
 /**
  * Basic OSGi extender for Sisu that watches for JSR330 bundles and publishes them to the {@link BeanLocator}.<br>
- * To activate install {@code org.eclipse.sisu.inject.extender}, or adapt it for your own extender bundle.
+ * To enable it install {@code org.eclipse.sisu.inject.extender}, or adapt it for your own extender bundle.
  */
 public class SisuExtender
     implements BundleActivator
@@ -52,24 +52,6 @@ public class SisuExtender
     {
         scanner.close();
         scanner = null;
-    }
-
-    /**
-     * Finds the {@link BeanLocator} associated with this extender; creates one if none exist.
-     * 
-     * @param context The extender context
-     * @return Associated bean locator
-     */
-    public final MutableBeanLocator findLocator( final BundleContext context )
-    {
-        @SuppressWarnings( "boxing" )
-        final Long extenderId = context.getBundle().getBundleId();
-        MutableBeanLocator locator = locators.get( extenderId );
-        if ( null == locator )
-        {
-            locators.put( extenderId, locator = createLocator( context ) );
-        }
-        return locator;
     }
 
     // ----------------------------------------------------------------------
@@ -106,5 +88,27 @@ public class SisuExtender
     protected MutableBeanLocator createLocator( final BundleContext context )
     {
         return new DefaultBeanLocator();
+    }
+
+    // ----------------------------------------------------------------------
+    // Implementation methods
+    // ----------------------------------------------------------------------
+
+    /**
+     * Finds the {@link BeanLocator} associated with this extender; creates one if none exist.
+     * 
+     * @param context The extender context
+     * @return Associated bean locator
+     */
+    protected final MutableBeanLocator findLocator( final BundleContext context )
+    {
+        @SuppressWarnings( "boxing" )
+        final Long extenderId = context.getBundle().getBundleId();
+        MutableBeanLocator locator = locators.get( extenderId );
+        if ( null == locator )
+        {
+            locators.put( extenderId, locator = createLocator( context ) );
+        }
+        return locator;
     }
 }
