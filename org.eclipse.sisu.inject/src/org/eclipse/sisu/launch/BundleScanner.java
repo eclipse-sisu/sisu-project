@@ -13,7 +13,6 @@ package org.eclipse.sisu.launch;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Dictionary;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -22,6 +21,7 @@ import javax.inject.Inject;
 
 import org.eclipse.sisu.inject.InjectorPublisher;
 import org.eclipse.sisu.inject.MutableBeanLocator;
+import org.eclipse.sisu.inject.Weak;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
@@ -29,8 +29,10 @@ import org.osgi.framework.Constants;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.util.tracker.BundleTracker;
 
+import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Module;
 
 /**
  * OSGi {@link BundleTracker} that tracks JSR330 bundles and uses {@link BundleModule} to bind components.
@@ -41,6 +43,8 @@ public class BundleScanner
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
+
+    private static final Object PLACEHOLDER = new Object();
 
     private static final Set<String> SUPPORT_BUNDLE_NAMES = new HashSet<String>();
 
@@ -57,8 +61,7 @@ public class BundleScanner
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private static final Map<Long, Injector> bundleInjectors =
-        Collections.synchronizedMap( new HashMap<Long, Injector>() );
+    private static final Map<Long, Object> bundleInjectors = Collections.synchronizedMap( Weak.<Long, Object> values() );
 
     /**
      * Mask of bundle states being tracked.
@@ -69,6 +72,17 @@ public class BundleScanner
      * Shared locator of bound components.
      */
     protected final MutableBeanLocator locator;
+
+    /**
+     * Module that auto-registers injectors as publishers with the locator.
+     */
+    protected final Module locatorModule = new Module()
+    {
+        public void configure( final Binder binder )
+        {
+            binder.bind( MutableBeanLocator.class ).toInstance( locator );
+        }
+    };
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -98,16 +112,7 @@ public class BundleScanner
     {
         if ( injectBundle( bundle ) )
         {
-            @SuppressWarnings( "boxing" )
-            final Long bundleId = bundle.getBundleId();
-            if ( !bundleInjectors.containsKey( bundleId ) )
-            {
-                // placeholder in case we re-enter this method while creating the injector
-                bundleInjectors.put( bundleId, null );
-                final Injector injector = createInjector( bundle );
-                bundleInjectors.put( bundleId, injector );
-            }
-            return bundle;
+            return addBundleInjector( bundle );
         }
         return null; // don't bother tracking this bundle
     }
@@ -115,11 +120,9 @@ public class BundleScanner
     @Override
     public final void removedBundle( final Bundle bundle, final BundleEvent event, final Object object )
     {
-        @SuppressWarnings( "boxing" )
-        final Long bundleId = bundle.getBundleId();
-        if ( evictBundle( bundle, bundleInjectors.get( bundleId ) ) )
+        if ( evictBundle( bundle ) )
         {
-            destroyInjector( bundle, bundleInjectors.remove( bundleId ) );
+            removeBundleInjector( bundle.getBundleId() );
         }
     }
 
@@ -128,13 +131,12 @@ public class BundleScanner
      */
     public final void purgeBundles()
     {
-        for ( final Long bundleId : new ArrayList<Long>( bundleInjectors.keySet() ) )
+        for ( final long bundleId : new ArrayList<Long>( bundleInjectors.keySet() ) )
         {
-            @SuppressWarnings( "boxing" )
             final Bundle bundle = context.getBundle( bundleId );
-            if ( evictBundle( bundle, bundleInjectors.get( bundleId ) ) )
+            if ( null == bundle || evictBundle( bundle ) )
             {
-                destroyInjector( bundle, bundleInjectors.remove( bundleId ) );
+                removeBundleInjector( bundleId );
             }
         }
     }
@@ -178,34 +180,57 @@ public class BundleScanner
      */
     protected Injector createInjector( final Bundle bundle )
     {
-        // the BundleModule will auto-register the injector as a publisher
-        return Guice.createInjector( new BundleModule( bundle, locator ) );
+        // the locatorModule will auto-register the injector as a publisher
+        return Guice.createInjector( locatorModule, new BundleModule( bundle ) );
     }
 
     /**
      * Determines whether we should destroy the {@link Injector} of the given bundle.
      * 
      * @param bundle The bundle
-     * @param injector The injector
      * @return {@code true} if the injector should be destroyed; otherwise {@code false}
      */
-    protected boolean evictBundle( final Bundle bundle, final Injector injector )
+    protected boolean evictBundle( final Bundle bundle )
     {
-        return null == bundle || ( bundle.getState() & stateMask ) == 0; // missing or inactive
+        return ( bundle.getState() & stateMask ) == 0;
     }
 
     /**
-     * Destroys the old {@link Injector} for the given bundle.
+     * Destroys the old {@link Injector} for the bundle.
      * 
-     * @param bundle The bundle
      * @param injector Old injector
      */
-    protected void destroyInjector( final Bundle bundle, final Injector injector )
+    protected void destroyInjector( final Injector injector )
     {
-        if ( null != injector ) // might be placeholder
+        // this will match against the original auto-registered publisher
+        locator.remove( new InjectorPublisher( injector, null /* unused */) );
+    }
+
+    // ----------------------------------------------------------------------
+    // Implementation methods
+    // ----------------------------------------------------------------------
+
+    private Object addBundleInjector( final Bundle bundle )
+    {
+        @SuppressWarnings( "boxing" )
+        final Long bundleId = bundle.getBundleId();
+        if ( !bundleInjectors.containsKey( bundleId ) )
         {
-            // this will match against the original auto-registered publisher
-            locator.remove( new InjectorPublisher( injector, null /* unused */) );
+            // protect against nested activation calls
+            bundleInjectors.put( bundleId, PLACEHOLDER );
+            final Injector injector = createInjector( bundle );
+            bundleInjectors.put( bundleId, injector );
+        }
+        return bundle;
+    }
+
+    private void removeBundleInjector( final long bundleId )
+    {
+        @SuppressWarnings( "boxing" )
+        final Object injector = bundleInjectors.remove( bundleId );
+        if ( injector instanceof Injector )
+        {
+            destroyInjector( (Injector) injector );
         }
     }
 }

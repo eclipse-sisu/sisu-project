@@ -36,7 +36,10 @@ public class SisuExtender
     private static final Map<Long, MutableBeanLocator> locators =
         Collections.synchronizedMap( Weak.<Long, MutableBeanLocator> values() );
 
-    private BundleScanner scanner;
+    /**
+     * Scans bundles for components.
+     */
+    protected BundleScanner scanner;
 
     // ----------------------------------------------------------------------
     // Public methods
