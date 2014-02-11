@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.sisu.launch;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ import com.google.inject.Key;
 import com.google.inject.Module;
 
 /**
- * SPI mechanism for discovering {@link Module} and Strategy extensions.
+ * SPI mechanism for discovering {@link Module} and {@code Strategy} extensions.
  */
 public final class SisuExtensions
     implements SpaceModule.Strategy, WireModule.Strategy
@@ -78,67 +79,42 @@ public final class SisuExtensions
     }
 
     /**
-     * Installs modules listed in {@code META-INF/services/com.google.inject.Module}; modules must have a public no-arg
-     * constructor.
+     * Installs modules listed under {@code META-INF/services/com.google.inject.Module}; modules must have a public
+     * no-arg constructor.
      * 
      * @param binder The current binder
      */
-    public <T> void install( final Binder binder )
+    public void install( final Binder binder )
     {
         install( binder, null, null );
     }
 
     /**
-     * Installs modules listed in {@code META-INF/services/com.google.inject.Module}; modules must either have a public
-     * no-arg constructor or one with the context type.
+     * Installs modules listed under {@code META-INF/services/com.google.inject.Module}; modules must either have a
+     * public no-arg constructor or one with the declared context type.
      * 
      * @param binder The current binder
      * @param contextType Optional context type
      * @param context Optional context instance
      */
-    public <T> void install( final Binder binder, final Class<T> contextType, final T context )
+    public <C> void install( final Binder binder, final Class<C> contextType, final C context )
     {
-        final String index = "META-INF/services/" + Module.class.getName();
-        for ( final String name : new IndexedClassFinder( index, global ).indexedNames( space ) )
+        for ( final Module m : build( Module.class, contextType, context ) )
         {
-            try
-            {
-                Object instance = null;
-                final Class<?> impl = space.loadClass( name );
-                if ( null != contextType )
-                {
-                    try
-                    {
-                        instance = impl.getConstructor( contextType ).newInstance( context );
-                    }
-                    catch ( final NoSuchMethodException e )
-                    {
-                        // fall-back to default constructor
-                    }
-                }
-                binder.install( (Module) ( null != instance ? instance : impl.newInstance() ) );
-            }
-            catch ( final Exception e )
-            {
-                Logs.trace( "Problem installing: {}", name, e );
-            }
-            catch ( final LinkageError e )
-            {
-                Logs.trace( "Problem installing: {}", name, e );
-            }
+            binder.install( m );
         }
     }
 
     /**
-     * {@link WireModule} strategy that lets {@code META-INF/services/org.eclipse.sisu.wire.Wiring} override the default
-     * wiring.
+     * {@link WireModule} strategy that lets {@code META-INF/services/org.eclipse.sisu.wire.Wiring} extensions override
+     * the default wiring.
      * 
      * @param binder The binder
      * @return Extended wiring
      */
     public Wiring wiring( final Binder binder )
     {
-        final List<Wiring> customWiring = load( Wiring.class, binder );
+        final List<Wiring> customWiring = build( Wiring.class, Binder.class, binder );
         final Wiring defaultWiring = WireModule.Strategy.DEFAULT.wiring( binder );
         return customWiring.isEmpty() ? defaultWiring : new Wiring()
         {
@@ -157,15 +133,15 @@ public final class SisuExtensions
     }
 
     /**
-     * {@link SpaceModule} strategy that lets {@code META-INF/services/org.eclipse.sisu.space.SpaceVisitor} override the
-     * default scanning.
+     * {@link SpaceModule} strategy that lets {@code META-INF/services/org.eclipse.sisu.space.SpaceVisitor} extensions
+     * override the default scanning.
      * 
      * @param binder The binder
      * @return Extended visitor
      */
     public SpaceVisitor visitor( final Binder binder )
     {
-        final List<SpaceVisitor> customVisitors = load( SpaceVisitor.class, binder );
+        final List<SpaceVisitor> customVisitors = build( SpaceVisitor.class, Binder.class, binder );
         final SpaceVisitor defaultVisitor = SpaceModule.Strategy.DEFAULT.visitor( binder );
         return customVisitors.isEmpty() ? defaultVisitor : new SpaceVisitor()
         {
@@ -203,27 +179,76 @@ public final class SisuExtensions
 
     }
 
-    // ----------------------------------------------------------------------
-    // Implementation methods
-    // ----------------------------------------------------------------------
-
     /**
-     * Loads {@link Binder} extensions from {@code META-INF/services/ fully-qualified-SPI-name} ; implementations must
-     * have a public constructor that takes a single binder argument.
+     * Builds extensions listed under {@code META-INF/services/ fully-qualified-SPI-name} ; implementations must have a
+     * public no-arg constructor.
      * 
      * @param spi The extension SPI
-     * @param binder The current binder
-     * @return List of binder extensions
+     * @return List of extensions
      */
-    private <T> List<T> load( final Class<T> spi, final Binder binder )
+    public <T> List<T> build( final Class<T> spi )
+    {
+        return build( spi, null, null );
+    }
+
+    /**
+     * Builds extensions listed under {@code META-INF/services/ fully-qualified-SPI-name} ; implementations must either
+     * have a public no-arg constructor or one with the declared context type.
+     * 
+     * @param spi The extension SPI
+     * @param contextType Optional context type
+     * @param context Optional context instance
+     * @return List of extensions
+     */
+    public <T, C> List<T> build( final Class<T> spi, final Class<C> contextType, final C context )
     {
         final List<T> extensions = new ArrayList<T>();
+        for ( final Class<? extends T> impl : load( spi ) )
+        {
+            try
+            {
+                T instance = null;
+                if ( null != contextType )
+                {
+                    try
+                    {
+                        instance = impl.getConstructor( contextType ).newInstance( context );
+                    }
+                    catch ( final NoSuchMethodException e )
+                    {
+                        // fall-back to default constructor
+                    }
+                }
+                extensions.add( null != instance ? instance : impl.newInstance() );
+            }
+            catch ( final Exception e )
+            {
+                final Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
+                Logs.trace( "Problem building: {}", impl, cause );
+            }
+            catch ( final LinkageError e )
+            {
+                Logs.trace( "Problem building: {}", impl, e );
+            }
+        }
+        return extensions;
+    }
+
+    /**
+     * Loads extension types listed under {@code META-INF/services/ fully-qualified-SPI-name}.
+     * 
+     * @param spi The extension SPI
+     * @return List of extension types
+     */
+    public <T> List<Class<? extends T>> load( final Class<T> spi )
+    {
         final String index = "META-INF/services/" + spi.getName();
+        final List<Class<? extends T>> extensionTypes = new ArrayList<Class<? extends T>>();
         for ( final String name : new IndexedClassFinder( index, global ).indexedNames( space ) )
         {
             try
             {
-                extensions.add( spi.cast( space.loadClass( name ).getConstructor( Binder.class ).newInstance( binder ) ) );
+                extensionTypes.add( space.loadClass( name ).asSubclass( spi ) );
             }
             catch ( final Exception e )
             {
@@ -234,6 +259,6 @@ public final class SisuExtensions
                 Logs.trace( "Problem loading: {}", name, e );
             }
         }
-        return extensions;
+        return extensionTypes;
     }
 }
