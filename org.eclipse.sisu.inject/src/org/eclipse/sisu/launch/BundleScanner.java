@@ -12,8 +12,8 @@ package org.eclipse.sisu.launch;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Dictionary;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import org.eclipse.sisu.inject.InjectorPublisher;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.inject.Weak;
+import org.eclipse.sisu.space.BundleClassSpace;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
@@ -64,6 +65,11 @@ public class BundleScanner
     private static final Map<Long, Object> bundleInjectors = Collections.synchronizedMap( Weak.<Long, Object> values() );
 
     /**
+     * Custom strategies; contributed by attaching fragments to extender.
+     */
+    protected final List<Strategy> strategies;
+
+    /**
      * Mask of bundle states being tracked.
      */
     protected final int stateMask;
@@ -91,6 +97,7 @@ public class BundleScanner
     public BundleScanner( final BundleContext context, final int stateMask, final MutableBeanLocator locator )
     {
         super( context, stateMask, null );
+        strategies = SisuExtensions.local( new BundleClassSpace( context.getBundle() ) ).create( Strategy.class );
         this.stateMask = stateMask;
         this.locator = locator;
     }
@@ -110,9 +117,10 @@ public class BundleScanner
     @Override
     public final Object addingBundle( final Bundle bundle, final BundleEvent event )
     {
-        if ( injectBundle( bundle ) )
+        final Strategy strategy = findStrategy( bundle );
+        if ( null != strategy )
         {
-            return addBundleInjector( bundle );
+            return addBundleInjector( bundle, strategy );
         }
         return null; // don't bother tracking this bundle
     }
@@ -142,46 +150,90 @@ public class BundleScanner
     }
 
     // ----------------------------------------------------------------------
+    // Public types
+    // ----------------------------------------------------------------------
+
+    public interface Strategy
+    {
+        /**
+         * Returns {@code true} if strategy applies to the bundle; otherwise {@code false}.
+         */
+        boolean matches( Bundle bundle );
+
+        /**
+         * Scans the given bundle and returns a {@link Module} of the resulting bindings.
+         * 
+         * @param bundle The bundle
+         * @return Scanned bindings
+         */
+        Module scan( Bundle bundle );
+
+        /**
+         * Default scanning strategy; scan any bundles that contain JSR330 annotated components.
+         */
+        Strategy DEFAULT = new Strategy()
+        {
+            public boolean matches( final Bundle bundle )
+            {
+                final String imports = (String) bundle.getHeaders().get( Constants.IMPORT_PACKAGE );
+                if ( null != imports )
+                {
+                    return imports.contains( "javax.inject" ) || imports.contains( "com.google.inject" );
+                }
+                return false; // doesn't import any interesting packages
+            }
+
+            public Module scan( final Bundle bundle )
+            {
+                return new BundleModule( bundle );
+            }
+        };
+    }
+
+    // ----------------------------------------------------------------------
     // Customizable methods
     // ----------------------------------------------------------------------
 
     /**
-     * Determines whether we should create an {@link Injector} for the given bundle.
+     * Finds the appropriate scanning strategy for the given bundle.
      * 
      * @param bundle The bundle
-     * @return {@code true} if an injector should be created; otherwise {@code false}
+     * @return The chosen strategy; {@code null} if it shouldn't be scanned
      */
-    protected boolean injectBundle( final Bundle bundle )
+    protected Strategy findStrategy( final Bundle bundle )
     {
         final String symbolicName = bundle.getSymbolicName();
         if ( SUPPORT_BUNDLE_NAMES.contains( symbolicName ) )
         {
-            return false; // ignore our main support bundles
+            return null; // ignore our main support bundles
         }
-        final Dictionary<?, ?> headers = bundle.getHeaders();
-        final String host = (String) headers.get( Constants.FRAGMENT_HOST );
-        if ( null != host )
+        if ( null != bundle.getHeaders().get( Constants.FRAGMENT_HOST ) )
         {
-            return false; // fragment, we'll scan it when we process the host
+            return null; // fragment, we'll scan it when we process the host
         }
-        final String imports = (String) headers.get( Constants.IMPORT_PACKAGE );
-        if ( null == imports )
+        // check for any attached strategies; latest first
+        for ( int i = strategies.size() - 1; i >= 0; i-- )
         {
-            return false; // doesn't import any interesting packages
+            final Strategy strategy = strategies.get( i );
+            if ( strategy.matches( bundle ) )
+            {
+                return strategy; // apply custom strategy
+            }
         }
-        return imports.contains( "javax.inject" ) || imports.contains( "com.google.inject" );
+        return Strategy.DEFAULT.matches( bundle ) ? Strategy.DEFAULT : null;
     }
 
     /**
      * Creates a new {@link Injector} for the given bundle.
      * 
      * @param bundle The bundle
+     * @param strategy The strategy
      * @return New injector
      */
-    protected Injector createInjector( final Bundle bundle )
+    protected Injector createInjector( final Bundle bundle, final Strategy strategy )
     {
         // the locatorModule will auto-register the injector as a publisher
-        return Guice.createInjector( locatorModule, new BundleModule( bundle ) );
+        return Guice.createInjector( locatorModule, strategy.scan( bundle ) );
     }
 
     /**
@@ -210,7 +262,7 @@ public class BundleScanner
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    private Object addBundleInjector( final Bundle bundle )
+    private Object addBundleInjector( final Bundle bundle, final Strategy strategy )
     {
         @SuppressWarnings( "boxing" )
         final Long bundleId = bundle.getBundleId();
@@ -218,7 +270,7 @@ public class BundleScanner
         {
             // protect against nested activation calls
             bundleInjectors.put( bundleId, PLACEHOLDER );
-            final Injector injector = createInjector( bundle );
+            final Injector injector = createInjector( bundle, strategy );
             bundleInjectors.put( bundleId, injector );
         }
         return bundle;
