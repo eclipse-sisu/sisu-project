@@ -99,7 +99,7 @@ public final class SisuExtensions
      */
     public <C> void install( final Binder binder, final Class<C> contextType, final C context )
     {
-        for ( final Module m : build( Module.class, contextType, context ) )
+        for ( final Module m : create( Module.class, contextType, context ) )
         {
             binder.install( m );
         }
@@ -114,8 +114,8 @@ public final class SisuExtensions
      */
     public Wiring wiring( final Binder binder )
     {
-        final List<Wiring> customWiring = build( Wiring.class, Binder.class, binder );
         final Wiring defaultWiring = WireModule.Strategy.DEFAULT.wiring( binder );
+        final List<Wiring> customWiring = create( Wiring.class, Binder.class, binder );
         return customWiring.isEmpty() ? defaultWiring : new Wiring()
         {
             public boolean wire( final Key<?> key )
@@ -141,8 +141,8 @@ public final class SisuExtensions
      */
     public SpaceVisitor visitor( final Binder binder )
     {
-        final List<SpaceVisitor> customVisitors = build( SpaceVisitor.class, Binder.class, binder );
         final SpaceVisitor defaultVisitor = SpaceModule.Strategy.DEFAULT.visitor( binder );
+        final List<SpaceVisitor> customVisitors = create( SpaceVisitor.class, Binder.class, binder );
         return customVisitors.isEmpty() ? defaultVisitor : new SpaceVisitor()
         {
             public void enterSpace( final ClassSpace _space )
@@ -180,27 +180,27 @@ public final class SisuExtensions
     }
 
     /**
-     * Builds extensions listed under {@code META-INF/services/ fully-qualified-SPI-name} ; implementations must have a
-     * public no-arg constructor.
+     * Creates instances of extensions listed under {@code META-INF/services/ fully-qualified-SPI-name} ;
+     * implementations must have a public no-arg constructor.
      * 
      * @param spi The extension SPI
      * @return List of extensions
      */
-    public <T> List<T> build( final Class<T> spi )
+    public <T> List<T> create( final Class<T> spi )
     {
-        return build( spi, null, null );
+        return create( spi, null, null );
     }
 
     /**
-     * Builds extensions listed under {@code META-INF/services/ fully-qualified-SPI-name} ; implementations must either
-     * have a public no-arg constructor or one with the declared context type.
+     * Creates instances of extensions listed under {@code META-INF/services/ fully-qualified-SPI-name} ;
+     * implementations must either have a public no-arg constructor or one with the declared context type.
      * 
      * @param spi The extension SPI
      * @param contextType Optional context type
      * @param context Optional context instance
      * @return List of extensions
      */
-    public <T, C> List<T> build( final Class<T> spi, final Class<C> contextType, final C context )
+    public <T, C> List<T> create( final Class<T> spi, final Class<C> contextType, final C context )
     {
         final List<T> extensions = new ArrayList<T>();
         for ( final Class<? extends T> impl : load( spi ) )
@@ -224,11 +224,11 @@ public final class SisuExtensions
             catch ( final Exception e )
             {
                 final Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
-                Logs.trace( "Problem building: {}", impl, cause );
+                Logs.trace( "Problem creating: {}", impl, cause );
             }
             catch ( final LinkageError e )
             {
-                Logs.trace( "Problem building: {}", impl, e );
+                Logs.trace( "Problem creating: {}", impl, e );
             }
         }
         return extensions;
