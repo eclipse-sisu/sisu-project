@@ -74,6 +74,11 @@ public final class InjectorPublisher
         this.function = function;
     }
 
+    public InjectorPublisher( final Injector injector )
+    {
+        this( injector, injector.getInstance( RankingFunction.class ) );
+    }
+
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
