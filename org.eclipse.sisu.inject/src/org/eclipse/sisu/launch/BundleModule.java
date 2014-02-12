@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.space.BeanScanning;
 import org.eclipse.sisu.space.BundleClassSpace;
 import org.eclipse.sisu.space.SpaceModule;
@@ -45,14 +46,20 @@ public class BundleModule
      */
     protected final SisuExtensions extensions;
 
+    /**
+     * Shared locator of bound components.
+     */
+    protected final MutableBeanLocator locator;
+
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
-    public BundleModule( final Bundle bundle )
+    public BundleModule( final Bundle bundle, final MutableBeanLocator locator )
     {
         space = new BundleClassSpace( bundle );
         extensions = SisuExtensions.local( space );
+        this.locator = locator;
     }
 
     // ----------------------------------------------------------------------
@@ -116,8 +123,14 @@ public class BundleModule
         {
             public void configure( final Binder binder )
             {
+                // This instance binding will also auto-register the injector with the locator as a publisher.
+                // If you don't want this feature, replace the binding with toProvider(Providers.of(locator))
+                binder.bind( MutableBeanLocator.class ).toInstance( locator );
+
+                final Bundle bundle = space.getBundle();
+
                 binder.bind( ParameterKeys.PROPERTIES ).toInstance( getProperties() );
-                binder.bind( BundleContext.class ).toInstance( space.getBundle().getBundleContext() );
+                binder.bind( BundleContext.class ).toInstance( bundle.getBundleContext() );
             }
         };
     }

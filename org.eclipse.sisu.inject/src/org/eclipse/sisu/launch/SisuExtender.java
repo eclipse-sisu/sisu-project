@@ -13,7 +13,6 @@ package org.eclipse.sisu.launch;
 import java.util.Collections;
 import java.util.Map;
 
-import org.eclipse.sisu.inject.BeanLocator;
 import org.eclipse.sisu.inject.DefaultBeanLocator;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.inject.Weak;
@@ -22,8 +21,8 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 /**
- * Basic OSGi extender for Sisu that watches for JSR330 bundles and publishes them to the {@link BeanLocator}.<br>
- * To enable it install {@code org.eclipse.sisu.inject.extender}, or adapt it for your own extender bundle.
+ * OSGi extender that uses Sisu and Guice to wire up applications from one or more component bundles.<br>
+ * To enable it install {@code org.eclipse.sisu.inject.extender}, or adapt the class for your own extender.
  */
 public class SisuExtender
     implements BundleActivator
@@ -37,9 +36,9 @@ public class SisuExtender
         Collections.synchronizedMap( Weak.<Long, MutableBeanLocator> values() );
 
     /**
-     * Scans bundles for components.
+     * Tracker of component bundles.
      */
-    protected BundleScanner scanner;
+    protected SisuTracker tracker;
 
     // ----------------------------------------------------------------------
     // Public methods
@@ -47,14 +46,14 @@ public class SisuExtender
 
     public void start( final BundleContext context )
     {
-        scanner = createScanner( context );
-        scanner.open();
+        tracker = createTracker( context );
+        tracker.open();
     }
 
     public void stop( final BundleContext context )
     {
-        scanner.close();
-        scanner = null;
+        tracker.close();
+        tracker = null;
     }
 
     // ----------------------------------------------------------------------
@@ -72,14 +71,14 @@ public class SisuExtender
     }
 
     /**
-     * Creates a customised {@link BundleScanner} for this extender.
+     * Creates a new tracker of component bundles for this extender.
      * 
      * @param context The extender context
-     * @return New bundle scanner
+     * @return New bundle tracker
      */
-    protected BundleScanner createScanner( final BundleContext context )
+    protected SisuTracker createTracker( final BundleContext context )
     {
-        return new BundleScanner( context, bundleStateMask(), findLocator( context ) );
+        return new SisuTracker( context, bundleStateMask(), findLocator( context ) );
     }
 
     /**
@@ -98,7 +97,7 @@ public class SisuExtender
     // ----------------------------------------------------------------------
 
     /**
-     * Finds the {@link BeanLocator} associated with this extender; creates one if none exist.
+     * Finds the locator associated with this extender; creates one if none exist.
      * 
      * @param context The extender context
      * @return Associated bean locator
