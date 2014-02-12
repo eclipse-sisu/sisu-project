@@ -14,20 +14,15 @@ import org.eclipse.sisu.inject.BindingPublisher;
 import org.osgi.framework.Bundle;
 
 /**
- * Defines how to publish bundles containing specific types of components.
+ * Something that can prepare {@link BindingPublisher}s for component bundles.
  */
 public interface BundlePlan
 {
     /**
-     * Returns {@code true} if it applies to the bundle; otherwise {@code false}.
-     */
-    boolean appliesTo( Bundle bundle );
-
-    /**
-     * Produces a {@link BindingPublisher} of components from the given bundle.
+     * Prepares a {@link BindingPublisher} of components for the given bundle.
      * 
      * @param bundle The bundle
-     * @return Publisher of bindings
+     * @return Publisher of bindings; {@code null} if the plan doesn't apply
      */
-    BindingPublisher publish( Bundle bundle );
+    BindingPublisher prepare( Bundle bundle );
 }

@@ -38,6 +38,7 @@ import com.google.inject.Injector;
  */
 public class SisuTracker
     extends BundleTracker
+    implements BundlePlan
 {
     // ----------------------------------------------------------------------
     // Constants
@@ -112,14 +113,17 @@ public class SisuTracker
         final Long bundleId = bundle.getBundleId();
         if ( !bundlePublishers.containsKey( bundleId ) )
         {
-            final BundlePlan plan = selectPlan( bundle );
-            if ( null != plan )
+            // protect against repeated activation calls
+            bundlePublishers.put( bundleId, PLACEHOLDER );
+            final BindingPublisher publisher = prepare( bundle );
+            if ( null != publisher )
             {
-                // protect against repeated activation calls
-                bundlePublishers.put( bundleId, PLACEHOLDER );
-                final BindingPublisher publisher = plan.publish( bundle );
                 locator.add( publisher, publisher.maxBindingRank() );
                 bundlePublishers.put( bundleId, publisher );
+            }
+            else
+            {
+                bundlePublishers.remove( bundleId );
             }
         }
         return bundle;
@@ -163,30 +167,7 @@ public class SisuTracker
     // Customizable methods
     // ----------------------------------------------------------------------
 
-    /**
-     * Discovers plans listed locally under {@code META-INF/services/org.eclipse.sisu.launch.BundlePlan} ;
-     * implementations must have a public no-arg constructor or one that accepts a {@link MutableBeanLocator}.
-     * 
-     * @return List of plans
-     */
-    protected List<BundlePlan> discoverPlans()
-    {
-        final SisuExtensions extensions = SisuExtensions.local( new BundleClassSpace( context.getBundle() ) );
-        final List<BundlePlan> localPlans = extensions.create( BundlePlan.class, MutableBeanLocator.class, locator );
-
-        Collections.reverse( localPlans ); // TODO: support prioritized list?
-        localPlans.add( new SisuBundlePlan( locator ) );
-
-        return localPlans;
-    }
-
-    /**
-     * Selects the appropriate plan for the given bundle.
-     * 
-     * @param bundle The bundle
-     * @return The chosen plan
-     */
-    protected BundlePlan selectPlan( final Bundle bundle )
+    public BindingPublisher prepare( final Bundle bundle )
     {
         final String symbolicName = bundle.getSymbolicName();
         if ( SUPPORT_BUNDLE_NAMES.contains( symbolicName ) )
@@ -197,14 +178,30 @@ public class SisuTracker
         {
             return null; // fragment, we'll scan it when we process the host
         }
-        for ( final BundlePlan plan : plans )
+        // check plans in reverse order
+        BindingPublisher publisher = null;
+        for ( int i = plans.size() - 1; i >= 0 && null == publisher; i-- )
         {
-            if ( plan.appliesTo( bundle ) )
-            {
-                return plan;
-            }
+            publisher = plans.get( i ).prepare( bundle );
         }
-        return null; // nothing to do
+        return publisher;
+    }
+
+    /**
+     * Discovers plans listed locally under {@code META-INF/services/org.eclipse.sisu.launch.BundlePlan} ;
+     * implementations must have a public no-arg constructor or one that accepts a {@link MutableBeanLocator}.
+     * 
+     * @return List of plans
+     */
+    protected List<BundlePlan> discoverPlans()
+    {
+        final List<BundlePlan> localPlans = new ArrayList<BundlePlan>();
+
+        localPlans.add( new SisuBundlePlan( locator ) );
+        final SisuExtensions extensions = SisuExtensions.local( new BundleClassSpace( context.getBundle() ) );
+        localPlans.addAll( extensions.create( BundlePlan.class, MutableBeanLocator.class, locator ) );
+
+        return localPlans;
     }
 
     /**

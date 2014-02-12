@@ -21,7 +21,7 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 
 /**
- * {@link BundlePlan} that publishes bundles containing JSR330 components.
+ * {@link BundlePlan} that prepares {@link BindingPublisher}s for JSR330 bundles.
  */
 public class SisuBundlePlan
     implements BundlePlan
@@ -30,7 +30,7 @@ public class SisuBundlePlan
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final MutableBeanLocator locator;
+    protected final MutableBeanLocator locator;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -45,19 +45,9 @@ public class SisuBundlePlan
     // Public methods
     // ----------------------------------------------------------------------
 
-    public boolean appliesTo( final Bundle bundle )
+    public BindingPublisher prepare( final Bundle bundle )
     {
-        final String imports = (String) bundle.getHeaders().get( Constants.IMPORT_PACKAGE );
-        if ( null != imports )
-        {
-            return imports.contains( "javax.inject" ) || imports.contains( "com.google.inject" );
-        }
-        return false; // doesn't import any interesting packages
-    }
-
-    public BindingPublisher publish( final Bundle bundle )
-    {
-        return new InjectorPublisher( inject( bundle ) );
+        return appliesTo( bundle ) ? new InjectorPublisher( inject( compose( bundle ) ) ) : null;
     }
 
     // ----------------------------------------------------------------------
@@ -65,14 +55,23 @@ public class SisuBundlePlan
     // ----------------------------------------------------------------------
 
     /**
-     * Creates an {@link Injector} from the bundle's {@link Module} configuration.
+     * @return {@code true} if plan applies to the bundle; otherwise {@code false}
+     */
+    protected boolean appliesTo( final Bundle bundle )
+    {
+        final String imports = (String) bundle.getHeaders().get( Constants.IMPORT_PACKAGE );
+        return null != imports && ( imports.contains( "javax.inject" ) || imports.contains( "com.google.inject" ) );
+    }
+
+    /**
+     * Creates an {@link Injector} from the composed {@link Module} configuration.
      * 
-     * @param bundle The bundle
+     * @param module The module
      * @return Bundle injector
      */
-    protected Injector inject( final Bundle bundle )
+    protected Injector inject( final Module module )
     {
-        return Guice.createInjector( compose( bundle ) );
+        return Guice.createInjector( module );
     }
 
     /**
