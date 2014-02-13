@@ -9,3 +9,4 @@ Bundle-Vendor: Eclipse Sisu
 Bundle-Copyright: Copyright (c) 2010, 2013 Sonatype, Inc. and others
 Bundle-DocURL: http://www.eclipse.org/sisu/
 Bundle-License: http://www.eclipse.org/legal/epl-v10.html
+Import-Package: org.eclipse.sisu.plexus

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -22,6 +24,7 @@ import org.codehaus.plexus.context.DefaultContext;
 import org.codehaus.plexus.logging.LoggerManager;
 import org.eclipse.sisu.Parameters;
 import org.eclipse.sisu.bean.BeanManager;
+import org.eclipse.sisu.space.BeanScanning;
 import org.eclipse.sisu.space.ClassSpace;
 
 import com.google.inject.Binder;
@@ -39,13 +42,21 @@ public final class PlexusSpaceModule
 
     private final ClassSpace space;
 
+    private final BeanScanning scanning;
+
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
     public PlexusSpaceModule( final ClassSpace space )
     {
+        this( space, BeanScanning.OFF );
+    }
+
+    public PlexusSpaceModule( final ClassSpace space, final BeanScanning scanning )
+    {
         this.space = space;
+        this.scanning = scanning;
     }
 
     // ----------------------------------------------------------------------
@@ -70,8 +81,12 @@ public final class PlexusSpaceModule
 
         binder.bind( BeanManager.class ).toInstance( manager );
 
-        final PlexusBeanModule xmlModule = new PlexusXmlBeanModule( space, new ContextMapAdapter( context ) );
-        binder.install( new PlexusBindingModule( manager, xmlModule ) );
+        final List<PlexusBeanModule> beanModules = new ArrayList<PlexusBeanModule>();
+
+        beanModules.add( new PlexusXmlBeanModule( space, new ContextMapAdapter( context ) ) );
+        beanModules.add( new PlexusAnnotatedBeanModule( space, new ContextMapAdapter( context ), scanning ) );
+
+        binder.install( new PlexusBindingModule( manager, beanModules ) );
     }
 
     // ----------------------------------------------------------------------
