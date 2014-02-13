@@ -50,7 +50,7 @@ public final class DefaultPlexusBeanLocator
     @Inject
     public DefaultPlexusBeanLocator( final BeanLocator beanLocator )
     {
-        this( beanLocator, REALM_VISIBILITY );
+        this( beanLocator, null );
     }
 
     public DefaultPlexusBeanLocator( final BeanLocator beanLocator, final String visibility )
