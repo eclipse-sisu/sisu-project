@@ -18,6 +18,7 @@ import org.eclipse.sisu.launch.BundlePlan;
 import org.eclipse.sisu.space.BeanScanning;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
+import org.osgi.framework.FrameworkUtil;
 
 import com.google.inject.Guice;
 import com.google.inject.Module;
@@ -28,6 +29,13 @@ import com.google.inject.Module;
 public class PlexusBundlePlan
     implements BundlePlan
 {
+    // ----------------------------------------------------------------------
+    // Constants
+    // ----------------------------------------------------------------------
+
+    private static final String SUPPORT_BUNDLE_NAME =
+        FrameworkUtil.getBundle( PlexusSpaceModule.class ).getSymbolicName();
+
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -49,18 +57,20 @@ public class PlexusBundlePlan
 
     public BindingPublisher prepare( final Bundle bundle )
     {
-        if ( hasPlexusAnnotations( bundle ) || hasPlexusXml( bundle ) )
+        if ( !SUPPORT_BUNDLE_NAME.equals( bundle.getSymbolicName() ) )
         {
-            return new InjectorPublisher( Guice.createInjector( new BundleModule( bundle, locator )
+            if ( hasPlexusAnnotations( bundle ) || hasPlexusXml( bundle ) )
             {
-                @Override
-                protected Module spaceModule()
+                return new InjectorPublisher( Guice.createInjector( new BundleModule( bundle, locator )
                 {
-                    return new PlexusSpaceModule( space, BeanScanning.select( getProperties() ) );
-                }
-            } ) );
+                    @Override
+                    protected Module spaceModule()
+                    {
+                        return new PlexusSpaceModule( space, BeanScanning.select( getProperties() ) );
+                    }
+                } ) );
+            }
         }
-
         return null;
     }
 
