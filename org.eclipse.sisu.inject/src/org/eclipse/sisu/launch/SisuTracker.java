@@ -31,7 +31,6 @@ import org.osgi.framework.FrameworkUtil;
 import org.osgi.util.tracker.BundleTracker;
 
 import com.google.inject.Guice;
-import com.google.inject.Injector;
 
 /**
  * OSGi {@link BundleTracker} that tracks component bundles and uses {@link BundlePlan}s to publish them.
@@ -205,10 +204,10 @@ public class SisuTracker
     }
 
     /**
-     * Determines whether we should destroy the {@link Injector} of the given bundle.
+     * Determines whether we should remove the {@link BindingPublisher} associated with the given bundle.
      * 
      * @param bundle The bundle
-     * @return {@code true} if the injector should be destroyed; otherwise {@code false}
+     * @return {@code true} if the publisher should be removed; otherwise {@code false}
      */
     protected boolean evictBundle( final Bundle bundle )
     {
