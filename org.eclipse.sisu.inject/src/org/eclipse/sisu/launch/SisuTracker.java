@@ -168,8 +168,7 @@ public class SisuTracker
 
     public BindingPublisher prepare( final Bundle bundle )
     {
-        final String symbolicName = bundle.getSymbolicName();
-        if ( SUPPORT_BUNDLE_NAMES.contains( symbolicName ) )
+        if ( SUPPORT_BUNDLE_NAMES.contains( bundle.getSymbolicName() ) )
         {
             return null; // ignore our main support bundles
         }
