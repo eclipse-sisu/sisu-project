@@ -83,8 +83,9 @@ public final class PlexusSpaceModule
 
         final List<PlexusBeanModule> beanModules = new ArrayList<PlexusBeanModule>();
 
-        beanModules.add( new PlexusXmlBeanModule( space, new ContextMapAdapter( context ) ) );
-        beanModules.add( new PlexusAnnotatedBeanModule( space, new ContextMapAdapter( context ), scanning ) );
+        final Map<?, ?> variables = new ContextMapAdapter( context );
+        beanModules.add( new PlexusXmlBeanModule( space, variables ) );
+        beanModules.add( new PlexusAnnotatedBeanModule( space, variables, scanning ) );
 
         binder.install( new PlexusBindingModule( manager, beanModules ) );
     }
