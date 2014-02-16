@@ -103,11 +103,13 @@ public final class LifecycleManager
      */
     private boolean buildLifecycle( final Class<?> clazz )
     {
-        if ( !lifecycles.containsKey( clazz ) )
+        BeanLifecycle lifecycle = lifecycles.get( clazz );
+        if ( null == lifecycle )
         {
-            lifecycles.put( clazz, builder.build( clazz ) );
+            lifecycle = builder.build( clazz );
+            lifecycles.put( clazz, lifecycle );
         }
-        return lifecycles.get( clazz ) != BeanLifecycle.NO_OP;
+        return lifecycle != BeanLifecycle.NO_OP;
     }
 
     /**
