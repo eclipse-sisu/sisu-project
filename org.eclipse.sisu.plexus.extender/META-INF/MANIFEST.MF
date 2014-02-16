@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.eclipse.sisu.plexus.extender;singleton:=true
-Bundle-Version: 0.2.0
+Bundle-Version: 0.3.0.qualifier
 Bundle-Name: Sisu-Plexus Extender (Incubation)
 Fragment-Host: org.eclipse.sisu.inject.extender
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6,J2SE-1.5,JavaSE-1.7
