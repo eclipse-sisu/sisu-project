@@ -13,6 +13,7 @@ package org.eclipse.sisu.plexus;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import org.codehaus.plexus.PlexusConstants;
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.inject.BeanLocator;
 
@@ -29,12 +30,6 @@ import com.google.inject.name.Names;
 public final class DefaultPlexusBeanLocator
     implements PlexusBeanLocator
 {
-    // ----------------------------------------------------------------------
-    // Constants
-    // ----------------------------------------------------------------------
-
-    private static final String REALM_VISIBILITY = "realm";
-
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -68,7 +63,7 @@ public final class DefaultPlexusBeanLocator
     {
         final Key<T> key = hints.length == 1 ? Key.get( role, Names.named( hints[0] ) ) : Key.get( role, Named.class );
         Iterable<BeanEntry<Named, T>> beans = (Iterable<BeanEntry<Named, T>>) beanLocator.<Named, T> locate( key );
-        if ( REALM_VISIBILITY.equalsIgnoreCase( visibility ) )
+        if ( PlexusConstants.REALM_VISIBILITY.equalsIgnoreCase( visibility ) )
         {
             beans = new RealmFilter<T>( beans );
         }
