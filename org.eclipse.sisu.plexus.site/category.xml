@@ -19,4 +19,10 @@
   <bundle id="org.eclipse.sisu.plexus.source" version="0.0.0">
     <category name="org.eclipse.sisu.plexus"/>
   </bundle>
+  <bundle id="org.eclipse.sisu.plexus.extender" version="0.0.0">
+    <category name="org.eclipse.sisu.plexus"/>
+  </bundle>
+  <bundle id="org.eclipse.sisu.plexus.extender.source" version="0.0.0">
+    <category name="org.eclipse.sisu.plexus"/>
+  </bundle>
 </site>
