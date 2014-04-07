@@ -20,6 +20,7 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import org.eclipse.sisu.inject.BindingPublisher;
+import org.eclipse.sisu.inject.InjectorPublisher;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.inject.Weak;
 import org.eclipse.sisu.space.BundleClassSpace;
@@ -31,6 +32,7 @@ import org.osgi.framework.FrameworkUtil;
 import org.osgi.util.tracker.BundleTracker;
 
 import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /**
  * OSGi {@link BundleTracker} that tracks component bundles and uses {@link BundlePlan}s to publish them.
@@ -117,8 +119,7 @@ public class SisuTracker
             final BindingPublisher publisher = prepare( bundle );
             if ( null != publisher )
             {
-                locator.add( publisher, publisher.maxBindingRank() );
-                bundlePublishers.put( bundleId, publisher );
+                addPublisher( bundleId, publisher );
             }
             else
             {
@@ -129,22 +130,19 @@ public class SisuTracker
     }
 
     @Override
+    @SuppressWarnings( "boxing" )
     public final void removedBundle( final Bundle bundle, final BundleEvent event, final Object object )
     {
         if ( evictBundle( bundle ) )
         {
-            @SuppressWarnings( "boxing" )
-            final Object publisher = bundlePublishers.remove( bundle.getBundleId() );
-            if ( publisher instanceof BindingPublisher )
-            {
-                locator.remove( (BindingPublisher) publisher );
-            }
+            removePublisher( bundle.getBundleId() );
         }
     }
 
     /**
      * Purges any bundles that are no longer valid.
      */
+    @SuppressWarnings( "boxing" )
     public final void purgeBundles()
     {
         for ( final long bundleId : new ArrayList<Long>( bundlePublishers.keySet() ) )
@@ -152,12 +150,7 @@ public class SisuTracker
             final Bundle bundle = context.getBundle( bundleId );
             if ( null == bundle || evictBundle( bundle ) )
             {
-                @SuppressWarnings( "boxing" )
-                final Object publisher = bundlePublishers.remove( bundleId );
-                if ( publisher instanceof BindingPublisher )
-                {
-                    locator.remove( (BindingPublisher) publisher );
-                }
+                removePublisher( bundleId );
             }
         }
     }
@@ -211,5 +204,36 @@ public class SisuTracker
     protected boolean evictBundle( final Bundle bundle )
     {
         return ( bundle.getState() & stateMask ) == 0;
+    }
+
+    // ----------------------------------------------------------------------
+    // Implementation methods
+    // ----------------------------------------------------------------------
+
+    private void addPublisher( final Long bundleId, final BindingPublisher publisher )
+    {
+        if ( locator.add( publisher, publisher.maxBindingRank() ) )
+        {
+            bundlePublishers.put( bundleId, publisher );
+        }
+        else if ( publisher instanceof InjectorPublisher )
+        {
+            // injector was auto-published already, so all we can do is track the injector
+            bundlePublishers.put( bundleId, ( (InjectorPublisher) publisher ).getInjector() );
+        }
+    }
+
+    private void removePublisher( final Long bundleId )
+    {
+        final Object publisher = bundlePublishers.remove( bundleId );
+        if ( publisher instanceof BindingPublisher )
+        {
+            locator.remove( (BindingPublisher) publisher );
+        }
+        else if ( publisher instanceof Injector )
+        {
+            // we're tracking an auto-published injector, use temporary wrapper to remove it
+            locator.remove( new InjectorPublisher( (Injector) publisher, null /* unused */) );
+        }
     }
 }
