@@ -226,19 +226,28 @@ public final class Logs
      */
     private static String format( final String format, final Object arg )
     {
+        final int len = format.length();
         boolean detailed = true;
-        int cursor = format.indexOf( "{}" ); // replaced with String.valueOf
-        if ( cursor < 0 )
+        int cursor = 0;
+        for ( char prevChar = ' ', currChar; cursor < len; prevChar = currChar, cursor++ )
         {
-            cursor = format.indexOf( "<>" ); // use identityToString instead
-            detailed = false;
+            currChar = format.charAt( cursor );
+            if ( prevChar == '{' && currChar == '}' )
+            {
+                break; // replace anchor with String.valueOf
+            }
+            if ( prevChar == '<' && currChar == '>' )
+            {
+                detailed = false;
+                break; // use Logs.identityToString instead
+            }
         }
-        if ( cursor < 0 )
+        if ( cursor >= len )
         {
             return format;
         }
         final StringBuilder buf = new StringBuilder();
-        if ( cursor > 0 )
+        if ( --cursor > 0 )
         {
             buf.append( format.substring( 0, cursor ) );
         }
@@ -251,9 +260,9 @@ public final class Logs
             buf.append( e );
         }
         cursor += 2;
-        if ( cursor < format.length() )
+        if ( cursor < len )
         {
-            buf.append( format.substring( cursor, format.length() ) );
+            buf.append( format.substring( cursor, len ) );
         }
         return buf.toString();
     }

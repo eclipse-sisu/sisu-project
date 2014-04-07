@@ -43,6 +43,7 @@ public class LoggingExample
         Logs.trace( "{}{}", "a", "b" );
         Logs.trace( "{{}}{{}}", null, null );
         Logs.trace( "{}-{}", "a", "b" );
+        Logs.trace( "<>-{}", "a", "b" );
 
         Logs.trace( "{} {}", new BadValue(), new BadValue() );
 
@@ -64,6 +65,7 @@ public class LoggingExample
         Logs.warn( "{}{}", "a", "b" );
         Logs.warn( "{{}}{{}}", null, null );
         Logs.warn( "{}-{}", "a", "b" );
+        Logs.warn( "<>-{}", "a", "b" );
 
         Logs.warn( "{} {}", new BadValue(), new BadValue() );
 
