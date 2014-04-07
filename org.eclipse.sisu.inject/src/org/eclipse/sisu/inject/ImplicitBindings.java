@@ -78,11 +78,11 @@ final class ImplicitBindings
                 }
                 catch ( final RuntimeException e ) // NOPMD
                 {
-                    // no luck, move onto next injector
+                    Logs.trace( "Problem with just-in-time binding: {}", justInTimeKey, e );
                 }
                 catch ( final LinkageError e ) // NOPMD
                 {
-                    // no luck, move onto next injector
+                    Logs.trace( "Problem with just-in-time binding: {}", justInTimeKey, e );
                 }
             }
         }

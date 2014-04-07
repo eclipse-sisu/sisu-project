@@ -102,7 +102,7 @@ public final class SpaceModule
     // ----------------------------------------------------------------------
 
     /**
-     * Applies a new wiring {@link Strategy} to the current module.
+     * Applies a new visitor {@link Strategy} to the current module.
      * 
      * @param _strategy The new strategy
      * @return Updated module
