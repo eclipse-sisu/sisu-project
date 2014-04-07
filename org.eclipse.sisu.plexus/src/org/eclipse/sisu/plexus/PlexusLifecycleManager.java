@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
-import java.net.URLClassLoader;
+import java.security.SecureClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -189,7 +189,7 @@ public final class PlexusLifecycleManager
             {
                 // need to check hierarchy in case bean is proxied
                 final ClassLoader loader = clazz.getClassLoader();
-                if ( loader instanceof URLClassLoader )
+                if ( loader instanceof SecureClassLoader )
                 {
                     Thread.currentThread().setContextClassLoader( loader );
                     break;
