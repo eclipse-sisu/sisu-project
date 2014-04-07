@@ -20,6 +20,7 @@ import org.junit.Ignore;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
+import com.google.inject.PrivateModule;
 
 @Ignore( "Fails on grid" )
 public class CachingModuleTest
@@ -34,6 +35,16 @@ public class CachingModuleTest
         {
             requireBinding( CachingModuleTest.class );
             getMembersInjector( CachingModuleTest.class );
+
+            install( new PrivateModule()
+            {
+                @Override
+                protected void configure()
+                {
+                    requireBinding( CachingModuleTest.class );
+                    getMembersInjector( CachingModuleTest.class );
+                }
+            } );
         }
     }
 

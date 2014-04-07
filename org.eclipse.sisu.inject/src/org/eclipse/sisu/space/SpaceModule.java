@@ -17,10 +17,13 @@ import java.util.concurrent.ConcurrentMap;
 import javax.inject.Qualifier;
 
 import com.google.inject.Binder;
+import com.google.inject.Key;
 import com.google.inject.Module;
+import com.google.inject.PrivateBinder;
 import com.google.inject.spi.Element;
 import com.google.inject.spi.Elements;
 import com.google.inject.spi.MembersInjectorLookup;
+import com.google.inject.spi.PrivateElements;
 import com.google.inject.spi.ProviderLookup;
 
 /**
@@ -167,15 +170,11 @@ public final class SpaceModule
 
     private void recordAndReplayElements( final Binder binder )
     {
-        boolean alreadyUsed = true;
-
-        /*
-         * Record elements first time round
-         */
         final String key = space.toString();
         List<Element> elements = RecordedElements.cache.get( key );
         if ( null == elements )
         {
+            // record results of scanning plus any custom module bindings
             final List<Element> recording = Elements.getElements( new Module()
             {
                 public void configure( final Binder recorder )
@@ -186,31 +185,49 @@ public final class SpaceModule
             elements = RecordedElements.cache.putIfAbsent( key, recording );
             if ( null == elements )
             {
-                elements = recording;
-                alreadyUsed = false;
+                // shortcut, no need to reset state first time round
+                Elements.getModule( recording ).configure( binder );
+                return;
             }
         }
 
-        /*
-         * Then replay onto current binder
-         */
+        replayRecordedElements( binder, elements );
+    }
+
+    private static void replayRecordedElements( final Binder binder, List<Element> elements )
+    {
         for ( final Element e : elements )
         {
-            if ( alreadyUsed )
+            // lookups have state so we replace them with duplicates when replaying...
+            if ( e instanceof ProviderLookup<?> )
             {
-                // lookups have state so we replace them with duplicates when replaying...
-                if ( e instanceof ProviderLookup<?> )
+                binder.getProvider( ( (ProviderLookup<?>) e ).getKey() );
+            }
+            else if ( e instanceof MembersInjectorLookup<?> )
+            {
+                binder.getMembersInjector( ( (MembersInjectorLookup<?>) e ).getType() );
+            }
+            else if ( e instanceof PrivateElements )
+            {
+                // Follows example set by Guice Modules when applying private elements:
+                final PrivateElements privateElements = (PrivateElements) e;
+
+                // 1. create new private binder, using the elements source token
+                final PrivateBinder privateBinder = binder.withSource( e.getSource() ).newPrivateBinder();
+
+                // 2. for all elements, apply each element to the private binder
+                replayRecordedElements( privateBinder, privateElements.getElements() );
+
+                // 3. re-expose any exposed keys using their exposed source token
+                for ( final Key<?> k : privateElements.getExposedKeys() )
                 {
-                    binder.getProvider( ( (ProviderLookup<?>) e ).getKey() );
-                    continue;
-                }
-                if ( e instanceof MembersInjectorLookup<?> )
-                {
-                    binder.getMembersInjector( ( (MembersInjectorLookup<?>) e ).getType() );
-                    continue;
+                    privateBinder.withSource( privateElements.getExposedSource( k ) ).expose( k );
                 }
             }
-            e.applyTo( binder );
+            else
+            {
+                e.applyTo( binder );
+            }
         }
     }
 }
