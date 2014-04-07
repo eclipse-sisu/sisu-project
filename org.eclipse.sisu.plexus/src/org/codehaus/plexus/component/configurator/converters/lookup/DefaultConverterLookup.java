@@ -40,6 +40,7 @@ import org.codehaus.plexus.component.configurator.converters.composite.MapConver
 import org.codehaus.plexus.component.configurator.converters.composite.ObjectWithFieldsConverter;
 import org.codehaus.plexus.component.configurator.converters.composite.PlexusConfigurationConverter;
 import org.codehaus.plexus.component.configurator.converters.composite.PropertiesConverter;
+import org.codehaus.plexus.component.configurator.converters.special.ClassRealmConverter;
 import org.eclipse.sisu.inject.Weak;
 
 public final class DefaultConverterLookup
@@ -67,6 +68,7 @@ public final class DefaultConverterLookup
         new ShortConverter(), //
         // new ClassConverter(), // not installed by default
         new PlexusConfigurationConverter(), //
+        new ClassRealmConverter(), //
         new StringBufferConverter(), //
         new StringBuilderConverter(), //
         new ObjectWithFieldsConverter() };

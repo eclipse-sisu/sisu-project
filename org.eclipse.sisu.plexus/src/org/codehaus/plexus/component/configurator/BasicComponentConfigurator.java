@@ -27,9 +27,16 @@ public class BasicComponentConfigurator
                                     final ConfigurationListener listener )
         throws ComponentConfigurationException
     {
-        converterLookup.registerConverter( new ClassRealmConverter( realm ) );
+        try
+        {
+            ClassRealmConverter.pushContextRealm( realm );
 
-        new ObjectWithFieldsConverter().processConfiguration( converterLookup, component, realm, configuration,
-                                                              evaluator, listener );
+            new ObjectWithFieldsConverter().processConfiguration( converterLookup, component, realm, //
+                                                                  configuration, evaluator, listener );
+        }
+        finally
+        {
+            ClassRealmConverter.popContextRealm();
+        }
     }
 }

@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.codehaus.plexus.component.configurator.converters.special;
 
+import java.util.LinkedList;
+
 import org.codehaus.classworlds.ClassRealmAdapter;
 import org.codehaus.classworlds.ClassRealmReverseAdapter;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
@@ -22,9 +24,12 @@ import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLoo
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
+@SuppressWarnings( "unchecked" )
 public final class ClassRealmConverter
     extends AbstractConfigurationConverter
 {
+    private static ThreadLocal<Object> context = new ThreadLocal<Object>();
+
     private final ClassRealm realm;
 
     public ClassRealmConverter( final ClassRealm realm )
@@ -35,6 +40,68 @@ public final class ClassRealmConverter
     public ClassRealmConverter( final org.codehaus.classworlds.ClassRealm realm )
     {
         this.realm = ClassRealmReverseAdapter.getInstance( realm );
+    }
+
+    public ClassRealmConverter()
+    {
+        this.realm = null;
+    }
+
+    public static void pushContextRealm( final ClassRealm realm )
+    {
+        final Object holder = context.get();
+        if ( null == holder )
+        {
+            context.set( realm );
+        }
+        else if ( holder instanceof ClassRealm )
+        {
+            // upgrade from single realm to stack of realms
+            final LinkedList<ClassRealm> stack = new LinkedList<ClassRealm>();
+            stack.add( realm );
+            stack.add( (ClassRealm) holder );
+            context.set( stack );
+        }
+        else if ( holder instanceof LinkedList<?> )
+        {
+            ( (LinkedList<ClassRealm>) holder ).addFirst( realm );
+        }
+    }
+
+    public static void popContextRealm()
+    {
+        final Object holder = context.get();
+        if ( holder instanceof ClassRealm )
+        {
+            context.remove();
+        }
+        else if ( holder instanceof LinkedList<?> )
+        {
+            final LinkedList<ClassRealm> stack = (LinkedList<ClassRealm>) holder;
+            if ( stack.size() == 2 )
+            {
+                // downgrade to single realm
+                context.set( stack.get( 1 ) );
+            }
+            else
+            {
+                stack.removeFirst();
+            }
+        }
+    }
+
+    public ClassRealm peekContextRealm()
+    {
+        final Object holder = context.get();
+        if ( holder instanceof ClassRealm )
+        {
+            return (ClassRealm) holder;
+        }
+        else if ( holder instanceof LinkedList<?> )
+        {
+            return ( (LinkedList<ClassRealm>) holder ).getFirst();
+        }
+        return realm;
     }
 
     public boolean canConvert( final Class<?> type )
@@ -51,7 +118,7 @@ public final class ClassRealmConverter
         Object result = fromExpression( configuration, evaluator, type );
         if ( null == result )
         {
-            result = realm;
+            result = peekContextRealm();
         }
         if ( !ClassRealm.class.isAssignableFrom( type ) && result instanceof ClassRealm )
         {
