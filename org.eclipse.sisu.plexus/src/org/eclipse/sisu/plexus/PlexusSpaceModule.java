@@ -44,6 +44,8 @@ public final class PlexusSpaceModule
 
     private final BeanScanning scanning;
 
+    private final BeanManager delegate;
+
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
@@ -55,8 +57,14 @@ public final class PlexusSpaceModule
 
     public PlexusSpaceModule( final ClassSpace space, final BeanScanning scanning )
     {
+        this( space, scanning, null );
+    }
+
+    public PlexusSpaceModule( final ClassSpace space, final BeanScanning scanning, final BeanManager delegate )
+    {
         this.space = space;
         this.scanning = scanning;
+        this.delegate = delegate;
     }
 
     // ----------------------------------------------------------------------
@@ -77,7 +85,7 @@ public final class PlexusSpaceModule
 
         final BeanManager manager = new PlexusLifecycleManager( binder.getProvider( Context.class ), //
                                                                 binder.getProvider( LoggerManager.class ), //
-                                                                slf4jLoggerFactoryProvider, null );
+                                                                slf4jLoggerFactoryProvider, delegate );
 
         binder.bind( BeanManager.class ).toInstance( manager );
 
