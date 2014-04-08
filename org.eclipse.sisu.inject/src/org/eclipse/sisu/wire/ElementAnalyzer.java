@@ -311,23 +311,30 @@ final class ElementAnalyzer
     @SuppressWarnings( { "rawtypes", "unchecked" } )
     private void wireParameters( final Key key, final Map mergedProperties )
     {
-        final TypeLiteral<?> type = key.getTypeLiteral();
-        final Class<?> clazz = type.getRawType();
-        if ( Map.class == clazz )
+        if ( ParameterKeys.PROPERTIES.equals( key ) )
         {
-            final TypeLiteral<?>[] constraints = TypeArguments.get( type );
-            if ( constraints.length == 2 && String.class == constraints[1].getRawType() )
-            {
-                binder.bind( key ).toInstance( new StringProperties( mergedProperties ) );
-            }
-            else
-            {
-                binder.bind( key ).toInstance( mergedProperties );
-            }
+            binder.bind( key ).toInstance( mergedProperties );
         }
-        else if ( String[].class == clazz )
+        else
         {
-            binder.bind( key ).toInstance( arguments.toArray( new String[arguments.size()] ) );
+            final TypeLiteral<?> type = key.getTypeLiteral();
+            final Class<?> clazz = type.getRawType();
+            if ( Map.class == clazz )
+            {
+                final TypeLiteral<?>[] constraints = TypeArguments.get( type );
+                if ( constraints.length == 2 && String.class == constraints[1].getRawType() )
+                {
+                    binder.bind( key ).to( StringProperties.class );
+                }
+                else
+                {
+                    binder.bind( key ).to( ParameterKeys.PROPERTIES );
+                }
+            }
+            else if ( String[].class == clazz )
+            {
+                binder.bind( key ).toInstance( arguments.toArray( new String[arguments.size()] ) );
+            }
         }
     }
 

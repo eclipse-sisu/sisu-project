@@ -67,7 +67,7 @@ import javax.inject.Qualifier;
  * will merge multiple &#064;{@link Parameters} bindings; for maps by providing an aggregate view over all bound maps,
  * for arrays by appending their elements into a single argument array.
  */
-@Target( value = { ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD } )
+@Target( value = { ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD, ElementType.TYPE } )
 @Retention( RetentionPolicy.RUNTIME )
 @Qualifier
 public @interface Parameters

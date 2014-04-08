@@ -18,9 +18,12 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import org.eclipse.sisu.Parameters;
+
 /**
  * Delegating {@link Map} that merges a series of {@link Map}s into one consistent view.
  */
+@Parameters
 final class MergedProperties
     extends AbstractMap<Object, Object>
 {

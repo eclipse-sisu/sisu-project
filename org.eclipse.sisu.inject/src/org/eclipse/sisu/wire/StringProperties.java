@@ -15,9 +15,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import org.eclipse.sisu.Parameters;
+
 /**
  * Delegating {@link Map} that ignores any non-String properties.
  */
+@Singleton
 final class StringProperties
     extends AbstractMap<String, String>
 {
@@ -31,7 +37,9 @@ final class StringProperties
     // Constructors
     // ----------------------------------------------------------------------
 
-    StringProperties( final Map<?, ?> delegate )
+    @Inject
+    @SuppressWarnings( "rawtypes" )
+    StringProperties( @Parameters final Map delegate )
     {
         this.delegate = delegate;
     }
