@@ -113,7 +113,8 @@ public final class PlexusSpaceModule
         // ----------------------------------------------------------------------
 
         @Inject
-        protected void setParameters( @Parameters final Map<?, ?> parameters )
+        @SuppressWarnings( { "rawtypes", "unchecked" } )
+        protected void setParameters( @Parameters final Map parameters )
         {
             contextData.putAll( parameters );
         }
