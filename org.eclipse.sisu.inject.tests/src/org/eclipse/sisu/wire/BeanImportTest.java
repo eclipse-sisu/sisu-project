@@ -17,6 +17,7 @@ import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -31,6 +32,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.Nullable;
+import org.eclipse.sisu.inject.BeanLocator;
 import org.eclipse.sisu.inject.TypeArguments;
 import org.eclipse.sisu.space.ClassSpace;
 import org.eclipse.sisu.space.URLClassSpace;
@@ -786,5 +788,28 @@ public class BeanImportTest
 
         assertSame( y, ( (PlaceholderString) grandchild.getInstance( Key.get( X.class, Names.named( "PS" ) ) ) ).fixed );
         assertSame( y, ( (PlaceholderString) grandchild.getInstance( Key.get( X.class, Names.named( "PS" ) ) ) ).fuzzy );
+    }
+
+    public void testParametersLookup()
+    {
+        final BeanLocator locator = Guice.createInjector( new WireModule( new AbstractModule()
+        {
+            @Override
+            protected void configure()
+            {
+                bind( ParameterKeys.PROPERTIES ).toInstance( Collections.singletonMap( "Hello", "world!" ) );
+            }
+        } ) ).getInstance( BeanLocator.class );
+
+        @SuppressWarnings( { "rawtypes", "unchecked" } )
+        final Iterator<Map<?, ?>> itr = new EntryListAdapter( locator.locate( ParameterKeys.PROPERTIES ) ).iterator();
+
+        assertTrue( itr.hasNext() );
+
+        Map<?, ?> parameters = itr.next();
+        assertEquals( 1, parameters.size() );
+        assertEquals( "world!", parameters.get( "Hello" ) );
+
+        assertFalse( itr.hasNext() );
     }
 }

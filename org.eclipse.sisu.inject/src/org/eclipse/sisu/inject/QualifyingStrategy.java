@@ -70,6 +70,20 @@ enum QualifyingStrategy
                 return qualifier;
             }
 
+            // binding only has marker type; upgrade to pseudo-instance
+            if ( markerType.equals( binding.getKey().getAnnotationType() )
+                && markerType.getDeclaredMethods().length == 0 )
+            {
+                // this stub is all we need for internal processing
+                return new Annotation()
+                {
+                    public Class<? extends Annotation> annotationType()
+                    {
+                        return markerType;
+                    }
+                };
+            }
+
             if ( binding instanceof ProviderKeyBinding<?> )
             {
                 final Key<?> providerKey = ( (ProviderKeyBinding<?>) binding ).getProviderKey();
