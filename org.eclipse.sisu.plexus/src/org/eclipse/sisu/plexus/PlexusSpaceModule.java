@@ -83,9 +83,11 @@ public final class PlexusSpaceModule
         binder.bind( PlexusBeanLocator.class ).to( DefaultPlexusBeanLocator.class );
         binder.bind( PlexusContainer.class ).to( PseudoPlexusContainer.class );
 
-        final BeanManager manager = new PlexusLifecycleManager( binder.getProvider( Context.class ), //
-                                                                binder.getProvider( LoggerManager.class ), //
-                                                                slf4jLoggerFactoryProvider, delegate );
+        final BeanManager manager =
+            delegate instanceof PlexusLifecycleManager ? delegate
+                            : new PlexusLifecycleManager( binder.getProvider( Context.class ),
+                                                          binder.getProvider( LoggerManager.class ),
+                                                          slf4jLoggerFactoryProvider, delegate );
 
         binder.bind( BeanManager.class ).toInstance( manager );
 
