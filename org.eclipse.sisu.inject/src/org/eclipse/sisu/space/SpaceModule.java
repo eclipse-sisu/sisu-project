@@ -194,7 +194,7 @@ public final class SpaceModule
         replayRecordedElements( binder, elements );
     }
 
-    private static void replayRecordedElements( final Binder binder, List<Element> elements )
+    private static void replayRecordedElements( final Binder binder, final List<Element> elements )
     {
         for ( final Element e : elements )
         {
