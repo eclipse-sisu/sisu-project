@@ -44,7 +44,7 @@ public final class PlexusSpaceModule
 
     private final BeanScanning scanning;
 
-    private final BeanManager delegate;
+    private BeanManager delegate;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -57,14 +57,8 @@ public final class PlexusSpaceModule
 
     public PlexusSpaceModule( final ClassSpace space, final BeanScanning scanning )
     {
-        this( space, scanning, null );
-    }
-
-    public PlexusSpaceModule( final ClassSpace space, final BeanScanning scanning, final BeanManager delegate )
-    {
         this.space = space;
         this.scanning = scanning;
-        this.delegate = delegate;
     }
 
     // ----------------------------------------------------------------------
@@ -98,6 +92,15 @@ public final class PlexusSpaceModule
         beanModules.add( new PlexusAnnotatedBeanModule( space, variables, scanning ) );
 
         binder.install( new PlexusBindingModule( manager, beanModules ) );
+    }
+
+    /**
+     * Delegate management of non-Plexus beans to the given {@link BeanManager}.
+     */
+    public PlexusSpaceModule with( final BeanManager manager )
+    {
+        delegate = manager;
+        return this;
     }
 
     // ----------------------------------------------------------------------
