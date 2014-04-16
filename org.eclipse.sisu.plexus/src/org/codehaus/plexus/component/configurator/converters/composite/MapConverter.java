@@ -26,6 +26,7 @@ import org.codehaus.plexus.component.configurator.converters.ParameterizedConfig
 import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.eclipse.sisu.inject.Logs;
 
 public class MapConverter
     extends AbstractConfigurationConverter
@@ -72,9 +73,23 @@ public class MapConverter
             final ConfigurationConverter converter = lookup.lookupConverterForType( elementType );
             for ( int i = 0, size = configuration.getChildCount(); i < size; i++ )
             {
+                Object elementValue;
                 final PlexusConfiguration element = configuration.getChild( i );
-                map.put( element.getName(), converter.fromConfiguration( lookup, element, elementType, enclosingType,
-                                                                         loader, evaluator, listener ) );
+                try
+                {
+                    elementValue = converter.fromConfiguration( lookup, element, elementType, enclosingType, //
+                                                                loader, evaluator, listener );
+                }
+                // TEMP: remove when http://jira.codehaus.org/browse/MSHADE-168 is fixed
+                catch ( final ComponentConfigurationException e )
+                {
+                    elementValue = fromExpression( element, evaluator );
+
+                    Logs.warn( "Map in " + enclosingType + " declares value type as: {} but saw: {} at runtime",
+                               elementType, null != elementValue ? elementValue.getClass() : null );
+                }
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                map.put( element.getName(), elementValue );
             }
             return map;
         }
