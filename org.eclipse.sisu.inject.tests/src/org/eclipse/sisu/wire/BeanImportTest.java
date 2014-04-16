@@ -806,7 +806,7 @@ public class BeanImportTest
 
         assertTrue( itr.hasNext() );
 
-        Map<?, ?> parameters = itr.next();
+        final Map<?, ?> parameters = itr.next();
         assertEquals( 1, parameters.size() );
         assertEquals( "world!", parameters.get( "Hello" ) );
 
