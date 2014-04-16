@@ -86,6 +86,6 @@ public class PlexusBundlePlan
 
     protected static boolean hasPlexusXml( final Bundle bundle )
     {
-        return null != bundle.findEntries( "META-INF/plexus", "components.xml", true );
+        return null != bundle.findEntries( "META-INF/plexus", "components.xml", false );
     }
 }
