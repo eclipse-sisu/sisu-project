@@ -17,6 +17,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextMapAdapter;
@@ -119,9 +120,10 @@ public final class PlexusSpaceModule
 
         @Inject
         @SuppressWarnings( { "rawtypes", "unchecked" } )
-        protected void setParameters( @Parameters final Map parameters )
+        protected void setParameters( @Parameters final Map parameters, final PlexusContainer container )
         {
             contextData.putAll( parameters );
+            contextData.put( PlexusConstants.PLEXUS_KEY, container );
         }
     }
 }
