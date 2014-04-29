@@ -18,20 +18,20 @@ import java.util.Set;
 /**
  * {@link Set} backed by an {@link Iterable} sequence of map entries.
  */
-public final class EntrySetAdapter<K, V>
+public final class EntrySetAdapter<V>
     extends AbstractSet<V>
 {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final Iterable<? extends Entry<K, V>> iterable;
+    private final Iterable<? extends Entry<?, V>> iterable;
 
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
-    public EntrySetAdapter( final Iterable<? extends Entry<K, V>> iterable )
+    public EntrySetAdapter( final Iterable<? extends Entry<?, V>> iterable )
     {
         this.iterable = iterable;
     }
@@ -43,7 +43,7 @@ public final class EntrySetAdapter<K, V>
     @Override
     public Iterator<V> iterator()
     {
-        return new ValueIterator<K, V>( iterable );
+        return new ValueIterator<V>( iterable );
     }
 
     @Override
@@ -70,20 +70,20 @@ public final class EntrySetAdapter<K, V>
     /**
      * Value {@link Iterator} backed by a Key:Value {@link Iterator}.
      */
-    private static final class ValueIterator<K, V>
+    private static final class ValueIterator<V>
         implements Iterator<V>
     {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
 
-        private final Iterator<? extends Entry<K, V>> iterator;
+        private final Iterator<? extends Entry<?, V>> iterator;
 
         // ----------------------------------------------------------------------
         // Constructors
         // ----------------------------------------------------------------------
 
-        ValueIterator( final Iterable<? extends Entry<K, V>> iterable )
+        ValueIterator( final Iterable<? extends Entry<?, V>> iterable )
         {
             this.iterator = iterable.iterator();
         }

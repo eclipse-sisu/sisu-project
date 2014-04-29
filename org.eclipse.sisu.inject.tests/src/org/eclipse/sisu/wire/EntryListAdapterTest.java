@@ -30,7 +30,7 @@ public class EntryListAdapterTest
     public void testListSize()
     {
         final Map<String, Integer> map = new HashMap<String, Integer>();
-        final List<Integer> list = new EntryListAdapter<String, Integer>( map.entrySet() );
+        final List<Integer> list = new EntryListAdapter<Integer>( map.entrySet() );
 
         assertTrue( list.isEmpty() );
         map.put( "A", 1 );
@@ -48,7 +48,7 @@ public class EntryListAdapterTest
     public void testEmptyList()
     {
         final ListIterator<String> i =
-            new EntryListAdapter<Integer, String>( Collections.<Entry<Integer, String>> emptyList() ).listIterator( 0 );
+            new EntryListAdapter<String>( Collections.<Entry<Integer, String>> emptyList() ).listIterator( 0 );
 
         assertFalse( i.hasNext() );
         assertEquals( 0, i.nextIndex() );
@@ -90,7 +90,7 @@ public class EntryListAdapterTest
 
         try
         {
-            new EntryListAdapter<Integer, String>( map.entrySet() ).listIterator( -1 );
+            new EntryListAdapter<String>( map.entrySet() ).listIterator( -1 );
             fail( "Expected IndexOutOfBoundsException" );
         }
         catch ( final IndexOutOfBoundsException e )
@@ -99,7 +99,7 @@ public class EntryListAdapterTest
 
         try
         {
-            new EntryListAdapter<Integer, String>( map.entrySet() ).listIterator( 4 );
+            new EntryListAdapter<String>( map.entrySet() ).listIterator( 4 );
             fail( "Expected IndexOutOfBoundsException" );
         }
         catch ( final IndexOutOfBoundsException e )
@@ -116,7 +116,7 @@ public class EntryListAdapterTest
         map.put( 1, "A" );
         map.put( 2, "B" );
 
-        final Iterator<String> i = new EntryListAdapter<Integer, String>( map.entrySet() ).iterator();
+        final Iterator<String> i = new EntryListAdapter<String>( map.entrySet() ).iterator();
 
         assertTrue( i.hasNext() );
 
@@ -157,7 +157,7 @@ public class EntryListAdapterTest
         map.put( 1, "A" );
         map.put( 2, "B" );
 
-        final ListIterator<String> i = new EntryListAdapter<Integer, String>( map.entrySet() ).listIterator( 1 );
+        final ListIterator<String> i = new EntryListAdapter<String>( map.entrySet() ).listIterator( 1 );
 
         assertTrue( i.hasNext() );
         assertEquals( 1, i.nextIndex() );
@@ -258,7 +258,7 @@ public class EntryListAdapterTest
         final IndexList<Entry<Integer, String>> entries = new IndexList<Entry<Integer, String>>();
 
         entries.addAll( map.entrySet() );
-        final ListIterator<String> i = new EntryListAdapter<Integer, String>( entries ).listIterator( 1 );
+        final ListIterator<String> i = new EntryListAdapter<String>( entries ).listIterator( 1 );
         entries.clear();
 
         assertFalse( i.hasNext() );
@@ -309,7 +309,7 @@ public class EntryListAdapterTest
         final IndexList<Entry<Integer, String>> entries = new IndexList<Entry<Integer, String>>();
 
         entries.addAll( map.entrySet() );
-        final ListIterator<String> i = new EntryListAdapter<Integer, String>( entries ).listIterator( 3 );
+        final ListIterator<String> i = new EntryListAdapter<String>( entries ).listIterator( 3 );
         entries.clear();
 
         assertFalse( i.hasNext() );

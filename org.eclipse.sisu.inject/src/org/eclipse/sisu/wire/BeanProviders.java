@@ -97,7 +97,7 @@ final class BeanProviders
         {
             public List<V> get()
             {
-                return new EntryListAdapter<K, V>( entries.get() );
+                return new EntryListAdapter<V>( entries.get() );
             }
         };
     }
@@ -112,7 +112,7 @@ final class BeanProviders
         {
             public Set<V> get()
             {
-                return new EntrySetAdapter<K, V>( entries.get() );
+                return new EntrySetAdapter<V>( entries.get() );
             }
         };
     }
