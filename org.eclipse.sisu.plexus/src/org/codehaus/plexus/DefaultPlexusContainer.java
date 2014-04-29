@@ -270,13 +270,13 @@ public final class DefaultPlexusContainer
     public List<Object> lookupList( final String role )
         throws ComponentLookupException
     {
-        return new EntryListAdapter<String, Object>( locate( role, null ) );
+        return new EntryListAdapter<Object>( locate( role, null ) );
     }
 
     public <T> List<T> lookupList( final Class<T> role )
         throws ComponentLookupException
     {
-        return new EntryListAdapter<String, T>( locate( null, role ) );
+        return new EntryListAdapter<T>( locate( null, role ) );
     }
 
     public Map<String, Object> lookupMap( final String role )

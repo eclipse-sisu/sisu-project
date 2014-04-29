@@ -191,7 +191,7 @@ final class PlexusRequirements
 
         public List<T> get()
         {
-            return new EntryListAdapter<String, T>( locate() );
+            return new EntryListAdapter<T>( locate() );
         }
     }
 
@@ -217,7 +217,7 @@ final class PlexusRequirements
 
         public Set<T> get()
         {
-            return new EntrySetAdapter<String, T>( locate() );
+            return new EntrySetAdapter<T>( locate() );
         }
     }
 
