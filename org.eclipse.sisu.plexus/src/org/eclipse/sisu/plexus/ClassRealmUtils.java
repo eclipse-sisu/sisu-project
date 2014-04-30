@@ -111,7 +111,6 @@ public final class ClassRealmUtils
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
     private static Set<String> computeVisibleNames( final ClassRealm forRealm )
     {
         final Set<String> visibleRealmNames = new HashSet<String>();
