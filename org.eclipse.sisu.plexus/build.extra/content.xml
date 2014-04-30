@@ -2,7 +2,7 @@
 <?metadataRepository version='1.1.0'?>
 <repository name='org.eclipse.sisu.plexus.extra' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='2'>
   <properties size='2'>
-    <property name='p2.timestamp' value='1386180355000'/>
+    <property name='p2.timestamp' value='1398864007513'/>
     <property name='p2.compressed' value='false'/>
   </properties>
   <units size='1'>
