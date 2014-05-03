@@ -34,7 +34,7 @@ final class LazyBeanEntry<Q extends Annotation, T>
 
     final Binding<T> binding;
 
-    private final Provider<T> provider;
+    private final Provider<T> lazyValue;
 
     private final int rank;
 
@@ -59,12 +59,12 @@ final class LazyBeanEntry<Q extends Annotation, T>
 
         if ( Scopes.isSingleton( binding ) )
         {
-            this.provider = binding.getProvider();
+            this.lazyValue = binding.getProvider();
         }
         else
         {
             // use Guice's singleton logic to get lazy-loading without introducing extra locks
-            this.provider = Scopes.SINGLETON.scope( binding.getKey(), binding.getProvider() );
+            this.lazyValue = Scopes.SINGLETON.scope( binding.getKey(), binding.getProvider() );
         }
     }
 
@@ -79,7 +79,7 @@ final class LazyBeanEntry<Q extends Annotation, T>
 
     public T getValue()
     {
-        return provider.get();
+        return lazyValue.get();
     }
 
     public T setValue( final T value )
@@ -139,7 +139,8 @@ final class LazyBeanEntry<Q extends Annotation, T>
         final StringBuilder buf = new StringBuilder().append( getKey() ).append( '=' );
         try
         {
-            buf.append( getValue() );
+            final Class<T> impl = getImplementationClass();
+            buf.append( null != impl ? impl : getProvider() );
         }
         catch ( final RuntimeException e )
         {

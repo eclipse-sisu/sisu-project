@@ -18,6 +18,7 @@ import junit.framework.TestCase;
 import org.eclipse.sisu.Description;
 import org.eclipse.sisu.inject.RankedBindingsTest.Bean;
 import org.eclipse.sisu.inject.RankedBindingsTest.BeanImpl;
+import org.eclipse.sisu.space.LoadedClass;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -201,16 +202,21 @@ public class LazyBeanEntryTest
         assertEquals( T.class.getAnnotation( javax.inject.Named.class ).hashCode(), jsrNamed.hashCode() );
     }
 
-    static class ToStringProvider
-        implements Provider<String>
+    static class StringProvider
+        implements DeferredProvider<String>
     {
         public String get()
         {
-            return "VALUE";
+            throw new ProvisionException( "OOPS" );
+        }
+
+        public DeferredClass<String> getImplementationClass()
+        {
+            return new LoadedClass<String>( String.class );
         }
     }
 
-    static class BadToStringProvider
+    static class OpaqueProvider
         implements Provider<String>
     {
         public String get()
@@ -221,16 +227,19 @@ public class LazyBeanEntryTest
 
     public void testToString()
     {
-        final Key<String> key1 = Key.get( String.class, Names.named( "KEY" ) );
-        final Key<String> key2 = Key.get( String.class, Names.named( "BAD" ) );
+        final Key<String> key1 = Key.get( String.class, Names.named( "CLS" ) );
+        final Key<String> key2 = Key.get( String.class, Names.named( "PRO" ) );
+
+        final Provider<String> stringProvider = new StringProvider();
+        final Provider<String> opaqueProvider = new OpaqueProvider();
 
         final Injector injector = Guice.createInjector( new AbstractModule()
         {
             @Override
             protected void configure()
             {
-                bind( key1 ).toProvider( new ToStringProvider() );
-                bind( key2 ).toProvider( new BadToStringProvider() );
+                bind( key1 ).toProvider( stringProvider );
+                bind( key2 ).toProvider( opaqueProvider );
             }
         } );
 
@@ -239,17 +248,7 @@ public class LazyBeanEntryTest
         final Entry<Named, String> entry2 =
             new LazyBeanEntry<Named, String>( (Named) key2.getAnnotation(), injector.getBinding( key2 ), 0 );
 
-        Exception error = null;
-        try
-        {
-            injector.getInstance( key2 );
-        }
-        catch ( final Exception e )
-        {
-            error = e;
-        }
-
-        assertEquals( '@' + javax.inject.Named.class.getName() + "(value=KEY)=VALUE", entry1.toString() );
-        assertEquals( '@' + javax.inject.Named.class.getName() + "(value=BAD)=" + error, entry2.toString() );
+        assertEquals( '@' + javax.inject.Named.class.getName() + "(value=CLS)=" + String.class, entry1.toString() );
+        assertEquals( '@' + javax.inject.Named.class.getName() + "(value=PRO)=" + opaqueProvider, entry2.toString() );
     }
 }
