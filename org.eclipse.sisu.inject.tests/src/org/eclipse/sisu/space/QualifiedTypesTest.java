@@ -168,7 +168,7 @@ public class QualifiedTypesTest
     }
 
     @Named
-    @Typed( B02.class )
+    @org.eclipse.sisu.Typed( B02.class )
     static class SubclassB06
         extends B02
     {
@@ -177,7 +177,7 @@ public class QualifiedTypesTest
     @Named
     @Typed( Serializable.class )
     static class SubclassB07
-        extends B02
+        extends SubclassB06
         implements Callable<String>, Serializable
     {
         private static final long serialVersionUID = 1L;

@@ -17,7 +17,6 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.inject.Provider;
 
-import org.eclipse.sisu.EagerSingleton;
 import org.eclipse.sisu.Mediator;
 import org.eclipse.sisu.inject.BeanLocator;
 import org.eclipse.sisu.inject.TypeArguments;
@@ -364,15 +363,20 @@ public final class QualifiedTypeBinder
 
     private static Class<?>[] getBindingTypes( final Class<?> clazz )
     {
-        if ( HAS_TYPED )
+        for ( Class<?> c = clazz; c != Object.class; c = c.getSuperclass() )
         {
-            for ( Class<?> c = clazz; c != Object.class; c = c.getSuperclass() )
+            if ( HAS_TYPED )
             {
                 final javax.enterprise.inject.Typed typed = c.getAnnotation( javax.enterprise.inject.Typed.class );
                 if ( null != typed )
                 {
                     return typed.value().length > 0 ? typed.value() : c.getInterfaces();
                 }
+            }
+            final org.eclipse.sisu.Typed typed = c.getAnnotation( org.eclipse.sisu.Typed.class );
+            if ( null != typed )
+            {
+                return typed.value().length > 0 ? typed.value() : c.getInterfaces();
             }
         }
         return null;
@@ -387,7 +391,7 @@ public final class QualifiedTypeBinder
     @SuppressWarnings( "deprecation" )
     private static boolean isEagerSingleton( final Class<?> type )
     {
-        return type.isAnnotationPresent( EagerSingleton.class )
+        return type.isAnnotationPresent( org.eclipse.sisu.EagerSingleton.class )
             || type.isAnnotationPresent( org.sonatype.inject.EagerSingleton.class );
     }
 
