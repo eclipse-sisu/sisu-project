@@ -137,15 +137,15 @@ public final class CloningClassSpace
                 throw new ClassNotFoundException( name );
             }
 
-            final ClassWriter cw = new ClassWriter( ClassWriter.COMPUTE_MAXS );
+            final ClassWriter cw = new ClassWriter( 0 );
             cw.visit( Opcodes.V1_5, Modifier.PUBLIC, proxyName, null, superName, null );
             final MethodVisitor mv = cw.visitMethod( Modifier.PUBLIC, "<init>", "()V", null, null );
 
             mv.visitCode();
             mv.visitVarInsn( Opcodes.ALOAD, 0 );
-            mv.visitMethodInsn( Opcodes.INVOKESPECIAL, superName, "<init>", "()V" );
+            mv.visitMethodInsn( Opcodes.INVOKESPECIAL, superName, "<init>", "()V", false );
             mv.visitInsn( Opcodes.RETURN );
-            mv.visitMaxs( 0, 0 );
+            mv.visitMaxs( 1, 1 );
             mv.visitEnd();
             cw.visitEnd();
 
