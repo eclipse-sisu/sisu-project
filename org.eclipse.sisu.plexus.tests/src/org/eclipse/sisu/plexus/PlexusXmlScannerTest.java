@@ -434,7 +434,7 @@ public class PlexusXmlScannerTest
 
             mv.visitCode();
             mv.visitVarInsn( Opcodes.ALOAD, 0 );
-            mv.visitMethodInsn( Opcodes.INVOKESPECIAL, superName, "<init>", "()V" );
+            mv.visitMethodInsn( Opcodes.INVOKESPECIAL, superName, "<init>", "()V", false );
             mv.visitInsn( Opcodes.RETURN );
             mv.visitMaxs( 0, 0 );
             mv.visitEnd();
