@@ -141,7 +141,7 @@ public final class SisuIndexAPT6
 
     public SourceVersion getSupportedSourceVersion()
     {
-        return SourceVersion.RELEASE_6;
+        return SourceVersion.latestSupported();
     }
 
     // ----------------------------------------------------------------------
