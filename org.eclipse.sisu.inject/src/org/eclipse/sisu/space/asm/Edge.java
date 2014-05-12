@@ -34,7 +34,7 @@ package org.eclipse.sisu.space.asm;
  * 
  * @author Eric Bruneton
  */
-final class Edge {
+class Edge {
 
     /**
      * Denotes a normal control flow graph edge.
