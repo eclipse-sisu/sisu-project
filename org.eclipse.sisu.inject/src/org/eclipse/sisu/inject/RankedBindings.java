@@ -177,4 +177,9 @@ final class RankedBindings<T>
             throw new UnsupportedOperationException();
         }
     }
+
+    public boolean isEmpty()
+    {
+        return bindings.isEmpty();
+    }
 }
