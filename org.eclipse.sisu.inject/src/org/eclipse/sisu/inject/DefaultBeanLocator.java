@@ -11,11 +11,7 @@
 package org.eclipse.sisu.inject;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
 import javax.inject.Inject;
@@ -117,25 +113,9 @@ public final class DefaultBeanLocator
                 return false;
             }
             Logs.trace( "Remove publisher: {}", oldPublisher, null );
-            // igorf: I question the use of Soft.concurrentValues for cachedBindings. 
-            // Seems over-engineered and does not correctly implement Map interface.
-            // entrySet().iterator().remove() does not modify the map for example
-            Set<TypeLiteral> emptyBindings = new HashSet<TypeLiteral>();
-            Iterator<Map.Entry<TypeLiteral, RankedBindings>> iter = cachedBindings.entrySet().iterator();
-            while ( iter.hasNext() )
+            for ( final RankedBindings bindings : cachedBindings.values() )
             {
-                final Entry<TypeLiteral, RankedBindings> entry = iter.next();
-                final RankedBindings bindings = entry.getValue();
                 bindings.remove( oldPublisher );
-                if ( bindings.isEmpty() )
-                {
-                    // iter.remove() does nothing :-(
-                    emptyBindings.add(entry.getKey());
-                }
-            }
-            for ( TypeLiteral emptyBinding : emptyBindings )
-            {
-                cachedBindings.remove( emptyBinding );
             }
         }
         for ( final WatchedBeans beans : cachedWatchers.keySet() )
