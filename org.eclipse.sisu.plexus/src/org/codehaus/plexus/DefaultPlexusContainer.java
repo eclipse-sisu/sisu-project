@@ -51,7 +51,7 @@ import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.inject.DeferredProvider;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.inject.RankingFunction;
-import org.eclipse.sisu.plexus.ClassRealmUtils;
+import org.eclipse.sisu.plexus.ClassRealmManager;
 import org.eclipse.sisu.plexus.ComponentDescriptorBeanModule;
 import org.eclipse.sisu.plexus.DefaultPlexusBeanLocator;
 import org.eclipse.sisu.plexus.Hints;
@@ -113,8 +113,6 @@ public final class DefaultPlexusContainer
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    final Set<String> realmIds = new HashSet<String>();
-
     final AtomicInteger plexusRank = new AtomicInteger();
 
     final Map<ClassRealm, List<ComponentDescriptor<?>>> descriptorMap =
@@ -131,6 +129,8 @@ public final class DefaultPlexusContainer
     final Map<?, ?> variables;
 
     final ClassRealm containerRealm;
+
+    final ClassRealmManager classRealmManager;
 
     final PlexusBeanLocator plexusBeanLocator;
 
@@ -180,6 +180,8 @@ public final class DefaultPlexusContainer
 
         containerRealm = lookupContainerRealm( configuration );
 
+        classRealmManager = new ClassRealmManager( this, qualifiedBeanLocator );
+
         componentVisibility = configuration.getComponentVisibility();
         isAutoWiringEnabled = configuration.getAutoWiring();
 
@@ -190,7 +192,6 @@ public final class DefaultPlexusContainer
         plexusBeanManager = new PlexusLifecycleManager( Providers.of( context ), loggerManagerProvider, //
                                                         new SLF4JLoggerFactoryProvider(), jsr250Lifecycle );
 
-        realmIds.add( containerRealm.getId() );
         setLookupRealm( containerRealm );
 
         final List<PlexusBeanModule> beanModules = new ArrayList<PlexusBeanModule>();
@@ -447,7 +448,7 @@ public final class DefaultPlexusContainer
                 {
                     beanModules.add( new ComponentDescriptorBeanModule( space, descriptors ) );
                 }
-                if ( realmIds.add( realm.getId() ) )
+                if ( !classRealmManager.isManaged( realm ) )
                 {
                     beanModules.add( new PlexusXmlBeanModule( space, variables ) );
                     final BeanScanning local = BeanScanning.GLOBAL_INDEX == scanning ? BeanScanning.INDEX : scanning;
@@ -456,7 +457,7 @@ public final class DefaultPlexusContainer
             }
             if ( !beanModules.isEmpty() )
             {
-                addPlexusInjector( beanModules, customModules );
+                classRealmManager.manage( realm, addPlexusInjector( beanModules, customModules ) );
             }
         }
         catch ( final RuntimeException e )
@@ -467,7 +468,8 @@ public final class DefaultPlexusContainer
         return null; // no-one actually seems to use or check the returned component list!
     }
 
-    public void addPlexusInjector( final List<? extends PlexusBeanModule> beanModules, final Module... customModules )
+    public Injector addPlexusInjector( final List<? extends PlexusBeanModule> beanModules,
+                                       final Module... customModules )
     {
         final List<Module> modules = new ArrayList<Module>();
 
@@ -476,7 +478,7 @@ public final class DefaultPlexusContainer
         modules.add( new PlexusBindingModule( plexusBeanManager, beanModules ) );
         modules.add( defaultsModule );
 
-        Guice.createInjector( isAutoWiringEnabled ? new WireModule( modules ) : new MergedModule( modules ) );
+        return Guice.createInjector( isAutoWiringEnabled ? new WireModule( modules ) : new MergedModule( modules ) );
     }
 
     // ----------------------------------------------------------------------
@@ -755,14 +757,14 @@ public final class DefaultPlexusContainer
         {
             visibleRealms.add( currentLookupRealm );
         }
-        final ClassRealm threadContextRealm = ClassRealmUtils.contextRealm();
+        final ClassRealm threadContextRealm = ClassRealmManager.contextRealm();
         if ( null != threadContextRealm )
         {
             visibleRealms.add( threadContextRealm );
         }
         if ( PlexusConstants.REALM_VISIBILITY.equalsIgnoreCase( componentVisibility ) )
         {
-            final Collection<String> realmNames = ClassRealmUtils.visibleRealmNames( threadContextRealm );
+            final Collection<String> realmNames = ClassRealmManager.visibleRealmNames( threadContextRealm );
             if ( null != realmNames && realmNames.size() > 0 )
             {
                 for ( int i = realms.length - 1; i >= 0; i-- )

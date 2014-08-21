@@ -15,14 +15,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
+import org.codehaus.plexus.MutablePlexusContainer;
+import org.codehaus.plexus.classworlds.ClassWorldListener;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
+import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.inject.Weak;
 
+import com.google.inject.Injector;
+
 /**
- * Utility methods for dealing with Plexus {@link ClassRealm}s.
+ * Manages {@link ClassRealm} associated data for the Plexus container.
  */
-public final class ClassRealmUtils
+public final class ClassRealmManager
+    implements ClassWorldListener
 {
     // ----------------------------------------------------------------------
     // Static initialization
@@ -54,22 +62,31 @@ public final class ClassRealmUtils
     private static final boolean GET_IMPORT_REALMS_SUPPORTED;
 
     // ----------------------------------------------------------------------
-    // Constructors
-    // ----------------------------------------------------------------------
-
-    private ClassRealmUtils()
-    {
-        // static utility class, not allowed to create instances
-    }
-
-    // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private static Map<ClassRealm, Set<String>> namesCache = Weak.concurrentKeys();
+    private static final Map<ClassRealm, Set<String>> visibility = Weak.concurrentKeys();
+
+    private final ConcurrentMap<ClassRealm, Injector> injectors = new ConcurrentHashMap<ClassRealm, Injector>();
+
+    private final MutablePlexusContainer plexusContainer;
+
+    private final MutableBeanLocator beanLocator;
 
     // ----------------------------------------------------------------------
-    // Utility methods
+    // Constructors
+    // ----------------------------------------------------------------------
+
+    public ClassRealmManager( final MutablePlexusContainer plexusContainer, final MutableBeanLocator beanLocator )
+    {
+        this.plexusContainer = plexusContainer;
+        this.beanLocator = beanLocator;
+
+        plexusContainer.getClassWorld().addListener( this );
+    }
+
+    // ----------------------------------------------------------------------
+    // Public methods
     // ----------------------------------------------------------------------
 
     /**
@@ -97,14 +114,49 @@ public final class ClassRealmUtils
     {
         if ( GET_IMPORT_REALMS_SUPPORTED && null != contextRealm )
         {
-            Set<String> names = namesCache.get( contextRealm );
+            Set<String> names = visibility.get( contextRealm );
             if ( null == names )
             {
-                namesCache.put( contextRealm, names = computeVisibleNames( contextRealm ) );
+                visibility.put( contextRealm, names = computeVisibleNames( contextRealm ) );
             }
             return names;
         }
         return null;
+    }
+
+    /**
+     * @return {@code true} if the realm is already managed, otherwise {@code false}
+     */
+    public boolean isManaged( final ClassRealm realm )
+    {
+        return injectors.containsKey( realm ) || realm == plexusContainer.getContainerRealm();
+    }
+
+    /**
+     * Manages the association between the given realm and its injector.
+     * 
+     * @param realm The realm
+     * @param injector The injector
+     */
+    public void manage( final ClassRealm realm, final Injector injector )
+    {
+        injectors.putIfAbsent( realm, injector );
+    }
+
+    public void realmCreated( final ClassRealm realm )
+    {
+        // nothing to do
+    }
+
+    @SuppressWarnings( "deprecation" )
+    public void realmDisposed( final ClassRealm realm )
+    {
+        visibility.remove( realm );
+        final Injector injector = injectors.remove( realm );
+        if ( null != injector )
+        {
+            beanLocator.remove( injector );
+        }
     }
 
     // ----------------------------------------------------------------------

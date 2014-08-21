@@ -22,7 +22,7 @@ import com.google.inject.name.Named;
 /**
  * Sequence of {@link BeanEntry}s filtered according to whether they are visible from the current {@link ClassRealm}.
  */
-final class RealmFilter<T>
+final class RealmFilteredBeans<T>
     implements Iterable<BeanEntry<Named, T>>
 {
     // ----------------------------------------------------------------------
@@ -35,7 +35,7 @@ final class RealmFilter<T>
     // Constructors
     // ----------------------------------------------------------------------
 
-    RealmFilter( final Iterable<BeanEntry<Named, T>> beans )
+    RealmFilteredBeans( final Iterable<BeanEntry<Named, T>> beans )
     {
         this.beans = beans;
     }
@@ -46,7 +46,7 @@ final class RealmFilter<T>
 
     public Iterator<BeanEntry<Named, T>> iterator()
     {
-        final Set<String> realmNames = ClassRealmUtils.visibleRealmNames( ClassRealmUtils.contextRealm() );
+        final Set<String> realmNames = ClassRealmManager.visibleRealmNames( ClassRealmManager.contextRealm() );
         if ( null != realmNames && realmNames.size() > 0 )
         {
             return new FilteredItr( realmNames );
