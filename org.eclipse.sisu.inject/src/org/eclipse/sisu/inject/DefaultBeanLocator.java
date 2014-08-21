@@ -38,7 +38,7 @@ public final class DefaultBeanLocator
 
     private final RankedSequence<BindingPublisher> publishers = new RankedSequence<BindingPublisher>();
 
-    private final ConcurrentMap<TypeLiteral, RankedBindings> cachedBindings = Soft.concurrentValues( 256, 8 );
+    private final ConcurrentMap<String, RankedBindings> cachedBindings = Weak.concurrentValues( 256, 8 );
 
     // reverse mapping; can't use watcher as key since it may not be unique
     private final Map<WatchedBeans, Object> cachedWatchers = Weak.values();
@@ -52,17 +52,12 @@ public final class DefaultBeanLocator
     public Iterable<BeanEntry> locate( final Key key )
     {
         final TypeLiteral type = key.getTypeLiteral();
-        RankedBindings bindings = cachedBindings.get( type );
+        RankedBindings bindings = fetchBindings( type, null );
         if ( null == bindings )
         {
             synchronized ( cachedBindings ) // perform new lookup
             {
-                bindings = new RankedBindings( type, publishers );
-                final RankedBindings oldBindings = cachedBindings.putIfAbsent( type, bindings );
-                if ( null != oldBindings )
-                {
-                    bindings = oldBindings;
-                }
+                bindings = cacheBindings( type, new RankedBindings( type, publishers ) );
             }
         }
         final boolean isImplicit = key.getAnnotationType() == null && TypeArguments.isImplicit( type );
@@ -122,6 +117,10 @@ public final class DefaultBeanLocator
         {
             oldPublisher.unsubscribe( beans );
         }
+
+        // one last round of cleanup in case more was freed
+        ( (MildConcurrentValues) cachedBindings ).compact();
+
         return true;
     }
 
@@ -151,6 +150,50 @@ public final class DefaultBeanLocator
     // ----------------------------------------------------------------------
     // Implementation methods
     // ----------------------------------------------------------------------
+
+    /**
+     * Fetches any bindings currently associated with the given type.
+     * 
+     * @param type The generic type
+     * @param idReturn Optional holder, returns the assigned type id
+     * @return Associated bindings; {@code null} if this is a new type
+     */
+    private RankedBindings fetchBindings( final TypeLiteral type, final String[] idReturn )
+    {
+        // type signature plus loader hash is nominally unique, but detect collisions in case
+        final int loaderHash = System.identityHashCode( type.getRawType().getClassLoader() );
+        String id = type + "@" + Integer.toHexString( loaderHash );
+
+        RankedBindings result;
+        while ( null != ( result = cachedBindings.get( id ) ) && !type.equals( result.type() ) )
+        {
+            id += '~'; // collision! (should be very rare) ... try again with tweaked id
+        }
+        if ( null != idReturn )
+        {
+            idReturn[0] = id;
+        }
+        return result;
+    }
+
+    /**
+     * Attempts to cache bindings for the given type, if bindings already exist return those.
+     * 
+     * @param type The generic type
+     * @param bindings The bindings to cache
+     * @return Associated bindings; never {@code null}
+     */
+    private RankedBindings cacheBindings( final TypeLiteral type, final RankedBindings bindings )
+    {
+        final String[] idReturn = new String[1];
+        RankedBindings result = fetchBindings( type, idReturn );
+        if ( null == result )
+        {
+            // new type; record our bindings under the assigned id
+            cachedBindings.put( idReturn[0], result = bindings );
+        }
+        return result;
+    }
 
     /**
      * Automatically publishes any {@link Injector} that contains a binding to this {@link BeanLocator}.
