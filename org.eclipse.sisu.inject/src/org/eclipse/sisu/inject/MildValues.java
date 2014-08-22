@@ -12,11 +12,12 @@ package org.eclipse.sisu.inject;
 
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
-import java.util.ArrayList;
+import java.util.AbstractCollection;
+import java.util.AbstractSet;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
@@ -31,7 +32,7 @@ class MildValues<K, V>
 
     final ReferenceQueue<V> queue = new ReferenceQueue<V>();
 
-    private final Map<K, Reference<V>> map;
+    final Map<K, Reference<V>> map;
 
     private final boolean soft;
 
@@ -125,46 +126,44 @@ class MildValues<K, V>
         return map.keySet();
     }
 
-    /**
-     * WARNING: this view is a snapshot; updates to it are <em>not</em> reflected in the original map, or vice-versa.
-     * <hr>
-     * {@inheritDoc}
-     */
     public final Collection<V> values()
     {
         compact();
 
-        final List<V> values = new ArrayList<V>();
-        for ( final Reference<V> r : map.values() )
+        return new AbstractCollection<V>()
         {
-            final V value = r.get();
-            if ( null != value )
+            @Override
+            public Iterator<V> iterator()
             {
-                values.add( value );
+                return new ValueItr();
             }
-        }
-        return values;
+
+            @Override
+            public int size()
+            {
+                return map.size();
+            }
+        };
     }
 
-    /**
-     * WARNING: this view is a snapshot; updates to it are <em>not</em> reflected in the original map, or vice-versa.
-     * <hr>
-     * {@inheritDoc}
-     */
     public final Set<Entry<K, V>> entrySet()
     {
         compact();
 
-        final Map<K, V> entries = new HashMap<K, V>();
-        for ( final Entry<K, Reference<V>> e : map.entrySet() )
+        return new AbstractSet<Entry<K, V>>()
         {
-            final V value = e.getValue().get();
-            if ( null != value )
+            @Override
+            public Iterator<Entry<K, V>> iterator()
             {
-                entries.put( e.getKey(), value );
+                return new EntryItr();
             }
-        }
-        return entries.entrySet();
+
+            @Override
+            public int size()
+            {
+                return map.size();
+            }
+        };
     }
 
     // ----------------------------------------------------------------------
@@ -278,6 +277,149 @@ class MildValues<K, V>
         public Object key()
         {
             return key;
+        }
+    }
+
+    /**
+     * {@link Iterator} that iterates over reachable values in the map.
+     */
+    final class ValueItr
+        implements Iterator<V>
+    {
+        // ----------------------------------------------------------------------
+        // Implementation fields
+        // ----------------------------------------------------------------------
+
+        private Iterator<Reference<V>> itr = map.values().iterator();
+
+        private V nextValue;
+
+        // ----------------------------------------------------------------------
+        // Public methods
+        // ----------------------------------------------------------------------
+
+        public boolean hasNext()
+        {
+            // find next value that is still reachable
+            while ( null == nextValue && itr.hasNext() )
+            {
+                nextValue = itr.next().get();
+            }
+            return null != nextValue;
+        }
+
+        public V next()
+        {
+            if ( hasNext() )
+            {
+                // populated by hasNext()
+                final V value = nextValue;
+                nextValue = null;
+                return value;
+            }
+            throw new NoSuchElementException();
+        }
+
+        public void remove()
+        {
+            itr.remove();
+        }
+    }
+
+    /**
+     * {@link Iterator} that iterates over reachable entries in the map.
+     */
+    final class EntryItr
+        implements Iterator<Entry<K, V>>
+    {
+        // ----------------------------------------------------------------------
+        // Implementation fields
+        // ----------------------------------------------------------------------
+
+        private Iterator<Entry<K, Reference<V>>> itr = map.entrySet().iterator();
+
+        private Entry<K, Reference<V>> nextEntry;
+
+        private V nextValue;
+
+        // ----------------------------------------------------------------------
+        // Public methods
+        // ----------------------------------------------------------------------
+
+        public boolean hasNext()
+        {
+            // find next entry that is still reachable
+            while ( null == nextValue && itr.hasNext() )
+            {
+                nextEntry = itr.next();
+                nextValue = nextEntry.getValue().get();
+            }
+            return null != nextValue;
+        }
+
+        public Entry<K, V> next()
+        {
+            if ( hasNext() )
+            {
+                // populated by hasNext()
+                final Entry<K, V> entry = new StrongEntry( nextEntry, nextValue );
+                nextEntry = null;
+                nextValue = null;
+                return entry;
+            }
+            throw new NoSuchElementException();
+        }
+
+        public void remove()
+        {
+            itr.remove();
+        }
+    }
+
+    /**
+     * {@link Entry} that delegates to the original entry, but maintains a strong reference to the value.
+     */
+    final class StrongEntry
+        implements Entry<K, V>
+    {
+        // ----------------------------------------------------------------------
+        // Implementation fields
+        // ----------------------------------------------------------------------
+
+        private final Entry<K, Reference<V>> entry;
+
+        private V value;
+
+        // ----------------------------------------------------------------------
+        // Constructors
+        // ----------------------------------------------------------------------
+
+        StrongEntry( final Entry<K, Reference<V>> entry, final V value )
+        {
+            this.entry = entry;
+            this.value = value;
+        }
+
+        // ----------------------------------------------------------------------
+        // Public methods
+        // ----------------------------------------------------------------------
+
+        public K getKey()
+        {
+            return entry.getKey();
+        }
+
+        public V getValue()
+        {
+            return value;
+        }
+
+        public V setValue( final V newValue )
+        {
+            final V oldValue = value;
+            entry.setValue( mildValue( getKey(), newValue ) );
+            value = newValue;
+            return oldValue;
         }
     }
 }

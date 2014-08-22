@@ -14,10 +14,11 @@ import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
+import java.util.AbstractSet;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
@@ -30,9 +31,9 @@ class MildKeys<K, V>
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final ReferenceQueue<K> queue = new ReferenceQueue<K>();
+    final ReferenceQueue<K> queue = new ReferenceQueue<K>();
 
-    private final Map<Reference<K>, V> map;
+    final Map<Reference<K>, V> map;
 
     private final boolean soft;
 
@@ -116,25 +117,24 @@ class MildKeys<K, V>
         return map.size();
     }
 
-    /**
-     * WARNING: this view is a snapshot; updates to it are <em>not</em> reflected in the original map, or vice-versa.
-     * <hr>
-     * {@inheritDoc}
-     */
     public final Set<K> keySet()
     {
         compact();
 
-        final Set<K> keys = new HashSet<K>();
-        for ( final Reference<K> r : map.keySet() )
+        return new AbstractSet<K>()
         {
-            final K key = r.get();
-            if ( null != key )
+            @Override
+            public Iterator<K> iterator()
             {
-                keys.add( key );
+                return new KeyItr();
             }
-        }
-        return keys;
+
+            @Override
+            public int size()
+            {
+                return map.size();
+            }
+        };
     }
 
     public final Collection<V> values()
@@ -144,25 +144,24 @@ class MildKeys<K, V>
         return map.values();
     }
 
-    /**
-     * WARNING: this view is a snapshot; updates to it are <em>not</em> reflected in the original map, or vice-versa.
-     * <hr>
-     * {@inheritDoc}
-     */
     public final Set<Entry<K, V>> entrySet()
     {
         compact();
 
-        final Map<K, V> entries = new HashMap<K, V>();
-        for ( final Entry<Reference<K>, V> e : map.entrySet() )
+        return new AbstractSet<Entry<K, V>>()
         {
-            final K key = e.getKey().get();
-            if ( null != key )
+            @Override
+            public Iterator<Entry<K, V>> iterator()
             {
-                entries.put( key, e.getValue() );
+                return new EntryItr();
             }
-        }
-        return entries.entrySet();
+
+            @Override
+            public int size()
+            {
+                return map.size();
+            }
+        };
     }
 
     // ----------------------------------------------------------------------
@@ -295,6 +294,146 @@ class MildKeys<K, V>
                 return o == ( (Reference<?>) rhs ).get();
             }
             return false;
+        }
+    }
+
+    /**
+     * {@link Iterator} that iterates over reachable keys in the map.
+     */
+    final class KeyItr
+        implements Iterator<K>
+    {
+        // ----------------------------------------------------------------------
+        // Implementation fields
+        // ----------------------------------------------------------------------
+
+        private Iterator<Reference<K>> itr = map.keySet().iterator();
+
+        private K nextKey;
+
+        // ----------------------------------------------------------------------
+        // Public methods
+        // ----------------------------------------------------------------------
+
+        public boolean hasNext()
+        {
+            // find next key that is still reachable
+            while ( null == nextKey && itr.hasNext() )
+            {
+                nextKey = itr.next().get();
+            }
+            return null != nextKey;
+        }
+
+        public K next()
+        {
+            if ( hasNext() )
+            {
+                // populated by hasNext()
+                final K key = nextKey;
+                nextKey = null;
+                return key;
+            }
+            throw new NoSuchElementException();
+        }
+
+        public void remove()
+        {
+            itr.remove();
+        }
+    }
+
+    /**
+     * {@link Iterator} that iterates over reachable entries in the map.
+     */
+    final class EntryItr
+        implements Iterator<Entry<K, V>>
+    {
+        // ----------------------------------------------------------------------
+        // Implementation fields
+        // ----------------------------------------------------------------------
+
+        private Iterator<Entry<Reference<K>, V>> itr = map.entrySet().iterator();
+
+        private Entry<Reference<K>, V> nextEntry;
+
+        private K nextKey;
+
+        // ----------------------------------------------------------------------
+        // Public methods
+        // ----------------------------------------------------------------------
+
+        public boolean hasNext()
+        {
+            // find next entry that is still reachable
+            while ( null == nextKey && itr.hasNext() )
+            {
+                nextEntry = itr.next();
+                nextKey = nextEntry.getKey().get();
+            }
+            return null != nextKey;
+        }
+
+        public Entry<K, V> next()
+        {
+            if ( hasNext() )
+            {
+                // populated by hasNext()
+                final Entry<K, V> entry = new StrongEntry( nextEntry, nextKey );
+                nextEntry = null;
+                nextKey = null;
+                return entry;
+            }
+            throw new NoSuchElementException();
+        }
+
+        public void remove()
+        {
+            itr.remove();
+        }
+    }
+
+    /**
+     * {@link Entry} that delegates to the original entry, but maintains a strong reference to the key.
+     */
+    final class StrongEntry
+        implements Entry<K, V>
+    {
+        // ----------------------------------------------------------------------
+        // Implementation fields
+        // ----------------------------------------------------------------------
+
+        private final Entry<Reference<K>, V> entry;
+
+        private final K key;
+
+        // ----------------------------------------------------------------------
+        // Constructors
+        // ----------------------------------------------------------------------
+
+        StrongEntry( final Entry<Reference<K>, V> entry, final K key )
+        {
+            this.entry = entry;
+            this.key = key;
+        }
+
+        // ----------------------------------------------------------------------
+        // Public methods
+        // ----------------------------------------------------------------------
+
+        public K getKey()
+        {
+            return key;
+        }
+
+        public V getValue()
+        {
+            return entry.getValue();
+        }
+
+        public V setValue( final V value )
+        {
+            return entry.setValue( value );
         }
     }
 }
