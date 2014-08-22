@@ -41,9 +41,9 @@ public class DefaultPlexusContainerTest
     public void test441254_recreateChildRealm()
         throws Exception
     {
-        String realmId = "child-realm";
+        final String realmId = "child-realm";
 
-        DefaultPlexusContainer plexus = new DefaultPlexusContainer();
+        final DefaultPlexusContainer plexus = new DefaultPlexusContainer();
 
         ClassRealm realm = plexus.createChildRealm( realmId );
         realm.addURL( new File( "resources/component-jar/component-jar-0.1.jar" ).getCanonicalFile().toURI().toURL() );
@@ -67,9 +67,9 @@ public class DefaultPlexusContainerTest
     public void _test441254_torture()
         throws Exception
     {
-        String realmId = "child-realm";
+        final String realmId = "child-realm";
 
-        DefaultPlexusContainer plexus = new DefaultPlexusContainer();
+        final DefaultPlexusContainer plexus = new DefaultPlexusContainer();
 
         ClassRealm realm = plexus.createChildRealm( realmId );
         realm.addURL( new File( "resources/component-jar/component-jar-0.1.jar" ).getCanonicalFile().toURI().toURL() );
@@ -88,7 +88,7 @@ public class DefaultPlexusContainerTest
 
             if ( i % 1000 == 0 )
             {
-                long end = System.currentTimeMillis();
+                final long end = System.currentTimeMillis();
                 System.out.printf( "%6d %d\n", i, end - start );
                 start = end;
             }
