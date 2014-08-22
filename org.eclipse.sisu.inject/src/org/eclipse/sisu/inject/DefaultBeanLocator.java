@@ -38,7 +38,7 @@ public final class DefaultBeanLocator
 
     private final RankedSequence<BindingPublisher> publishers = new RankedSequence<BindingPublisher>();
 
-    private final ConcurrentMap<String, RankedBindings> cachedBindings = Weak.concurrentValues( 256, 8 );
+    private final ConcurrentMap<Long, RankedBindings> cachedBindings = Weak.concurrentValues( 256, 8 );
 
     // reverse mapping; can't use watcher as key since it may not be unique
     private final Map<WatchedBeans, Object> cachedWatchers = Weak.values();
@@ -158,16 +158,17 @@ public final class DefaultBeanLocator
      * @param idReturn Optional holder, returns the assigned type id
      * @return Associated bindings; {@code null} if this is a new type
      */
-    private RankedBindings fetchBindings( final TypeLiteral type, final String[] idReturn )
+    @SuppressWarnings( "boxing" )
+    private RankedBindings fetchBindings( final TypeLiteral type, final Long[] idReturn )
     {
-        // type hash plus loader hash is nominally unique, but we also detect and handle collisions
+        // type hash with loader hash is nominally unique, but handle collisions just in case
         final int loaderHash = System.identityHashCode( type.getRawType().getClassLoader() );
-        String id = Integer.toHexString( type.hashCode() ) + "/" + Integer.toHexString( loaderHash );
+        long id = (long) type.hashCode() << 32 | 0x00000000FFFFFFFFL & loaderHash;
 
         RankedBindings result;
         while ( null != ( result = cachedBindings.get( id ) ) && !type.equals( result.type() ) )
         {
-            id += '~'; // collision! (should be very rare) ... try again with tweaked id
+            id++; // collision! (should be very rare) ... resort to linear scan from base id
         }
         if ( null != idReturn )
         {
@@ -185,7 +186,7 @@ public final class DefaultBeanLocator
      */
     private RankedBindings cacheBindings( final TypeLiteral type, final RankedBindings bindings )
     {
-        final String[] idReturn = new String[1];
+        final Long[] idReturn = new Long[1];
         RankedBindings result = fetchBindings( type, idReturn );
         if ( null == result )
         {
