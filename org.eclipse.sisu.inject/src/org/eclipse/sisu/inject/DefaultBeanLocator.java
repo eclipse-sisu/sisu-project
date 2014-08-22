@@ -160,9 +160,9 @@ public final class DefaultBeanLocator
      */
     private RankedBindings fetchBindings( final TypeLiteral type, final String[] idReturn )
     {
-        // type signature plus loader hash is nominally unique, but detect collisions in case
+        // type hash plus loader hash is nominally unique, but we also detect and handle collisions
         final int loaderHash = System.identityHashCode( type.getRawType().getClassLoader() );
-        String id = type + "@" + Integer.toHexString( loaderHash );
+        String id = Integer.toHexString( type.hashCode() ) + "/" + Integer.toHexString( loaderHash );
 
         RankedBindings result;
         while ( null != ( result = cachedBindings.get( id ) ) && !type.equals( result.type() ) )
