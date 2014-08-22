@@ -81,8 +81,6 @@ public final class ClassRealmManager
     {
         this.plexusContainer = plexusContainer;
         this.beanLocator = beanLocator;
-
-        plexusContainer.getClassWorld().addListener( this );
     }
 
     // ----------------------------------------------------------------------

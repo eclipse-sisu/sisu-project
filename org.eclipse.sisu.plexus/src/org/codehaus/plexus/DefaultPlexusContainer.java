@@ -179,8 +179,8 @@ public final class DefaultPlexusContainer
         variables = new ContextMapAdapter( context );
 
         containerRealm = lookupContainerRealm( configuration );
-
         classRealmManager = new ClassRealmManager( this, qualifiedBeanLocator );
+        containerRealm.getWorld().addListener( classRealmManager );
 
         componentVisibility = configuration.getComponentVisibility();
         isAutoWiringEnabled = configuration.getAutoWiring();
@@ -592,6 +592,8 @@ public final class DefaultPlexusContainer
         qualifiedBeanLocator.clear();
 
         lookupRealm.remove();
+
+        containerRealm.getWorld().removeListener( classRealmManager );
     }
 
     // ----------------------------------------------------------------------
