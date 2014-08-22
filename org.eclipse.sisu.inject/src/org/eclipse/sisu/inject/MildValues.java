@@ -290,7 +290,7 @@ class MildValues<K, V>
         // Implementation fields
         // ----------------------------------------------------------------------
 
-        private Iterator<Reference<V>> itr = map.values().iterator();
+        private final Iterator<Reference<V>> itr = map.values().iterator();
 
         private V nextValue;
 
@@ -336,7 +336,7 @@ class MildValues<K, V>
         // Implementation fields
         // ----------------------------------------------------------------------
 
-        private Iterator<Entry<K, Reference<V>>> itr = map.entrySet().iterator();
+        private final Iterator<Entry<K, Reference<V>>> itr = map.entrySet().iterator();
 
         private Entry<K, Reference<V>> nextEntry;
 

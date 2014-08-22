@@ -307,7 +307,7 @@ class MildKeys<K, V>
         // Implementation fields
         // ----------------------------------------------------------------------
 
-        private Iterator<Reference<K>> itr = map.keySet().iterator();
+        private final Iterator<Reference<K>> itr = map.keySet().iterator();
 
         private K nextKey;
 
@@ -353,7 +353,7 @@ class MildKeys<K, V>
         // Implementation fields
         // ----------------------------------------------------------------------
 
-        private Iterator<Entry<Reference<K>, V>> itr = map.entrySet().iterator();
+        private final Iterator<Entry<Reference<K>, V>> itr = map.entrySet().iterator();
 
         private Entry<Reference<K>, V> nextEntry;
 
