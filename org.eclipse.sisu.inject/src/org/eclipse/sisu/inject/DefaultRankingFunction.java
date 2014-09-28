@@ -126,6 +126,11 @@ public final class DefaultRankingFunction
                 return priority.value();
             }
         }
+        final Object source = InjectorPublisher.getDeclaringSource( binding );
+        if ( source instanceof PriorityBinding )
+        {
+            return ( (PriorityBinding) source ).getPriority();
+        }
         if ( QualifyingStrategy.DEFAULT_QUALIFIER.equals( QualifyingStrategy.qualify( binding.getKey() ) ) )
         {
             return primaryRank;

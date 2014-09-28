@@ -40,7 +40,7 @@ public class PriorityTest
     {
     }
 
-    @javax.annotation.Priority( 2000 )
+    @javax.annotation.Priority( 3000 )
     static class HighPriorityBean
         implements Bean
     {
@@ -59,7 +59,14 @@ public class PriorityTest
             bind( Bean.class ).annotatedWith( Names.named( "LO" ) ).to( LowPriorityBean.class );
             bind( Bean.class ).annotatedWith( Names.named( "HI" ) ).to( HighPriorityBean.class );
             bind( Bean.class ).to( DefaultBean.class );
-            bind( Bean.class ).annotatedWith( Names.named( "MM" ) ).to( MediumPriorityBean.class );
+            bind( Bean.class ).annotatedWith( Names.named( "MED" ) ).to( MediumPriorityBean.class );
+            binder().withSource( new PriorityBinding()
+            {
+                public int getPriority()
+                {
+                    return 2000;
+                }
+            } ).bind( Bean.class ).annotatedWith( Names.named( "SRC" ) ).to( DefaultBean.class );
         }
     } );
 
@@ -73,7 +80,8 @@ public class PriorityTest
 
         assertTrue( i.hasNext() );
         assertEquals( Names.named( "HI" ), i.next().getKey() );
-        assertEquals( Names.named( "MM" ), i.next().getKey() );
+        assertEquals( Names.named( "SRC" ), i.next().getKey() );
+        assertEquals( Names.named( "MED" ), i.next().getKey() );
         assertEquals( Names.named( "default" ), i.next().getKey() );
         assertEquals( Names.named( "LO" ), i.next().getKey() );
         assertFalse( i.hasNext() );
