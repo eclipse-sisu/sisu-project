@@ -77,60 +77,67 @@ final class MergedProperties
     {
         if ( null == entrySet )
         {
-            entrySet = new AbstractSet<Entry<Object, Object>>()
+            entrySet = new MergedEntries();
+        }
+        return entrySet;
+    }
+
+    // ----------------------------------------------------------------------
+    // Implementation types
+    // ----------------------------------------------------------------------
+
+    final class MergedEntries
+        extends AbstractSet<Entry<Object, Object>>
+    {
+        @Override
+        public Iterator<Entry<Object, Object>> iterator()
+        {
+            return new Iterator<Entry<Object, Object>>()
             {
-                @Override
-                public Iterator<Entry<Object, Object>> iterator()
+                @SuppressWarnings( "rawtypes" )
+                private Iterator<? extends Entry> itr;
+
+                private int index;
+
+                public boolean hasNext()
                 {
-                    return new Iterator<Entry<Object, Object>>()
+                    while ( null == itr || !itr.hasNext() )
                     {
-                        @SuppressWarnings( "rawtypes" )
-                        private Iterator<? extends Entry> itr;
-
-                        private int index;
-
-                        public boolean hasNext()
+                        if ( index >= properties.length )
                         {
-                            while ( null == itr || !itr.hasNext() )
-                            {
-                                if ( index >= properties.length )
-                                {
-                                    return false;
-                                }
-                                itr = properties[index++].entrySet().iterator();
-                            }
-                            return true;
+                            return false;
                         }
-
-                        @SuppressWarnings( "unchecked" )
-                        public Entry<Object, Object> next()
-                        {
-                            if ( hasNext() )
-                            {
-                                return itr.next();
-                            }
-                            throw new NoSuchElementException();
-                        }
-
-                        public void remove()
-                        {
-                            throw new UnsupportedOperationException();
-                        }
-                    };
+                        itr = properties[index++].entrySet().iterator();
+                    }
+                    return true;
                 }
 
-                @Override
-                public int size()
+                @SuppressWarnings( "unchecked" )
+                public Entry<Object, Object> next()
                 {
-                    int size = 0;
-                    for ( final Map<?, ?> p : properties )
+                    if ( hasNext() )
                     {
-                        size += p.size();
+                        return itr.next();
                     }
-                    return size;
+                    throw new NoSuchElementException();
+                }
+
+                public void remove()
+                {
+                    throw new UnsupportedOperationException();
                 }
             };
         }
-        return entrySet;
+
+        @Override
+        public int size()
+        {
+            int size = 0;
+            for ( final Map<?, ?> p : properties )
+            {
+                size += p.size();
+            }
+            return size;
+        }
     }
 }
