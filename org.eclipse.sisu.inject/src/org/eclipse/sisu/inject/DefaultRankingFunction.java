@@ -109,6 +109,11 @@ public final class DefaultRankingFunction
 
     public <T> int rank( final Binding<T> binding )
     {
+        final Object source = InjectorPublisher.getDeclaringSource( binding );
+        if ( source instanceof PriorityBinding )
+        {
+            return ( (PriorityBinding) source ).getPriority();
+        }
         final Class<?> implementation = binding.acceptTargetVisitor( TARGET_VISITOR );
         if ( null != implementation )
         {
@@ -125,11 +130,6 @@ public final class DefaultRankingFunction
             {
                 return priority.value();
             }
-        }
-        final Object source = InjectorPublisher.getDeclaringSource( binding );
-        if ( source instanceof PriorityBinding )
-        {
-            return ( (PriorityBinding) source ).getPriority();
         }
         if ( QualifyingStrategy.DEFAULT_QUALIFIER.equals( QualifyingStrategy.qualify( binding.getKey() ) ) )
         {
