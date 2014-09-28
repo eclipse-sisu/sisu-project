@@ -15,7 +15,7 @@
 <unit id="com.google.guava" version="11.0.2.v201303041551"/>
 <unit id="org.junit" version="4.10.0.v4_10_0_v20130308-0414"/>
 <unit id="org.hamcrest.core" version="1.1.0.v20090501071000"/>
-<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20130827064939/repository/"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20140114142710/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="org.sonatype.sisu.guice" version="3.1.6"/>
@@ -31,7 +31,7 @@
 <unit id="org.eclipse.osgi" version="3.6.2.R36x_v20110210"/>
 <unit id="org.eclipse.osgi.source" version="3.6.2.R36x_v20110210"/>
 <unit id="org.eclipse.jdt.apt.core" version="3.3.402.R36_v20110120-1000"/>
-<repository location="http://download.eclipse.org/releases/helios/"/>
+<repository location="http://download.eclipse.org/eclipse/updates/3.6/"/>
 </location>
 </locations>
 </target>
