@@ -104,7 +104,7 @@
               <version>1.0</version>
             </signature>
             <ignores>
-              <ignore>javax.annotation.processing.*</ignore>
+              <ignore>javax.annotation.*</ignore>
               <ignore>javax.lang.model.*</ignore>
               <ignore>javax.tools.*</ignore>
             </ignores>
@@ -127,7 +127,7 @@
               <enforceBytecodeVersion>
                 <maxJdkVersion>1.5</maxJdkVersion>
                 <excludes>
-                  <exclude>*:javax.annotation-api</exclude>
+                  <exclude>*:javax.annotation*</exclude>
                   <exclude>*:javax.el</exclude>
                 </excludes>
               </enforceBytecodeVersion>
