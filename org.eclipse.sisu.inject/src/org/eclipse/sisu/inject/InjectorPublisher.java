@@ -183,7 +183,7 @@ public final class InjectorPublisher
     private static boolean isAssignableFrom( final TypeLiteral<?> superType, final Binding<?> binding )
     {
         // don't match the exact implementation as it's already covered by an explicit binding
-        final Class<?> implementation = binding.acceptTargetVisitor( ImplementationVisitor.THIS );
+        final Class<?> implementation = Implementations.find( binding );
         if ( null != implementation && superType.getRawType() != implementation )
         {
             return TypeArguments.isAssignableFrom( superType, TypeLiteral.get( implementation ) );

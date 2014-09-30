@@ -15,7 +15,6 @@ import javax.inject.Inject;
 import org.eclipse.sisu.Priority;
 
 import com.google.inject.Binding;
-import com.google.inject.spi.BindingTargetVisitor;
 
 /**
  * Simple {@link RankingFunction} that partitions qualified bindings into two main groups.
@@ -31,17 +30,6 @@ public final class DefaultRankingFunction
 
     static
     {
-        ImplementationVisitor servletVisitor;
-        try
-        {
-            servletVisitor = new ServletVisitor();
-        }
-        catch ( final LinkageError e )
-        {
-            servletVisitor = null;
-        }
-        SERVLET_VISITOR = servletVisitor;
-
         boolean hasJsr250Priority;
         try
         {
@@ -57,11 +45,6 @@ public final class DefaultRankingFunction
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
-
-    private static final BindingTargetVisitor<Object, Class<?>> SERVLET_VISITOR;
-
-    private static final BindingTargetVisitor<Object, Class<?>> TARGET_VISITOR =
-        SERVLET_VISITOR == null ? ImplementationVisitor.THIS : SERVLET_VISITOR;
 
     private static final boolean HAS_JSR250_PRIORITY;
 
@@ -106,7 +89,8 @@ public final class DefaultRankingFunction
         {
             return ( (PriorityBinding) source ).getPriority();
         }
-        final Class<?> implementation = binding.acceptTargetVisitor( TARGET_VISITOR );
+        // use extended find so we can also rank servlets/filters by @Priority
+        final Class<?> implementation = Implementations.extendedFind( binding );
         if ( null != implementation )
         {
             if ( HAS_JSR250_PRIORITY )
@@ -129,39 +113,5 @@ public final class DefaultRankingFunction
             return primaryRank;
         }
         return primaryRank + Integer.MIN_VALUE; // shifts primary range of [0,MAX_VALUE] down to [MIN_VALUE,-1]
-    }
-
-    // ----------------------------------------------------------------------
-    // Implementation types
-    // ----------------------------------------------------------------------
-
-    /**
-     * {@link ImplementationVisitor} that can also peek behind filter/servlet bindings.
-     */
-    static final class ServletVisitor
-        extends ImplementationVisitor
-        implements com.google.inject.servlet.ServletModuleTargetVisitor<Object, Class<?>>
-    {
-        public Class<?> visit( final com.google.inject.servlet.InstanceFilterBinding binding )
-        {
-            return binding.getFilterInstance().getClass();
-        }
-
-        public Class<?> visit( final com.google.inject.servlet.InstanceServletBinding binding )
-        {
-            return binding.getServletInstance().getClass();
-        }
-
-        public Class<?> visit( final com.google.inject.servlet.LinkedFilterBinding binding )
-        {
-            // this assumes only one level of indirection: api-->impl
-            return binding.getLinkedKey().getTypeLiteral().getRawType();
-        }
-
-        public Class<?> visit( final com.google.inject.servlet.LinkedServletBinding binding )
-        {
-            // this assumes only one level of indirection: api-->impl
-            return binding.getLinkedKey().getTypeLiteral().getRawType();
-        }
     }
 }

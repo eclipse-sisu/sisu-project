@@ -90,7 +90,7 @@ enum QualifyingStrategy
                 return providerKey.getTypeLiteral().getRawType().getAnnotation( markerType );
             }
 
-            final Class<?> implementation = binding.acceptTargetVisitor( ImplementationVisitor.THIS );
+            final Class<?> implementation = Implementations.find( binding );
             return null != implementation ? implementation.getAnnotation( markerType ) : null;
         }
     },

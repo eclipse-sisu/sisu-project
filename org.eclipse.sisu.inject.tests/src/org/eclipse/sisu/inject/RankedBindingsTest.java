@@ -111,7 +111,7 @@ public class RankedBindingsTest
 
         final Binding<Bean> explicitBinding = itr.next();
         assertNull( explicitBinding.getKey().getAnnotation() );
-        assertEquals( BeanImpl.class, explicitBinding.acceptTargetVisitor( ImplementationVisitor.THIS ) );
+        assertEquals( BeanImpl.class, Implementations.find( explicitBinding ) );
 
         assertEquals( 3, bindings.bindings.size() );
         assertTrue( itr.hasNext() );
@@ -166,7 +166,7 @@ public class RankedBindingsTest
         assertEquals( 2, bindings.bindings.size() );
         Binding<Bean> explicitBinding = itr.next();
         assertNull( explicitBinding.getKey().getAnnotation() );
-        assertEquals( BeanImpl.class, explicitBinding.acceptTargetVisitor( ImplementationVisitor.THIS ) );
+        assertEquals( BeanImpl.class, Implementations.find( explicitBinding ) );
         assertEquals( 2, bindings.bindings.size() );
 
         assertTrue( itr.hasNext() );
@@ -202,7 +202,7 @@ public class RankedBindingsTest
 
         explicitBinding = itr.next();
         assertNull( explicitBinding.getKey().getAnnotation() );
-        assertEquals( BeanImpl.class, explicitBinding.acceptTargetVisitor( ImplementationVisitor.THIS ) );
+        assertEquals( BeanImpl.class, Implementations.find( explicitBinding ) );
 
         assertEquals( Names.named( "3" ), itr.next().getKey().getAnnotation() );
         assertEquals( Names.named( "2" ), itr.next().getKey().getAnnotation() );
@@ -232,7 +232,7 @@ public class RankedBindingsTest
 
         Binding<Bean> explicitBinding = itr.next();
         assertNull( explicitBinding.getKey().getAnnotation() );
-        assertEquals( BeanImpl.class, explicitBinding.acceptTargetVisitor( ImplementationVisitor.THIS ) );
+        assertEquals( BeanImpl.class, Implementations.find( explicitBinding ) );
 
         bindings.remove( injector3.findBindingsByType( TypeLiteral.get( Bean.class ) ).get( 0 ) );
         bindings.remove( exporter2 );
@@ -253,7 +253,7 @@ public class RankedBindingsTest
 
         explicitBinding = itr.next();
         assertNull( explicitBinding.getKey().getAnnotation() );
-        assertEquals( BeanImpl.class, explicitBinding.acceptTargetVisitor( ImplementationVisitor.THIS ) );
+        assertEquals( BeanImpl.class, Implementations.find( explicitBinding ) );
 
         assertTrue( itr.hasNext() );
         assertEquals( Names.named( "3" ), itr.next().getKey().getAnnotation() );

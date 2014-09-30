@@ -120,7 +120,7 @@ final class LazyBeanEntry<Q extends Annotation, T>
     @SuppressWarnings( "unchecked" )
     public Class<T> getImplementationClass()
     {
-        return (Class<T>) binding.acceptTargetVisitor( ImplementationVisitor.THIS );
+        return (Class<T>) Implementations.find( binding );
     }
 
     public Object getSource()

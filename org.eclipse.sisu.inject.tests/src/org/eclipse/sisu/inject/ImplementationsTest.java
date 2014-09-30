@@ -34,7 +34,7 @@ import com.google.inject.spi.ElementVisitor;
 import com.google.inject.spi.UntargettedBinding;
 import com.google.inject.util.Providers;
 
-public class ImplementationVisitorTest
+public class ImplementationsTest
     extends TestCase
 {
     Injector injector;
@@ -94,7 +94,7 @@ public class ImplementationVisitorTest
 
     public void testImplementationVisitor()
     {
-        assertEquals( BeanImpl.class, new UntargettedBinding<BeanImpl>()
+        assertEquals( BeanImpl.class, Implementations.find( new UntargettedBinding<BeanImpl>()
         {
             public Key<BeanImpl> getKey()
             {
@@ -129,18 +129,18 @@ public class ImplementationVisitorTest
             public void applyTo( final Binder binder )
             {
             }
-        }.acceptTargetVisitor( ImplementationVisitor.THIS ) );
+        } ) );
 
         final Iterator<Binding<Bean>> itr = injector.findBindingsByType( TypeLiteral.get( Bean.class ) ).iterator();
 
-        assertEquals( BeanImpl.class, itr.next().acceptTargetVisitor( ImplementationVisitor.THIS ) ); // linked
-        assertEquals( BeanImpl.class, itr.next().acceptTargetVisitor( ImplementationVisitor.THIS ) ); // ctor
-        assertEquals( BeanImpl.class, itr.next().acceptTargetVisitor( ImplementationVisitor.THIS ) ); // instance
-        assertEquals( BeanImpl.class, itr.next().acceptTargetVisitor( ImplementationVisitor.THIS ) ); // deferred
-        assertEquals( BeanImpl.class, itr.next().acceptTargetVisitor( ImplementationVisitor.THIS ) ); // exposed
+        assertEquals( BeanImpl.class, Implementations.find( itr.next() ) ); // linked
+        assertEquals( BeanImpl.class, Implementations.find( itr.next() ) ); // ctor
+        assertEquals( BeanImpl.class, Implementations.find( itr.next() ) ); // instance
+        assertEquals( BeanImpl.class, Implementations.find( itr.next() ) ); // deferred
+        assertEquals( BeanImpl.class, Implementations.find( itr.next() ) ); // exposed
 
-        assertNull( itr.next().acceptTargetVisitor( ImplementationVisitor.THIS ) ); // provider instance
-        assertNull( itr.next().acceptTargetVisitor( ImplementationVisitor.THIS ) ); // broken provider
+        assertNull( Implementations.find( itr.next() ) ); // provider instance
+        assertNull( Implementations.find( itr.next() ) ); // broken provider
 
         assertFalse( itr.hasNext() );
     }
