@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.eclipse.sisu.plexus;singleton:=true
 Bundle-Version: 0.3.0.qualifier
 Bundle-Name: Sisu-Plexus (Incubation)
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6,J2SE-1.5,JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: Eclipse Sisu
 Bundle-Copyright: Copyright (c) 2010, 2013 Sonatype, Inc. and others
 Bundle-DocURL: http://www.eclipse.org/sisu/
