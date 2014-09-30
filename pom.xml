@@ -77,8 +77,8 @@
   </ciManagement>
 
   <properties>
-    <maven.compiler.source>1.5</maven.compiler.source>
-    <maven.compiler.target>1.5</maven.compiler.target>
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.target>1.6</maven.compiler.target>
   </properties>
 
   <dependencies>
@@ -192,13 +192,13 @@
           <configuration>
             <signature>
               <groupId>org.codehaus.mojo.signature</groupId>
-              <artifactId>java15</artifactId>
+              <artifactId>java16</artifactId>
               <version>1.0</version>
             </signature>
           </configuration>
           <executions>
             <execution>
-              <id>check-java5</id>
+              <id>check-java6</id>
               <phase>package</phase>
               <goals>
                 <goal>check</goal>
@@ -212,7 +212,7 @@
           <configuration>
             <rules>
               <enforceBytecodeVersion>
-                <maxJdkVersion>1.5</maxJdkVersion>
+                <maxJdkVersion>1.6</maxJdkVersion>
               </enforceBytecodeVersion>
             </rules>
           </configuration>
@@ -220,7 +220,7 @@
             <dependency>
               <groupId>org.codehaus.mojo</groupId>
               <artifactId>extra-enforcer-rules</artifactId>
-              <version>1.0-alpha-5</version>
+              <version>1.0-beta-2</version>
             </dependency>
           </dependencies>
         </plugin>
