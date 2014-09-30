@@ -12,8 +12,9 @@ package org.eclipse.sisu.space;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 /**
  * {@link Iterator} that iterates over named entries beneath a file-system directory.
@@ -27,7 +28,7 @@ final class FileEntryIterator
 
     private final String rootPath;
 
-    private final LinkedList<String> entryNames = new LinkedList<String>();
+    private final Deque<String> entryNames = new ArrayDeque<String>();
 
     private final boolean recurse;
 
