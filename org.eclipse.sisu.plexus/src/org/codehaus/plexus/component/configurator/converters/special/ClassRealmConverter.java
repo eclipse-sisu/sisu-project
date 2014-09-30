@@ -12,7 +12,8 @@
  *******************************************************************************/
 package org.codehaus.plexus.component.configurator.converters.special;
 
-import java.util.LinkedList;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 import org.codehaus.classworlds.ClassRealmAdapter;
 import org.codehaus.classworlds.ClassRealmReverseAdapter;
@@ -57,14 +58,14 @@ public final class ClassRealmConverter
         else if ( holder instanceof ClassRealm )
         {
             // upgrade from single realm to stack of realms
-            final LinkedList<ClassRealm> stack = new LinkedList<ClassRealm>();
+            final Deque<ClassRealm> stack = new ArrayDeque<ClassRealm>();
             stack.add( realm );
             stack.add( (ClassRealm) holder );
             context.set( stack );
         }
-        else if ( holder instanceof LinkedList<?> )
+        else if ( holder instanceof Deque<?> )
         {
-            ( (LinkedList<ClassRealm>) holder ).addFirst( realm );
+            ( (Deque<ClassRealm>) holder ).addFirst( realm );
         }
     }
 
@@ -75,13 +76,13 @@ public final class ClassRealmConverter
         {
             context.remove();
         }
-        else if ( holder instanceof LinkedList<?> )
+        else if ( holder instanceof Deque<?> )
         {
-            final LinkedList<ClassRealm> stack = (LinkedList<ClassRealm>) holder;
+            final Deque<ClassRealm> stack = (Deque<ClassRealm>) holder;
             if ( stack.size() == 2 )
             {
                 // downgrade to single realm
-                context.set( stack.get( 1 ) );
+                context.set( stack.peekLast() );
             }
             else
             {
@@ -97,9 +98,9 @@ public final class ClassRealmConverter
         {
             return (ClassRealm) holder;
         }
-        else if ( holder instanceof LinkedList<?> )
+        else if ( holder instanceof Deque<?> )
         {
-            return ( (LinkedList<ClassRealm>) holder ).getFirst();
+            return ( (Deque<ClassRealm>) holder ).getFirst();
         }
         return realm;
     }
