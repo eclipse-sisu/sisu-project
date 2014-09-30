@@ -84,8 +84,8 @@
   </ciManagement>
 
   <properties>
-    <maven.compiler.source>1.5</maven.compiler.source>
-    <maven.compiler.target>1.5</maven.compiler.target>
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.target>1.6</maven.compiler.target>
     <tycho.scmUrl>scm:git:http://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.inject.git</tycho.scmUrl>
     <tycho-version>0.21.0</tycho-version>
   </properties>
@@ -100,18 +100,13 @@
           <configuration>
             <signature>
               <groupId>org.codehaus.mojo.signature</groupId>
-              <artifactId>java15</artifactId>
+              <artifactId>java16</artifactId>
               <version>1.0</version>
             </signature>
-            <ignores>
-              <ignore>javax.annotation.*</ignore>
-              <ignore>javax.lang.model.*</ignore>
-              <ignore>javax.tools.*</ignore>
-            </ignores>
           </configuration>
           <executions>
             <execution>
-              <id>check-java5</id>
+              <id>check-java6</id>
               <phase>package</phase>
               <goals>
                 <goal>check</goal>
@@ -125,11 +120,7 @@
           <configuration>
             <rules>
               <enforceBytecodeVersion>
-                <maxJdkVersion>1.5</maxJdkVersion>
-                <excludes>
-                  <exclude>*:javax.annotation*</exclude>
-                  <exclude>*:javax.el</exclude>
-                </excludes>
+                <maxJdkVersion>1.6</maxJdkVersion>
               </enforceBytecodeVersion>
             </rules>
           </configuration>

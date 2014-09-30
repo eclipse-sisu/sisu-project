@@ -138,7 +138,7 @@ public final class CloningClassSpace
             }
 
             final ClassWriter cw = new ClassWriter( 0 );
-            cw.visit( Opcodes.V1_5, Modifier.PUBLIC, proxyName, null, superName, null );
+            cw.visit( Opcodes.V1_6, Modifier.PUBLIC, proxyName, null, superName, null );
             final MethodVisitor mv = cw.visitMethod( Modifier.PUBLIC, "<init>", "()V", null, null );
 
             mv.visitCode();
