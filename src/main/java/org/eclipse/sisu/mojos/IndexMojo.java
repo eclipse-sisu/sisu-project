@@ -152,7 +152,20 @@ public class IndexMojo
     {
         synchronized ( project )
         {
-            new SisuIndex( outputDirectory ).index( new URLClassSpace( getProjectClassLoader(), getIndexPath() ) );
+            new SisuIndex( outputDirectory )
+            {
+                @Override
+                protected void info( final String message )
+                {
+                    getLog().info( message );
+                }
+
+                @Override
+                protected void warn( final String message )
+                {
+                    getLog().warn( message );
+                }
+            }.index( new URLClassSpace( getProjectClassLoader(), getIndexPath() ) );
         }
     }
 
