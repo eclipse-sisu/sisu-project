@@ -35,13 +35,19 @@ import org.eclipse.sisu.inject.Logs;
  */
 public final class SisuIndex
     extends AbstractSisuIndex
-    implements QualifiedTypeListener
+    implements SpaceVisitor, ClassVisitor
 {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
+    private final QualifierCache qualifierCache = new QualifierCache();
+
     private final File targetDirectory;
+
+    private ClassSpace space;
+
+    private String clazzName;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -82,11 +88,11 @@ public final class SisuIndex
     // Public methods
     // ----------------------------------------------------------------------
 
-    public void index( final ClassSpace space )
+    public void index( final ClassSpace _space )
     {
         try
         {
-            new SpaceScanner( space ).accept( new QualifiedTypeVisitor( this ) );
+            new SpaceScanner( _space ).accept( this );
         }
         finally
         {
@@ -94,9 +100,41 @@ public final class SisuIndex
         }
     }
 
-    public void hear( final Class<?> qualifiedType, final Object source )
+    public void enterSpace( final ClassSpace _space )
     {
-        addClassToIndex( NAMED, qualifiedType.getName() );
+        space = _space;
+    }
+
+    public ClassVisitor visitClass( final URL url )
+    {
+        return this;
+    }
+
+    public void enterClass( final int modifiers, final String name, final String _extends, final String[] _implements )
+    {
+        if ( ( modifiers & NON_INSTANTIABLE ) == 0 )
+        {
+            clazzName = name; // concrete type
+        }
+    }
+
+    public AnnotationVisitor visitAnnotation( final String desc )
+    {
+        if ( null != clazzName && qualifierCache.qualify( space, desc ) )
+        {
+            addClassToIndex( NAMED, clazzName.replace( '/', '.' ) );
+        }
+        return null;
+    }
+
+    public void leaveClass()
+    {
+        clazzName = null;
+    }
+
+    public void leaveSpace()
+    {
+        space = null;
     }
 
     // ----------------------------------------------------------------------
