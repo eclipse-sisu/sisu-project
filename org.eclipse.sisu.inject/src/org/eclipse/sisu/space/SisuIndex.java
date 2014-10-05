@@ -33,7 +33,7 @@ import org.eclipse.sisu.inject.Logs;
  * 
  * @see <a href="http://eclipse.org/sisu/docs/api/org.eclipse.sisu.mojos/">sisu-maven-plugin</a>
  */
-public final class SisuIndex
+public class SisuIndex
     extends AbstractSisuIndex
     implements SpaceVisitor, ClassVisitor
 {
@@ -88,7 +88,7 @@ public final class SisuIndex
     // Public methods
     // ----------------------------------------------------------------------
 
-    public void index( final ClassSpace _space )
+    public final void index( final ClassSpace _space )
     {
         try
         {
@@ -100,17 +100,18 @@ public final class SisuIndex
         }
     }
 
-    public void enterSpace( final ClassSpace _space )
+    public final void enterSpace( final ClassSpace _space )
     {
         space = _space;
     }
 
-    public ClassVisitor visitClass( final URL url )
+    public final ClassVisitor visitClass( final URL url )
     {
         return this;
     }
 
-    public void enterClass( final int modifiers, final String name, final String _extends, final String[] _implements )
+    public final void enterClass( final int modifiers, final String name, final String _extends,
+                                  final String[] _implements )
     {
         if ( ( modifiers & NON_INSTANTIABLE ) == 0 )
         {
@@ -118,7 +119,7 @@ public final class SisuIndex
         }
     }
 
-    public AnnotationVisitor visitAnnotation( final String desc )
+    public final AnnotationVisitor visitAnnotation( final String desc )
     {
         if ( null != clazzName && qualifierCache.qualify( space, desc ) )
         {
@@ -127,12 +128,12 @@ public final class SisuIndex
         return null;
     }
 
-    public void leaveClass()
+    public final void leaveClass()
     {
         clazzName = null;
     }
 
-    public void leaveSpace()
+    public final void leaveSpace()
     {
         space = null;
     }
