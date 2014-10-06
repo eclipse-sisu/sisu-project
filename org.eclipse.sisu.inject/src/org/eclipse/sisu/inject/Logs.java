@@ -147,7 +147,8 @@ public final class Logs
         {
             throw (Error) problem;
         }
-        throw new ProvisionException( problem.toString(), problem );
+        // this cast lets us load the 'Logs' class and log messages even if Guice is not available
+        throw RuntimeException.class.cast( new ProvisionException( problem.toString(), problem ) );
     }
 
     /**
