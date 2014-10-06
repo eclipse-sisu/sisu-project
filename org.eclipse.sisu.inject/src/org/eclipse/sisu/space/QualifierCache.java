@@ -25,7 +25,9 @@ final class QualifierCache
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final String QUALIFIER_DESC = SpaceScanner.jvmDescriptor( Qualifier.class );
+    private static final String QUALIFIER_DESC = "Ljavax/inject/Qualifier;";
+
+    private static final String NAMED_DESC = "Ljavax/inject/Named;";
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -60,7 +62,7 @@ final class QualifierCache
     // ----------------------------------------------------------------------
 
     /**
-     * Attempts to load the potential {@link Qualifier} annotation and return its class.
+     * Scans the given annotation type to see if it is marked with {@link Qualifier}.
      * 
      * @param space The class space
      * @param desc The annotation descriptor
@@ -68,6 +70,10 @@ final class QualifierCache
      */
     boolean qualify( final ClassSpace space, final String desc )
     {
+        if ( NAMED_DESC.equals( desc ) )
+        {
+            return true;
+        }
         final Boolean result = cachedResults.get( desc );
         if ( null == result )
         {
