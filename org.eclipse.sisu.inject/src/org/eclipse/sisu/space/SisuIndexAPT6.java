@@ -95,7 +95,7 @@ public final class SisuIndexAPT6
         final Elements elementUtils = environment.getElementUtils();
         for ( final TypeElement anno : annotations )
         {
-            if ( HAS_QUALIFIER && null != anno.getAnnotation( javax.inject.Qualifier.class ) )
+            if ( hasQualifier( anno ) )
             {
                 for ( final Element elem : round.getElementsAnnotatedWith( anno ) )
                 {
@@ -173,5 +173,21 @@ public final class SisuIndexAPT6
         throws IOException
     {
         return environment.getFiler().createResource( StandardLocation.CLASS_OUTPUT, "", path ).openWriter();
+    }
+
+    private static boolean hasQualifier( final TypeElement anno )
+    {
+        if ( HAS_QUALIFIER )
+        {
+            return null != anno.getAnnotation( javax.inject.Qualifier.class );
+        }
+        for ( final AnnotationMirror mirror : anno.getAnnotationMirrors() )
+        {
+            if ( QUALIFIER.equals( mirror.getAnnotationType().toString() ) )
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
