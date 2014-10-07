@@ -6,7 +6,7 @@
     <property name='p2.compressed' value='false'/>
   </properties>
   <mappings size='1'>
-    <rule filter='(&amp; (id=plexus-deps))' output='http://git.eclipse.org/c/sisu/org.eclipse.sisu.plexus.git/plain/org.eclipse.sisu.plexus/build.extra/plexus-deps.jar?id=c413e5f3f592202c386e54e40eb0c9412d321fcd'/>
+    <rule filter='(&amp; (id=plexus-deps))' output='http://git.eclipse.org/c/sisu/org.eclipse.sisu.plexus.git/plain/org.eclipse.sisu.plexus/build.extra/plexus-deps.jar?id=84e8c1ec244dbbfcff4e57e2d973c8237aa9ba1e'/>
   </mappings>
   <artifacts size='1'>
     <artifact classifier='osgi.bundle' id='plexus-deps' version='0.0.0.v201410070051'>
