@@ -21,7 +21,7 @@
 <unit id="com.google.inject" version="4.0.0.beta5"/>
 <unit id="com.google.inject.servlet" version="4.0.0.beta5"/>
 <unit id="org.testng" version="6.7.0"/>
-<repository location="http://git.eclipse.org/c/sisu/org.eclipse.sisu.inject.git/plain/org.eclipse.sisu.inject/build.extra?id=2c78e0c820718cc98c5b76c91a03574da07b0cf8"/>
+<repository location="http://git.eclipse.org/c/sisu/org.eclipse.sisu.inject.git/plain/org.eclipse.sisu.inject/build.extra?id=f48b93c1bfb6eb877bac19a7f1c25b93c9e76a18"/>
 </location>
 <location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="org.eclipse.osgi" version="3.6.2.R36x_v20110210"/>
