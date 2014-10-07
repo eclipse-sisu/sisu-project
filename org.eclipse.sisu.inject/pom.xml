@@ -27,6 +27,9 @@
    | Minimum requirements
   -->
   <dependencies>
+    <!--
+     | Can use guice or sisu-guice; AOP or No-AOP (faster)
+    -->
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
