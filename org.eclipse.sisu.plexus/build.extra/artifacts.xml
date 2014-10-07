@@ -1,18 +1,19 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <?artifactRepository version='1.1.0'?>
-<repository name='org.eclipse.sisu.plexus.extra' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='2'>
+<repository name='org.eclipse.sisu.plexus.extra' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='3'>
   <properties size='2'>
-    <property name='p2.timestamp' value='1398864007513'/>
+    <property name='p2.timestamp' value='1412639675693'/>
     <property name='p2.compressed' value='false'/>
   </properties>
   <mappings size='1'>
-    <rule filter='(&amp; (id=plexus-deps))' output='http://git.eclipse.org/c/sisu/org.eclipse.sisu.plexus.git/plain/org.eclipse.sisu.plexus/build.extra/plexus-deps.jar'/>
+    <rule filter='(&amp; (id=plexus-deps))' output='http://git.eclipse.org/c/sisu/org.eclipse.sisu.plexus.git/plain/org.eclipse.sisu.plexus/build.extra/plexus-deps.jar?id=c413e5f3f592202c386e54e40eb0c9412d321fcd'/>
   </mappings>
   <artifacts size='1'>
-    <artifact classifier='osgi.bundle' id='plexus-deps' version='0.0.0'>
-      <properties size='2'>
-        <property name='artifact.size' value='256543'/>
-        <property name='download.size' value='256543'/>
+    <artifact classifier='osgi.bundle' id='plexus-deps' version='0.0.0.v201410070051'>
+      <properties size='3'>
+        <property name='artifact.size' value='277419'/>
+        <property name='download.size' value='277419'/>
+        <property name='download.md5' value='f451729db51f4f6f8503754ad7490d2a'/>
       </properties>
     </artifact>
   </artifacts>
