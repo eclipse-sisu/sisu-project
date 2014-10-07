@@ -27,14 +27,17 @@
    | Minimum requirements
   -->
   <dependencies>
+    <!--
+     | Can use guice or sisu-guice; AOP or No-AOP (faster)
+    -->
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.6.4</version>
-      <optional>true</optional>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>3.0</version>
+      <scope>provided</scope>
     </dependency>
     <!--
-     | CDI's @Typed helps Plexus->JSR330 migration
+     | CDI's @Typed helps with Plexus->JSR330 migration
     -->
     <dependency>
       <groupId>javax.enterprise</groupId>
@@ -55,26 +58,6 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <!--
-     | Swap in sisu-guice for ProvisionListener API; No-AOP flavour is faster
-    -->
-    <dependency>
-      <groupId>org.sonatype.sisu</groupId>
-      <artifactId>sisu-guice</artifactId>
-      <classifier>no_aop</classifier>
-      <version>3.1.6</version>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>aopalliance</groupId>
-          <artifactId>aopalliance</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.google.code.findbugs</groupId>
-          <artifactId>jsr305</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
     <dependency>
       <groupId>org.eclipse.sisu</groupId>
       <artifactId>org.eclipse.sisu.inject</artifactId>
@@ -91,17 +74,17 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-classworlds</artifactId>
-      <version>2.5.1</version>
+      <version>2.5.2</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>2.1</version>
+      <version>3.0.18</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.10</version>
+      <version>4.11</version>
       <optional>true</optional>
     </dependency>
   </dependencies>
