@@ -107,7 +107,7 @@ final class PlexusXmlScanner
      * @param variables The filter variables
      * @return Reader that can automatically detect XML encodings and optionally interpolate variables
      */
-    private static Reader filteredXmlReader( final InputStream in, final Map<?, ?> variables )
+    private static Reader filteredXmlReader( final InputStream in, @SuppressWarnings( "rawtypes" ) final Map variables )
         throws IOException
     {
         final Reader reader = ReaderFactory.newXmlReader( in );

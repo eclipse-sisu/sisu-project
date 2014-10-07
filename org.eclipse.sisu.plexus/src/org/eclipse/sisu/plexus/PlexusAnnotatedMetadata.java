@@ -31,7 +31,8 @@ public final class PlexusAnnotatedMetadata
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final Map<?, ?> variables;
+    @SuppressWarnings( "rawtypes" )
+    private final Map variables;
 
     // ----------------------------------------------------------------------
     // Constructors
