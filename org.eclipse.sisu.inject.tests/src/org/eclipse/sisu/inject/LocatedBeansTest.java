@@ -41,7 +41,7 @@ public class LocatedBeansTest
     @Retention( RUNTIME )
     public @interface Marked
     {
-        String value() default "";
+        String value();
     }
 
     @Marked( "MarkedBean1" )

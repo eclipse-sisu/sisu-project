@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.sisu.inject;
 
-import java.lang.reflect.Method;
 import java.util.Map;
 
 import com.google.inject.Binding;
@@ -30,22 +29,21 @@ public final class InjectorPublisher
 
     static
     {
-        Method getDeclaringSource;
+        boolean hasDeclaringSource;
         try
         {
             // support future where binding.getSource() returns ElementSource and not the original declaring source
-            final Class<?> clazz = Binding.class.getClassLoader().loadClass( "com.google.inject.spi.ElementSource" );
-            getDeclaringSource = clazz.getMethod( "getDeclaringSource" );
+            hasDeclaringSource = com.google.inject.spi.ElementSource.class.getMethod( "getDeclaringSource" ) != null;
         }
         catch ( final Exception e )
         {
-            getDeclaringSource = null;
+            hasDeclaringSource = false;
         }
         catch ( final LinkageError e )
         {
-            getDeclaringSource = null;
+            hasDeclaringSource = false;
         }
-        GET_DECLARING_SOURCE = getDeclaringSource;
+        HAS_DECLARING_SOURCE = hasDeclaringSource;
     }
 
     // ----------------------------------------------------------------------
@@ -54,7 +52,7 @@ public final class InjectorPublisher
 
     private static final TypeLiteral<?> OBJECT_TYPE_LITERAL = TypeLiteral.get( Object.class );
 
-    private static final Method GET_DECLARING_SOURCE;
+    private static final boolean HAS_DECLARING_SOURCE;
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -153,20 +151,9 @@ public final class InjectorPublisher
     static Object getDeclaringSource( final Binding<?> binding )
     {
         final Object source = binding.getSource();
-        if ( null != GET_DECLARING_SOURCE && GET_DECLARING_SOURCE.getDeclaringClass().isInstance( source ) )
+        if ( HAS_DECLARING_SOURCE && source instanceof com.google.inject.spi.ElementSource )
         {
-            try
-            {
-                return GET_DECLARING_SOURCE.invoke( source );
-            }
-            catch ( final Exception e )
-            {
-                // ignore
-            }
-            catch ( final LinkageError e )
-            {
-                // ignore
-            }
+            return ( (com.google.inject.spi.ElementSource) source ).getDeclaringSource();
         }
         return source;
     }
