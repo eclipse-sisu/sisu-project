@@ -95,7 +95,7 @@ public final class SisuIndexAPT6
         final Elements elementUtils = environment.getElementUtils();
         for ( final TypeElement anno : annotations )
         {
-            if ( hasQualifier( anno ) )
+            if ( !ALL.equals( qualifiers ) || hasQualifier( anno ) )
             {
                 for ( final Element elem : round.getElementsAnnotatedWith( anno ) )
                 {
