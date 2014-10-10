@@ -17,11 +17,11 @@
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
-<unit id="com.google.guava" version="16.0.1"/>
+<unit id="com.google.guava" version="16.0.0"/>
 <unit id="com.google.inject" version="4.0.0.beta5"/>
 <unit id="com.google.inject.servlet" version="4.0.0.beta5"/>
 <unit id="org.testng" version="6.7.0"/>
-<repository location="http://git.eclipse.org/c/sisu/org.eclipse.sisu.inject.git/plain/org.eclipse.sisu.inject/build.extra?id=f48b93c1bfb6eb877bac19a7f1c25b93c9e76a18"/>
+<repository location="http://git.eclipse.org/c/sisu/org.eclipse.sisu.inject.git/plain/org.eclipse.sisu.inject/build.extra?id=8ebc2f9074d5208d9e3fe32d4356093d9dd23ca5"/>
 </location>
 <location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="org.eclipse.osgi" version="3.6.2.R36x_v20110210"/>
