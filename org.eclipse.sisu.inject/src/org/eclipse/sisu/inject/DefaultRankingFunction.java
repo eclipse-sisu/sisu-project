@@ -84,7 +84,7 @@ public final class DefaultRankingFunction
 
     public <T> int rank( final Binding<T> binding )
     {
-        final Object source = InjectorPublisher.getDeclaringSource( binding );
+        final Object source = Sources.getDeclaringSource( binding );
         if ( source instanceof PriorityBinding )
         {
             return ( (PriorityBinding) source ).getPriority();

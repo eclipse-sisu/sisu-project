@@ -24,35 +24,10 @@ public final class InjectorPublisher
     implements BindingPublisher
 {
     // ----------------------------------------------------------------------
-    // Static initialization
-    // ----------------------------------------------------------------------
-
-    static
-    {
-        boolean hasDeclaringSource;
-        try
-        {
-            // support future where binding.getSource() returns ElementSource and not the original declaring source
-            hasDeclaringSource = com.google.inject.spi.ElementSource.class.getMethod( "getDeclaringSource" ) != null;
-        }
-        catch ( final Exception e )
-        {
-            hasDeclaringSource = false;
-        }
-        catch ( final LinkageError e )
-        {
-            hasDeclaringSource = false;
-        }
-        HAS_DECLARING_SOURCE = hasDeclaringSource;
-    }
-
-    // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
 
     private static final TypeLiteral<?> OBJECT_TYPE_LITERAL = TypeLiteral.get( Object.class );
-
-    private static final boolean HAS_DECLARING_SOURCE;
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -148,19 +123,9 @@ public final class InjectorPublisher
     // Local methods
     // ----------------------------------------------------------------------
 
-    static Object getDeclaringSource( final Binding<?> binding )
-    {
-        final Object source = binding.getSource();
-        if ( HAS_DECLARING_SOURCE && source instanceof com.google.inject.spi.ElementSource )
-        {
-            return ( (com.google.inject.spi.ElementSource) source ).getDeclaringSource();
-        }
-        return source;
-    }
-
     static boolean isVisible( final Binding<?> binding )
     {
-        return false == getDeclaringSource( binding ) instanceof HiddenBinding;
+        return false == Sources.getDeclaringSource( binding ) instanceof HiddenBinding;
     }
 
     // ----------------------------------------------------------------------

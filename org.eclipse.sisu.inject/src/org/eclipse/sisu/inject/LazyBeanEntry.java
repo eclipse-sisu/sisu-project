@@ -125,7 +125,7 @@ final class LazyBeanEntry<Q extends Annotation, T>
 
     public Object getSource()
     {
-        return InjectorPublisher.getDeclaringSource( binding );
+        return Sources.getDeclaringSource( binding );
     }
 
     public int getRank()
