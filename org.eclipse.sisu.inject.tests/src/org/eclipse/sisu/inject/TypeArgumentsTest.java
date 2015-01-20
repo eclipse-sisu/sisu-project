@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.sisu.inject;
 
-import java.lang.reflect.GenericDeclaration;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.AbstractMap;
@@ -355,41 +357,63 @@ public class TypeArgumentsTest
 
         // === corner case ===
 
-        final Type T = new TypeVariable()
-        {
-            public Type[] getBounds()
-            {
-                return new Type[] { String.class };
-            }
+        final Type T =
+            (Type) Proxy.newProxyInstance( getClass().getClassLoader(), new Class<?>[] { TypeVariable.class },
+                                           new InvocationHandler()
+                                           {
+                                               public Object invoke( final Object proxy, final Method method,
+                                                                     final Object[] args )
+                                                   throws Throwable
+                                               {
+                                                   final String name = method.getName();
+                                                   if ( "getBounds".equals( name ) )
+                                                   {
+                                                       return new Type[] { String.class };
+                                                   }
+                                                   if ( "getName".equals( name ) )
+                                                   {
+                                                       return "T";
+                                                   }
+                                                   if ( "hashCode".equals( name ) )
+                                                   {
+                                                       return hashCode();
+                                                   }
+                                                   if ( "equals".equals( name ) )
+                                                   {
+                                                       return equals( args[0] );
+                                                   }
+                                                   return null;
+                                               }
+                                           } );
 
-            public GenericDeclaration getGenericDeclaration()
-            {
-                return null;
-            }
-
-            public String getName()
-            {
-                return "T";
-            }
-        };
-
-        final Type callableT = new ParameterizedType()
-        {
-            public Type getRawType()
-            {
-                return Callable.class;
-            }
-
-            public Type getOwnerType()
-            {
-                return null;
-            }
-
-            public Type[] getActualTypeArguments()
-            {
-                return new Type[] { T };
-            }
-        };
+        final Type callableT =
+            (Type) Proxy.newProxyInstance( getClass().getClassLoader(), new Class<?>[] { ParameterizedType.class },
+                                           new InvocationHandler()
+                                           {
+                                               public Object invoke( final Object proxy, final Method method,
+                                                                     final Object[] args )
+                                                   throws Throwable
+                                               {
+                                                   final String name = method.getName();
+                                                   if ( "getActualTypeArguments".equals( name ) )
+                                                   {
+                                                       return new Type[] { T };
+                                                   }
+                                                   if ( "getRawType".equals( name ) )
+                                                   {
+                                                       return Callable.class;
+                                                   }
+                                                   if ( "hashCode".equals( name ) )
+                                                   {
+                                                       return hashCode();
+                                                   }
+                                                   if ( "equals".equals( name ) )
+                                                   {
+                                                       return equals( args[0] );
+                                                   }
+                                                   return null;
+                                               }
+                                           } );
 
         assertFalse( TypeArguments.isAssignableFrom( TypeLiteral.get( callableT ), TypeLiteral.get( Callable.class ) ) );
 
