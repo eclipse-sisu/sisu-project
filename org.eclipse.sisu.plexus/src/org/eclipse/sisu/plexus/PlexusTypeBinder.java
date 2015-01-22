@@ -104,52 +104,8 @@ public final class PlexusTypeBinder
     {
         if ( null != description && description.length() > 0 )
         {
-            return binder.withSource( new PlexusDescribedBinding( source, description ) );
+            return binder.withSource( Sources.describe( source, description ) );
         }
         return binder.withSource( source );
-    }
-
-    // ----------------------------------------------------------------------
-    // Implementation types
-    // ----------------------------------------------------------------------
-
-    /**
-     * {@link DescribedBinding} that captures Plexus descriptions.
-     */
-    private static final class PlexusDescribedBinding
-        implements Sources.Described
-    {
-        // ----------------------------------------------------------------------
-        // Implementation fields
-        // ----------------------------------------------------------------------
-
-        private final Object source;
-
-        private final String description;
-
-        // ----------------------------------------------------------------------
-        // Constructors
-        // ----------------------------------------------------------------------
-
-        PlexusDescribedBinding( final Object source, final String description )
-        {
-            this.source = source;
-            this.description = description;
-        }
-
-        // ----------------------------------------------------------------------
-        // Public methods
-        // ----------------------------------------------------------------------
-
-        public String getDescription()
-        {
-            return description;
-        }
-
-        @Override
-        public String toString()
-        {
-            return source.toString();
-        }
     }
 }

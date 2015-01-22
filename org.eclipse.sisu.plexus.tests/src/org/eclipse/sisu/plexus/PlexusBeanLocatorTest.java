@@ -20,8 +20,8 @@ import org.codehaus.plexus.classworlds.ClassWorldException;
 import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
 import org.codehaus.plexus.classworlds.realm.NoSuchRealmException;
 import org.eclipse.sisu.inject.DefaultBeanLocator;
-import org.eclipse.sisu.inject.HiddenBinding;
 import org.eclipse.sisu.inject.MutableBeanLocator;
+import org.eclipse.sisu.inject.Sources;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Binder;
@@ -38,10 +38,6 @@ import com.google.inject.name.Names;
 public class PlexusBeanLocatorTest
     extends TestCase
 {
-    static final HiddenBinding TEST_HIDDEN_SOURCE = new HiddenBinding()
-    {
-    };
-
     @ImplementedBy( BeanImpl.class )
     interface Bean
     {
@@ -81,7 +77,7 @@ public class PlexusBeanLocatorTest
             protected void configure()
             {
                 bind( Bean.class ).annotatedWith( Names.named( "M1" ) ).to( BeanImpl.class );
-                final Binder hiddenBinder = binder().withSource( TEST_HIDDEN_SOURCE );
+                final Binder hiddenBinder = binder().withSource( Sources.hide() );
                 hiddenBinder.bind( Bean.class ).annotatedWith( Names.named( "!" ) ).to( BeanImpl.class );
                 bind( Bean.class ).annotatedWith( Names.named( "N1" ) ).to( BeanImpl.class );
             }
