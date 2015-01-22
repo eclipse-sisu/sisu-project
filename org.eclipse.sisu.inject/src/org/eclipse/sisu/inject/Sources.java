@@ -10,7 +10,12 @@
  *******************************************************************************/
 package org.eclipse.sisu.inject;
 
-import com.google.inject.Binder;
+import java.lang.annotation.Annotation;
+
+import org.eclipse.sisu.Description;
+import org.eclipse.sisu.Hidden;
+import org.eclipse.sisu.Priority;
+
 import com.google.inject.Binding;
 
 /**
@@ -39,6 +44,17 @@ public final class Sources
             hasDeclaringSource = false;
         }
         HAS_DECLARING_SOURCE = hasDeclaringSource;
+
+        boolean hasJsr250Priority;
+        try
+        {
+            hasJsr250Priority = javax.annotation.Priority.class.isAnnotation();
+        }
+        catch ( final LinkageError e )
+        {
+            hasJsr250Priority = false;
+        }
+        HAS_JSR250_PRIORITY = hasJsr250Priority;
     }
 
     // ----------------------------------------------------------------------
@@ -46,6 +62,8 @@ public final class Sources
     // ----------------------------------------------------------------------
 
     private static final boolean HAS_DECLARING_SOURCE;
+
+    private static final boolean HAS_JSR250_PRIORITY;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -60,6 +78,12 @@ public final class Sources
     // Utility methods
     // ----------------------------------------------------------------------
 
+    /**
+     * Returns the source that originally declared the given binding.
+     * 
+     * @param binding The binding
+     * @return Declaring source; {@code null} if it doesn't exist
+     */
     public static Object getDeclaringSource( final Binding<?> binding )
     {
         final Object source = binding.getSource();
@@ -70,43 +94,118 @@ public final class Sources
         return source;
     }
 
-    // ----------------------------------------------------------------------
-    // Public types
-    // ----------------------------------------------------------------------
-
     /**
-     * Binding source locations can implement this interface to hide bindings from the {@link BeanLocator}.
+     * Searches the binding's source and implementation for an annotation of the given type.
      * 
-     * @see Binder#withSource(Object)
+     * @param binding The binding
+     * @param annotationType The annotation type
+     * @return Annotation instance; {@code null} if it doesn't exist
      */
-    public interface Hidden
+    @SuppressWarnings( { "unchecked", "deprecation" } )
+    public static <T extends Annotation> T getAnnotation( final Binding<?> binding, final Class<T> annotationType )
     {
-        // marker interface
+        T annotation = null;
+        final Object source = getDeclaringSource( binding );
+        if ( source instanceof AnnotatedSource )
+        {
+            annotation = ( (AnnotatedSource) source ).getAnnotation( annotationType );
+        }
+        if ( null == annotation )
+        {
+            final Class<?> implementation = Implementations.extendedFind( binding );
+            if ( null != implementation )
+            {
+                annotation = implementation.getAnnotation( annotationType );
+                if ( null == annotation )
+                {
+                    if ( HAS_JSR250_PRIORITY && Priority.class.equals( annotationType ) )
+                    {
+                        final javax.annotation.Priority jsr250 =
+                            implementation.getAnnotation( javax.annotation.Priority.class );
+                        if ( null != jsr250 )
+                        {
+                            annotation = (T) new PriorityImpl( binding.getSource(), jsr250.value() );
+                        }
+                    }
+                    else if ( Description.class.equals( annotationType ) )
+                    {
+                        final org.sonatype.inject.Description legacy =
+                            implementation.getAnnotation( org.sonatype.inject.Description.class );
+                        if ( null != legacy )
+                        {
+                            annotation = (T) new DescriptionImpl( binding.getSource(), legacy.value() );
+                        }
+                    }
+                }
+            }
+        }
+        return annotation;
     }
 
     /**
-     * Binding source locations can implement this interface to supply descriptions to the {@link BeanLocator}.
+     * Hides a new binding source from the bean locator.
      * 
-     * @see Binder#withSource(Object)
+     * @return Hidden source
      */
-    public interface Described
+    public static Hidden hide()
     {
-        /**
-         * @return Human-readable description
-         */
-        String getDescription();
+        return hide( null );
     }
 
     /**
-     * Binding source locations can implement this interface to supply priorities to the {@link BeanLocator}.
+     * Hides the given binding source from the bean locator.
      * 
-     * @see Binder#withSource(Object)
+     * @param source The source
+     * @return Hidden source
      */
-    public interface Prioritized
+    public static Hidden hide( final Object source )
     {
-        /**
-         * @return Priority value
-         */
-        int getPriority();
+        return new HiddenImpl( source );
+    }
+
+    /**
+     * Describes a new binding source with the given description.
+     * 
+     * @param value The description
+     * @return Described source
+     */
+    public static Description describe( final String value )
+    {
+        return describe( null, value );
+    }
+
+    /**
+     * Describes the given binding source with the given description.
+     * 
+     * @param source The source
+     * @param value The description
+     * @return Described source
+     */
+    public static Description describe( final Object source, final String value )
+    {
+        return new DescriptionImpl( source, value );
+    }
+
+    /**
+     * Prioritizes a new binding source with the given priority.
+     * 
+     * @param value The priority
+     * @return Prioritized source
+     */
+    public static Priority prioritize( final int value )
+    {
+        return prioritize( null, value );
+    }
+
+    /**
+     * Prioritizes the given binding source with the given priority.
+     * 
+     * @param source The source
+     * @param value The priority
+     * @return Prioritized source
+     */
+    public static Priority prioritize( final Object source, final int value )
+    {
+        return new PriorityImpl( source, value );
     }
 }

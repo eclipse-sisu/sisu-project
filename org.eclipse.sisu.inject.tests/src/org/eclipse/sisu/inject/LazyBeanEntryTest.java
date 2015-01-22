@@ -54,13 +54,7 @@ public class LazyBeanEntryTest
             {
                 bind( key1 ).to( DescribedBean.class ).in( Scopes.SINGLETON );
 
-                binder().withSource( new Sources.Described()
-                {
-                    public String getDescription()
-                    {
-                        return "Another test";
-                    }
-                } ).bind( key2 ).toInstance( new BeanImpl() );
+                binder().withSource( Sources.describe( "Another test" ) ).bind( key2 ).toInstance( new BeanImpl() );
 
                 binder().withSource( "where?" ).bind( key3 ).to( BeanImpl.class );
 
@@ -83,7 +77,7 @@ public class LazyBeanEntryTest
         assertEquals( 42, bean1.getRank() );
 
         assertEquals( "Another test", bean2.getDescription() );
-        assertTrue( bean2.getSource() instanceof Sources.Described );
+        assertTrue( bean2.getSource() instanceof AnnotatedSource );
         assertEquals( BeanImpl.class, bean2.getImplementationClass() );
         assertEquals( -24, bean2.getRank() );
 

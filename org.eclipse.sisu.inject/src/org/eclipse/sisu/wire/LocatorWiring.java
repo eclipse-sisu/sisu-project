@@ -21,6 +21,7 @@ import java.util.Set;
 import javax.inject.Qualifier;
 
 import org.eclipse.sisu.BeanEntry;
+import org.eclipse.sisu.Hidden;
 import org.eclipse.sisu.inject.BeanLocator;
 import org.eclipse.sisu.inject.Sources;
 import org.eclipse.sisu.inject.TypeArguments;
@@ -45,14 +46,7 @@ public final class LocatorWiring
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final Sources.Hidden HIDDEN_SOURCE = new Sources.Hidden()
-    {
-        @Override
-        public String toString()
-        {
-            return LocatorWiring.class.getName();
-        }
-    };
+    private static final Hidden HIDDEN_WIRING = Sources.hide( LocatorWiring.class.getName() );
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -69,7 +63,7 @@ public final class LocatorWiring
     public LocatorWiring( final Binder binder )
     {
         beanProviders = new BeanProviders( binder );
-        this.binder = binder.withSource( HIDDEN_SOURCE );
+        this.binder = binder.withSource( HIDDEN_WIRING );
     }
 
     // ----------------------------------------------------------------------

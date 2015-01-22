@@ -92,29 +92,10 @@ final class LazyBeanEntry<Q extends Annotation, T>
         return binding.getProvider();
     }
 
-    @SuppressWarnings( "deprecation" )
     public String getDescription()
     {
-        final Object source = getSource();
-        if ( source instanceof Sources.Described )
-        {
-            return ( (Sources.Described) source ).getDescription();
-        }
-        final Class<T> clazz = getImplementationClass();
-        if ( null != clazz )
-        {
-            final Description description = clazz.getAnnotation( Description.class );
-            if ( null != description )
-            {
-                return description.value();
-            }
-            final org.sonatype.inject.Description legacy = clazz.getAnnotation( org.sonatype.inject.Description.class );
-            if ( null != legacy )
-            {
-                return legacy.value();
-            }
-        }
-        return null;
+        final Description description = Sources.getAnnotation( binding, Description.class );
+        return null != description ? description.value() : null;
     }
 
     @SuppressWarnings( "unchecked" )

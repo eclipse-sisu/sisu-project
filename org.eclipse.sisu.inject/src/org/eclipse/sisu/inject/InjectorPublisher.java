@@ -12,6 +12,8 @@ package org.eclipse.sisu.inject;
 
 import java.util.Map;
 
+import org.eclipse.sisu.Hidden;
+
 import com.google.inject.Binding;
 import com.google.inject.Injector;
 import com.google.inject.Key;
@@ -120,15 +122,6 @@ public final class InjectorPublisher
     }
 
     // ----------------------------------------------------------------------
-    // Local methods
-    // ----------------------------------------------------------------------
-
-    static boolean isVisible( final Binding<?> binding )
-    {
-        return false == Sources.getDeclaringSource( binding ) instanceof Sources.Hidden;
-    }
-
-    // ----------------------------------------------------------------------
     // Implementation methods
     // ----------------------------------------------------------------------
 
@@ -149,7 +142,8 @@ public final class InjectorPublisher
     {
         for ( final Binding binding : injector.<Object> findBindingsByType( searchType ) )
         {
-            if ( isVisible( binding ) && ( null == superType || isAssignableFrom( superType, binding ) ) )
+            if ( null == Sources.getAnnotation( binding, Hidden.class )
+                && ( null == superType || isAssignableFrom( superType, binding ) ) )
             {
                 subscriber.add( binding, function.rank( binding ) );
             }

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.sisu.inject;
 
+import org.eclipse.sisu.Hidden;
+
 import com.google.inject.Binding;
 import com.google.inject.ImplementedBy;
 import com.google.inject.Injector;
@@ -70,7 +72,7 @@ final class ImplicitBindings
                 try
                 {
                     final Binding binding = i.getBinding( justInTimeKey );
-                    if ( InjectorPublisher.isVisible( binding ) )
+                    if ( null == Sources.getAnnotation( binding, Hidden.class ) )
                     {
                         Logs.trace( "Using just-in-time binding: {} from: <>", binding, i );
                         return binding;

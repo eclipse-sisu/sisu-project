@@ -25,30 +25,6 @@ public final class DefaultRankingFunction
     implements RankingFunction
 {
     // ----------------------------------------------------------------------
-    // Static initialization
-    // ----------------------------------------------------------------------
-
-    static
-    {
-        boolean hasJsr250Priority;
-        try
-        {
-            hasJsr250Priority = javax.annotation.Priority.class.isAnnotation();
-        }
-        catch ( final LinkageError e )
-        {
-            hasJsr250Priority = false;
-        }
-        HAS_JSR250_PRIORITY = hasJsr250Priority;
-    }
-
-    // ----------------------------------------------------------------------
-    // Constants
-    // ----------------------------------------------------------------------
-
-    private static final boolean HAS_JSR250_PRIORITY;
-
-    // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
@@ -84,29 +60,10 @@ public final class DefaultRankingFunction
 
     public <T> int rank( final Binding<T> binding )
     {
-        final Object source = Sources.getDeclaringSource( binding );
-        if ( source instanceof Sources.Prioritized )
+        final Priority priority = Sources.getAnnotation( binding, Priority.class );
+        if ( null != priority )
         {
-            return ( (Sources.Prioritized) source ).getPriority();
-        }
-        // use extended find so we can also rank servlets/filters by @Priority
-        final Class<?> implementation = Implementations.extendedFind( binding );
-        if ( null != implementation )
-        {
-            if ( HAS_JSR250_PRIORITY )
-            {
-                final javax.annotation.Priority priority =
-                    implementation.getAnnotation( javax.annotation.Priority.class );
-                if ( null != priority )
-                {
-                    return priority.value();
-                }
-            }
-            final Priority priority = implementation.getAnnotation( Priority.class );
-            if ( null != priority )
-            {
-                return priority.value();
-            }
+            return priority.value();
         }
         if ( QualifyingStrategy.DEFAULT_QUALIFIER.equals( QualifyingStrategy.qualify( binding.getKey() ) ) )
         {
