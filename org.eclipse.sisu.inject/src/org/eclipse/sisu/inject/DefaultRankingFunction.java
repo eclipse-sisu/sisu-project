@@ -85,9 +85,9 @@ public final class DefaultRankingFunction
     public <T> int rank( final Binding<T> binding )
     {
         final Object source = Sources.getDeclaringSource( binding );
-        if ( source instanceof PriorityBinding )
+        if ( source instanceof Sources.Prioritized )
         {
-            return ( (PriorityBinding) source ).getPriority();
+            return ( (Sources.Prioritized) source ).getPriority();
         }
         // use extended find so we can also rank servlets/filters by @Priority
         final Class<?> implementation = Implementations.extendedFind( binding );

@@ -60,7 +60,7 @@ public class PriorityTest
             bind( Bean.class ).annotatedWith( Names.named( "HI" ) ).to( HighPriorityBean.class );
             bind( Bean.class ).to( DefaultBean.class );
             bind( Bean.class ).annotatedWith( Names.named( "MED" ) ).to( MediumPriorityBean.class );
-            binder().withSource( new PriorityBinding()
+            binder().withSource( new Sources.Prioritized()
             {
                 public int getPriority()
                 {

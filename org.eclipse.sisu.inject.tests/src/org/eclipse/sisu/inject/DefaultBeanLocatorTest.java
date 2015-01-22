@@ -71,7 +71,7 @@ public class DefaultBeanLocatorTest
             @Override
             protected void configure()
             {
-                binder().withSource( new HiddenBinding()
+                binder().withSource( new Sources.Hidden()
                 {
                 } ).bind( Bean.class ).annotatedWith( Names.named( "HIDDEN" ) ).to( BeanImpl.class );
             }

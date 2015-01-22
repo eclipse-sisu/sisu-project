@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.sisu.inject;
 
+import com.google.inject.Binder;
 import com.google.inject.Binding;
 
 /**
@@ -67,5 +68,45 @@ public final class Sources
             return ( (com.google.inject.spi.ElementSource) source ).getDeclaringSource();
         }
         return source;
+    }
+
+    // ----------------------------------------------------------------------
+    // Public types
+    // ----------------------------------------------------------------------
+
+    /**
+     * Binding source locations can implement this interface to hide bindings from the {@link BeanLocator}.
+     * 
+     * @see Binder#withSource(Object)
+     */
+    public interface Hidden
+    {
+        // marker interface
+    }
+
+    /**
+     * Binding source locations can implement this interface to supply descriptions to the {@link BeanLocator}.
+     * 
+     * @see Binder#withSource(Object)
+     */
+    public interface Described
+    {
+        /**
+         * @return Human-readable description
+         */
+        String getDescription();
+    }
+
+    /**
+     * Binding source locations can implement this interface to supply priorities to the {@link BeanLocator}.
+     * 
+     * @see Binder#withSource(Object)
+     */
+    public interface Prioritized
+    {
+        /**
+         * @return Priority value
+         */
+        int getPriority();
     }
 }

@@ -125,7 +125,7 @@ public final class InjectorPublisher
 
     static boolean isVisible( final Binding<?> binding )
     {
-        return false == Sources.getDeclaringSource( binding ) instanceof HiddenBinding;
+        return false == Sources.getDeclaringSource( binding ) instanceof Sources.Hidden;
     }
 
     // ----------------------------------------------------------------------

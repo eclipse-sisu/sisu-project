@@ -22,7 +22,7 @@ import javax.inject.Qualifier;
 
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.inject.BeanLocator;
-import org.eclipse.sisu.inject.HiddenBinding;
+import org.eclipse.sisu.inject.Sources;
 import org.eclipse.sisu.inject.TypeArguments;
 
 import com.google.inject.Binder;
@@ -45,7 +45,7 @@ public final class LocatorWiring
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final HiddenBinding HIDDEN_SOURCE = new HiddenBinding()
+    private static final Sources.Hidden HIDDEN_SOURCE = new Sources.Hidden()
     {
         @Override
         public String toString()

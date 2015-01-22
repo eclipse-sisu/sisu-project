@@ -96,9 +96,9 @@ final class LazyBeanEntry<Q extends Annotation, T>
     public String getDescription()
     {
         final Object source = getSource();
-        if ( source instanceof DescribedBinding )
+        if ( source instanceof Sources.Described )
         {
-            return ( (DescribedBinding) source ).getDescription();
+            return ( (Sources.Described) source ).getDescription();
         }
         final Class<T> clazz = getImplementationClass();
         if ( null != clazz )
