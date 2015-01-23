@@ -79,70 +79,6 @@ public final class Sources
     // ----------------------------------------------------------------------
 
     /**
-     * Returns the source that originally declared the given binding.
-     * 
-     * @param binding The binding
-     * @return Declaring source; {@code null} if it doesn't exist
-     */
-    public static Object getDeclaringSource( final Binding<?> binding )
-    {
-        final Object source = binding.getSource();
-        if ( HAS_DECLARING_SOURCE && source instanceof com.google.inject.spi.ElementSource )
-        {
-            return ( (com.google.inject.spi.ElementSource) source ).getDeclaringSource();
-        }
-        return source;
-    }
-
-    /**
-     * Searches the binding's source and implementation for an annotation of the given type.
-     * 
-     * @param binding The binding
-     * @param annotationType The annotation type
-     * @return Annotation instance; {@code null} if it doesn't exist
-     */
-    @SuppressWarnings( { "unchecked", "deprecation" } )
-    public static <T extends Annotation> T getAnnotation( final Binding<?> binding, final Class<T> annotationType )
-    {
-        T annotation = null;
-        final Object source = getDeclaringSource( binding );
-        if ( source instanceof AnnotatedSource )
-        {
-            annotation = ( (AnnotatedSource) source ).getAnnotation( annotationType );
-        }
-        if ( null == annotation )
-        {
-            final Class<?> implementation = Implementations.extendedFind( binding );
-            if ( null != implementation )
-            {
-                annotation = implementation.getAnnotation( annotationType );
-                if ( null == annotation )
-                {
-                    if ( HAS_JSR250_PRIORITY && Priority.class.equals( annotationType ) )
-                    {
-                        final javax.annotation.Priority jsr250 =
-                            implementation.getAnnotation( javax.annotation.Priority.class );
-                        if ( null != jsr250 )
-                        {
-                            annotation = (T) new PriorityImpl( binding.getSource(), jsr250.value() );
-                        }
-                    }
-                    else if ( Description.class.equals( annotationType ) )
-                    {
-                        final org.sonatype.inject.Description legacy =
-                            implementation.getAnnotation( org.sonatype.inject.Description.class );
-                        if ( null != legacy )
-                        {
-                            annotation = (T) new DescriptionImpl( binding.getSource(), legacy.value() );
-                        }
-                    }
-                }
-            }
-        }
-        return annotation;
-    }
-
-    /**
      * Hides a new binding source from the bean locator.
      * 
      * @return Hidden source
@@ -207,5 +143,73 @@ public final class Sources
     public static Priority prioritize( final Object source, final int value )
     {
         return new PriorityImpl( source, value );
+    }
+
+    // ----------------------------------------------------------------------
+    // Local methods
+    // ----------------------------------------------------------------------
+
+    /**
+     * Returns the source that originally declared the given binding.
+     * 
+     * @param binding The binding
+     * @return Declaring source; {@code null} if it doesn't exist
+     */
+    static Object getDeclaringSource( final Binding<?> binding )
+    {
+        final Object source = binding.getSource();
+        if ( HAS_DECLARING_SOURCE && source instanceof com.google.inject.spi.ElementSource )
+        {
+            return ( (com.google.inject.spi.ElementSource) source ).getDeclaringSource();
+        }
+        return source;
+    }
+
+    /**
+     * Searches the binding's source and implementation for an annotation of the given type.
+     * 
+     * @param binding The binding
+     * @param annotationType The annotation type
+     * @return Annotation instance; {@code null} if it doesn't exist
+     */
+    @SuppressWarnings( { "unchecked", "deprecation" } )
+    static <T extends Annotation> T getAnnotation( final Binding<?> binding, final Class<T> annotationType )
+    {
+        T annotation = null;
+        final Object source = getDeclaringSource( binding );
+        if ( source instanceof AnnotatedSource )
+        {
+            annotation = ( (AnnotatedSource) source ).getAnnotation( annotationType );
+        }
+        if ( null == annotation )
+        {
+            final Class<?> implementation = Implementations.extendedFind( binding );
+            if ( null != implementation )
+            {
+                annotation = implementation.getAnnotation( annotationType );
+                if ( null == annotation )
+                {
+                    if ( HAS_JSR250_PRIORITY && Priority.class.equals( annotationType ) )
+                    {
+                        final javax.annotation.Priority jsr250 =
+                            implementation.getAnnotation( javax.annotation.Priority.class );
+                        if ( null != jsr250 )
+                        {
+                            annotation = (T) new PriorityImpl( binding.getSource(), jsr250.value() );
+                        }
+                    }
+                    else if ( Description.class.equals( annotationType ) )
+                    {
+                        final org.sonatype.inject.Description legacy =
+                            implementation.getAnnotation( org.sonatype.inject.Description.class );
+                        if ( null != legacy )
+                        {
+                            annotation = (T) new DescriptionImpl( binding.getSource(), legacy.value() );
+                        }
+                    }
+                }
+            }
+        }
+        return annotation;
     }
 }
