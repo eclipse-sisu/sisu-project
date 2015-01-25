@@ -13,7 +13,7 @@ package org.eclipse.sisu.inject;
 import java.lang.annotation.Annotation;
 
 import org.eclipse.sisu.Description;
-import org.eclipse.sisu.Hidden;
+import org.eclipse.sisu.Internal;
 import org.eclipse.sisu.Priority;
 
 import com.google.inject.Binding;
@@ -68,9 +68,9 @@ public final class Sources
     /**
      * Hides a new binding source from the bean locator.
      * 
-     * @return Hidden source
+     * @return Internal source
      */
-    public static Hidden hide()
+    public static Internal hide()
     {
         return hide( null );
     }
@@ -79,11 +79,11 @@ public final class Sources
      * Hides the given binding source from the bean locator.
      * 
      * @param source The source
-     * @return Hidden source
+     * @return Internal source
      */
-    public static Hidden hide( final Object source )
+    public static Internal hide( final Object source )
     {
-        return new HiddenImpl( source );
+        return new InternalSource( source );
     }
 
     /**
@@ -106,7 +106,7 @@ public final class Sources
      */
     public static Description describe( final Object source, final String value )
     {
-        return new DescriptionImpl( source, value );
+        return new DescriptionSource( source, value );
     }
 
     /**
@@ -129,7 +129,7 @@ public final class Sources
      */
     public static Priority prioritize( final Object source, final int value )
     {
-        return new PriorityImpl( source, value );
+        return new PrioritySource( source, value );
     }
 
     // ----------------------------------------------------------------------

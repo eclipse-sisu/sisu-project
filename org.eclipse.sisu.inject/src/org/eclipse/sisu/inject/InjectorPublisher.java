@@ -12,7 +12,7 @@ package org.eclipse.sisu.inject;
 
 import java.util.Map;
 
-import org.eclipse.sisu.Hidden;
+import org.eclipse.sisu.Internal;
 
 import com.google.inject.Binding;
 import com.google.inject.Injector;
@@ -142,7 +142,7 @@ public final class InjectorPublisher
     {
         for ( final Binding binding : injector.<Object> findBindingsByType( searchType ) )
         {
-            if ( null == Sources.getAnnotation( binding, Hidden.class )
+            if ( null == Sources.getAnnotation( binding, Internal.class )
                 && ( null == superType || isAssignableFrom( superType, binding ) ) )
             {
                 subscriber.add( binding, function.rank( binding ) );

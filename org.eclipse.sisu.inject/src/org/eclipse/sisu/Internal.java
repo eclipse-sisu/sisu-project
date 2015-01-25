@@ -17,12 +17,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Hides a bean from being located or watched:<br>
+ * Hides an internal bean from being located or watched:<br>
  * <br>
  * 
  * <pre>
  * &#064;Named
- * &#064;Hidden
+ * &#064;Internal
  * public class InternalComponent
  * {
  *     //
@@ -34,6 +34,6 @@ import java.lang.annotation.Target;
 @Target( value = { ElementType.TYPE } )
 @Retention( RetentionPolicy.RUNTIME )
 @Documented
-public @interface Hidden
+public @interface Internal
 {
 }

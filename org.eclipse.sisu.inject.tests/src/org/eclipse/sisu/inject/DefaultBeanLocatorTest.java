@@ -19,6 +19,7 @@ import junit.framework.TestCase;
 import org.eclipse.sisu.inject.RankedBindingsTest.Bean;
 import org.eclipse.sisu.inject.RankedBindingsTest.BeanImpl;
 import org.eclipse.sisu.inject.RankedBindingsTest.BeanImpl2;
+import org.eclipse.sisu.inject.RankedBindingsTest.InternalBeanImpl;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -72,6 +73,7 @@ public class DefaultBeanLocatorTest
             protected void configure()
             {
                 binder().withSource( Sources.hide() ).bind( Bean.class ).annotatedWith( Names.named( "HIDDEN" ) ).to( BeanImpl.class );
+                binder().bind( Bean.class ).annotatedWith( Names.named( "@INTERNAL" ) ).to( InternalBeanImpl.class );
             }
         } );
 

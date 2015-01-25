@@ -134,14 +134,14 @@ public final class Implementations
     private static <T extends Annotation> T adaptJsr250( final Binding<?> binding, final Class<?> clazz )
     {
         final javax.annotation.Priority jsr250 = clazz.getAnnotation( javax.annotation.Priority.class );
-        return null != jsr250 ? (T) new PriorityImpl( binding.getSource(), jsr250.value() ) : null;
+        return null != jsr250 ? (T) new PrioritySource( binding.getSource(), jsr250.value() ) : null;
     }
 
     @SuppressWarnings( { "unchecked", "deprecation" } )
     private static <T extends Annotation> T adaptLegacy( final Binding<?> binding, final Class<?> clazz )
     {
         final org.sonatype.inject.Description legacy = clazz.getAnnotation( org.sonatype.inject.Description.class );
-        return null != legacy ? (T) new DescriptionImpl( binding.getSource(), legacy.value() ) : null;
+        return null != legacy ? (T) new DescriptionSource( binding.getSource(), legacy.value() ) : null;
     }
 
     // ----------------------------------------------------------------------

@@ -12,13 +12,13 @@ package org.eclipse.sisu.inject;
 
 import java.lang.annotation.Annotation;
 
-import org.eclipse.sisu.Hidden;
+import org.eclipse.sisu.Priority;
 
 /**
- * Implementation of @{@link Hidden} that can also act as an @{@link AnnotatedSource}.
+ * Implementation of @{@link Priority} that can also act as an @{@link AnnotatedSource}.
  */
-final class HiddenImpl
-    implements Hidden, AnnotatedSource
+final class PrioritySource
+    implements Priority, AnnotatedSource
 {
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -26,49 +26,58 @@ final class HiddenImpl
 
     private final Object source;
 
+    private final int value;
+
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
     /**
      * @param source The owning source
+     * @param value The priority
      */
-    HiddenImpl( final Object source )
+    PrioritySource( final Object source, final int value )
     {
         this.source = source;
+        this.value = value;
     }
 
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
 
+    public int value()
+    {
+        return value;
+    }
+
     public Class<? extends Annotation> annotationType()
     {
-        return Hidden.class;
+        return Priority.class;
     }
 
     @Override
     public int hashCode()
     {
-        return 0;
+        return 127 * "value".hashCode() ^ Integer.valueOf( value ).hashCode();
     }
 
     @Override
     public boolean equals( final Object rhs )
     {
-        return rhs instanceof Hidden;
+        return this == rhs || ( rhs instanceof Priority && value == ( (Priority) rhs ).value() );
     }
 
     @Override
     public String toString()
     {
-        return null != source ? source.toString() : "@" + Hidden.class.getName();
+        return null != source ? source.toString() : "@" + Priority.class.getName() + "(value=" + value + ")";
     }
 
     @SuppressWarnings( "unchecked" )
     public <T extends Annotation> T getAnnotation( final Class<T> clazz )
     {
-        if ( Hidden.class.equals( clazz ) )
+        if ( Priority.class.equals( clazz ) )
         {
             return (T) this;
         }

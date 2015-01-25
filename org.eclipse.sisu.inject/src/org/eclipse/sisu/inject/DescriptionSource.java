@@ -17,7 +17,7 @@ import org.eclipse.sisu.Description;
 /**
  * Implementation of @{@link Description} that can also act as an @{@link AnnotatedSource}.
  */
-final class DescriptionImpl
+final class DescriptionSource
     implements Description, AnnotatedSource
 {
     // ----------------------------------------------------------------------
@@ -36,7 +36,7 @@ final class DescriptionImpl
      * @param source The owning source
      * @param value The description
      */
-    DescriptionImpl( final Object source, final String value )
+    DescriptionSource( final Object source, final String value )
     {
         this.source = source;
         this.value = value;

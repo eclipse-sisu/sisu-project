@@ -12,13 +12,13 @@ package org.eclipse.sisu.inject;
 
 import java.lang.annotation.Annotation;
 
-import org.eclipse.sisu.Priority;
+import org.eclipse.sisu.Internal;
 
 /**
- * Implementation of @{@link Priority} that can also act as an @{@link AnnotatedSource}.
+ * Implementation of @{@link Internal} that can also act as an @{@link AnnotatedSource}.
  */
-final class PriorityImpl
-    implements Priority, AnnotatedSource
+final class InternalSource
+    implements Internal, AnnotatedSource
 {
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -26,58 +26,49 @@ final class PriorityImpl
 
     private final Object source;
 
-    private final int value;
-
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
     /**
      * @param source The owning source
-     * @param value The priority
      */
-    PriorityImpl( final Object source, final int value )
+    InternalSource( final Object source )
     {
         this.source = source;
-        this.value = value;
     }
 
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
 
-    public int value()
-    {
-        return value;
-    }
-
     public Class<? extends Annotation> annotationType()
     {
-        return Priority.class;
+        return Internal.class;
     }
 
     @Override
     public int hashCode()
     {
-        return 127 * "value".hashCode() ^ Integer.valueOf( value ).hashCode();
+        return 0;
     }
 
     @Override
     public boolean equals( final Object rhs )
     {
-        return this == rhs || ( rhs instanceof Priority && value == ( (Priority) rhs ).value() );
+        return rhs instanceof Internal;
     }
 
     @Override
     public String toString()
     {
-        return null != source ? source.toString() : "@" + Priority.class.getName() + "(value=" + value + ")";
+        return null != source ? source.toString() : "@" + Internal.class.getName();
     }
 
     @SuppressWarnings( "unchecked" )
     public <T extends Annotation> T getAnnotation( final Class<T> clazz )
     {
-        if ( Priority.class.equals( clazz ) )
+        if ( Internal.class.equals( clazz ) )
         {
             return (T) this;
         }
