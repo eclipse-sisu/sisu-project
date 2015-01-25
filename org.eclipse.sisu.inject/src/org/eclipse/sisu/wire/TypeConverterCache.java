@@ -14,9 +14,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import com.google.inject.Injector;
+import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeConverter;
 import com.google.inject.spi.TypeConverterBinding;

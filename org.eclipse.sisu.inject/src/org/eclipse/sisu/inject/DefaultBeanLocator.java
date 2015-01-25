@@ -15,13 +15,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.Mediator;
 
 import com.google.inject.Injector;
 import com.google.inject.Key;
+import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 
 /**

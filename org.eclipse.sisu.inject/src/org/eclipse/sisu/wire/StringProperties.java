@@ -16,9 +16,10 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import org.eclipse.sisu.Parameters;
+
+import com.google.inject.Singleton;
 
 /**
  * Delegating {@link Map} that ignores any non-String properties.
