@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import org.eclipse.sisu.inject.DeferredProvider;
+import org.eclipse.sisu.inject.Guice4;
 import org.eclipse.sisu.inject.Logs;
 import org.eclipse.sisu.inject.TypeArguments;
 
@@ -146,7 +147,7 @@ final class DependencyAnalyzer
     @Override
     public Boolean visit( final ProviderInstanceBinding<?> binding )
     {
-        final javax.inject.Provider<?> provider = binding.getProviderInstance();
+        final javax.inject.Provider<?> provider = Guice4.getProviderInstance( binding );
         if ( provider instanceof DeferredProvider<?> )
         {
             try

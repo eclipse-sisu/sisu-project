@@ -24,35 +24,6 @@ import com.google.inject.Binding;
 public final class Sources
 {
     // ----------------------------------------------------------------------
-    // Static initialization
-    // ----------------------------------------------------------------------
-
-    static
-    {
-        boolean hasDeclaringSource;
-        try
-        {
-            // support future where binding.getSource() returns ElementSource and not the original declaring source
-            hasDeclaringSource = com.google.inject.spi.ElementSource.class.getMethod( "getDeclaringSource" ) != null;
-        }
-        catch ( final Exception e )
-        {
-            hasDeclaringSource = false;
-        }
-        catch ( final LinkageError e )
-        {
-            hasDeclaringSource = false;
-        }
-        HAS_DECLARING_SOURCE = hasDeclaringSource;
-    }
-
-    // ----------------------------------------------------------------------
-    // Constants
-    // ----------------------------------------------------------------------
-
-    private static final boolean HAS_DECLARING_SOURCE;
-
-    // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
@@ -132,26 +103,6 @@ public final class Sources
         return new PrioritySource( source, value );
     }
 
-    // ----------------------------------------------------------------------
-    // Local methods
-    // ----------------------------------------------------------------------
-
-    /**
-     * Returns the source that originally declared the given binding.
-     * 
-     * @param binding The binding
-     * @return Declaring source; {@code null} if it doesn't exist
-     */
-    static Object getDeclaringSource( final Binding<?> binding )
-    {
-        final Object source = binding.getSource();
-        if ( HAS_DECLARING_SOURCE && source instanceof com.google.inject.spi.ElementSource )
-        {
-            return ( (com.google.inject.spi.ElementSource) source ).getDeclaringSource();
-        }
-        return source;
-    }
-
     /**
      * Searches the binding's source and implementation for an annotation of the given type.
      * 
@@ -159,10 +110,10 @@ public final class Sources
      * @param annotationType The annotation type
      * @return Annotation instance; {@code null} if it doesn't exist
      */
-    static <T extends Annotation> T getAnnotation( final Binding<?> binding, final Class<T> annotationType )
+    public static <T extends Annotation> T getAnnotation( final Binding<?> binding, final Class<T> annotationType )
     {
         T annotation = null;
-        final Object source = getDeclaringSource( binding );
+        final Object source = Guice4.getDeclaringSource( binding );
         if ( source instanceof AnnotatedSource )
         {
             annotation = ( (AnnotatedSource) source ).getAnnotation( binding, annotationType );

@@ -106,7 +106,7 @@ final class LazyBeanEntry<Q extends Annotation, T>
 
     public Object getSource()
     {
-        return Sources.getDeclaringSource( binding );
+        return Guice4.getDeclaringSource( binding );
     }
 
     public int getRank()

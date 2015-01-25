@@ -12,11 +12,12 @@ package org.eclipse.sisu.inject;
 
 import java.lang.annotation.Annotation;
 
+import javax.inject.Provider;
+
 import org.eclipse.sisu.Description;
 import org.eclipse.sisu.Priority;
 
 import com.google.inject.Binding;
-import com.google.inject.Provider;
 import com.google.inject.spi.BindingTargetVisitor;
 import com.google.inject.spi.ConstructorBinding;
 import com.google.inject.spi.DefaultBindingTargetVisitor;
@@ -192,7 +193,7 @@ public final class Implementations
         @Override
         public Class<?> visit( final ProviderInstanceBinding<?> binding )
         {
-            final Provider<?> provider = binding.getProviderInstance();
+            final Provider<?> provider = Guice4.getProviderInstance( binding );
             if ( provider instanceof DeferredProvider<?> )
             {
                 try

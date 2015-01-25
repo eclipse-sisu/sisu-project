@@ -23,6 +23,7 @@ import org.eclipse.sisu.Parameters;
 import org.eclipse.sisu.inject.BeanLocator;
 import org.eclipse.sisu.inject.DefaultBeanLocator;
 import org.eclipse.sisu.inject.DefaultRankingFunction;
+import org.eclipse.sisu.inject.Guice4;
 import org.eclipse.sisu.inject.Logs;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.inject.RankingFunction;
@@ -292,7 +293,7 @@ final class ElementAnalyzer
         }
         else if ( binding instanceof ProviderInstanceBinding<?> )
         {
-            parameters = ( (ProviderInstanceBinding<?>) binding ).getProviderInstance().get();
+            parameters = Guice4.getProviderInstance( (ProviderInstanceBinding<?>) binding ).get();
         }
         if ( parameters instanceof Map )
         {
