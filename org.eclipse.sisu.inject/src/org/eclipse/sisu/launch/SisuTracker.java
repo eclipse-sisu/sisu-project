@@ -38,7 +38,7 @@ import com.google.inject.Injector;
  * OSGi {@link BundleTracker} that tracks component bundles and uses {@link BundlePlan}s to publish them.
  */
 public class SisuTracker
-    extends BundleTracker
+    extends BundleTracker<Object>
     implements BundlePlan
 {
     // ----------------------------------------------------------------------

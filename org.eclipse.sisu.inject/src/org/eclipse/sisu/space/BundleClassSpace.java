@@ -85,7 +85,6 @@ public final class BundleClassSpace
         return bundle.getResource( name );
     }
 
-    @SuppressWarnings( "unchecked" )
     public Enumeration<URL> getResources( final String name )
     {
         try
@@ -153,7 +152,7 @@ public final class BundleClassSpace
     {
         if ( null == bundleClassPath )
         {
-            final String path = (String) bundle.getHeaders().get( Constants.BUNDLE_CLASSPATH );
+            final String path = bundle.getHeaders().get( Constants.BUNDLE_CLASSPATH );
             if ( null == path )
             {
                 bundleClassPath = NO_URLS;

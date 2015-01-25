@@ -59,7 +59,7 @@ public class SisuBundlePlan
      */
     protected boolean appliesTo( final Bundle bundle )
     {
-        final String imports = (String) bundle.getHeaders().get( Constants.IMPORT_PACKAGE );
+        final String imports = bundle.getHeaders().get( Constants.IMPORT_PACKAGE );
         return null != imports && ( imports.contains( "javax.inject" ) || imports.contains( "com.google.inject" ) );
     }
 
