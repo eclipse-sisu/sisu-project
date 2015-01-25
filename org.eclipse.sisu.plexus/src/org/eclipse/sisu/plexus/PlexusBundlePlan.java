@@ -80,7 +80,7 @@ public class PlexusBundlePlan
 
     protected static boolean hasPlexusAnnotations( final Bundle bundle )
     {
-        final String imports = (String) bundle.getHeaders().get( Constants.IMPORT_PACKAGE );
+        final String imports = bundle.getHeaders().get( Constants.IMPORT_PACKAGE );
         return null != imports && imports.contains( "org.codehaus.plexus.component.annotations" );
     }
 

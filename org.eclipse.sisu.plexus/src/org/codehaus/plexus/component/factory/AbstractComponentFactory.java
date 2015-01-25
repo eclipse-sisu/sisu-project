@@ -17,7 +17,7 @@ import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 
-@SuppressWarnings( "rawtypes" )
+@SuppressWarnings( { "rawtypes", "deprecation" } )
 public abstract class AbstractComponentFactory
     implements ComponentFactory
 {

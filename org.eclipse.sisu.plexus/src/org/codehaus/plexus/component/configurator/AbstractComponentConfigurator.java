@@ -22,6 +22,7 @@ import org.codehaus.plexus.component.configurator.expression.DefaultExpressionEv
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
+@SuppressWarnings( "deprecation" )
 public abstract class AbstractComponentConfigurator
     implements ComponentConfigurator
 {
