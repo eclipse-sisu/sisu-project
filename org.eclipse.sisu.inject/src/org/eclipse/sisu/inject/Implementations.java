@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.sisu.inject;
 
+import java.lang.annotation.Annotation;
+
+import org.eclipse.sisu.Description;
+import org.eclipse.sisu.Priority;
+
 import com.google.inject.Binding;
 import com.google.inject.Provider;
 import com.google.inject.spi.BindingTargetVisitor;
@@ -42,6 +47,17 @@ public final class Implementations
             hasExtensions = false;
         }
         HAS_EXTENSIONS = hasExtensions;
+
+        boolean hasJsr250Priority;
+        try
+        {
+            hasJsr250Priority = javax.annotation.Priority.class.isAnnotation();
+        }
+        catch ( final LinkageError e )
+        {
+            hasJsr250Priority = false;
+        }
+        HAS_JSR250_PRIORITY = hasJsr250Priority;
     }
 
     // ----------------------------------------------------------------------
@@ -49,6 +65,8 @@ public final class Implementations
     // ----------------------------------------------------------------------
 
     private static final boolean HAS_EXTENSIONS;
+
+    private static final boolean HAS_JSR250_PRIORITY;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -64,10 +82,9 @@ public final class Implementations
     // ----------------------------------------------------------------------
 
     /**
-     * Attempts to find the implementation behind the given {@link Binding}. Ignores any extension-specific bindings
-     * such as servlet/filter definitions, where the actual implementation is hidden inside the definition instance.
+     * Attempts to find the implementation behind the given {@link Binding}.
      * 
-     * @param binding The Guice binding
+     * @param binding The binding
      * @return Implementation class behind the binding; {@code null} if it couldn't be found
      */
     public static Class<?> find( final Binding<?> binding )
@@ -76,14 +93,55 @@ public final class Implementations
     }
 
     /**
-     * Attempts to find the implementation behind the given {@link Binding}; can peek inside servlet/filter definitions.
+     * Attempts to find an annotation on the implementation behind the given {@link Binding}.
      * 
-     * @param binding The Guice binding
-     * @return Implementation class behind the binding; {@code null} if it couldn't be found
+     * @param binding The binding
+     * @param annotationType The annotation type
+     * @return Annotation on the bound implementation; {@code null} if it couldn't be found
      */
-    public static Class<?> extendedFind( final Binding<?> binding )
+    public static <T extends Annotation> T getAnnotation( final Binding<?> binding, final Class<T> annotationType )
     {
-        return binding.acceptTargetVisitor( HAS_EXTENSIONS ? ServletFinder.THIS : ClassFinder.THIS );
+        final boolean isPriority = Priority.class.equals( annotationType );
+
+        // peek behind servlet/filter extension bindings when checking priority, so we can order them by rank
+        final Class<?> implementation =
+            binding.acceptTargetVisitor( HAS_EXTENSIONS && isPriority ? ServletFinder.THIS : ClassFinder.THIS );
+
+        T annotation = null;
+        if ( null != implementation )
+        {
+            annotation = implementation.getAnnotation( annotationType );
+            if ( null == annotation )
+            {
+                if ( HAS_JSR250_PRIORITY && isPriority )
+                {
+                    annotation = adaptJsr250( binding, implementation );
+                }
+                else if ( Description.class.equals( annotationType ) )
+                {
+                    annotation = adaptLegacy( binding, implementation );
+                }
+            }
+        }
+        return annotation;
+    }
+
+    // ----------------------------------------------------------------------
+    // Implementation methods
+    // ----------------------------------------------------------------------
+
+    @SuppressWarnings( "unchecked" )
+    private static <T extends Annotation> T adaptJsr250( final Binding<?> binding, final Class<?> clazz )
+    {
+        final javax.annotation.Priority jsr250 = clazz.getAnnotation( javax.annotation.Priority.class );
+        return null != jsr250 ? (T) new PriorityImpl( binding.getSource(), jsr250.value() ) : null;
+    }
+
+    @SuppressWarnings( { "unchecked", "deprecation" } )
+    private static <T extends Annotation> T adaptLegacy( final Binding<?> binding, final Class<?> clazz )
+    {
+        final org.sonatype.inject.Description legacy = clazz.getAnnotation( org.sonatype.inject.Description.class );
+        return null != legacy ? (T) new DescriptionImpl( binding.getSource(), legacy.value() ) : null;
     }
 
     // ----------------------------------------------------------------------
@@ -158,7 +216,7 @@ public final class Implementations
     }
 
     /**
-     * {@link ClassFinder} that can also peek behind serlvet/filter bindings.
+     * {@link ClassFinder} that can also peek behind servlet/filter bindings.
      */
     static final class ServletFinder
         extends ClassFinder

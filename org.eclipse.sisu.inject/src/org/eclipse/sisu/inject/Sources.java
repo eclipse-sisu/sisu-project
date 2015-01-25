@@ -44,17 +44,6 @@ public final class Sources
             hasDeclaringSource = false;
         }
         HAS_DECLARING_SOURCE = hasDeclaringSource;
-
-        boolean hasJsr250Priority;
-        try
-        {
-            hasJsr250Priority = javax.annotation.Priority.class.isAnnotation();
-        }
-        catch ( final LinkageError e )
-        {
-            hasJsr250Priority = false;
-        }
-        HAS_JSR250_PRIORITY = hasJsr250Priority;
     }
 
     // ----------------------------------------------------------------------
@@ -62,8 +51,6 @@ public final class Sources
     // ----------------------------------------------------------------------
 
     private static final boolean HAS_DECLARING_SOURCE;
-
-    private static final boolean HAS_JSR250_PRIORITY;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -172,7 +159,6 @@ public final class Sources
      * @param annotationType The annotation type
      * @return Annotation instance; {@code null} if it doesn't exist
      */
-    @SuppressWarnings( { "unchecked", "deprecation" } )
     static <T extends Annotation> T getAnnotation( final Binding<?> binding, final Class<T> annotationType )
     {
         T annotation = null;
@@ -183,32 +169,7 @@ public final class Sources
         }
         if ( null == annotation )
         {
-            final Class<?> implementation = Implementations.extendedFind( binding );
-            if ( null != implementation )
-            {
-                annotation = implementation.getAnnotation( annotationType );
-                if ( null == annotation )
-                {
-                    if ( HAS_JSR250_PRIORITY && Priority.class.equals( annotationType ) )
-                    {
-                        final javax.annotation.Priority jsr250 =
-                            implementation.getAnnotation( javax.annotation.Priority.class );
-                        if ( null != jsr250 )
-                        {
-                            annotation = (T) new PriorityImpl( binding.getSource(), jsr250.value() );
-                        }
-                    }
-                    else if ( Description.class.equals( annotationType ) )
-                    {
-                        final org.sonatype.inject.Description legacy =
-                            implementation.getAnnotation( org.sonatype.inject.Description.class );
-                        if ( null != legacy )
-                        {
-                            annotation = (T) new DescriptionImpl( binding.getSource(), legacy.value() );
-                        }
-                    }
-                }
-            }
+            annotation = Implementations.getAnnotation( binding, annotationType );
         }
         return annotation;
     }
