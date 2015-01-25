@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
@@ -33,6 +32,7 @@ import org.eclipse.sisu.inject.TypeArguments;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
+import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeConverter;
 import com.google.inject.spi.TypeConverterBinding;

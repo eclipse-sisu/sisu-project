@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
@@ -27,6 +26,7 @@ import org.eclipse.sisu.bean.BeanManager;
 import org.eclipse.sisu.wire.EntryListAdapter;
 import org.eclipse.sisu.wire.EntryMapAdapter;
 
+import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 
 /**

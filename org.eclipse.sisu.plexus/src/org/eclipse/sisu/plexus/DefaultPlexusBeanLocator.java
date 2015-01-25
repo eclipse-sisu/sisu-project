@@ -11,7 +11,6 @@
 package org.eclipse.sisu.plexus;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import org.codehaus.plexus.PlexusConstants;
 import org.eclipse.sisu.BeanEntry;
@@ -19,6 +18,7 @@ import org.eclipse.sisu.inject.BeanLocator;
 
 import com.google.inject.Injector;
 import com.google.inject.Key;
+import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
