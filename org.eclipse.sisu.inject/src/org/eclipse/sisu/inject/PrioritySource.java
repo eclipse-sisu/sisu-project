@@ -14,6 +14,8 @@ import java.lang.annotation.Annotation;
 
 import org.eclipse.sisu.Priority;
 
+import com.google.inject.Binding;
+
 /**
  * Implementation of @{@link Priority} that can also act as an @{@link AnnotatedSource}.
  */
@@ -75,15 +77,15 @@ final class PrioritySource
     }
 
     @SuppressWarnings( "unchecked" )
-    public <T extends Annotation> T getAnnotation( final Class<T> clazz )
+    public <T extends Annotation> T getAnnotation( final Binding<?> binding, final Class<T> annotationType )
     {
-        if ( Priority.class.equals( clazz ) )
+        if ( Priority.class.equals( annotationType ) )
         {
             return (T) this;
         }
         if ( source instanceof AnnotatedSource )
         {
-            return ( (AnnotatedSource) source ).getAnnotation( clazz );
+            return ( (AnnotatedSource) source ).getAnnotation( binding, annotationType );
         }
         return null;
     }

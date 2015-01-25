@@ -165,7 +165,7 @@ public final class Sources
         final Object source = getDeclaringSource( binding );
         if ( source instanceof AnnotatedSource )
         {
-            annotation = ( (AnnotatedSource) source ).getAnnotation( annotationType );
+            annotation = ( (AnnotatedSource) source ).getAnnotation( binding, annotationType );
         }
         if ( null == annotation )
         {

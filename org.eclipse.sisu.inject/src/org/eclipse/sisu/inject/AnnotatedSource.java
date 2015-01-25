@@ -13,6 +13,7 @@ package org.eclipse.sisu.inject;
 import java.lang.annotation.Annotation;
 
 import com.google.inject.Binder;
+import com.google.inject.Binding;
 
 /**
  * Binding source locations can implement this interface to supply annotations to the {@link BeanLocator}.
@@ -22,8 +23,11 @@ import com.google.inject.Binder;
 public interface AnnotatedSource
 {
     /**
+     * Returns the annotation of the given type that is associated with the binding.
+     * 
+     * @param binding The binding
      * @param annotationType The annotation type
-     * @return Annotation value; {@code null} if the annotation doesn't exist
+     * @return The associated annotation; {@code null} if no such annotation exists
      */
-    <T extends Annotation> T getAnnotation( Class<T> annotationType );
+    <T extends Annotation> T getAnnotation( Binding<?> binding, Class<T> annotationType );
 }

@@ -14,6 +14,8 @@ import java.lang.annotation.Annotation;
 
 import org.eclipse.sisu.Internal;
 
+import com.google.inject.Binding;
+
 /**
  * Implementation of @{@link Internal} that can also act as an @{@link AnnotatedSource}.
  */
@@ -66,15 +68,15 @@ final class InternalSource
     }
 
     @SuppressWarnings( "unchecked" )
-    public <T extends Annotation> T getAnnotation( final Class<T> clazz )
+    public <T extends Annotation> T getAnnotation( final Binding<?> binding, final Class<T> annotationType )
     {
-        if ( Internal.class.equals( clazz ) )
+        if ( Internal.class.equals( annotationType ) )
         {
             return (T) this;
         }
         if ( source instanceof AnnotatedSource )
         {
-            return ( (AnnotatedSource) source ).getAnnotation( clazz );
+            return ( (AnnotatedSource) source ).getAnnotation( binding, annotationType );
         }
         return null;
     }
