@@ -72,18 +72,18 @@ public final class InjectorPublisher
     public <T> void subscribe( final BindingSubscriber<T> subscriber )
     {
         final TypeLiteral<T> type = subscriber.type();
-
-        publishExactMatches( type, subscriber );
-
         final Class<?> clazz = type.getRawType();
-        if ( clazz != type.getType() )
-        {
-            publishGenericMatches( type, subscriber, clazz );
-        }
+
         if ( clazz != Object.class )
         {
-            publishWildcardMatches( type, subscriber );
+            publishExactMatches( type, subscriber );
+            if ( clazz != type.getType() )
+            {
+                publishGenericMatches( type, subscriber, clazz );
+            }
         }
+
+        publishWildcardMatches( type, subscriber );
     }
 
     public <T> void unsubscribe( final BindingSubscriber<T> subscriber )
@@ -175,9 +175,10 @@ public final class InjectorPublisher
     @SuppressWarnings( { "rawtypes", "unchecked" } )
     private <T> void publishWildcardMatches( final TypeLiteral<T> type, final BindingSubscriber<T> subscriber )
     {
+        final boolean untyped = type.getRawType() == Object.class;
         for ( final Binding binding : getWildcardBindings() )
         {
-            if ( isAssignableFrom( type, binding ) )
+            if ( untyped || isAssignableFrom( type, binding ) )
             {
                 subscriber.add( binding, function.rank( binding ) );
             }
