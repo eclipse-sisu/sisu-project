@@ -30,7 +30,7 @@ public final class InjectorPublisher
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final TypeLiteral<?> OBJECT_TYPE_LITERAL = TypeLiteral.get( Object.class );
+    private static final TypeLiteral<Object> OBJECT_TYPE_LITERAL = TypeLiteral.get( Object.class );
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -67,15 +67,17 @@ public final class InjectorPublisher
     public <T> void subscribe( final BindingSubscriber<T> subscriber )
     {
         final TypeLiteral<T> type = subscriber.type();
-        publishBindings( type, subscriber, null );
+
+        publishExactMatches( type, subscriber );
+
         final Class<?> clazz = type.getRawType();
         if ( clazz != type.getType() )
         {
-            publishBindings( TypeLiteral.get( clazz ), subscriber, type );
+            publishGenericMatches( type, subscriber, clazz );
         }
         if ( clazz != Object.class )
         {
-            publishBindings( OBJECT_TYPE_LITERAL, subscriber, type );
+            publishWildcardMatches( type, subscriber );
         }
     }
 
@@ -126,27 +128,53 @@ public final class InjectorPublisher
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    private static boolean isAssignableFrom( final TypeLiteral<?> superType, final Binding<?> binding )
+    private static <T, S> boolean isAssignableFrom( final TypeLiteral<T> type, final Binding<S> binding )
     {
         // don't match the exact implementation as it's already covered by an explicit binding
         final Class<?> implementation = Implementations.find( binding );
-        if ( null != implementation && superType.getRawType() != implementation )
+        if ( null != implementation && type.getRawType() != implementation )
         {
-            return TypeArguments.isAssignableFrom( superType, TypeLiteral.get( implementation ) );
+            return TypeArguments.isAssignableFrom( type, TypeLiteral.get( implementation ) );
         }
         return false;
     }
 
-    @SuppressWarnings( { "rawtypes", "unchecked" } )
-    private void publishBindings( final TypeLiteral searchType, final BindingSubscriber subscriber,
-                                  final TypeLiteral superType )
+    private <T> void publishExactMatches( final TypeLiteral<T> type, final BindingSubscriber<T> subscriber )
     {
-        final List<Binding<?>> bindings = injector.findBindingsByType( searchType );
+        final List<Binding<T>> bindings = injector.findBindingsByType( type );
+        for ( int i = 0, size = bindings.size(); i < size; i++ )
+        {
+            final Binding<T> binding = bindings.get( i );
+            if ( null == Sources.getAnnotation( binding, Internal.class ) )
+            {
+                subscriber.add( binding, function.rank( binding ) );
+            }
+        }
+    }
+
+    @SuppressWarnings( { "rawtypes", "unchecked" } )
+    private <T, S> void publishGenericMatches( final TypeLiteral<T> type, final BindingSubscriber<T> subscriber,
+                                               final Class<S> rawType )
+    {
+        final List<Binding<S>> bindings = injector.findBindingsByType( TypeLiteral.get( rawType ) );
         for ( int i = 0, size = bindings.size(); i < size; i++ )
         {
             final Binding binding = bindings.get( i );
-            if ( null == Sources.getAnnotation( binding, Internal.class )
-                && ( null == superType || isAssignableFrom( superType, binding ) ) )
+            if ( null == Sources.getAnnotation( binding, Internal.class ) && isAssignableFrom( type, binding ) )
+            {
+                subscriber.add( binding, function.rank( binding ) );
+            }
+        }
+    }
+
+    @SuppressWarnings( { "rawtypes", "unchecked" } )
+    private <T> void publishWildcardMatches( final TypeLiteral<T> type, final BindingSubscriber<T> subscriber )
+    {
+        final List<Binding<Object>> bindings = injector.findBindingsByType( OBJECT_TYPE_LITERAL );
+        for ( int i = 0, size = bindings.size(); i < size; i++ )
+        {
+            final Binding binding = bindings.get( i );
+            if ( null == Sources.getAnnotation( binding, Internal.class ) && isAssignableFrom( type, binding ) )
             {
                 subscriber.add( binding, function.rank( binding ) );
             }
