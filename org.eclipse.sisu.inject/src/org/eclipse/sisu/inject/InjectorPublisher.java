@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.sisu.inject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,8 @@ public final class InjectorPublisher
 
     private static final TypeLiteral<Object> OBJECT_TYPE_LITERAL = TypeLiteral.get( Object.class );
 
+    private static final Binding<?>[] NO_BINDINGS = {};
+
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -39,6 +42,8 @@ public final class InjectorPublisher
     private final Injector injector;
 
     private final RankingFunction function;
+
+    private volatile Binding<?>[] wildcards;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -170,14 +175,37 @@ public final class InjectorPublisher
     @SuppressWarnings( { "rawtypes", "unchecked" } )
     private <T> void publishWildcardMatches( final TypeLiteral<T> type, final BindingSubscriber<T> subscriber )
     {
-        final List<Binding<Object>> bindings = injector.findBindingsByType( OBJECT_TYPE_LITERAL );
-        for ( int i = 0, size = bindings.size(); i < size; i++ )
+        for ( final Binding binding : getWildcardBindings() )
         {
-            final Binding binding = bindings.get( i );
-            if ( null == Sources.getAnnotation( binding, Internal.class ) && isAssignableFrom( type, binding ) )
+            if ( isAssignableFrom( type, binding ) )
             {
                 subscriber.add( binding, function.rank( binding ) );
             }
         }
+    }
+
+    private Binding<?>[] getWildcardBindings()
+    {
+        if ( null == wildcards )
+        {
+            synchronized ( this )
+            {
+                if ( null == wildcards )
+                {
+                    final List<Binding<?>> visible = new ArrayList<Binding<?>>();
+                    final List<Binding<Object>> candidates = injector.findBindingsByType( OBJECT_TYPE_LITERAL );
+                    for ( int i = 0, size = candidates.size(); i < size; i++ )
+                    {
+                        final Binding<?> binding = candidates.get( i );
+                        if ( null == Sources.getAnnotation( binding, Internal.class ) )
+                        {
+                            visible.add( binding );
+                        }
+                    }
+                    wildcards = visible.size() > 0 ? visible.toArray( new Binding[visible.size()] ) : NO_BINDINGS;
+                }
+            }
+        }
+        return wildcards;
     }
 }
