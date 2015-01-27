@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.sisu.inject;
 
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.sisu.Internal;
@@ -140,8 +141,10 @@ public final class InjectorPublisher
     private void publishBindings( final TypeLiteral searchType, final BindingSubscriber subscriber,
                                   final TypeLiteral superType )
     {
-        for ( final Binding binding : injector.<Object> findBindingsByType( searchType ) )
+        final List<Binding<?>> bindings = injector.findBindingsByType( searchType );
+        for ( int i = 0, size = bindings.size(); i < size; i++ )
         {
+            final Binding binding = bindings.get( i );
             if ( null == Sources.getAnnotation( binding, Internal.class )
                 && ( null == superType || isAssignableFrom( superType, binding ) ) )
             {
