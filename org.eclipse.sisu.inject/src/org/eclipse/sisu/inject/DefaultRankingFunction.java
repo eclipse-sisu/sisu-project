@@ -55,7 +55,7 @@ public final class DefaultRankingFunction
 
     public int maxRank()
     {
-        return primaryRank;
+        return Integer.MAX_VALUE; // since bindings can use @Priority to escalate their rank to MAX_VALUE
     }
 
     public <T> int rank( final Binding<T> binding )

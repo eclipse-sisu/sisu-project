@@ -115,13 +115,13 @@ public class RankedBindingsTest
 
         assertEquals( 0, bindings.bindings.size() );
         assertTrue( itr.hasNext() );
-        assertEquals( 3, bindings.bindings.size() );
+        assertEquals( 4, bindings.bindings.size() );
 
         final Binding<Bean> explicitBinding = itr.next();
         assertNull( explicitBinding.getKey().getAnnotation() );
         assertEquals( BeanImpl.class, Implementations.find( explicitBinding ) );
 
-        assertEquals( 3, bindings.bindings.size() );
+        assertEquals( 4, bindings.bindings.size() );
         assertTrue( itr.hasNext() );
         assertEquals( 4, bindings.bindings.size() );
 
