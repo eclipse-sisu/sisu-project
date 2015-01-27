@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
 
 import junit.framework.TestCase;
 
-import org.eclipse.sisu.Internal;
+import org.eclipse.sisu.Hidden;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Binding;
@@ -48,7 +48,7 @@ public class RankedBindingsTest
     {
     }
 
-    @Internal
+    @Hidden
     static class InternalBeanImpl
         extends AbstractBean
     {

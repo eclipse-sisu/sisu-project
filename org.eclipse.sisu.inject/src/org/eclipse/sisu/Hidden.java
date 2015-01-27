@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
  * 
  * <pre>
  * &#064;Named
- * &#064;Internal
+ * &#064;Hidden
  * public class InternalComponent
  * {
  *     //
@@ -34,6 +34,6 @@ import java.lang.annotation.Target;
 @Target( value = { ElementType.TYPE } )
 @Retention( RetentionPolicy.RUNTIME )
 @Documented
-public @interface Internal
+public @interface Hidden
 {
 }

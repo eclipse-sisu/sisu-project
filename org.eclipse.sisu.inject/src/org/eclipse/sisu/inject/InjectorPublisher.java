@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.sisu.Internal;
+import org.eclipse.sisu.Hidden;
 
 import com.google.inject.Binding;
 import com.google.inject.Injector;
@@ -150,7 +150,7 @@ public final class InjectorPublisher
         for ( int i = 0, size = bindings.size(); i < size; i++ )
         {
             final Binding<T> binding = bindings.get( i );
-            if ( null == Sources.getAnnotation( binding, Internal.class ) )
+            if ( null == Sources.getAnnotation( binding, Hidden.class ) )
             {
                 subscriber.add( binding, function.rank( binding ) );
             }
@@ -165,7 +165,7 @@ public final class InjectorPublisher
         for ( int i = 0, size = bindings.size(); i < size; i++ )
         {
             final Binding binding = bindings.get( i );
-            if ( null == Sources.getAnnotation( binding, Internal.class ) && isAssignableFrom( type, binding ) )
+            if ( null == Sources.getAnnotation( binding, Hidden.class ) && isAssignableFrom( type, binding ) )
             {
                 subscriber.add( binding, function.rank( binding ) );
             }
@@ -198,7 +198,7 @@ public final class InjectorPublisher
                     for ( int i = 0, size = candidates.size(); i < size; i++ )
                     {
                         final Binding<?> binding = candidates.get( i );
-                        if ( null == Sources.getAnnotation( binding, Internal.class ) )
+                        if ( null == Sources.getAnnotation( binding, Hidden.class ) )
                         {
                             visible.add( binding );
                         }

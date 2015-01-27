@@ -12,15 +12,15 @@ package org.eclipse.sisu.inject;
 
 import java.lang.annotation.Annotation;
 
-import org.eclipse.sisu.Internal;
+import org.eclipse.sisu.Hidden;
 
 import com.google.inject.Binding;
 
 /**
- * Implementation of @{@link Internal} that can also act as an @{@link AnnotatedSource}.
+ * Implementation of @{@link Hidden} that can also act as an @{@link AnnotatedSource}.
  */
-final class InternalSource
-    implements Internal, AnnotatedSource
+final class HiddenSource
+    implements Hidden, AnnotatedSource
 {
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -35,7 +35,7 @@ final class InternalSource
     /**
      * @param source The owning source
      */
-    InternalSource( final Object source )
+    HiddenSource( final Object source )
     {
         this.source = source;
     }
@@ -46,7 +46,7 @@ final class InternalSource
 
     public Class<? extends Annotation> annotationType()
     {
-        return Internal.class;
+        return Hidden.class;
     }
 
     @Override
@@ -58,19 +58,19 @@ final class InternalSource
     @Override
     public boolean equals( final Object rhs )
     {
-        return rhs instanceof Internal;
+        return rhs instanceof Hidden;
     }
 
     @Override
     public String toString()
     {
-        return null != source ? source.toString() : "@" + Internal.class.getName();
+        return null != source ? source.toString() : "@" + Hidden.class.getName();
     }
 
     @SuppressWarnings( "unchecked" )
     public <T extends Annotation> T getAnnotation( final Binding<?> binding, final Class<T> annotationType )
     {
-        if ( Internal.class.equals( annotationType ) )
+        if ( Hidden.class.equals( annotationType ) )
         {
             return (T) this;
         }

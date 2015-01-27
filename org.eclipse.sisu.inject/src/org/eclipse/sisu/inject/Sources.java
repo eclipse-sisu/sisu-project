@@ -13,7 +13,7 @@ package org.eclipse.sisu.inject;
 import java.lang.annotation.Annotation;
 
 import org.eclipse.sisu.Description;
-import org.eclipse.sisu.Internal;
+import org.eclipse.sisu.Hidden;
 import org.eclipse.sisu.Priority;
 
 import com.google.inject.Binding;
@@ -39,9 +39,9 @@ public final class Sources
     /**
      * Hides a new binding source from the bean locator.
      * 
-     * @return Internal source
+     * @return Hidden source
      */
-    public static Internal hide()
+    public static Hidden hide()
     {
         return hide( null );
     }
@@ -50,11 +50,11 @@ public final class Sources
      * Hides the given binding source from the bean locator.
      * 
      * @param source The source
-     * @return Internal source
+     * @return Hidden source
      */
-    public static Internal hide( final Object source )
+    public static Hidden hide( final Object source )
     {
-        return new InternalSource( source );
+        return new HiddenSource( source );
     }
 
     /**
