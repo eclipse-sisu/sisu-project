@@ -81,7 +81,7 @@ public final class DefaultBeanLocator
         cachedWatchers.put( beans, watcher );
     }
 
-    public synchronized boolean add( final BindingPublisher publisher, final int rank )
+    public synchronized boolean add( final BindingPublisher publisher )
     {
         if ( publishers.contains( publisher ) )
         {
@@ -90,6 +90,7 @@ public final class DefaultBeanLocator
         Logs.trace( "Add publisher: {}", publisher, null );
         synchronized ( cachedBindings ) // block new lookup while we update the cache
         {
+            final int rank = publisher.maxBindingRank();
             publishers.insert( publisher, rank );
             for ( final RankedBindings bindings : cachedBindings.values() )
             {
@@ -146,7 +147,7 @@ public final class DefaultBeanLocator
 
     public void add( final Injector injector, final int rank )
     {
-        add( new InjectorPublisher( injector, new DefaultRankingFunction( rank ) ), rank );
+        add( new InjectorPublisher( injector, new DefaultRankingFunction( rank ) ) );
     }
 
     public void remove( final Injector injector )
@@ -198,7 +199,6 @@ public final class DefaultBeanLocator
     @Inject
     static void staticAutoPublish( final MutableBeanLocator locator, final Injector injector )
     {
-        final RankingFunction function = injector.getInstance( RankingFunction.class );
-        locator.add( new InjectorPublisher( injector, function ), function.maxRank() );
+        locator.add( new InjectorPublisher( injector ) );
     }
 }

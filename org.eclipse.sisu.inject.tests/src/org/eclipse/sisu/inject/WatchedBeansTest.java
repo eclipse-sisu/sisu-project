@@ -130,11 +130,11 @@ public class WatchedBeansTest
 
             public int maxBindingRank()
             {
-                return 0;
+                return Integer.MIN_VALUE;
             }
         };
 
-        locator.add( subscriberHook, Integer.MIN_VALUE );
+        locator.add( subscriberHook );
         assertNotNull( subscriberHolder[0] );
 
         subscriberHolder[0].add( child2.getBinding( Key.get( Bean.class, Names.named( "Y" ) ) ), Integer.MIN_VALUE );
@@ -225,7 +225,7 @@ public class WatchedBeansTest
             }
         };
 
-        locator.add( subscriberHook, 0 );
+        locator.add( subscriberHook );
 
         subscriberHolder[0].add( child2.getBinding( Key.get( Bean.class, Names.named( "Y" ) ) ), Integer.MIN_VALUE );
         subscriberHolder[0].add( child2.getBinding( Key.get( Bean.class, Marked.class ) ), Integer.MIN_VALUE );

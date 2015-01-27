@@ -212,7 +212,7 @@ public class SisuTracker
 
     private void addPublisher( final Long bundleId, final BindingPublisher publisher )
     {
-        if ( locator.add( publisher, publisher.maxBindingRank() ) )
+        if ( locator.add( publisher ) )
         {
             bundlePublishers.put( bundleId, publisher );
         }
