@@ -57,7 +57,14 @@ public final class DefaultBeanLocator
         {
             synchronized ( cachedBindings ) // perform new lookup
             {
-                bindings = cacheBindings( type, new RankedBindings( type, publishers ) );
+                final Long[] idReturn = new Long[1];
+                bindings = fetchBindings( type, idReturn );
+                if ( null == bindings )
+                {
+                    // still not cached, so go ahead with assigned id
+                    bindings = new RankedBindings( type, publishers );
+                    cachedBindings.put( idReturn[0], bindings );
+                }
             }
         }
         final boolean isImplicit = key.getAnnotationType() == null && TypeArguments.isImplicit( type );
@@ -173,25 +180,6 @@ public final class DefaultBeanLocator
         if ( null != idReturn )
         {
             idReturn[0] = id;
-        }
-        return result;
-    }
-
-    /**
-     * Attempts to cache bindings for the given type, if bindings already exist return those.
-     * 
-     * @param type The generic type
-     * @param bindings The bindings to cache
-     * @return Associated bindings; never {@code null}
-     */
-    private RankedBindings cacheBindings( final TypeLiteral type, final RankedBindings bindings )
-    {
-        final Long[] idReturn = new Long[1];
-        RankedBindings result = fetchBindings( type, idReturn );
-        if ( null == result )
-        {
-            // new type; record our bindings under the assigned id
-            cachedBindings.put( idReturn[0], result = bindings );
         }
         return result;
     }
