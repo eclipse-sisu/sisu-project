@@ -22,11 +22,15 @@
 
   <artifactId>org.eclipse.sisu.inject.tests</artifactId>
 
+  <properties>
+    <test-guice-version>3.0</test-guice-version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
-      <version>3.0</version>
+      <version>${test-guice-version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.sisu</groupId>
@@ -75,7 +79,7 @@
     <dependency>
       <groupId>com.google.inject.extensions</groupId>
       <artifactId>guice-assistedinject</artifactId>
-      <version>3.0</version>
+      <version>${test-guice-version}</version>
     </dependency>
     <dependency>
       <groupId>org.osgi</groupId>
