@@ -22,11 +22,15 @@
 
   <artifactId>org.eclipse.sisu.plexus.tests</artifactId>
 
+  <properties>
+    <test-guice-version>3.0</test-guice-version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
-      <version>3.0</version>
+      <version>${test-guice-version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.sisu</groupId>
