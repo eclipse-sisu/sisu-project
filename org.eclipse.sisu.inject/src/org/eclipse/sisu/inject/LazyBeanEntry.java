@@ -63,8 +63,7 @@ final class LazyBeanEntry<Q extends Annotation, T>
         }
         else
         {
-            // use Guice's singleton logic to get lazy-loading without introducing extra locks
-            this.lazyValue = Scopes.SINGLETON.scope( binding.getKey(), binding.getProvider() );
+            this.lazyValue = Guice4.getLazyProvider( binding );
         }
     }
 

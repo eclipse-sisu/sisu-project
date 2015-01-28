@@ -13,6 +13,7 @@ package org.eclipse.sisu.inject;
 import javax.inject.Provider;
 
 import com.google.inject.Binding;
+import com.google.inject.Scopes;
 import com.google.inject.spi.ProviderInstanceBinding;
 
 /**
@@ -57,6 +58,22 @@ public final class Guice4
             hasUserSuppliedProvider = false;
         }
         HAS_USER_SUPPLIED_PROVIDER = hasUserSuppliedProvider;
+
+        boolean hasLazyScopesSingleton;
+        try
+        {
+            // detect future where applying this scope outside of the injector throws OutOfScopeException
+            hasLazyScopesSingleton = Scopes.SINGLETON.scope( null /* key */, null /* provider */) != null;
+        }
+        catch ( final Exception e )
+        {
+            hasLazyScopesSingleton = false;
+        }
+        catch ( final LinkageError e )
+        {
+            hasLazyScopesSingleton = false;
+        }
+        HAS_LAZY_SCOPES_SINGLETON = hasLazyScopesSingleton;
     }
 
     // ----------------------------------------------------------------------
@@ -66,6 +83,10 @@ public final class Guice4
     private static final boolean HAS_DECLARING_SOURCE;
 
     private static final boolean HAS_USER_SUPPLIED_PROVIDER;
+
+    private static final boolean HAS_LAZY_SCOPES_SINGLETON;
+
+    static final Object NIL = new Object();
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -106,5 +127,42 @@ public final class Guice4
     public static Provider<?> getProviderInstance( final ProviderInstanceBinding<?> binding )
     {
         return HAS_USER_SUPPLIED_PROVIDER ? binding.getUserSuppliedProvider() : binding.getProviderInstance();
+    }
+
+    /**
+     * Returns a lazy provider that only uses the binding once and caches the result.
+     * 
+     * @param binding The binding
+     * @return Lazy provider
+     */
+    @SuppressWarnings( "unchecked" )
+    public static <T> Provider<T> getLazyProvider( final Binding<T> binding )
+    {
+        if ( HAS_LAZY_SCOPES_SINGLETON )
+        {
+            // avoids introducing extra locks, but won't be supported going forwards
+            return Scopes.SINGLETON.scope( binding.getKey(), binding.getProvider() );
+        }
+        // future behaviour: lazy holder with its own lock
+        final Provider<T> provider = binding.getProvider();
+        return new Provider<T>()
+        {
+            private volatile Object value = NIL;
+
+            public T get()
+            {
+                if ( NIL == value )
+                {
+                    synchronized ( this )
+                    {
+                        if ( NIL == value )
+                        {
+                            value = provider.get();
+                        }
+                    }
+                }
+                return (T) value;
+            }
+        };
     }
 }
