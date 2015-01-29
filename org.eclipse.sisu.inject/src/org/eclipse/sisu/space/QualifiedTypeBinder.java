@@ -43,16 +43,16 @@ public final class QualifiedTypeBinder
 
     static
     {
-        boolean hasTyped;
+        boolean hasJsr299Typed;
         try
         {
-            hasTyped = javax.enterprise.inject.Typed.class.isAnnotation();
+            hasJsr299Typed = javax.enterprise.inject.Typed.class.isAnnotation();
         }
         catch ( final LinkageError e )
         {
-            hasTyped = false;
+            hasJsr299Typed = false;
         }
-        HAS_TYPED = hasTyped;
+        HAS_JSR299_TYPED = hasJsr299Typed;
     }
 
     // ----------------------------------------------------------------------
@@ -61,7 +61,7 @@ public final class QualifiedTypeBinder
 
     private static final TypeLiteral<?> OBJECT_TYPE_LITERAL = TypeLiteral.get( Object.class );
 
-    private static final boolean HAS_TYPED;
+    private static final boolean HAS_JSR299_TYPED;
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -365,7 +365,7 @@ public final class QualifiedTypeBinder
     {
         for ( Class<?> c = clazz; c != Object.class; c = c.getSuperclass() )
         {
-            if ( HAS_TYPED )
+            if ( HAS_JSR299_TYPED )
             {
                 final javax.enterprise.inject.Typed typed = c.getAnnotation( javax.enterprise.inject.Typed.class );
                 if ( null != typed )

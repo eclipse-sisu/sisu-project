@@ -133,16 +133,17 @@ public final class Guice4
      * Returns a lazy provider that only uses the binding once and caches the result.
      * 
      * @param binding The binding
-     * @return Lazy provider
+     * @return Lazy caching provider
      */
     @SuppressWarnings( "unchecked" )
-    public static <T> Provider<T> getLazyProvider( final Binding<T> binding )
+    public static <T> Provider<T> lazy( final Binding<T> binding )
     {
         if ( HAS_LAZY_SCOPES_SINGLETON )
         {
             // avoids introducing extra locks, but won't be supported going forwards
             return Scopes.SINGLETON.scope( binding.getKey(), binding.getProvider() );
         }
+
         // future behaviour: lazy holder with its own lock
         final Provider<T> provider = binding.getProvider();
         return new Provider<T>()

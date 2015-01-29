@@ -30,7 +30,7 @@ import com.google.inject.spi.UntargettedBinding;
 /**
  * Utility methods for discovering the implementations behind Guice bindings.
  */
-public final class Implementations
+final class Implementations
 {
     // ----------------------------------------------------------------------
     // Static initialization

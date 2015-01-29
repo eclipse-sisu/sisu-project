@@ -63,7 +63,7 @@ final class LazyBeanEntry<Q extends Annotation, T>
         }
         else
         {
-            this.lazyValue = Guice4.getLazyProvider( binding );
+            this.lazyValue = Guice4.lazy( binding );
         }
     }
 
