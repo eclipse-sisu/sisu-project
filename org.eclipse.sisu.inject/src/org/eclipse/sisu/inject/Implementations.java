@@ -38,16 +38,16 @@ final class Implementations
 
     static
     {
-        boolean hasExtensions;
+        boolean hasGuiceServlet;
         try
         {
-            hasExtensions = BindingTargetVisitor.class.isInstance( ServletFinder.THIS );
+            hasGuiceServlet = BindingTargetVisitor.class.isInstance( ServletFinder.THIS );
         }
         catch ( final LinkageError e )
         {
-            hasExtensions = false;
+            hasGuiceServlet = false;
         }
-        HAS_EXTENSIONS = hasExtensions;
+        HAS_GUICE_SERVLET = hasGuiceServlet;
 
         boolean hasJsr250Priority;
         try
@@ -65,7 +65,7 @@ final class Implementations
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final boolean HAS_EXTENSIONS;
+    private static final boolean HAS_GUICE_SERVLET;
 
     private static final boolean HAS_JSR250_PRIORITY;
 
@@ -106,7 +106,7 @@ final class Implementations
 
         // peek behind servlet/filter extension bindings when checking priority, so we can order them by rank
         final Class<?> implementation =
-            binding.acceptTargetVisitor( HAS_EXTENSIONS && isPriority ? ServletFinder.THIS : ClassFinder.THIS );
+            binding.acceptTargetVisitor( HAS_GUICE_SERVLET && isPriority ? ServletFinder.THIS : ClassFinder.THIS );
 
         T annotation = null;
         if ( null != implementation )
