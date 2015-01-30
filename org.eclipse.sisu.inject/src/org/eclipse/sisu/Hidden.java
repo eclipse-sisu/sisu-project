@@ -17,7 +17,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Hides an internal bean from being located or watched:<br>
+ * Hides a bean from being located or watched:<br>
  * <br>
  * 
  * <pre>

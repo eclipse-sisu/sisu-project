@@ -203,7 +203,7 @@ public final class InjectorPublisher
                             visible.add( binding );
                         }
                     }
-                    wildcards = visible.size() > 0 ? visible.toArray( new Binding[visible.size()] ) : NO_BINDINGS;
+                    wildcards = visible.isEmpty() ? NO_BINDINGS : visible.toArray( new Binding[visible.size()] );
                 }
             }
         }
