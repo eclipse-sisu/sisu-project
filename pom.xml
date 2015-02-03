@@ -278,9 +278,9 @@
             </docletArtifact>
             <doclet>com.google.doclava.Doclava</doclet>
             <!--
-             | bootclasspath required by Sun's JVM
+             | bootclasspath required by Sun's JVM, plus @Nullable placeholder to workaround javadoc bug
             -->
-            <bootclasspath>${sun.boot.class.path}</bootclasspath>
+            <bootclasspath>${sun.boot.class.path}:${basedir}/../doclava/api/nullable.zip</bootclasspath>
             <excludePackageNames>*.internal,org.codehaus.*</excludePackageNames>
             <additionalparam>
               -quiet
