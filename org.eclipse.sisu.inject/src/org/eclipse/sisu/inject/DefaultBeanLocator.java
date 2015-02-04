@@ -45,6 +45,8 @@ public final class DefaultBeanLocator
 
     private final ImplicitBindings implicitBindings = new ImplicitBindings( publishers );
 
+    private final Long[] typeIdHolder = new Long[1];
+
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
@@ -57,13 +59,12 @@ public final class DefaultBeanLocator
         {
             synchronized ( cachedBindings ) // perform new lookup
             {
-                final Long[] idReturn = new Long[1];
-                bindings = fetchBindings( type, idReturn );
+                bindings = fetchBindings( type, typeIdHolder );
                 if ( null == bindings )
                 {
                     // still not cached, so go ahead with assigned id
                     bindings = new RankedBindings( type, publishers );
-                    cachedBindings.put( idReturn[0], bindings );
+                    cachedBindings.put( typeIdHolder[0], bindings );
                 }
             }
         }
