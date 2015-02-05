@@ -38,7 +38,7 @@ final class GlueCache
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    // weak map of classloaders, to allow eager collection of proxied classes FIXME!
+    // FIXME: should be weak map of classloaders, to allow eager collection of proxied classes
     private static final ConcurrentMap<Object, ClassLoader> LOADER_MAP = new ConcurrentHashMap<Object, ClassLoader>();
 
     // ----------------------------------------------------------------------

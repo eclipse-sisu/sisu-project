@@ -12,10 +12,9 @@ package org.eclipse.sisu.wire;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Provider;
 
@@ -31,21 +30,37 @@ final class ProviderGlue
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final String PROVIDER_TYPE = Type.getInternalName( Provider.class );
+    private static final String PROVIDER_NAME = Type.getInternalName( Provider.class );
 
     private static final String PROVIDER_DESC = Type.getDescriptor( Provider.class );
 
-    private static final String OBJECT_TYPE = Type.getInternalName( Object.class );
+    private static final String OBJECT_NAME = Type.getInternalName( Object.class );
 
     private static final String OBJECT_DESC = Type.getDescriptor( Object.class );
-
-    private static final Method[] OBJECT_METHODS = Object.class.getMethods();
 
     private static final String ILLEGAL_STATE_EX = Type.getInternalName( IllegalStateException.class );
 
     private static final String PROXY_SUFFIX = "$sisuglu";
 
     private static final String PROXY_HANDLE = "__sisu__";
+
+    private static final Map<String, Method> OBJECT_METHOD_MAP;
+
+    // ----------------------------------------------------------------------
+    // Static initialization
+    // ----------------------------------------------------------------------
+
+    static
+    {
+        OBJECT_METHOD_MAP = new HashMap<String, Method>();
+        for ( final Method m : Object.class.getMethods() )
+        {
+            if ( isWrappable( m ) )
+            {
+                OBJECT_METHOD_MAP.put( methodKey( m ), m );
+            }
+        }
+    }
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -91,7 +106,7 @@ final class ProviderGlue
 
         if ( clazz.isInterface() )
         {
-            superName = OBJECT_TYPE;
+            superName = OBJECT_NAME;
             interfaceNames = new String[] { clazzName };
         }
         else
@@ -108,29 +123,9 @@ final class ProviderGlue
         init( cw, superName, proxyName );
 
         // for the moment only proxy the public API...
-        final Method[] publicAPI = clazz.getMethods();
-        final List<Method> methods = new ArrayList<Method>( publicAPI.length + OBJECT_METHODS.length );
-        Collections.addAll( methods, publicAPI );
-
-        if ( clazz.isInterface() )
+        for ( final Method m : getWrappableMethods( clazz ) )
         {
-            // patch in any missing Object methods...
-            for ( final Method m : OBJECT_METHODS )
-            {
-                if ( missingMethod( publicAPI, m ) )
-                {
-                    methods.add( m );
-                }
-            }
-        }
-
-        for ( final Method m : methods )
-        {
-            // we cannot proxy any static or final methods
-            if ( ( m.getModifiers() & ( Modifier.STATIC | Modifier.FINAL ) ) == 0 )
-            {
-                wrap( cw, proxyName, m );
-            }
+            wrap( cw, proxyName, m );
         }
 
         cw.visitEnd();
@@ -183,11 +178,12 @@ final class ProviderGlue
         v.visitVarInsn( Opcodes.ASTORE, 0 );
 
         // dereference handle to get actual service instance
-        v.visitMethodInsn( Opcodes.INVOKEINTERFACE, PROVIDER_TYPE, "get", "()" + OBJECT_DESC, true );
+        v.visitMethodInsn( Opcodes.INVOKEINTERFACE, PROVIDER_NAME, "get", "()" + OBJECT_DESC, true );
         v.visitInsn( Opcodes.DUP );
 
-        // null => ServiceUnavailableException
         final Label invokeDelegate = new Label();
+
+        // null => ServiceUnavailableException
         v.visitJumpInsn( Opcodes.IFNONNULL, invokeDelegate );
         v.visitTypeInsn( Opcodes.NEW, ILLEGAL_STATE_EX );
         v.visitInsn( Opcodes.DUP );
@@ -237,19 +233,31 @@ final class ProviderGlue
         return names;
     }
 
-    private static boolean missingMethod( final Method[] methods, final Method method )
+    private static Collection<Method> getWrappableMethods( final Class<?> clazz )
     {
-        final String sig = Arrays.toString( method.getParameterTypes() );
-        final String name = method.getName();
-
-        for ( final Method m : methods )
+        final Map<String, Method> methodMap = new HashMap<String, Method>( OBJECT_METHOD_MAP );
+        for ( final Method m : clazz.getMethods() )
         {
-            // just filter on method name and signature, ignore the declaring class...
-            if ( name.equals( m.getName() ) && sig.equals( Arrays.toString( m.getParameterTypes() ) ) )
+            if ( isWrappable( m ) )
             {
-                return false;
+                methodMap.put( methodKey( m ), m );
             }
         }
-        return true;
+        return methodMap.values();
+    }
+
+    private static boolean isWrappable( final Method method )
+    {
+        return ( method.getModifiers() & ( Modifier.STATIC | Modifier.FINAL ) ) == 0;
+    }
+
+    private static String methodKey( final Method method )
+    {
+        final StringBuilder buf = new StringBuilder( method.getName() );
+        for ( final Class<?> t : method.getParameterTypes() )
+        {
+            buf.append( ':' ).append( t );
+        }
+        return buf.toString();
     }
 }
