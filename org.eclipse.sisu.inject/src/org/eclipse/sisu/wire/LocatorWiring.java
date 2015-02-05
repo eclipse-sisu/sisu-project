@@ -21,6 +21,7 @@ import java.util.Set;
 import javax.inject.Qualifier;
 
 import org.eclipse.sisu.BeanEntry;
+import org.eclipse.sisu.Dynamic;
 import org.eclipse.sisu.Hidden;
 import org.eclipse.sisu.inject.BeanLocator;
 import org.eclipse.sisu.inject.Sources;
@@ -203,6 +204,11 @@ public final class LocatorWiring
             {
                 binder.bind( key ).toProvider( beanProviders.placeholderOf( key ) );
             }
+        }
+        else if ( qualifier instanceof Dynamic )
+        {
+            final Provider<T> delegate = beanProviders.firstOf( Key.get( key.getTypeLiteral() ) );
+            binder.bind( key ).toInstance( GlueCache.glue( key.getTypeLiteral(), delegate ) );
         }
         else
         {
