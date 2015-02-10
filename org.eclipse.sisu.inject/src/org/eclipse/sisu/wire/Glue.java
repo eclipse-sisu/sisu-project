@@ -13,15 +13,16 @@ package org.eclipse.sisu.wire;
 import java.lang.reflect.InvocationTargetException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import javax.inject.Provider;
 
+import org.eclipse.sisu.inject.Weak;
+
 import com.google.inject.ProvisionException;
 import com.google.inject.TypeLiteral;
 
-final class GlueCache
+final class Glue
     extends ClassLoader
 {
     // ----------------------------------------------------------------------
@@ -32,21 +33,24 @@ final class GlueCache
 
     private static final String PROVIDER_CLAZZ_NAME = Provider.class.getName();
 
-    private static final Object NULL_CLASS_LOADER_KEY = new Object();
-
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    // FIXME: should be weak map of classloaders, to allow eager collection of proxied classes
-    private static final ConcurrentMap<Object, ClassLoader> LOADER_MAP = new ConcurrentHashMap<Object, ClassLoader>();
+    private static final ConcurrentMap<Integer, Glue> cachedGlue = Weak.concurrentValues();
+
+    private static final Integer[] loaderIdHolder = new Integer[1];
 
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
-    // delegate to the original type's classloader
-    GlueCache( final ClassLoader parent )
+    Glue()
+    {
+        // use system loader as parent
+    }
+
+    Glue( final ClassLoader parent )
     {
         super( parent );
     }
@@ -56,11 +60,11 @@ final class GlueCache
     // ----------------------------------------------------------------------
 
     @SuppressWarnings( "unchecked" )
-    public static <T> T glue( final TypeLiteral<T> type, final Provider<T> provider )
+    public static <T> T dynamicInstance( final TypeLiteral<T> type, final Provider<T> provider )
     {
         try
         {
-            return (T) getProxyClass( type.getRawType() ).getConstructor( Provider.class ).newInstance( provider );
+            return (T) getDynamicClass( type.getRawType() ).getConstructor( Provider.class ).newInstance( provider );
         }
         catch ( final Exception e )
         {
@@ -74,65 +78,8 @@ final class GlueCache
     }
 
     // ----------------------------------------------------------------------
-    // Implementation methods
+    // Class-loading methods
     // ----------------------------------------------------------------------
-
-    /**
-     * @return unique proxy class per given type
-     */
-    static Class<?> getProxyClass( final Class<?> clazz )
-        throws ClassNotFoundException
-    {
-        final Object key = getKeyFromClassLoader( clazz.getClassLoader() );
-        final String name = ProviderGlue.getProxyName( clazz.getName() );
-
-        ClassLoader loader = LOADER_MAP.get( key );
-        if ( null == loader )
-        {
-            synchronized ( LOADER_MAP )
-            {
-                if ( null == ( loader = LOADER_MAP.get( key ) ) )
-                {
-                    LOADER_MAP.put( key, loader = new GlueCache( getClassLoaderFromKey( key ) ) );
-                }
-            }
-        }
-        return loader.loadClass( name );
-    }
-
-    /**
-     * @return non-null key for the given class loader
-     */
-    static Object getKeyFromClassLoader( final ClassLoader classLoader )
-    {
-        if ( null != classLoader )
-        {
-            return classLoader;
-        }
-
-        try
-        {
-            return AccessController.doPrivileged( new PrivilegedAction<ClassLoader>()
-            {
-                public ClassLoader run()
-                {
-                    return getSystemClassLoader();
-                }
-            } );
-        }
-        catch ( final SecurityException e )
-        {
-            return NULL_CLASS_LOADER_KEY; // unable to canonicalise!
-        }
-    }
-
-    /**
-     * @return class loader related to the given key
-     */
-    static ClassLoader getClassLoaderFromKey( final Object key )
-    {
-        return NULL_CLASS_LOADER_KEY != key ? (ClassLoader) key : null; // NOPMD
-    }
 
     @Override
     @SuppressWarnings( "sync-override" )
@@ -156,16 +103,74 @@ final class GlueCache
     protected Class<?> findClass( final String clazzOrProxyName )
         throws ClassNotFoundException
     {
-        final String clazzName = ProviderGlue.getClazzName( clazzOrProxyName );
+        final String clazzName = DynamicGlue.getClazzName( clazzOrProxyName );
 
         // is this a new proxy class request?
         if ( !clazzName.equals( clazzOrProxyName ) )
         {
-            final byte[] code = ProviderGlue.generateProxy( loadClass( clazzName ) );
+            final byte[] code = DynamicGlue.generateProxy( loadClass( clazzName ) );
             return defineClass( clazzOrProxyName, code, 0, code.length );
         }
 
         // ignore any non-proxy requests
         throw new ClassNotFoundException( clazzOrProxyName );
+    }
+
+    // ----------------------------------------------------------------------
+    // Implementation methods
+    // ----------------------------------------------------------------------
+
+    /**
+     * @return unique proxy class per given type
+     */
+    private static Class<?> getDynamicClass( final Class<?> clazz )
+        throws ClassNotFoundException
+    {
+        final ClassLoader parent = clazz.getClassLoader();
+
+        Glue glue = fetchGlue( parent, null );
+        if ( null == glue )
+        {
+            synchronized ( cachedGlue )
+            {
+                glue = fetchGlue( parent, loaderIdHolder );
+                if ( null == glue )
+                {
+                    // still not cached, so go ahead with assigned id
+                    cachedGlue.put( loaderIdHolder[0], glue = createGlue( parent ) );
+                }
+            }
+        }
+
+        return glue.loadClass( DynamicGlue.getProxyName( clazz.getName() ) );
+    }
+
+    @SuppressWarnings( "boxing" )
+    private static Glue fetchGlue( final ClassLoader parent, final Integer[] idReturn )
+    {
+        // loader hash is nominally unique, but handle collisions just in case
+        int id = System.identityHashCode( parent );
+
+        Glue result;
+        while ( null != ( result = cachedGlue.get( id ) ) && parent != result.getParent() )
+        {
+            id++; // collision! (should be very rare) ... resort to linear scan from base id
+        }
+        if ( null != idReturn )
+        {
+            idReturn[0] = id;
+        }
+        return result;
+    }
+
+    private static Glue createGlue( final ClassLoader parent )
+    {
+        return AccessController.doPrivileged( new PrivilegedAction<Glue>()
+        {
+            public Glue run()
+            {
+                return null != parent ? new Glue( parent ) : new Glue();
+            }
+        } );
     }
 }

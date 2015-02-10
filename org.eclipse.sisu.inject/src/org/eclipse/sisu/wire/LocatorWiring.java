@@ -208,7 +208,7 @@ public final class LocatorWiring
         else if ( qualifier instanceof Dynamic )
         {
             final Provider<T> delegate = beanProviders.firstOf( Key.get( key.getTypeLiteral() ) );
-            binder.bind( key ).toInstance( GlueCache.glue( key.getTypeLiteral(), delegate ) );
+            binder.bind( key ).toInstance( Glue.dynamicInstance( key.getTypeLiteral(), delegate ) );
         }
         else
         {

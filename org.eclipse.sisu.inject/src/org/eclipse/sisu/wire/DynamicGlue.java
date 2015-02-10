@@ -24,7 +24,7 @@ import org.eclipse.sisu.space.asm.MethodVisitor;
 import org.eclipse.sisu.space.asm.Opcodes;
 import org.eclipse.sisu.space.asm.Type;
 
-final class ProviderGlue
+final class DynamicGlue
 {
     // ----------------------------------------------------------------------
     // Constants
@@ -40,7 +40,7 @@ final class ProviderGlue
 
     private static final String ILLEGAL_STATE_EX = Type.getInternalName( IllegalStateException.class );
 
-    private static final String PROXY_SUFFIX = "$sisuglu";
+    private static final String PROXY_SUFFIX = "$__sisu__$dynamic";
 
     private static final String PROXY_HANDLE = "__sisu__";
 
@@ -66,7 +66,7 @@ final class ProviderGlue
     // Constructors
     // ----------------------------------------------------------------------
 
-    private ProviderGlue()
+    private DynamicGlue()
     {
         // static utility class, not allowed to create instances
     }
