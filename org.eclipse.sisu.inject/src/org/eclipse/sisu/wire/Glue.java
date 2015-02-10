@@ -29,17 +29,13 @@ final class Glue
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final String UNAVAILABLE_CLAZZ_NAME = IllegalStateException.class.getName();
-
-    private static final String PROVIDER_CLAZZ_NAME = Provider.class.getName();
+    private static final String PROVIDER_NAME = Provider.class.getName();
 
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
     private static final ConcurrentMap<Integer, Glue> cachedGlue = Weak.concurrentValues();
-
-    private static final Integer[] loaderIdHolder = new Integer[1];
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -86,16 +82,11 @@ final class Glue
     protected Class<?> loadClass( final String name, final boolean resolve )
         throws ClassNotFoundException
     {
-        // short-circuit access to these classes
-        if ( PROVIDER_CLAZZ_NAME.equals( name ) )
+        // ensure our proxies have access to the following non-JDK types
+        if ( PROVIDER_NAME.equals( name ) )
         {
             return Provider.class;
         }
-        if ( UNAVAILABLE_CLAZZ_NAME.equals( name ) )
-        {
-            return IllegalStateException.class;
-        }
-
         return super.loadClass( name, resolve );
     }
 
@@ -103,16 +94,12 @@ final class Glue
     protected Class<?> findClass( final String clazzOrProxyName )
         throws ClassNotFoundException
     {
-        final String clazzName = DynamicGlue.getClazzName( clazzOrProxyName );
-
-        // is this a new proxy class request?
-        if ( !clazzName.equals( clazzOrProxyName ) )
+        if ( DynamicGlue.isProxyRequest( clazzOrProxyName ) )
         {
+            final String clazzName = DynamicGlue.getClazzName( clazzOrProxyName );
             final byte[] code = DynamicGlue.generateProxy( loadClass( clazzName ) );
             return defineClass( clazzOrProxyName, code, 0, code.length );
         }
-
-        // ignore any non-proxy requests
         throw new ClassNotFoundException( clazzOrProxyName );
     }
 
@@ -120,45 +107,33 @@ final class Glue
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    /**
-     * @return unique proxy class per given type
-     */
     private static Class<?> getDynamicClass( final Class<?> clazz )
         throws ClassNotFoundException
     {
-        final ClassLoader parent = clazz.getClassLoader();
-
-        Glue glue = fetchGlue( parent, null );
-        if ( null == glue )
-        {
-            synchronized ( cachedGlue )
-            {
-                glue = fetchGlue( parent, loaderIdHolder );
-                if ( null == glue )
-                {
-                    // still not cached, so go ahead with assigned id
-                    cachedGlue.put( loaderIdHolder[0], glue = createGlue( parent ) );
-                }
-            }
-        }
-
-        return glue.loadClass( DynamicGlue.getProxyName( clazz.getName() ) );
+        return glue( clazz.getClassLoader() ).loadClass( DynamicGlue.getProxyName( clazz.getName() ) );
     }
 
     @SuppressWarnings( "boxing" )
-    private static Glue fetchGlue( final ClassLoader parent, final Integer[] idReturn )
+    private static Glue glue( final ClassLoader parent )
     {
-        // loader hash is nominally unique, but handle collisions just in case
         int id = System.identityHashCode( parent );
 
-        Glue result;
-        while ( null != ( result = cachedGlue.get( id ) ) && parent != result.getParent() )
+        Glue result = cachedGlue.get( id );
+        if ( null == result || result.getParent() != parent )
         {
-            id++; // collision! (should be very rare) ... resort to linear scan from base id
-        }
-        if ( null != idReturn )
-        {
-            idReturn[0] = id;
+            synchronized ( parent )
+            {
+                final Glue glue = createGlue( parent );
+                do
+                {
+                    result = cachedGlue.putIfAbsent( id++, glue );
+                    if ( null == result )
+                    {
+                        return glue;
+                    }
+                }
+                while ( result.getParent() != parent );
+            }
         }
         return result;
     }

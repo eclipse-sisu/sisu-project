@@ -38,7 +38,7 @@ final class DynamicGlue
 
     private static final String OBJECT_DESC = Type.getDescriptor( Object.class );
 
-    private static final String ILLEGAL_STATE_EX = Type.getInternalName( IllegalStateException.class );
+    private static final String ILLEGAL_STATE_NAME = Type.getInternalName( IllegalStateException.class );
 
     private static final String PROXY_SUFFIX = "$__sisu__$dynamic";
 
@@ -74,6 +74,11 @@ final class DynamicGlue
     // ----------------------------------------------------------------------
     // Utility methods
     // ----------------------------------------------------------------------
+
+    public static boolean isProxyRequest( final String clazzName )
+    {
+        return clazzName.endsWith( PROXY_SUFFIX );
+    }
 
     public static String getProxyName( final String clazzName )
     {
@@ -185,9 +190,9 @@ final class DynamicGlue
 
         // null => ServiceUnavailableException
         v.visitJumpInsn( Opcodes.IFNONNULL, invokeDelegate );
-        v.visitTypeInsn( Opcodes.NEW, ILLEGAL_STATE_EX );
+        v.visitTypeInsn( Opcodes.NEW, ILLEGAL_STATE_NAME );
         v.visitInsn( Opcodes.DUP );
-        v.visitMethodInsn( Opcodes.INVOKESPECIAL, ILLEGAL_STATE_EX, "<init>", "()V", false );
+        v.visitMethodInsn( Opcodes.INVOKESPECIAL, ILLEGAL_STATE_NAME, "<init>", "()V", false );
         v.visitInsn( Opcodes.ATHROW );
 
         v.visitLabel( invokeDelegate );
