@@ -363,7 +363,7 @@ public final class QualifiedTypeBinder
 
     private static Class<?>[] getBindingTypes( final Class<?> clazz )
     {
-        for ( Class<?> c = clazz; c != Object.class; c = c.getSuperclass() )
+        for ( Class<?> c = clazz; null != c && c != Object.class; c = c.getSuperclass() )
         {
             if ( HAS_JSR299_TYPED )
             {

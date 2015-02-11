@@ -48,17 +48,14 @@ public final class LifecycleManager
 
     public boolean manage( final Object bean )
     {
-        if ( null != bean )
+        final BeanLifecycle lifecycle = lifecycleFor( bean );
+        if ( lifecycle.isStoppable() )
         {
-            final BeanLifecycle lifecycle = lifecycleFor( bean.getClass() );
-            if ( lifecycle.isStoppable() )
-            {
-                pushStoppable( bean );
-            }
-            if ( lifecycle.isStartable() )
-            {
-                schedule( bean );
-            }
+            pushStoppable( bean );
+        }
+        if ( lifecycle.isStartable() )
+        {
+            schedule( bean );
         }
         return true;
     }
@@ -67,7 +64,7 @@ public final class LifecycleManager
     {
         if ( removeStoppable( bean ) )
         {
-            lifecycleFor( bean.getClass() ).stop( bean );
+            lifecycleFor( bean ).stop( bean );
         }
         return true;
     }
@@ -76,7 +73,7 @@ public final class LifecycleManager
     {
         for ( Object bean; ( bean = popStoppable() ) != null; )
         {
-            lifecycleFor( bean.getClass() ).stop( bean );
+            lifecycleFor( bean ).stop( bean );
         }
         return true;
     }
@@ -88,7 +85,7 @@ public final class LifecycleManager
     @Override
     protected void activate( final Object bean )
     {
-        lifecycleFor( bean.getClass() ).start( bean );
+        lifecycleFor( bean ).start( bean );
     }
 
     // ----------------------------------------------------------------------
@@ -113,15 +110,26 @@ public final class LifecycleManager
     }
 
     /**
-     * Looks up the JSR250 lifecycle built for the given bean type.
+     * Looks up the JSR250 lifecycle previously built for this bean.
      * 
-     * @param clazz The bean type
+     * @param bean The bean instance
      * @return Lifecycle for the bean
      */
-    private BeanLifecycle lifecycleFor( final Class<?> clazz )
+    private BeanLifecycle lifecycleFor( final Object bean )
     {
-        final BeanLifecycle lifecycle = lifecycles.get( clazz );
-        return null != lifecycle ? lifecycle : BeanLifecycle.NO_OP;
+        if ( null != bean )
+        {
+            // check the class hierarchy, just in case the bean instance has been proxied/enhanced
+            for ( Class<?> c = bean.getClass(); null != c && c != Object.class; c = c.getSuperclass() )
+            {
+                final BeanLifecycle lifecycle = lifecycles.get( c );
+                if ( null != lifecycle )
+                {
+                    return lifecycle;
+                }
+            }
+        }
+        return BeanLifecycle.NO_OP;
     }
 
     private boolean pushStoppable( final Object bean )
