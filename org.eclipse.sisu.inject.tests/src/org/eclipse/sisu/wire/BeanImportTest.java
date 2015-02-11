@@ -125,7 +125,7 @@ public class BeanImportTest
     public static abstract class AbstractY
         implements Y
     {
-        public double fn( double x, double y )
+        public double fn( final double x, final double y )
         {
             return x + y;
         }
@@ -854,16 +854,16 @@ public class BeanImportTest
         assertEquals( 9.0, dynamicInstance.concreteProxy.fn( 7, 2 ) );
 
         // add new Y binding that multiplies the arguments instead of adding them
-        Injector child1 = injector.createChildInjector( new ChildWireModule( injector, new AbstractModule()
+        final Injector child1 = injector.createChildInjector( new ChildWireModule( injector, new AbstractModule()
         {
             @Override
             protected void configure()
             {
-                Binder overrides = binder().withSource( Sources.prioritize( Integer.MAX_VALUE ) );
+                final Binder overrides = binder().withSource( Sources.prioritize( Integer.MAX_VALUE ) );
                 overrides.bind( Y.class ).annotatedWith( Names.named( "multiply" ) ).toInstance( new YImpl()
                 {
                     @Override
-                    public double fn( double x, double y )
+                    public double fn( final double x, final double y )
                     {
                         return x * y;
                     }
@@ -878,16 +878,16 @@ public class BeanImportTest
         assertEquals( 9.0, dynamicInstance.concreteProxy.fn( 7, 2 ) );
 
         // add new YImpl binding that divides the arguments instead of adding them
-        Injector child2 = injector.createChildInjector( new ChildWireModule( injector, new AbstractModule()
+        final Injector child2 = injector.createChildInjector( new ChildWireModule( injector, new AbstractModule()
         {
             @Override
             protected void configure()
             {
-                Binder overrides = binder().withSource( Sources.prioritize( Integer.MAX_VALUE ) );
+                final Binder overrides = binder().withSource( Sources.prioritize( Integer.MAX_VALUE ) );
                 overrides.bind( YImpl.class ).annotatedWith( Names.named( "divide" ) ).toInstance( new YImpl()
                 {
                     @Override
-                    public double fn( double x, double y )
+                    public double fn( final double x, final double y )
                     {
                         return x / y;
                     }
@@ -902,8 +902,8 @@ public class BeanImportTest
         assertEquals( 3.5, dynamicInstance.concreteProxy.fn( 7, 2 ) );
 
         // Object.toString delegates to the active instance
-        Y multiply = child1.getInstance( Key.get( Y.class, Names.named( "multiply" ) ) );
-        Y divide = child2.getInstance( Key.get( YImpl.class, Names.named( "divide" ) ) );
+        final Y multiply = child1.getInstance( Key.get( Y.class, Names.named( "multiply" ) ) );
+        final Y divide = child2.getInstance( Key.get( YImpl.class, Names.named( "divide" ) ) );
         assertTrue( dynamicInstance.interfaceProxy.toString().equals( multiply.toString() ) );
         assertTrue( dynamicInstance.concreteProxy.toString().equals( divide.toString() ) );
 
