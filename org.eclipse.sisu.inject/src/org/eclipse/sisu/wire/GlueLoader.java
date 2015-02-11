@@ -72,11 +72,11 @@ final class GlueLoader
      * @return Generated proxy instance
      */
     @SuppressWarnings( "unchecked" )
-    public static <T> T dynamicProxy( final TypeLiteral<T> type, final Provider<T> provider )
+    public static <T> T dynamicGlue( final TypeLiteral<T> type, final Provider<T> provider )
     {
         try
         {
-            return (T) dynamic( type.getRawType() ).getConstructor( Provider.class ).newInstance( provider );
+            return (T) dynamicGlue( type.getRawType() ).getConstructor( Provider.class ).newInstance( provider );
         }
         catch ( final Exception e )
         {
@@ -126,7 +126,7 @@ final class GlueLoader
     /**
      * Loads the dynamic proxy class for the given facade class.
      */
-    private static Class<?> dynamic( final Class<?> facade )
+    private static Class<?> dynamicGlue( final Class<?> facade )
         throws ClassNotFoundException
     {
         return glue( facade.getClassLoader() ).loadClass( wrap( facade.getName(), DYNAMIC ) );
