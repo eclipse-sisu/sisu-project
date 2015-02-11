@@ -106,7 +106,7 @@ public class BeanImportTest
     }
 
     @ImplementedBy( YImpl.class )
-    interface ImplicitY
+    public interface ImplicitY
         extends Y
     {
     }
@@ -122,7 +122,7 @@ public class BeanImportTest
         }
     }
 
-    static abstract class AbstractY
+    public static abstract class AbstractY
         implements Y
     {
         public double fn( double x, double y )
@@ -131,7 +131,7 @@ public class BeanImportTest
         }
     }
 
-    static class YImpl
+    public static class YImpl
         extends AbstractY
         implements ImplicitY
     {
@@ -364,7 +364,11 @@ public class BeanImportTest
     {
         @Inject
         @Dynamic
-        Y proxy;
+        Y interfaceProxy;
+
+        @Inject
+        @Dynamic
+        YImpl concreteProxy;
     }
 
     static Map<String, Object> PROPS = new HashMap<String, Object>();
@@ -845,10 +849,12 @@ public class BeanImportTest
         final DynamicInstance dynamicInstance =
             (DynamicInstance) injector.getInstance( Key.get( X.class, Names.named( "DI" ) ) );
 
-        assertEquals( 42.0, dynamicInstance.proxy.fn( 12.3, 29.7 ) );
+        assertEquals( 42.0, dynamicInstance.interfaceProxy.fn( 12.3, 29.7 ) );
 
-        // add new implementation that multiplies the arguments instead of adding them
-        injector.createChildInjector( new ChildWireModule( injector, new AbstractModule()
+        assertEquals( 9.0, dynamicInstance.concreteProxy.fn( 7, 2 ) );
+
+        // add new Y binding that multiplies the arguments instead of adding them
+        Injector child1 = injector.createChildInjector( new ChildWireModule( injector, new AbstractModule()
         {
             @Override
             protected void configure()
@@ -865,15 +871,52 @@ public class BeanImportTest
             }
         } ) );
 
-        // should now delegate to the overridden implementation
-        assertEquals( 365.31, dynamicInstance.proxy.fn( 12.3, 29.7 ) );
+        // interface proxy should now delegate to multiplying implementation
+        assertEquals( 365.31, dynamicInstance.interfaceProxy.fn( 12.3, 29.7 ) );
+
+        // concrete proxy shouldn't be affected by the interface binding
+        assertEquals( 9.0, dynamicInstance.concreteProxy.fn( 7, 2 ) );
+
+        // add new YImpl binding that divides the arguments instead of adding them
+        Injector child2 = injector.createChildInjector( new ChildWireModule( injector, new AbstractModule()
+        {
+            @Override
+            protected void configure()
+            {
+                Binder overrides = binder().withSource( Sources.prioritize( Integer.MAX_VALUE ) );
+                overrides.bind( YImpl.class ).annotatedWith( Names.named( "divide" ) ).toInstance( new YImpl()
+                {
+                    @Override
+                    public double fn( double x, double y )
+                    {
+                        return x / y;
+                    }
+                } );
+            }
+        } ) );
+
+        // interface proxy should still delegate to multiplier implementation
+        assertEquals( 365.31, dynamicInstance.interfaceProxy.fn( 12.3, 29.7 ) );
+
+        // concrete proxy should now delegate to the dividing implementation
+        assertEquals( 3.5, dynamicInstance.concreteProxy.fn( 7, 2 ) );
 
         // remove all implementations from the shared locator
         injector.getInstance( MutableBeanLocator.class ).clear();
 
         try
         {
-            dynamicInstance.proxy.fn( 12.3, 29.7 );
+            dynamicInstance.interfaceProxy.fn( 12.3, 29.7 );
+            fail( "Expected IllegalStateException" );
+        }
+        catch ( final IllegalStateException e )
+        {
+            // should now get an exception on invoke
+        }
+
+        try
+        {
+            dynamicInstance.concreteProxy.fn( 7, 2 );
             fail( "Expected IllegalStateException" );
         }
         catch ( final IllegalStateException e )

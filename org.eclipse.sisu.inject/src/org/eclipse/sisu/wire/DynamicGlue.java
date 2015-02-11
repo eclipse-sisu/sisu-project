@@ -166,7 +166,7 @@ final class DynamicGlue
         final Class<?> declaringClazz = method.getDeclaringClass();
         final String declaringName = Type.getInternalName( declaringClazz );
 
-        if ( !declaringClazz.isInterface() )
+        if ( Object.class != declaringClazz && !declaringClazz.isInterface() )
         {
             // must check target before setting up INVOKEVIRTUAL
             v.visitTypeInsn( Opcodes.CHECKCAST, declaringName );
