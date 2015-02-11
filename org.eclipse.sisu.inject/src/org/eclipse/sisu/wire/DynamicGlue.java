@@ -148,7 +148,7 @@ final class DynamicGlue
         final String methodName = method.getName();
         final String descriptor = Type.getMethodDescriptor( method );
         final String[] exceptions = getInternalNames( method.getExceptionTypes() );
-        final Label throwIllegalState = new Label();
+        final Label handleNullTarget = new Label();
 
         // simple delegating proxy, so don't need synchronization on wrapper method
         final int modifiers = method.getModifiers() & ~( Modifier.ABSTRACT | Modifier.NATIVE | Modifier.SYNCHRONIZED );
@@ -160,13 +160,15 @@ final class DynamicGlue
         v.visitVarInsn( Opcodes.ALOAD, 0 );
         v.visitFieldInsn( Opcodes.GETFIELD, proxyName, PROVIDER_HANDLE, PROVIDER_DESC );
         v.visitMethodInsn( Opcodes.INVOKEINTERFACE, PROVIDER_NAME, "get", "()" + OBJECT_DESC, true );
+
         v.visitInsn( Opcodes.DUP );
-        v.visitJumpInsn( Opcodes.IFNULL, throwIllegalState );
+        v.visitJumpInsn( Opcodes.IFNULL, handleNullTarget );
 
         final Class<?> declaringClazz = method.getDeclaringClass();
         final String declaringName = Type.getInternalName( declaringClazz );
+        final boolean isInterface = declaringClazz.isInterface();
 
-        if ( Object.class != declaringClazz && !declaringClazz.isInterface() )
+        if ( !isInterface && Object.class != declaringClazz )
         {
             // must check target before setting up INVOKEVIRTUAL
             v.visitTypeInsn( Opcodes.CHECKCAST, declaringName );
@@ -180,23 +182,36 @@ final class DynamicGlue
         }
 
         // invoke original method on target
-        if ( declaringClazz.isInterface() )
+        final int invoke = isInterface ? Opcodes.INVOKEINTERFACE : Opcodes.INVOKEVIRTUAL;
+        v.visitMethodInsn( invoke, declaringName, methodName, descriptor, isInterface );
+        v.visitInsn( Type.getReturnType( method ).getOpcode( Opcodes.IRETURN ) );
+
+        v.visitLabel( handleNullTarget );
+        v.visitInsn( Opcodes.POP );
+
+        if ( Object.class != declaringClazz )
         {
-            v.visitMethodInsn( Opcodes.INVOKEINTERFACE, declaringName, methodName, descriptor, true );
+            // report null target as bad state
+            v.visitTypeInsn( Opcodes.NEW, ILLEGAL_STATE_NAME );
+            v.visitInsn( Opcodes.DUP );
+            v.visitMethodInsn( Opcodes.INVOKESPECIAL, ILLEGAL_STATE_NAME, "<init>", "()V", false );
+            v.visitInsn( Opcodes.ATHROW );
         }
         else
         {
-            v.visitMethodInsn( Opcodes.INVOKEVIRTUAL, declaringName, methodName, descriptor, false );
+            v.visitVarInsn( Opcodes.ALOAD, 0 );
+
+            slot = 1;
+            for ( final Type t : Type.getArgumentTypes( method ) )
+            {
+                v.visitVarInsn( t.getOpcode( Opcodes.ILOAD ), slot );
+                slot = slot + t.getSize();
+            }
+
+            // fall-back to superclass implementation of Object methods
+            v.visitMethodInsn( Opcodes.INVOKESPECIAL, declaringName, methodName, descriptor, false );
+            v.visitInsn( Type.getReturnType( method ).getOpcode( Opcodes.IRETURN ) );
         }
-
-        v.visitInsn( Type.getReturnType( method ).getOpcode( Opcodes.IRETURN ) );
-
-        // error state: target was null
-        v.visitLabel( throwIllegalState );
-        v.visitTypeInsn( Opcodes.NEW, ILLEGAL_STATE_NAME );
-        v.visitInsn( Opcodes.DUP );
-        v.visitMethodInsn( Opcodes.INVOKESPECIAL, ILLEGAL_STATE_NAME, "<init>", "()V", false );
-        v.visitInsn( Opcodes.ATHROW );
 
         v.visitMaxs( 0, 0 );
         v.visitEnd();
