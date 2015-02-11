@@ -31,7 +31,7 @@ public final class Guice4
         try
         {
             // support future where binding.getSource() returns ElementSource and not the original declaring source
-            hasDeclaringSource = com.google.inject.spi.ElementSource.class.getMethod( "getDeclaringSource" ) != null;
+            hasDeclaringSource = com.google.inject.spi.ElementSource.class.getMethod( "getDeclaringSource" ) != null; // NOSONAR
         }
         catch ( final Exception e )
         {
@@ -47,7 +47,7 @@ public final class Guice4
         try
         {
             // support future where getProviderInstance() is deprecated in favour of getUserSuppliedProvider()
-            hasUserSuppliedProvider = ProviderInstanceBinding.class.getMethod( "getUserSuppliedProvider" ) != null;
+            hasUserSuppliedProvider = ProviderInstanceBinding.class.getMethod( "getUserSuppliedProvider" ) != null; // NOSONAR
         }
         catch ( final Exception e )
         {

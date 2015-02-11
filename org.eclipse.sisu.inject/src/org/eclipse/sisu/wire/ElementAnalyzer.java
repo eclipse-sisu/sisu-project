@@ -67,11 +67,11 @@ final class ElementAnalyzer
             addLegacyKeyAlias( aliases, MutableBeanLocator.class );
             addLegacyKeyAlias( aliases, RankingFunction.class );
         }
-        catch ( final Exception e )
+        catch ( final Exception e ) // NOPMD
         {
             // legacy wrappers are not available
         }
-        catch ( final LinkageError e )
+        catch ( final LinkageError e ) // NOPMD
         {
             // legacy wrappers are not available
         }

@@ -214,7 +214,7 @@ public final class SisuExtensions
                     {
                         instance = impl.getConstructor( contextType ).newInstance( context );
                     }
-                    catch ( final NoSuchMethodException e )
+                    catch ( final NoSuchMethodException e ) // NOPMD
                     {
                         // fall-back to default constructor
                     }
