@@ -22,6 +22,9 @@ import org.eclipse.sisu.inject.Weak;
 import com.google.inject.ProvisionException;
 import com.google.inject.TypeLiteral;
 
+/**
+ * Weak cache of {@link ClassLoader}s that can generate proxy classes on-demand.
+ */
 final class Glue
     extends ClassLoader
 {
@@ -29,7 +32,13 @@ final class Glue
     // Constants
     // ----------------------------------------------------------------------
 
+    private static final Object SYSTEM_LOADER_LOCK = new Object();
+
     private static final String PROVIDER_NAME = Provider.class.getName();
+
+    private static final String GLUE_SUFFIX = "$__sisu__$";
+
+    private static final String DYNAMIC = "dyn";
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -55,12 +64,19 @@ final class Glue
     // Public methods
     // ----------------------------------------------------------------------
 
+    /**
+     * Generates a new dynamic proxy instance for the given facade type and provider.
+     * 
+     * @param type The facade type
+     * @param provider The provider
+     * @return Generated proxy instance
+     */
     @SuppressWarnings( "unchecked" )
     public static <T> T dynamicInstance( final TypeLiteral<T> type, final Provider<T> provider )
     {
         try
         {
-            return (T) getDynamicClass( type.getRawType() ).getConstructor( Provider.class ).newInstance( provider );
+            return (T) dynamic( type.getRawType() ).getConstructor( Provider.class ).newInstance( provider );
         }
         catch ( final Exception e )
         {
@@ -91,28 +107,58 @@ final class Glue
     }
 
     @Override
-    protected Class<?> findClass( final String clazzOrProxyName )
+    protected Class<?> findClass( final String name )
         throws ClassNotFoundException
     {
-        if ( DynamicGlue.isProxyRequest( clazzOrProxyName ) )
+        if ( name.endsWith( GLUE_SUFFIX + DYNAMIC ) )
         {
-            final String clazzName = DynamicGlue.getClazzName( clazzOrProxyName );
-            final byte[] code = DynamicGlue.generateProxy( loadClass( clazzName ) );
-            return defineClass( clazzOrProxyName, code, 0, code.length );
+            final Class<?> facade = loadClass( unwrap( name ) );
+            final byte[] code = DynamicGlue.generateProxyClass( name.replace( '.', '/' ), facade );
+            return defineClass( name, code, 0, code.length );
         }
-        throw new ClassNotFoundException( clazzOrProxyName );
+        throw new ClassNotFoundException( name );
     }
 
     // ----------------------------------------------------------------------
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    private static Class<?> getDynamicClass( final Class<?> clazz )
+    /**
+     * Loads the dynamic proxy class for the given facade class.
+     */
+    private static Class<?> dynamic( final Class<?> facade )
         throws ClassNotFoundException
     {
-        return glue( clazz.getClassLoader() ).loadClass( DynamicGlue.getProxyName( clazz.getName() ) );
+        return glue( facade.getClassLoader() ).loadClass( wrap( facade.getName(), DYNAMIC ) );
     }
 
+    /**
+     * Wraps the given class name with the appropriate proxy decoration.
+     */
+    private static String wrap( final String name, final String kind )
+    {
+        final StringBuilder buf = new StringBuilder();
+        if ( name.startsWith( "java." ) || name.startsWith( "java/" ) )
+        {
+            buf.append( '$' ); // proxy java.* types by changing the package space
+        }
+        return buf.append( name ).append( GLUE_SUFFIX ).append( kind ).toString();
+    }
+
+    /**
+     * Unwraps the proxy decoration from around the given class name.
+     */
+    private static String unwrap( final String name )
+    {
+        final int head = '$' == name.charAt( 0 ) ? 1 : 0;
+        final int tail = name.lastIndexOf( GLUE_SUFFIX );
+
+        return tail > 0 ? name.substring( head, tail ) : name;
+    }
+
+    /**
+     * Returns the {@link Glue} associated with the given {@link ClassLoader}.
+     */
     @SuppressWarnings( "boxing" )
     private static Glue glue( final ClassLoader parent )
     {
@@ -121,7 +167,7 @@ final class Glue
         Glue result = cachedGlue.get( id );
         if ( null == result || result.getParent() != parent )
         {
-            synchronized ( parent )
+            synchronized ( null != parent ? parent : SYSTEM_LOADER_LOCK )
             {
                 final Glue glue = createGlue( parent );
                 do
@@ -138,6 +184,9 @@ final class Glue
         return result;
     }
 
+    /**
+     * Returns new {@link Glue} that delegates to the given {@link ClassLoader}.
+     */
     private static Glue createGlue( final ClassLoader parent )
     {
         return AccessController.doPrivileged( new PrivilegedAction<Glue>()

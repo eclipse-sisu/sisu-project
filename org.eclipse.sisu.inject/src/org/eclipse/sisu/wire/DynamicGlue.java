@@ -24,6 +24,9 @@ import org.eclipse.sisu.space.asm.MethodVisitor;
 import org.eclipse.sisu.space.asm.Opcodes;
 import org.eclipse.sisu.space.asm.Type;
 
+/**
+ * Utility methods for generating dynamic {@link Provider}-based proxies.
+ */
 final class DynamicGlue
 {
     // ----------------------------------------------------------------------
@@ -34,15 +37,13 @@ final class DynamicGlue
 
     private static final String PROVIDER_DESC = Type.getDescriptor( Provider.class );
 
+    private static final String PROVIDER_HANDLE = "__sisu__";
+
     private static final String OBJECT_NAME = Type.getInternalName( Object.class );
 
     private static final String OBJECT_DESC = Type.getDescriptor( Object.class );
 
     private static final String ILLEGAL_STATE_NAME = Type.getInternalName( IllegalStateException.class );
-
-    private static final String PROXY_SUFFIX = "$__sisu__$dynamic";
-
-    private static final String PROXY_HANDLE = "__sisu__";
 
     private static final Map<String, Method> OBJECT_METHOD_MAP;
 
@@ -52,12 +53,13 @@ final class DynamicGlue
 
     static
     {
+        // pre-seed common methods that should be wrapped
         OBJECT_METHOD_MAP = new HashMap<String, Method>();
         for ( final Method m : Object.class.getMethods() )
         {
             if ( isWrappable( m ) )
             {
-                OBJECT_METHOD_MAP.put( methodKey( m ), m );
+                OBJECT_METHOD_MAP.put( signatureKey( m ), m );
             }
         }
     }
@@ -75,60 +77,36 @@ final class DynamicGlue
     // Utility methods
     // ----------------------------------------------------------------------
 
-    public static boolean isProxyRequest( final String clazzName )
+    /**
+     * Generates a dynamic {@link Provider}-based proxy that reflects the given facade.
+     * 
+     * @param proxyName The proxy name
+     * @param facade The expected facade
+     * @return Generated proxy bytes
+     */
+    public static byte[] generateProxyClass( final String proxyName, final Class<?> facade )
     {
-        return clazzName.endsWith( PROXY_SUFFIX );
-    }
-
-    public static String getProxyName( final String clazzName )
-    {
-        final StringBuilder tmpName = new StringBuilder();
-
-        // support proxy of java.* interfaces by changing the package space
-        if ( clazzName.startsWith( "java." ) || clazzName.startsWith( "java/" ) )
-        {
-            tmpName.append( '$' );
-        }
-
-        return tmpName.append( clazzName ).append( PROXY_SUFFIX ).toString();
-    }
-
-    public static String getClazzName( final String proxyName )
-    {
-        final int head = '$' == proxyName.charAt( 0 ) ? 1 : 0;
-        final int tail = proxyName.lastIndexOf( PROXY_SUFFIX );
-
-        return tail > 0 ? proxyName.substring( head, tail ) : proxyName;
-    }
-
-    public static byte[] generateProxy( final Class<?> clazz )
-    {
-        final String clazzName = Type.getInternalName( clazz );
-        final String proxyName = getProxyName( clazzName );
+        final String facadeName = Type.getInternalName( facade );
 
         final String superName;
-        final String[] interfaceNames;
+        final String[] apiNames;
 
-        if ( clazz.isInterface() )
+        if ( facade.isInterface() )
         {
             superName = OBJECT_NAME;
-            interfaceNames = new String[] { clazzName };
+            apiNames = new String[] { facadeName };
         }
         else
         {
-            superName = clazzName;
-            interfaceNames = getInternalNames( clazz.getInterfaces() );
+            superName = facadeName;
+            apiNames = getInternalNames( facade.getInterfaces() );
         }
 
         final ClassWriter cw = new ClassWriter( ClassWriter.COMPUTE_MAXS );
-
-        cw.visit( Opcodes.V1_6, Modifier.PUBLIC | Modifier.FINAL, proxyName, null, superName, interfaceNames );
-
-        // single Provider<T> constructor
+        cw.visit( Opcodes.V1_6, Modifier.PUBLIC | Modifier.FINAL, proxyName, null, superName, apiNames );
         init( cw, superName, proxyName );
 
-        // for the moment only proxy the public API...
-        for ( final Method m : getWrappableMethods( clazz ) )
+        for ( final Method m : getWrappableMethods( facade ) )
         {
             wrap( cw, proxyName, m );
         }
@@ -142,92 +120,91 @@ final class DynamicGlue
     // Implementation methods
     // ----------------------------------------------------------------------
 
+    /**
+     * Generates a constructor that accepts a {@link Provider} and stores it in an internal field.
+     */
     private static void init( final ClassWriter cw, final String superName, final String proxyName )
     {
-        cw.visitField( Modifier.PRIVATE | Modifier.FINAL, PROXY_HANDLE, PROVIDER_DESC, null, null ).visitEnd();
+        cw.visitField( Modifier.PRIVATE | Modifier.FINAL, PROVIDER_HANDLE, PROVIDER_DESC, null, null ).visitEnd();
 
         final MethodVisitor v = cw.visitMethod( Modifier.PUBLIC, "<init>", '(' + PROVIDER_DESC + ")V", null, null );
 
         v.visitCode();
-
-        // store Provider<T> handle
         v.visitVarInsn( Opcodes.ALOAD, 0 );
         v.visitInsn( Opcodes.DUP );
         v.visitVarInsn( Opcodes.ALOAD, 1 );
-        v.visitFieldInsn( Opcodes.PUTFIELD, proxyName, PROXY_HANDLE, PROVIDER_DESC );
+        v.visitFieldInsn( Opcodes.PUTFIELD, proxyName, PROVIDER_HANDLE, PROVIDER_DESC );
         v.visitMethodInsn( Opcodes.INVOKESPECIAL, superName, "<init>", "()V", false );
         v.visitInsn( Opcodes.RETURN );
-
         v.visitMaxs( 0, 0 );
         v.visitEnd();
     }
 
+    /**
+     * Generates a wrapper that dereferences the stored {@link Provider} and invokes the given method.
+     */
     private static void wrap( final ClassWriter cw, final String proxyName, final Method method )
     {
         final String methodName = method.getName();
-
         final String descriptor = Type.getMethodDescriptor( method );
         final String[] exceptions = getInternalNames( method.getExceptionTypes() );
+        final Label throwIllegalState = new Label();
 
         // simple delegating proxy, so don't need synchronization on wrapper method
         final int modifiers = method.getModifiers() & ~( Modifier.ABSTRACT | Modifier.NATIVE | Modifier.SYNCHRONIZED );
-
         final MethodVisitor v = cw.visitMethod( modifiers, methodName, descriptor, null, exceptions );
 
         v.visitCode();
 
-        // store handle as "this"
+        // dereference and check target
         v.visitVarInsn( Opcodes.ALOAD, 0 );
-        v.visitFieldInsn( Opcodes.GETFIELD, proxyName, PROXY_HANDLE, PROVIDER_DESC );
-        v.visitInsn( Opcodes.DUP );
-        v.visitVarInsn( Opcodes.ASTORE, 0 );
-
-        // dereference handle to get actual service instance
+        v.visitFieldInsn( Opcodes.GETFIELD, proxyName, PROVIDER_HANDLE, PROVIDER_DESC );
         v.visitMethodInsn( Opcodes.INVOKEINTERFACE, PROVIDER_NAME, "get", "()" + OBJECT_DESC, true );
         v.visitInsn( Opcodes.DUP );
+        v.visitJumpInsn( Opcodes.IFNULL, throwIllegalState );
 
-        final Label invokeDelegate = new Label();
+        final Class<?> declaringClazz = method.getDeclaringClass();
+        final String declaringName = Type.getInternalName( declaringClazz );
 
-        // null => ServiceUnavailableException
-        v.visitJumpInsn( Opcodes.IFNONNULL, invokeDelegate );
+        if ( !declaringClazz.isInterface() )
+        {
+            // must check target before setting up INVOKEVIRTUAL
+            v.visitTypeInsn( Opcodes.CHECKCAST, declaringName );
+        }
+
+        int slot = 1;
+        for ( final Type t : Type.getArgumentTypes( method ) )
+        {
+            v.visitVarInsn( t.getOpcode( Opcodes.ILOAD ), slot );
+            slot = slot + t.getSize();
+        }
+
+        // invoke original method on target
+        if ( declaringClazz.isInterface() )
+        {
+            v.visitMethodInsn( Opcodes.INVOKEINTERFACE, declaringName, methodName, descriptor, true );
+        }
+        else
+        {
+            v.visitMethodInsn( Opcodes.INVOKEVIRTUAL, declaringName, methodName, descriptor, false );
+        }
+
+        v.visitInsn( Type.getReturnType( method ).getOpcode( Opcodes.IRETURN ) );
+
+        // error state: target was null
+        v.visitLabel( throwIllegalState );
         v.visitTypeInsn( Opcodes.NEW, ILLEGAL_STATE_NAME );
         v.visitInsn( Opcodes.DUP );
         v.visitMethodInsn( Opcodes.INVOKESPECIAL, ILLEGAL_STATE_NAME, "<init>", "()V", false );
         v.visitInsn( Opcodes.ATHROW );
 
-        v.visitLabel( invokeDelegate );
-
-        final Class<?> clazz = method.getDeclaringClass();
-        final String subjectName = Type.getInternalName( clazz );
-
-        if ( !clazz.isInterface() )
-        {
-            v.visitTypeInsn( Opcodes.CHECKCAST, subjectName );
-        }
-
-        int i = 1;
-        for ( final Type t : Type.getArgumentTypes( method ) )
-        {
-            v.visitVarInsn( t.getOpcode( Opcodes.ILOAD ), i );
-            i = i + t.getSize();
-        }
-
-        // delegate to real method
-        if ( clazz.isInterface() )
-        {
-            v.visitMethodInsn( Opcodes.INVOKEINTERFACE, subjectName, methodName, descriptor, true );
-        }
-        else
-        {
-            v.visitMethodInsn( Opcodes.INVOKEVIRTUAL, subjectName, methodName, descriptor, false );
-        }
-
-        v.visitInsn( Type.getReturnType( method ).getOpcode( Opcodes.IRETURN ) );
-
         v.visitMaxs( 0, 0 );
         v.visitEnd();
     }
 
+    /**
+     * Returns the internal names of the given classes.
+     */
     private static String[] getInternalNames( final Class<?>... clazzes )
     {
         final String[] names = new String[clazzes.length];
@@ -238,6 +215,9 @@ final class DynamicGlue
         return names;
     }
 
+    /**
+     * Returns the methods that should be wrapped for delegation in the given class.
+     */
     private static Collection<Method> getWrappableMethods( final Class<?> clazz )
     {
         final Map<String, Method> methodMap = new HashMap<String, Method>( OBJECT_METHOD_MAP );
@@ -245,18 +225,24 @@ final class DynamicGlue
         {
             if ( isWrappable( m ) )
             {
-                methodMap.put( methodKey( m ), m );
+                methodMap.put( signatureKey( m ), m );
             }
         }
         return methodMap.values();
     }
 
+    /**
+     * Returns {@code true} if the given method should be wrapped; otherwise {@code false}.
+     */
     private static boolean isWrappable( final Method method )
     {
         return ( method.getModifiers() & ( Modifier.STATIC | Modifier.FINAL ) ) == 0;
     }
 
-    private static String methodKey( final Method method )
+    /**
+     * Returns a signature-based key that identifies the given method in the current class.
+     */
+    private static String signatureKey( final Method method )
     {
         final StringBuilder buf = new StringBuilder( method.getName() );
         for ( final Class<?> t : method.getParameterTypes() )
