@@ -31,13 +31,17 @@ import javax.inject.Named;
 import junit.framework.TestCase;
 
 import org.eclipse.sisu.BeanEntry;
+import org.eclipse.sisu.Dynamic;
 import org.eclipse.sisu.Nullable;
 import org.eclipse.sisu.inject.BeanLocator;
+import org.eclipse.sisu.inject.MutableBeanLocator;
+import org.eclipse.sisu.inject.Sources;
 import org.eclipse.sisu.inject.TypeArguments;
 import org.eclipse.sisu.space.ClassSpace;
 import org.eclipse.sisu.space.URLClassSpace;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Binder;
 import com.google.inject.BindingAnnotation;
 import com.google.inject.CreationException;
 import com.google.inject.Guice;
@@ -86,8 +90,9 @@ public class BeanImportTest
     {
     }
 
-    interface Y
+    public interface Y
     {
+        double fn( double x, double y );
     }
 
     interface Z<T>
@@ -120,6 +125,10 @@ public class BeanImportTest
     static abstract class AbstractY
         implements Y
     {
+        public double fn( double x, double y )
+        {
+            return x + y;
+        }
     }
 
     static class YImpl
@@ -350,6 +359,14 @@ public class BeanImportTest
         Z<Random> random;
     }
 
+    static class DynamicInstance
+        implements X
+    {
+        @Inject
+        @Dynamic
+        Y proxy;
+    }
+
     static Map<String, Object> PROPS = new HashMap<String, Object>();
 
     class TestModule
@@ -378,6 +395,8 @@ public class BeanImportTest
             bind( X.class ).annotatedWith( Names.named( "PC" ) ).to( PlaceholderConfig.class );
 
             bind( X.class ).annotatedWith( Names.named( "GI" ) ).to( GenericInstance.class );
+
+            bind( X.class ).annotatedWith( Names.named( "DI" ) ).to( DynamicInstance.class );
 
             bind( Y.class ).annotatedWith( Names.named( "fixed" ) ).toInstance( new YImpl() );
             bind( Y.class ).annotatedWith( Names.named( "unscoped" ) ).to( YImpl.class );
@@ -752,14 +771,19 @@ public class BeanImportTest
         final GenericInstance genericInstance =
             (GenericInstance) injector.getInstance( Key.get( X.class, Names.named( "GI" ) ) );
 
+        // ZImpl<Integer> is best match for Z<? extends Number>
         assertEquals( TypeLiteral.get( Integer.class ),
                       TypeArguments.get( TypeLiteral.get( genericInstance.number.getClass() ).getSupertype( Z.class ),
                                          0 ) );
 
+        // ZImpl<String> is best match for Z<String>
         assertEquals( TypeLiteral.get( String.class ),
                       TypeArguments.get( TypeLiteral.get( genericInstance.chars.getClass() ).getSupertype( Z.class ), 0 ) );
 
-        assertEquals( ZImpl.class, genericInstance.random.getClass() );
+        // raw ZImpl is best match for Z<Random>
+        assertEquals( TypeLiteral.get( Object.class ),
+                      TypeArguments.get( TypeLiteral.get( genericInstance.random.getClass() ).getSupertype( Z.class ),
+                                         0 ) );
     }
 
     public void testChildWiring()
@@ -811,5 +835,50 @@ public class BeanImportTest
         assertEquals( "world!", parameters.get( "Hello" ) );
 
         assertFalse( itr.hasNext() );
+    }
+
+    @SuppressWarnings( "boxing" )
+    public void testDynamicProxy()
+    {
+        final Injector injector = Guice.createInjector( new WireModule( new TestModule() ) );
+
+        final DynamicInstance dynamicInstance =
+            (DynamicInstance) injector.getInstance( Key.get( X.class, Names.named( "DI" ) ) );
+
+        assertEquals( 42.0, dynamicInstance.proxy.fn( 12.3, 29.7 ) );
+
+        // add new implementation that multiplies the arguments instead of adding them
+        injector.createChildInjector( new ChildWireModule( injector, new AbstractModule()
+        {
+            @Override
+            protected void configure()
+            {
+                Binder overrides = binder().withSource( Sources.prioritize( Integer.MAX_VALUE ) );
+                overrides.bind( Y.class ).annotatedWith( Names.named( "multiply" ) ).toInstance( new YImpl()
+                {
+                    @Override
+                    public double fn( double x, double y )
+                    {
+                        return x * y;
+                    }
+                } );
+            }
+        } ) );
+
+        // should now delegate to the overridden implementation
+        assertEquals( 365.31, dynamicInstance.proxy.fn( 12.3, 29.7 ) );
+
+        // remove all implementations from the shared locator
+        injector.getInstance( MutableBeanLocator.class ).clear();
+
+        try
+        {
+            dynamicInstance.proxy.fn( 12.3, 29.7 );
+            fail( "Expected IllegalStateException" );
+        }
+        catch ( final IllegalStateException e )
+        {
+            // should now get an exception on invoke
+        }
     }
 }
