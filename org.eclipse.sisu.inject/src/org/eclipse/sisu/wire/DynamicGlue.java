@@ -156,59 +156,66 @@ final class DynamicGlue
 
         v.visitCode();
 
-        // dereference and check target
-        v.visitVarInsn( Opcodes.ALOAD, 0 );
-        v.visitFieldInsn( Opcodes.GETFIELD, proxyName, PROVIDER_HANDLE, PROVIDER_DESC );
-        v.visitMethodInsn( Opcodes.INVOKEINTERFACE, PROVIDER_NAME, "get", "()" + OBJECT_DESC, true );
-
-        v.visitInsn( Opcodes.DUP );
-        v.visitJumpInsn( Opcodes.IFNULL, handleNullTarget );
-
         final Class<?> declaringClazz = method.getDeclaringClass();
         final String declaringName = Type.getInternalName( declaringClazz );
-        final boolean isInterface = declaringClazz.isInterface();
 
-        if ( !isInterface && Object.class != declaringClazz )
+        final boolean isObjectMethod = OBJECT_METHOD_MAP.containsKey( signatureKey( method ) );
+
+        // delegate all non-Object methods as well as 'toString'
+        if ( !isObjectMethod || "toString".equals( methodName ) )
         {
-            // must check target before setting up INVOKEVIRTUAL
-            v.visitTypeInsn( Opcodes.CHECKCAST, declaringName );
-        }
-
-        int slot = 1;
-        for ( final Type t : Type.getArgumentTypes( method ) )
-        {
-            v.visitVarInsn( t.getOpcode( Opcodes.ILOAD ), slot );
-            slot = slot + t.getSize();
-        }
-
-        // invoke original method on target
-        final int invoke = isInterface ? Opcodes.INVOKEINTERFACE : Opcodes.INVOKEVIRTUAL;
-        v.visitMethodInsn( invoke, declaringName, methodName, descriptor, isInterface );
-        v.visitInsn( Type.getReturnType( method ).getOpcode( Opcodes.IRETURN ) );
-
-        v.visitLabel( handleNullTarget );
-        v.visitInsn( Opcodes.POP );
-
-        if ( Object.class != declaringClazz )
-        {
-            // report null target as bad state
-            v.visitTypeInsn( Opcodes.NEW, ILLEGAL_STATE_NAME );
-            v.visitInsn( Opcodes.DUP );
-            v.visitMethodInsn( Opcodes.INVOKESPECIAL, ILLEGAL_STATE_NAME, "<init>", "()V", false );
-            v.visitInsn( Opcodes.ATHROW );
-        }
-        else
-        {
+            // dereference and check target
             v.visitVarInsn( Opcodes.ALOAD, 0 );
+            v.visitFieldInsn( Opcodes.GETFIELD, proxyName, PROVIDER_HANDLE, PROVIDER_DESC );
+            v.visitMethodInsn( Opcodes.INVOKEINTERFACE, PROVIDER_NAME, "get", "()" + OBJECT_DESC, true );
 
-            slot = 1;
+            v.visitInsn( Opcodes.DUP );
+            v.visitJumpInsn( Opcodes.IFNULL, handleNullTarget );
+
+            final boolean isInterface = declaringClazz.isInterface();
+            if ( !isInterface && Object.class != declaringClazz )
+            {
+                // must check target before setting up INVOKEVIRTUAL
+                v.visitTypeInsn( Opcodes.CHECKCAST, declaringName );
+            }
+
+            int slot = 1;
             for ( final Type t : Type.getArgumentTypes( method ) )
             {
                 v.visitVarInsn( t.getOpcode( Opcodes.ILOAD ), slot );
                 slot = slot + t.getSize();
             }
 
-            // fall-back to superclass implementation of Object methods
+            // invoke original method on target
+            final int invoke = isInterface ? Opcodes.INVOKEINTERFACE : Opcodes.INVOKEVIRTUAL;
+            v.visitMethodInsn( invoke, declaringName, methodName, descriptor, isInterface );
+            v.visitInsn( Type.getReturnType( method ).getOpcode( Opcodes.IRETURN ) );
+
+            v.visitLabel( handleNullTarget );
+            v.visitInsn( Opcodes.POP );
+
+            if ( !isObjectMethod )
+            {
+                // no fall-back available, report illegal state
+                v.visitTypeInsn( Opcodes.NEW, ILLEGAL_STATE_NAME );
+                v.visitInsn( Opcodes.DUP );
+                v.visitMethodInsn( Opcodes.INVOKESPECIAL, ILLEGAL_STATE_NAME, "<init>", "()V", false );
+                v.visitInsn( Opcodes.ATHROW );
+            }
+        }
+
+        if ( isObjectMethod )
+        {
+            v.visitVarInsn( Opcodes.ALOAD, 0 );
+
+            int slot = 1;
+            for ( final Type t : Type.getArgumentTypes( method ) )
+            {
+                v.visitVarInsn( t.getOpcode( Opcodes.ILOAD ), slot );
+                slot = slot + t.getSize();
+            }
+
+            // fall-back to superclass implementation for all Object methods
             v.visitMethodInsn( Opcodes.INVOKESPECIAL, declaringName, methodName, descriptor, false );
             v.visitInsn( Type.getReturnType( method ).getOpcode( Opcodes.IRETURN ) );
         }

@@ -901,13 +901,20 @@ public class BeanImportTest
         // concrete proxy should now delegate to the dividing implementation
         assertEquals( 3.5, dynamicInstance.concreteProxy.fn( 7, 2 ) );
 
-        // proxied Object methods delegate to the active instance
+        // Object.toString delegates to the active instance
         Y multiply = child1.getInstance( Key.get( Y.class, Names.named( "multiply" ) ) );
         Y divide = child2.getInstance( Key.get( YImpl.class, Names.named( "divide" ) ) );
         assertTrue( dynamicInstance.interfaceProxy.toString().equals( multiply.toString() ) );
         assertTrue( dynamicInstance.concreteProxy.toString().equals( divide.toString() ) );
-        assertTrue( dynamicInstance.interfaceProxy.equals( multiply ) );
-        assertTrue( dynamicInstance.concreteProxy.equals( divide ) );
+
+        // but Object.hashCode and Object.equals default to superclass instead
+        assertEquals( System.identityHashCode( dynamicInstance.interfaceProxy ),
+                      dynamicInstance.interfaceProxy.hashCode() );
+        assertEquals( System.identityHashCode( dynamicInstance.concreteProxy ),
+                      dynamicInstance.concreteProxy.hashCode() );
+
+        assertTrue( dynamicInstance.interfaceProxy.equals( dynamicInstance.interfaceProxy ) );
+        assertTrue( dynamicInstance.concreteProxy.equals( dynamicInstance.concreteProxy ) );
 
         // remove all implementations from the shared locator
         injector.getInstance( MutableBeanLocator.class ).clear();
@@ -932,9 +939,15 @@ public class BeanImportTest
             // should now get an exception on invoke
         }
 
-        // but proxied Object methods should still not cause exceptions
+        // all Object methods default to superclass implementation when delegate is missing
         assertTrue( dynamicInstance.interfaceProxy.toString().startsWith( Y.class.getName() + "$__sisu__$" ) );
         assertTrue( dynamicInstance.concreteProxy.toString().startsWith( YImpl.class.getName() + "$__sisu__$" ) );
+
+        assertEquals( System.identityHashCode( dynamicInstance.interfaceProxy ),
+                      dynamicInstance.interfaceProxy.hashCode() );
+        assertEquals( System.identityHashCode( dynamicInstance.concreteProxy ),
+                      dynamicInstance.concreteProxy.hashCode() );
+
         assertTrue( dynamicInstance.interfaceProxy.equals( dynamicInstance.interfaceProxy ) );
         assertTrue( dynamicInstance.concreteProxy.equals( dynamicInstance.concreteProxy ) );
     }
