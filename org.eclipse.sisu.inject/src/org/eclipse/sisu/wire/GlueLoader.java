@@ -25,7 +25,7 @@ import com.google.inject.TypeLiteral;
 /**
  * Weak cache of {@link ClassLoader}s that can generate proxy classes on-demand.
  */
-final class Glue
+final class GlueLoader
     extends ClassLoader
 {
     // ----------------------------------------------------------------------
@@ -44,18 +44,18 @@ final class Glue
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private static final ConcurrentMap<Integer, Glue> cachedGlue = Weak.concurrentValues();
+    private static final ConcurrentMap<Integer, GlueLoader> cachedGlue = Weak.concurrentValues();
 
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
-    Glue()
+    GlueLoader()
     {
         // use system loader as parent
     }
 
-    Glue( final ClassLoader parent )
+    GlueLoader( final ClassLoader parent )
     {
         super( parent );
     }
@@ -72,7 +72,7 @@ final class Glue
      * @return Generated proxy instance
      */
     @SuppressWarnings( "unchecked" )
-    public static <T> T dynamicInstance( final TypeLiteral<T> type, final Provider<T> provider )
+    public static <T> T dynamicProxy( final TypeLiteral<T> type, final Provider<T> provider )
     {
         try
         {
@@ -157,19 +157,19 @@ final class Glue
     }
 
     /**
-     * Returns the {@link Glue} associated with the given {@link ClassLoader}.
+     * Returns the {@link GlueLoader} associated with the given {@link ClassLoader}.
      */
     @SuppressWarnings( "boxing" )
-    private static Glue glue( final ClassLoader parent )
+    private static GlueLoader glue( final ClassLoader parent )
     {
         int id = System.identityHashCode( parent );
 
-        Glue result = cachedGlue.get( id );
+        GlueLoader result = cachedGlue.get( id );
         if ( null == result || result.getParent() != parent )
         {
             synchronized ( null != parent ? parent : SYSTEM_LOADER_LOCK )
             {
-                final Glue glue = createGlue( parent );
+                final GlueLoader glue = createGlue( parent );
                 do
                 {
                     result = cachedGlue.putIfAbsent( id++, glue );
@@ -185,15 +185,15 @@ final class Glue
     }
 
     /**
-     * Returns new {@link Glue} that delegates to the given {@link ClassLoader}.
+     * Returns new {@link GlueLoader} that delegates to the given {@link ClassLoader}.
      */
-    private static Glue createGlue( final ClassLoader parent )
+    private static GlueLoader createGlue( final ClassLoader parent )
     {
-        return AccessController.doPrivileged( new PrivilegedAction<Glue>()
+        return AccessController.doPrivileged( new PrivilegedAction<GlueLoader>()
         {
-            public Glue run()
+            public GlueLoader run()
             {
-                return null != parent ? new Glue( parent ) : new Glue();
+                return null != parent ? new GlueLoader( parent ) : new GlueLoader();
             }
         } );
     }
