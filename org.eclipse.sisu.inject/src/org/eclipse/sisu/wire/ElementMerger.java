@@ -57,7 +57,7 @@ final class ElementMerger
         final Key<T> key = binding.getKey();
         if ( !localKeys.contains( key ) )
         {
-            if ( binding.acceptTargetVisitor( verifier ).booleanValue() )
+            if ( Boolean.TRUE.equals( binding.acceptTargetVisitor( verifier ) ) )
             {
                 localKeys.add( key );
                 binding.applyTo( binder );

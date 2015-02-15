@@ -174,7 +174,7 @@ final class ElementAnalyzer
             {
                 mergeParameters( binding );
             }
-            else if ( binding.acceptTargetVisitor( analyzer ).booleanValue() )
+            else if ( Boolean.TRUE.equals( binding.acceptTargetVisitor( analyzer ) ) )
             {
                 localKeys.add( key );
                 binding.applyTo( binder );

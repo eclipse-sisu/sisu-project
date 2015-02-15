@@ -176,6 +176,6 @@ final class BeanProviders
     public static <V> V firstOf( final Iterable<? extends Entry<?, V>> entries )
     {
         final Iterator<? extends Entry<?, V>> itr = entries.iterator();
-        return itr.hasNext() ? itr.next().getValue() : null; // TODO: dynamic proxy??
+        return itr.hasNext() ? itr.next().getValue() : null;
     }
 }
