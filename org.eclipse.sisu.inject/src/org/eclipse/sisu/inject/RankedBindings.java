@@ -35,8 +35,6 @@ final class RankedBindings<T>
 
     final Collection<BeanCache<?, T>> cachedBeans = Weak.elements();
 
-    volatile int topRank = Integer.MAX_VALUE;
-
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
@@ -105,10 +103,6 @@ final class RankedBindings<T>
          * No need to lock; ranked sequence is thread-safe.
          */
         pendingPublishers.insert( publisher, rank );
-        if ( rank > topRank )
-        {
-            topRank = rank;
-        }
     }
 
     void remove( final BindingPublisher publisher )
@@ -116,7 +110,7 @@ final class RankedBindings<T>
         /*
          * Lock just to prevent subscription race condition.
          */
-        synchronized ( pendingPublishers )
+        synchronized ( publisher )
         {
             if ( !pendingPublishers.removeThis( publisher ) )
             {
@@ -147,17 +141,21 @@ final class RankedBindings<T>
 
         public boolean hasNext()
         {
-            int rank = topRank;
-            if ( rank > Integer.MIN_VALUE && rank > itr.peekNextRank() )
+            // apply any publishers that could add bindings before the current position
+            BindingPublisher publisher = pendingPublishers.peek();
+            while ( null != publisher && !itr.hasNext( publisher.maxBindingRank() ) )
             {
-                synchronized ( pendingPublishers )
+                synchronized ( publisher )
                 {
-                    while ( ( rank = pendingPublishers.topRank() ) > Integer.MIN_VALUE && rank > itr.peekNextRank() )
+                    // check in case subscribed by another thread
+                    if ( publisher == pendingPublishers.peek() )
                     {
-                        pendingPublishers.poll().subscribe( RankedBindings.this );
+                        // only update list _after_ subscription
+                        publisher.subscribe( RankedBindings.this );
+                        pendingPublishers.removeThis( publisher );
                     }
-                    topRank = rank;
                 }
+                publisher = pendingPublishers.peek();
             }
             return itr.hasNext();
         }

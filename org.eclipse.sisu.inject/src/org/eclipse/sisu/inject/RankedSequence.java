@@ -70,17 +70,10 @@ final class RankedSequence<T>
     }
 
     @SuppressWarnings( "unchecked" )
-    public T poll()
+    public T peek()
     {
         final Content content = get();
-        set( content.remove( 0 ) );
-        return (T) content.objs[0];
-    }
-
-    public int topRank()
-    {
-        final Content content = get();
-        return null != content ? uid2rank( content.uids[0] ) : Integer.MIN_VALUE;
+        return null != content ? (T) content.objs[0] : null;
     }
 
     public boolean contains( final Object element )
@@ -391,13 +384,13 @@ final class RankedSequence<T>
         }
 
         /**
-         * @return Rank assigned to the next element; returns {@link Integer#MIN_VALUE} if there is no next element.
+         * @return {@code true} if the next element is ranked at or above the given rank; otherwise {@code false}
          */
-        public int peekNextRank()
+        public boolean hasNext( final int rank )
         {
             if ( null != nextObj )
             {
-                return uid2rank( nextUID );
+                return uid2rank( nextUID ) >= rank;
             }
             final Content newContent = get();
             if ( content != newContent )
@@ -407,9 +400,9 @@ final class RankedSequence<T>
             }
             if ( index >= 0 && index < content.uids.length )
             {
-                return uid2rank( content.uids[index] );
+                return uid2rank( content.uids[index] ) >= rank;
             }
-            return Integer.MIN_VALUE;
+            return false;
         }
 
         public T next()
