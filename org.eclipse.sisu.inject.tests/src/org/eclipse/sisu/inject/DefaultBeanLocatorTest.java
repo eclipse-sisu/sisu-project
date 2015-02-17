@@ -147,11 +147,11 @@ public class DefaultBeanLocatorTest
         final RankingFunction function1 = new DefaultRankingFunction( 1 );
         final RankingFunction function2 = new DefaultRankingFunction( 2 );
 
-        assertTrue( new InjectorPublisher( parent, function1 ).equals( new InjectorPublisher( parent, function2 ) ) );
-        assertTrue( new InjectorPublisher( parent, function2 ).equals( new InjectorPublisher( parent, function1 ) ) );
+        assertTrue( new InjectorBindings( parent, function1 ).equals( new InjectorBindings( parent, function2 ) ) );
+        assertTrue( new InjectorBindings( parent, function2 ).equals( new InjectorBindings( parent, function1 ) ) );
 
-        assertFalse( new InjectorPublisher( child1, function1 ).equals( new InjectorPublisher( child2, function1 ) ) );
-        assertFalse( new InjectorPublisher( child2, function2 ).equals( new InjectorPublisher( child1, function2 ) ) );
+        assertFalse( new InjectorBindings( child1, function1 ).equals( new InjectorBindings( child2, function1 ) ) );
+        assertFalse( new InjectorBindings( child2, function2 ).equals( new InjectorBindings( child1, function2 ) ) );
 
         assertFalse( new BindingPublisher()
         {
@@ -167,9 +167,9 @@ public class DefaultBeanLocatorTest
             {
                 return 0;
             }
-        }.equals( new InjectorPublisher( child1, function1 ) ) );
+        }.equals( new InjectorBindings( child1, function1 ) ) );
 
-        assertFalse( new InjectorPublisher( child2, function2 ).equals( new BindingPublisher()
+        assertFalse( new InjectorBindings( child2, function2 ).equals( new BindingPublisher()
         {
             public <T> void subscribe( final BindingSubscriber<T> subscriber )
             {
@@ -185,11 +185,11 @@ public class DefaultBeanLocatorTest
             }
         } ) );
 
-        assertTrue( new InjectorPublisher( parent, function1 ).hashCode() == new InjectorPublisher( parent, function2 ).hashCode() );
-        assertTrue( new InjectorPublisher( parent, function2 ).hashCode() == new InjectorPublisher( parent, function1 ).hashCode() );
+        assertTrue( new InjectorBindings( parent, function1 ).hashCode() == new InjectorBindings( parent, function2 ).hashCode() );
+        assertTrue( new InjectorBindings( parent, function2 ).hashCode() == new InjectorBindings( parent, function1 ).hashCode() );
 
-        assertFalse( new InjectorPublisher( child1, function1 ).hashCode() == new InjectorPublisher( child2, function1 ).hashCode() );
-        assertFalse( new InjectorPublisher( child2, function2 ).hashCode() == new InjectorPublisher( child1, function2 ).hashCode() );
+        assertFalse( new InjectorBindings( child1, function1 ).hashCode() == new InjectorBindings( child2, function1 ).hashCode() );
+        assertFalse( new InjectorBindings( child2, function2 ).hashCode() == new InjectorBindings( child1, function2 ).hashCode() );
     }
 
     @SuppressWarnings( "deprecation" )

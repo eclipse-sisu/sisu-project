@@ -49,10 +49,10 @@ final class ImplicitBindings
         final Key implicitKey = TypeArguments.implicitKey( type.getRawType() );
         for ( final BindingPublisher p : publishers )
         {
-            if ( p instanceof InjectorPublisher )
+            if ( p instanceof InjectorBindings )
             {
                 // first round: check for any re-written implicit bindings
-                final Injector i = ( (InjectorPublisher) p ).getInjector();
+                final Injector i = ( (InjectorBindings) p ).getInjector();
                 final Binding binding = i.getBindings().get( implicitKey );
                 if ( null != binding )
                 {
@@ -65,10 +65,10 @@ final class ImplicitBindings
         final Key justInTimeKey = Key.get( type );
         for ( final BindingPublisher p : publishers )
         {
-            if ( p instanceof InjectorPublisher )
+            if ( p instanceof InjectorBindings )
             {
                 // second round: fall back to just-in-time binding lookup
-                final Injector i = ( (InjectorPublisher) p ).getInjector();
+                final Injector i = ( (InjectorBindings) p ).getInjector();
                 try
                 {
                     final Binding binding = i.getBinding( justInTimeKey );

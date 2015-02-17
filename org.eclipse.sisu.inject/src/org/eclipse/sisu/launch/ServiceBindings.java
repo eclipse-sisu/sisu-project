@@ -19,7 +19,7 @@ import org.osgi.framework.BundleContext;
 
 import com.google.inject.TypeLiteral;
 
-public final class ServicePublisher
+public final class ServiceBindings
     implements BindingPublisher
 {
     private final ConcurrentMap<TypeLiteral<?>, BindingTracker<?>> trackers =
@@ -27,7 +27,7 @@ public final class ServicePublisher
 
     private final BundleContext context;
 
-    public ServicePublisher( final BundleContext context )
+    public ServiceBindings( final BundleContext context )
     {
         this.context = context;
     }

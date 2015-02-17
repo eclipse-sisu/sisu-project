@@ -148,12 +148,12 @@ public final class DefaultBeanLocator
 
     public void add( final Injector injector, final int rank )
     {
-        add( new InjectorPublisher( injector, new DefaultRankingFunction( rank ) ) );
+        add( new InjectorBindings( injector, new DefaultRankingFunction( rank ) ) );
     }
 
     public void remove( final Injector injector )
     {
-        remove( new InjectorPublisher( injector, null /* unused */) );
+        remove( new InjectorBindings( injector, null /* unused */) );
     }
 
     // ----------------------------------------------------------------------
@@ -200,6 +200,6 @@ public final class DefaultBeanLocator
     @Inject
     static void staticAutoPublish( final MutableBeanLocator locator, final Injector injector )
     {
-        locator.add( new InjectorPublisher( injector ) );
+        locator.add( new InjectorBindings( injector ) );
     }
 }

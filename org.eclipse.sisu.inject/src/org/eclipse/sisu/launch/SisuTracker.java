@@ -20,7 +20,7 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import org.eclipse.sisu.inject.BindingPublisher;
-import org.eclipse.sisu.inject.InjectorPublisher;
+import org.eclipse.sisu.inject.InjectorBindings;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.inject.Weak;
 import org.eclipse.sisu.space.BundleClassSpace;
@@ -216,10 +216,10 @@ public class SisuTracker
         {
             bundlePublishers.put( bundleId, publisher );
         }
-        else if ( publisher instanceof InjectorPublisher )
+        else if ( publisher instanceof InjectorBindings )
         {
             // injector was auto-published already, so all we can do is track the injector
-            bundlePublishers.put( bundleId, ( (InjectorPublisher) publisher ).getInjector() );
+            bundlePublishers.put( bundleId, ( (InjectorBindings) publisher ).getInjector() );
         }
     }
 
@@ -233,7 +233,7 @@ public class SisuTracker
         else if ( publisher instanceof Injector )
         {
             // we're tracking an auto-published injector, use temporary wrapper to remove it
-            locator.remove( new InjectorPublisher( (Injector) publisher, null /* unused */) );
+            locator.remove( new InjectorBindings( (Injector) publisher, null /* unused */) );
         }
     }
 }

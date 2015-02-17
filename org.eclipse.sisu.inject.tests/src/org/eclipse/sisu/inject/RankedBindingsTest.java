@@ -84,9 +84,9 @@ public class RankedBindingsTest
         }
     } );
 
-    public void testExistingExporters()
+    public void testExistingPublishers()
     {
-        final RankedSequence<BindingPublisher> exporters = new RankedSequence<BindingPublisher>();
+        final RankedSequence<BindingPublisher> publishers = new RankedSequence<BindingPublisher>();
 
         RankingFunction function;
 
@@ -101,15 +101,15 @@ public class RankedBindingsTest
         }
 
         function = new DefaultRankingFunction( 0 );
-        exporters.insert( new InjectorPublisher( injector0, function ), function.maxRank() );
+        publishers.insert( new InjectorBindings( injector0, function ), function.maxRank() );
         function = new DefaultRankingFunction( 1 );
-        exporters.insert( new InjectorPublisher( injector1, function ), function.maxRank() );
+        publishers.insert( new InjectorBindings( injector1, function ), function.maxRank() );
         function = new DefaultRankingFunction( 3 );
-        exporters.insert( new InjectorPublisher( injector3, function ), function.maxRank() );
+        publishers.insert( new InjectorBindings( injector3, function ), function.maxRank() );
         function = new DefaultRankingFunction( 2 );
-        exporters.insert( new InjectorPublisher( injector2, function ), function.maxRank() );
+        publishers.insert( new InjectorBindings( injector2, function ), function.maxRank() );
 
-        final RankedBindings<Bean> bindings = new RankedBindings<Bean>( TypeLiteral.get( Bean.class ), exporters );
+        final RankedBindings<Bean> bindings = new RankedBindings<Bean>( TypeLiteral.get( Bean.class ), publishers );
 
         final Iterator<Binding<Bean>> itr = bindings.iterator();
 
@@ -134,7 +134,7 @@ public class RankedBindingsTest
         assertFalse( itr.hasNext() );
     }
 
-    public void testPendingExporters()
+    public void testPendingPublishers()
     {
         final RankedBindings<Bean> bindings = new RankedBindings<Bean>( TypeLiteral.get( Bean.class ), null );
 
@@ -166,7 +166,7 @@ public class RankedBindingsTest
 
         assertEquals( 0, bindings.bindings.size() );
         function = new DefaultRankingFunction( 2 );
-        bindings.add( new InjectorPublisher( injector2, function ), function.maxRank() );
+        bindings.add( new InjectorBindings( injector2, function ), function.maxRank() );
         assertEquals( 0, bindings.bindings.size() );
 
         assertTrue( itr.hasNext() );
@@ -181,10 +181,10 @@ public class RankedBindingsTest
 
         assertEquals( 2, bindings.bindings.size() );
         function = new DefaultRankingFunction( 0 );
-        bindings.add( new InjectorPublisher( injector0, function ), function.maxRank() );
+        bindings.add( new InjectorBindings( injector0, function ), function.maxRank() );
         assertEquals( 2, bindings.bindings.size() );
         function = new DefaultRankingFunction( 3 );
-        bindings.add( new InjectorPublisher( injector3, function ), function.maxRank() );
+        bindings.add( new InjectorBindings( injector3, function ), function.maxRank() );
         assertEquals( 2, bindings.bindings.size() );
 
         assertTrue( itr.hasNext() );
@@ -193,7 +193,7 @@ public class RankedBindingsTest
 
         assertEquals( 3, bindings.bindings.size() );
         function = new DefaultRankingFunction( 1 );
-        bindings.add( new InjectorPublisher( injector1, function ), function.maxRank() );
+        bindings.add( new InjectorBindings( injector1, function ), function.maxRank() );
         assertEquals( 3, bindings.bindings.size() );
 
         assertTrue( itr.hasNext() );
@@ -219,23 +219,23 @@ public class RankedBindingsTest
         assertFalse( itr.hasNext() );
     }
 
-    public void testExporterRemoval()
+    public void testPublisherRemoval()
     {
-        final BindingPublisher exporter0 = new InjectorPublisher( injector0, new DefaultRankingFunction( 0 ) );
-        final BindingPublisher exporter1 = new InjectorPublisher( injector1, new DefaultRankingFunction( 1 ) );
-        final BindingPublisher exporter2 = new InjectorPublisher( injector2, new DefaultRankingFunction( 2 ) );
-        final BindingPublisher exporter3 = new InjectorPublisher( injector3, new DefaultRankingFunction( 3 ) );
+        final BindingPublisher publisher0 = new InjectorBindings( injector0, new DefaultRankingFunction( 0 ) );
+        final BindingPublisher publisher1 = new InjectorBindings( injector1, new DefaultRankingFunction( 1 ) );
+        final BindingPublisher publisher2 = new InjectorBindings( injector2, new DefaultRankingFunction( 2 ) );
+        final BindingPublisher publisher3 = new InjectorBindings( injector3, new DefaultRankingFunction( 3 ) );
 
         final RankedBindings<Bean> bindings = new RankedBindings<Bean>( TypeLiteral.get( Bean.class ), null );
 
-        bindings.add( exporter0, 0 );
-        bindings.add( exporter1, 1 );
-        bindings.add( exporter2, 2 );
-        bindings.add( exporter3, 3 );
+        bindings.add( publisher0, 0 );
+        bindings.add( publisher1, 1 );
+        bindings.add( publisher2, 2 );
+        bindings.add( publisher3, 3 );
 
         Iterator<Binding<Bean>> itr = bindings.iterator();
 
-        bindings.remove( exporter1 );
+        bindings.remove( publisher1 );
         assertTrue( itr.hasNext() );
 
         Binding<Bean> explicitBinding = itr.next();
@@ -243,7 +243,7 @@ public class RankedBindingsTest
         assertEquals( BeanImpl.class, Implementations.find( explicitBinding ) );
 
         bindings.remove( injector3.findBindingsByType( TypeLiteral.get( Bean.class ) ).get( 0 ) );
-        bindings.remove( exporter2 );
+        bindings.remove( publisher2 );
         bindings.remove( injector1.findBindingsByType( TypeLiteral.get( Bean.class ) ).get( 0 ) );
 
         assertFalse( itr.hasNext() );
@@ -252,10 +252,10 @@ public class RankedBindingsTest
 
         bindings.bindings.clear();
 
-        bindings.add( exporter3, 0 );
-        bindings.add( exporter1, 0 );
-        bindings.add( exporter0, 0 );
-        bindings.add( exporter2, 0 );
+        bindings.add( publisher3, 0 );
+        bindings.add( publisher1, 0 );
+        bindings.add( publisher0, 0 );
+        bindings.add( publisher2, 0 );
 
         assertTrue( itr.hasNext() );
 

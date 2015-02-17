@@ -11,7 +11,7 @@
 package org.eclipse.sisu.launch;
 
 import org.eclipse.sisu.inject.BindingPublisher;
-import org.eclipse.sisu.inject.InjectorPublisher;
+import org.eclipse.sisu.inject.InjectorBindings;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
@@ -47,7 +47,7 @@ public class SisuBundlePlan
 
     public BindingPublisher prepare( final Bundle bundle )
     {
-        return appliesTo( bundle ) ? new InjectorPublisher( inject( compose( bundle ) ) ) : null;
+        return appliesTo( bundle ) ? new InjectorBindings( inject( compose( bundle ) ) ) : null;
     }
 
     // ----------------------------------------------------------------------
