@@ -22,9 +22,16 @@ import org.osgi.util.tracker.ServiceTracker;
 
 import com.google.inject.TypeLiteral;
 
+/**
+ * Tracker of {@link ServiceBinding}s from the OSGi service registry.
+ */
 final class BindingTracker<T>
     extends ServiceTracker<T, ServiceBinding<T>>
 {
+    // ----------------------------------------------------------------------
+    // Implementation fields
+    // ----------------------------------------------------------------------
+
     private final Set<BindingSubscriber<T>> subscribers = new HashSet<BindingSubscriber<T>>();
 
     private final int maxRank;
@@ -32,6 +39,10 @@ final class BindingTracker<T>
     private final TypeLiteral<T> type;
 
     private final Bundle definingBundle;
+
+    // ----------------------------------------------------------------------
+    // Constructors
+    // ----------------------------------------------------------------------
 
     BindingTracker( final BundleContext context, final int maxRank, final TypeLiteral<T> type )
     {
@@ -42,6 +53,10 @@ final class BindingTracker<T>
 
         definingBundle = FrameworkUtil.getBundle( type.getRawType() );
     }
+
+    // ----------------------------------------------------------------------
+    // Public methods
+    // ----------------------------------------------------------------------
 
     public void subscribe( final BindingSubscriber<T> subscriber )
     {
@@ -81,9 +96,12 @@ final class BindingTracker<T>
     public ServiceBinding<T> addingService( final ServiceReference<T> reference )
     {
         ServiceBinding<T> binding = null;
+
+        // check assignability wrt the type's defining bundle
         final String clazzName = type.getRawType().getName();
         if ( null == definingBundle || reference.isAssignableTo( definingBundle, clazzName ) )
         {
+            // wrap the OSGi service reference to look like a binding
             binding = new ServiceBinding<T>( context, maxRank, type, reference );
             synchronized ( subscribers )
             {
@@ -93,6 +111,7 @@ final class BindingTracker<T>
                 }
             }
         }
+
         return binding;
     }
 

@@ -89,7 +89,9 @@ public class SisuExtender
      */
     protected MutableBeanLocator createLocator( final BundleContext context )
     {
-        return new DefaultBeanLocator();
+        final MutableBeanLocator locator = new DefaultBeanLocator();
+        locator.add( new ServiceBindings( context ) );
+        return locator;
     }
 
     // ----------------------------------------------------------------------

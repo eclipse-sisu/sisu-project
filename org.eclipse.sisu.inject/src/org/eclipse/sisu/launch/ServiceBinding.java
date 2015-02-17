@@ -24,9 +24,16 @@ import com.google.inject.spi.BindingScopingVisitor;
 import com.google.inject.spi.BindingTargetVisitor;
 import com.google.inject.spi.ElementVisitor;
 
+/**
+ * Service {@link Binding} backed by an OSGi {@link ServiceReference}.
+ */
 final class ServiceBinding<T>
     implements Binding<T>, Provider<T>
 {
+    // ----------------------------------------------------------------------
+    // Implementation fields
+    // ----------------------------------------------------------------------
+
     private final BundleContext context;
 
     private final int maxRank;
@@ -34,6 +41,10 @@ final class ServiceBinding<T>
     private final ServiceReference<T> reference;
 
     private final Key<T> serviceKey;
+
+    // ----------------------------------------------------------------------
+    // Constructors
+    // ----------------------------------------------------------------------
 
     ServiceBinding( final BundleContext context, final int maxRank, final TypeLiteral<T> type,
                     final ServiceReference<T> reference )
@@ -53,6 +64,10 @@ final class ServiceBinding<T>
         }
     }
 
+    // ----------------------------------------------------------------------
+    // Public methods
+    // ----------------------------------------------------------------------
+
     public T get()
     {
         return context.getService( reference );
@@ -62,6 +77,7 @@ final class ServiceBinding<T>
     {
         if ( maxRank > Integer.MIN_VALUE )
         {
+            // limit the exposed rank to the given maximum
             final int serviceRank = ( (Number) reference.getProperty( Constants.SERVICE_RANKING ) ).intValue();
             if ( serviceRank < maxRank )
             {
