@@ -32,7 +32,9 @@ Import-Package: javax.inject,
  org.junit;resolution:=optional,
  org.testng.annotations;resolution:=optional
 Export-Package: org.eclipse.sisu;uses:="javax.inject",
- org.eclipse.sisu.bean;uses:="com.google.inject,com.google.inject.spi",
+ org.eclipse.sisu.bean;
+  uses:="com.google.inject,
+   com.google.inject.spi",
  org.eclipse.sisu.inject;
   uses:="javax.inject,
    com.google.inject,
@@ -47,6 +49,12 @@ Export-Package: org.eclipse.sisu;uses:="javax.inject",
    org.osgi.framework,
    org.osgi.util.tracker,
    junit.framework",
+ org.eclipse.sisu.osgi;
+  uses:="com.google.inject,
+   com.google.inject.spi,
+   org.eclipse.sisu.inject,
+   org.osgi.framework,
+   org.osgi.util.tracker",
  org.eclipse.sisu.space;
   uses:="javax.inject,
    javax.annotation.processing,
@@ -58,5 +66,8 @@ Export-Package: org.eclipse.sisu;uses:="javax.inject",
    org.eclipse.sisu,
    org.eclipse.sisu.inject,
    org.osgi.framework",
- org.eclipse.sisu.wire;uses:="com.google.inject,com.google.inject.spi",
+ org.eclipse.sisu.wire;
+  uses:="javax.inject,
+   com.google.inject,
+   com.google.inject.spi",
  org.sonatype.inject;x-internal:=true;uses:="org.eclipse.sisu"

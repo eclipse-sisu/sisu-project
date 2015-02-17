@@ -8,7 +8,7 @@
  * Contributors:
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sisu.launch;
+package org.eclipse.sisu.osgi;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
@@ -56,7 +56,7 @@ final class ServiceBinding<T>
         final Object name = reference.getProperty( "name" );
         if ( name instanceof String && ( (String) name ).length() > 0 )
         {
-            serviceKey = Key.get( type, Names.named( ( (String) name ) ) );
+            serviceKey = Key.get( type, Names.named( (String) name ) );
         }
         else
         {

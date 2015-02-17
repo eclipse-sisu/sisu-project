@@ -16,6 +16,7 @@ import java.util.Map;
 import org.eclipse.sisu.inject.DefaultBeanLocator;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.inject.Weak;
+import org.eclipse.sisu.osgi.ServiceBindings;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;

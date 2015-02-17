@@ -8,7 +8,7 @@
  * Contributors:
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sisu.launch;
+package org.eclipse.sisu.osgi;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -8,7 +8,7 @@
  * Contributors:
  *    Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sisu.launch;
+package org.eclipse.sisu.osgi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,11 +126,11 @@ public final class ServiceBindings
 
     private static boolean isIncluded( final String name )
     {
-        for ( Pattern include : INCLUDES )
+        for ( final Pattern include : INCLUDES )
         {
             if ( include.matcher( name ).matches() )
             {
-                for ( Pattern exclude : EXCLUDES )
+                for ( final Pattern exclude : EXCLUDES )
                 {
                     if ( exclude.matcher( name ).matches() )
                     {
@@ -146,7 +146,7 @@ public final class ServiceBindings
     private static Pattern[] parseGlobs( final String globs )
     {
         final List<Pattern> patterns = new ArrayList<Pattern>();
-        for ( String glob : globs.split( "\\s*,\\s*" ) )
+        for ( final String glob : globs.split( "\\s*,\\s*" ) )
         {
             if ( GLOB_SYNTAX.matcher( glob ).matches() )
             {
