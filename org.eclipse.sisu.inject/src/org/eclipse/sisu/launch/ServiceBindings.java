@@ -10,11 +10,15 @@
  *******************************************************************************/
 package org.eclipse.sisu.launch;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.regex.Pattern;
 
 import org.eclipse.sisu.inject.BindingPublisher;
 import org.eclipse.sisu.inject.BindingSubscriber;
+import org.eclipse.sisu.inject.Logs;
 import org.osgi.framework.BundleContext;
 
 import com.google.inject.Binding;
@@ -26,6 +30,18 @@ import com.google.inject.TypeLiteral;
 public final class ServiceBindings
     implements BindingPublisher
 {
+    // ----------------------------------------------------------------------
+    // Constants
+    // ----------------------------------------------------------------------
+
+    private static final Pattern GLOB_SYNTAX = Pattern.compile( "(?:\\w+|\\*)(?:\\.?(?:\\w+|\\*))*" );
+
+    private static final Pattern[] INCLUDES =
+        parseGlobs( System.getProperty( ServiceBindings.class + ".includes", "" ) );
+
+    private static final Pattern[] EXCLUDES =
+        parseGlobs( System.getProperty( ServiceBindings.class + ".excludes", "" ) );
+
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -66,24 +82,27 @@ public final class ServiceBindings
     }
 
     // ----------------------------------------------------------------------
-    // Implementation fields
+    // Public methods
     // ----------------------------------------------------------------------
 
     @SuppressWarnings( { "rawtypes", "unchecked" } )
     public <T> void subscribe( final BindingSubscriber<T> subscriber )
     {
         final TypeLiteral<T> type = subscriber.type();
-        BindingTracker tracker = trackers.get( type );
-        if ( null == tracker )
+        if ( isIncluded( type.getRawType().getName() ) )
         {
-            tracker = new BindingTracker<T>( context, maxRank, type );
-            final BindingTracker oldTracker = trackers.putIfAbsent( type, tracker );
-            if ( null != oldTracker )
+            BindingTracker tracker = trackers.get( type );
+            if ( null == tracker )
             {
-                tracker = oldTracker; // someone got there first, use their tracker
+                tracker = new BindingTracker<T>( context, maxRank, type );
+                final BindingTracker oldTracker = trackers.putIfAbsent( type, tracker );
+                if ( null != oldTracker )
+                {
+                    tracker = oldTracker; // someone got there first, use their tracker
+                }
             }
+            tracker.subscribe( subscriber );
         }
-        tracker.subscribe( subscriber );
     }
 
     public <T> void unsubscribe( final BindingSubscriber<T> subscriber )
@@ -99,5 +118,45 @@ public final class ServiceBindings
     public int maxBindingRank()
     {
         return maxRank;
+    }
+
+    // ----------------------------------------------------------------------
+    // Implementation methods
+    // ----------------------------------------------------------------------
+
+    private static boolean isIncluded( final String name )
+    {
+        for ( Pattern include : INCLUDES )
+        {
+            if ( include.matcher( name ).matches() )
+            {
+                for ( Pattern exclude : EXCLUDES )
+                {
+                    if ( exclude.matcher( name ).matches() )
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static Pattern[] parseGlobs( final String globs )
+    {
+        final List<Pattern> patterns = new ArrayList<Pattern>();
+        for ( String glob : globs.split( "\\s*,\\s*" ) )
+        {
+            if ( GLOB_SYNTAX.matcher( glob ).matches() )
+            {
+                patterns.add( Pattern.compile( glob.replace( ".", "\\." ).replace( "*", ".*" ) ) );
+            }
+            else if ( glob.length() > 0 )
+            {
+                Logs.warn( "Ignoring malformed glob pattern: {}", glob, null );
+            }
+        }
+        return patterns.toArray( new Pattern[patterns.size()] );
     }
 }
