@@ -11,7 +11,7 @@
 package org.eclipse.sisu.plexus;
 
 import org.eclipse.sisu.inject.BindingPublisher;
-import org.eclipse.sisu.inject.InjectorPublisher;
+import org.eclipse.sisu.inject.InjectorBindings;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.launch.BundleModule;
 import org.eclipse.sisu.launch.BundlePlan;
@@ -61,7 +61,7 @@ public class PlexusBundlePlan
         {
             if ( hasPlexusAnnotations( bundle ) || hasPlexusXml( bundle ) )
             {
-                return new InjectorPublisher( Guice.createInjector( new BundleModule( bundle, locator )
+                return new InjectorBindings( Guice.createInjector( new BundleModule( bundle, locator )
                 {
                     @Override
                     protected Module spaceModule()
