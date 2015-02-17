@@ -10,15 +10,16 @@
  *******************************************************************************/
 package org.eclipse.sisu.launch;
 
-import javax.inject.Singleton;
-
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 
 import com.google.inject.Binder;
 import com.google.inject.Binding;
 import com.google.inject.Key;
 import com.google.inject.Provider;
+import com.google.inject.TypeLiteral;
+import com.google.inject.name.Names;
 import com.google.inject.spi.BindingScopingVisitor;
 import com.google.inject.spi.BindingTargetVisitor;
 import com.google.inject.spi.ElementVisitor;
@@ -28,15 +29,28 @@ final class ServiceBinding<T>
 {
     private final BundleContext context;
 
+    private final int maxRank;
+
     private final ServiceReference<T> reference;
 
-    private final Key<T> boundKey;
+    private final Key<T> serviceKey;
 
-    ServiceBinding( final BundleContext context, final ServiceReference<T> reference, final Key<T> boundKey )
+    ServiceBinding( final BundleContext context, final int maxRank, final TypeLiteral<T> type,
+                    final ServiceReference<T> reference )
     {
         this.context = context;
+        this.maxRank = maxRank;
         this.reference = reference;
-        this.boundKey = boundKey;
+
+        final Object name = reference.getProperty( "name" );
+        if ( name instanceof String && ( (String) name ).length() > 0 )
+        {
+            serviceKey = Key.get( type, Names.named( ( (String) name ) ) );
+        }
+        else
+        {
+            serviceKey = Key.get( type );
+        }
     }
 
     public T get()
@@ -44,16 +58,22 @@ final class ServiceBinding<T>
         return context.getService( reference );
     }
 
-    @SuppressWarnings( "static-method" )
     public int rank()
     {
-        return Integer.MIN_VALUE;
-        // return ( (Integer) reference.getProperty( Constants.SERVICE_RANKING ) ).intValue();
+        if ( maxRank > Integer.MIN_VALUE )
+        {
+            final int serviceRank = ( (Number) reference.getProperty( Constants.SERVICE_RANKING ) ).intValue();
+            if ( serviceRank < maxRank )
+            {
+                return serviceRank;
+            }
+        }
+        return maxRank;
     }
 
     public Key<T> getKey()
     {
-        return boundKey;
+        return serviceKey;
     }
 
     public Provider<T> getProvider()
@@ -83,6 +103,6 @@ final class ServiceBinding<T>
 
     public <V> V acceptScopingVisitor( final BindingScopingVisitor<V> visitor )
     {
-        return visitor.visitScopeAnnotation( Singleton.class );
+        return visitor.visitNoScoping();
     }
 }

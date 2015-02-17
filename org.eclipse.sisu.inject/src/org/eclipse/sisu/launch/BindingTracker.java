@@ -20,7 +20,6 @@ import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTracker;
 
-import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 
 final class BindingTracker<T>
@@ -28,57 +27,85 @@ final class BindingTracker<T>
 {
     private final Set<BindingSubscriber<T>> subscribers = new HashSet<BindingSubscriber<T>>();
 
+    private final int maxRank;
+
+    private final TypeLiteral<T> type;
+
     private final Bundle definingBundle;
 
-    private final Key<T> boundKey;
-
-    BindingTracker( final BundleContext context, final TypeLiteral<T> type )
+    BindingTracker( final BundleContext context, final int maxRank, final TypeLiteral<T> type )
     {
         super( context, type.getRawType().getName(), null );
+
+        this.maxRank = maxRank;
+        this.type = type;
+
         definingBundle = FrameworkUtil.getBundle( type.getRawType() );
-        boundKey = Key.get( type );
     }
 
-    public synchronized void subscribe( final BindingSubscriber<T> subscriber )
+    public void subscribe( final BindingSubscriber<T> subscriber )
     {
-        for ( final ServiceBinding<T> binding : getTracked().values() )
+        synchronized ( subscribers )
         {
-            subscriber.add( binding, binding.rank() );
+            if ( subscribers.isEmpty() )
+            {
+                open( true );
+            }
+            for ( final ServiceBinding<T> binding : getTracked().values() )
+            {
+                subscriber.add( binding, binding.rank() );
+            }
+            subscribers.add( subscriber );
         }
-        subscribers.add( subscriber );
     }
 
-    public synchronized void unsubscribe( final BindingSubscriber<T> subscriber )
+    public void unsubscribe( final BindingSubscriber<T> subscriber )
     {
-        for ( final ServiceBinding<T> binding : getTracked().values() )
+        synchronized ( subscribers )
         {
-            subscriber.remove( binding );
+            if ( subscribers.remove( subscriber ) )
+            {
+                for ( final ServiceBinding<T> binding : getTracked().values() )
+                {
+                    subscriber.remove( binding );
+                }
+                if ( subscribers.isEmpty() )
+                {
+                    close();
+                }
+            }
         }
-        subscribers.remove( subscriber );
     }
 
     @Override
-    public synchronized ServiceBinding<T> addingService( final ServiceReference<T> reference )
+    public ServiceBinding<T> addingService( final ServiceReference<T> reference )
     {
         ServiceBinding<T> binding = null;
-        final String clazzName = boundKey.getTypeLiteral().getRawType().getName();
+        final String clazzName = type.getRawType().getName();
         if ( null == definingBundle || reference.isAssignableTo( definingBundle, clazzName ) )
         {
-            binding = new ServiceBinding<T>( context, reference, boundKey );
-            for ( final BindingSubscriber<T> subscriber : subscribers )
+            binding = new ServiceBinding<T>( context, maxRank, type, reference );
+            synchronized ( subscribers )
             {
-                subscriber.add( binding, binding.rank() );
+                for ( final BindingSubscriber<T> subscriber : subscribers )
+                {
+                    subscriber.add( binding, binding.rank() );
+                }
             }
         }
         return binding;
     }
 
     @Override
-    public synchronized void removedService( final ServiceReference<T> reference, final ServiceBinding<T> binding )
+    public void removedService( final ServiceReference<T> reference, final ServiceBinding<T> binding )
     {
-        for ( final BindingSubscriber<T> subscriber : subscribers )
+        synchronized ( subscribers )
         {
-            subscriber.remove( binding );
+            for ( final BindingSubscriber<T> subscriber : subscribers )
+            {
+                subscriber.remove( binding );
+            }
         }
+        super.removedService( reference, binding );
     }
 }

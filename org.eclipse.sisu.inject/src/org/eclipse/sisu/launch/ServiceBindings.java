@@ -27,27 +27,31 @@ public final class ServiceBindings
 
     private final BundleContext context;
 
+    private final int maxRank;
+
     public ServiceBindings( final BundleContext context )
     {
+        this( context, Integer.MIN_VALUE );
+    }
+
+    public ServiceBindings( final BundleContext context, final int maxRank )
+    {
         this.context = context;
+        this.maxRank = maxRank;
     }
 
     @SuppressWarnings( { "rawtypes", "unchecked" } )
-    public synchronized <T> void subscribe( final BindingSubscriber<T> subscriber )
+    public <T> void subscribe( final BindingSubscriber<T> subscriber )
     {
         final TypeLiteral<T> type = subscriber.type();
         BindingTracker tracker = trackers.get( type );
         if ( null == tracker )
         {
-            tracker = new BindingTracker<T>( context, type );
+            tracker = new BindingTracker<T>( context, maxRank, type );
             final BindingTracker oldTracker = trackers.putIfAbsent( type, tracker );
             if ( null != oldTracker )
             {
                 tracker = oldTracker;
-            }
-            else
-            {
-                tracker.open( true );
             }
         }
         tracker.subscribe( subscriber );
@@ -59,12 +63,12 @@ public final class ServiceBindings
         final BindingTracker<T> tracker = (BindingTracker<T>) trackers.get( subscriber.type() );
         if ( null != tracker )
         {
-            tracker.unsubscribe( subscriber ); // TODO: remove tracker when no subscribers?
+            tracker.unsubscribe( subscriber );
         }
     }
 
     public int maxBindingRank()
     {
-        return Integer.MIN_VALUE;
+        return maxRank;
     }
 }
