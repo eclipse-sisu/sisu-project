@@ -67,9 +67,15 @@ final class ServiceBinding<T>
 
         instance = context.getService( reference );
 
-        // limit the exposed rank to the given maximum
-        final int serviceRank = ( (Number) reference.getProperty( Constants.SERVICE_RANKING ) ).intValue();
-        rank = serviceRank < maxRank ? serviceRank : maxRank;
+        if ( maxRank > Integer.MIN_VALUE )
+        {
+            final int serviceRanking = getServiceRanking( reference );
+            rank = serviceRanking < maxRank ? serviceRanking : maxRank;
+        }
+        else
+        {
+            rank = Integer.MIN_VALUE;
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -128,5 +134,15 @@ final class ServiceBinding<T>
     int rank()
     {
         return rank;
+    }
+
+    // ----------------------------------------------------------------------
+    // Implementation methods
+    // ----------------------------------------------------------------------
+
+    private static int getServiceRanking( final ServiceReference<?> reference )
+    {
+        final Object ranking = reference.getProperty( Constants.SERVICE_RANKING );
+        return ranking instanceof Integer ? ( (Integer) ranking ).intValue() : 0;
     }
 }
