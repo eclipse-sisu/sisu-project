@@ -36,11 +36,11 @@ public final class ServiceBindings
 
     private static final Pattern GLOB_SYNTAX = Pattern.compile( "(?:\\w+|\\*)(?:\\.?(?:\\w+|\\*))*" );
 
-    private static final Pattern[] INCLUDES =
-        parseGlobs( System.getProperty( ServiceBindings.class + ".includes", "" ) );
+    private static final Pattern[] INCLUDES = //
+        parseGlobs( System.getProperty( ServiceBindings.class.getName() + ".includes", "" ) );
 
-    private static final Pattern[] EXCLUDES =
-        parseGlobs( System.getProperty( ServiceBindings.class + ".excludes", "" ) );
+    private static final Pattern[] EXCLUDES = //
+        parseGlobs( System.getProperty( ServiceBindings.class.getName() + ".excludes", "" ) );
 
     // ----------------------------------------------------------------------
     // Implementation fields

@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.sisu.inject.BindingSubscriber;
+import org.eclipse.sisu.inject.Logs;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
@@ -64,6 +65,7 @@ final class BindingTracker<T>
         {
             if ( subscribers.isEmpty() )
             {
+                Logs.trace( "Started tracking services: {}", filter, null );
                 open( true );
             }
             for ( final ServiceBinding<T> binding : getTracked().values() )
@@ -87,6 +89,7 @@ final class BindingTracker<T>
                 if ( subscribers.isEmpty() )
                 {
                     close();
+                    Logs.trace( "Stopped tracking services: {}", filter, null );
                 }
             }
         }
