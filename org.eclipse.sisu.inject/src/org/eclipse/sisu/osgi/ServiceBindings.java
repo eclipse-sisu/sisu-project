@@ -88,7 +88,7 @@ public final class ServiceBindings
     public <T> void subscribe( final BindingSubscriber<T> subscriber )
     {
         final String clazzName = subscriber.type().getRawType().getName();
-        if ( isAllowed( clazzName ) )
+        if ( shouldTrack( clazzName ) )
         {
             BindingTracker tracker = trackers.get( clazzName );
             if ( null == tracker )
@@ -124,15 +124,15 @@ public final class ServiceBindings
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    private static boolean isAllowed( final String name )
+    private static boolean shouldTrack( final String clazzName )
     {
         for ( final Pattern include : INCLUDES )
         {
-            if ( include.matcher( name ).matches() )
+            if ( include.matcher( clazzName ).matches() )
             {
                 for ( final Pattern exclude : EXCLUDES )
                 {
-                    if ( exclude.matcher( name ).matches() )
+                    if ( exclude.matcher( clazzName ).matches() )
                     {
                         return false;
                     }

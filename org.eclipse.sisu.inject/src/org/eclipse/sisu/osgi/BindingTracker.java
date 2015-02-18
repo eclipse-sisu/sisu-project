@@ -56,12 +56,7 @@ final class BindingTracker<T>
     {
         synchronized ( subscribers )
         {
-            if ( !isOpen )
-            {
-                open( true );
-                Logs.trace( "Started tracking services: {}", filter, null );
-                isOpen = true;
-            }
+            openIfNecessary();
             for ( final ServiceBinding<T> binding : getTracked().values() )
             {
                 if ( binding.isCompatibleWith( subscriber ) )
@@ -84,12 +79,7 @@ final class BindingTracker<T>
                     subscriber.remove( binding );
                 }
             }
-            if ( subscribers.isEmpty() && isOpen )
-            {
-                close();
-                Logs.trace( "Stopped tracking services: {}", filter, null );
-                isOpen = false;
-            }
+            closeIfNecessary();
         }
     }
 
@@ -115,6 +105,7 @@ final class BindingTracker<T>
                     subscriber.add( binding, binding.rank() );
                 }
             }
+            closeIfNecessary();
         }
         return binding;
     }
@@ -128,7 +119,32 @@ final class BindingTracker<T>
             {
                 subscriber.remove( binding );
             }
+            closeIfNecessary();
         }
         super.removedService( reference, binding );
+    }
+
+    // ----------------------------------------------------------------------
+    // Implementation methods
+    // ----------------------------------------------------------------------
+
+    private void openIfNecessary()
+    {
+        if ( !isOpen )
+        {
+            open( true ); // calls addingService to pre-fill the tracker
+            Logs.trace( "Started tracking services: {}", filter, null );
+            isOpen = true; // set last to avoid premature close
+        }
+    }
+
+    private void closeIfNecessary()
+    {
+        if ( isOpen && subscribers.isEmpty() )
+        {
+            isOpen = false; // set first to avoid repeated close
+            Logs.trace( "Stopped tracking services: {}", filter, null );
+            close(); // calls removedService to clear out the tracker
+        }
     }
 }

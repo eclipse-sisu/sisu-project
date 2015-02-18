@@ -36,8 +36,6 @@ final class ServiceBinding<T>
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final Class<T> clazz;
-
     private final Key<T> key;
 
     private final T instance;
@@ -48,13 +46,12 @@ final class ServiceBinding<T>
     // Constructors
     // ----------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
     ServiceBinding( final BundleContext context, final String clazzName, final int maxRank,
                     final ServiceReference<T> reference )
         throws ClassNotFoundException
     {
-        clazz = (Class<T>) reference.getBundle().loadClass( clazzName );
-
+        @SuppressWarnings( "unchecked" )
+        final Class<T> clazz = (Class<T>) reference.getBundle().loadClass( clazzName );
         final Object name = reference.getProperty( "name" );
         if ( name instanceof String && ( (String) name ).length() > 0 )
         {
@@ -82,11 +79,6 @@ final class ServiceBinding<T>
     // Public methods
     // ----------------------------------------------------------------------
 
-    public T get()
-    {
-        return instance;
-    }
-
     public Key<T> getKey()
     {
         return key;
@@ -97,9 +89,14 @@ final class ServiceBinding<T>
         return this;
     }
 
+    public T get()
+    {
+        return instance;
+    }
+
     public Object getSource()
     {
-        return null;
+        return "OSGi service registry";
     }
 
     public void applyTo( final Binder binder )
@@ -128,7 +125,7 @@ final class ServiceBinding<T>
 
     boolean isCompatibleWith( final BindingSubscriber<T> subscriber )
     {
-        return clazz.equals( subscriber.type().getRawType() );
+        return key.getTypeLiteral().getRawType().equals( subscriber.type().getRawType() );
     }
 
     int rank()
