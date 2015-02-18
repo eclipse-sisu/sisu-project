@@ -10,18 +10,14 @@
  *******************************************************************************/
 package org.eclipse.sisu.osgi;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collection;
 
 import org.eclipse.sisu.inject.BindingSubscriber;
 import org.eclipse.sisu.inject.Logs;
-import org.osgi.framework.Bundle;
+import org.eclipse.sisu.inject.Weak;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTracker;
-
-import com.google.inject.TypeLiteral;
 
 /**
  * Tracker of {@link ServiceBinding}s from the OSGi service registry.
@@ -33,26 +29,23 @@ final class BindingTracker<T>
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final Set<BindingSubscriber<T>> subscribers = new HashSet<BindingSubscriber<T>>();
+    private final Collection<BindingSubscriber<T>> subscribers = Weak.elements();
+
+    private final String clazzName;
 
     private final int maxRank;
 
-    private final TypeLiteral<T> type;
-
-    private final Bundle definingBundle;
+    private boolean isOpen;
 
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
-    BindingTracker( final BundleContext context, final int maxRank, final TypeLiteral<T> type )
+    BindingTracker( final BundleContext context, final int maxRank, final String clazzName )
     {
-        super( context, type.getRawType().getName(), null );
-
+        super( context, clazzName, null );
+        this.clazzName = clazzName;
         this.maxRank = maxRank;
-        this.type = type;
-
-        definingBundle = FrameworkUtil.getBundle( type.getRawType() );
     }
 
     // ----------------------------------------------------------------------
@@ -63,14 +56,18 @@ final class BindingTracker<T>
     {
         synchronized ( subscribers )
         {
-            if ( subscribers.isEmpty() )
+            if ( !isOpen )
             {
-                Logs.trace( "Started tracking services: {}", filter, null );
                 open( true );
+                Logs.trace( "Started tracking services: {}", filter, null );
+                isOpen = true;
             }
             for ( final ServiceBinding<T> binding : getTracked().values() )
             {
-                subscriber.add( binding, binding.rank() );
+                if ( binding.isCompatibleWith( subscriber ) )
+                {
+                    subscriber.add( binding, binding.rank() );
+                }
             }
             subscribers.add( subscriber );
         }
@@ -86,11 +83,12 @@ final class BindingTracker<T>
                 {
                     subscriber.remove( binding );
                 }
-                if ( subscribers.isEmpty() )
-                {
-                    close();
-                    Logs.trace( "Stopped tracking services: {}", filter, null );
-                }
+            }
+            if ( subscribers.isEmpty() && isOpen )
+            {
+                close();
+                Logs.trace( "Stopped tracking services: {}", filter, null );
+                isOpen = false;
             }
         }
     }
@@ -98,23 +96,26 @@ final class BindingTracker<T>
     @Override
     public ServiceBinding<T> addingService( final ServiceReference<T> reference )
     {
-        ServiceBinding<T> binding = null;
-
-        // check assignability wrt the type's defining bundle
-        final String clazzName = type.getRawType().getName();
-        if ( null == definingBundle || reference.isAssignableTo( definingBundle, clazzName ) )
+        final ServiceBinding<T> binding;
+        try
         {
-            // wrap the OSGi service reference to look like a binding
-            binding = new ServiceBinding<T>( context, maxRank, type, reference );
-            synchronized ( subscribers )
+            binding = new ServiceBinding<T>( context, clazzName, maxRank, reference );
+        }
+        catch ( final Exception e )
+        {
+            Logs.warn( "Problem subscribing to service: {}", reference, e );
+            return null;
+        }
+        synchronized ( subscribers )
+        {
+            for ( final BindingSubscriber<T> subscriber : subscribers )
             {
-                for ( final BindingSubscriber<T> subscriber : subscribers )
+                if ( binding.isCompatibleWith( subscriber ) )
                 {
                     subscriber.add( binding, binding.rank() );
                 }
             }
         }
-
         return binding;
     }
 

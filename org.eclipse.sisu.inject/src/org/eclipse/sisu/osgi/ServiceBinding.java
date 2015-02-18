@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.sisu.osgi;
 
+import javax.inject.Singleton;
+
+import org.eclipse.sisu.inject.BindingSubscriber;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
@@ -18,7 +21,6 @@ import com.google.inject.Binder;
 import com.google.inject.Binding;
 import com.google.inject.Key;
 import com.google.inject.Provider;
-import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
 import com.google.inject.spi.BindingScopingVisitor;
 import com.google.inject.spi.BindingTargetVisitor;
@@ -34,34 +36,40 @@ final class ServiceBinding<T>
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final BundleContext context;
+    private final Class<T> clazz;
 
-    private final int maxRank;
+    private final Key<T> key;
 
-    private final ServiceReference<T> reference;
+    private final T instance;
 
-    private final Key<T> serviceKey;
+    private final int rank;
 
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
-    ServiceBinding( final BundleContext context, final int maxRank, final TypeLiteral<T> type,
+    @SuppressWarnings( "unchecked" )
+    ServiceBinding( final BundleContext context, final String clazzName, final int maxRank,
                     final ServiceReference<T> reference )
+        throws ClassNotFoundException
     {
-        this.context = context;
-        this.maxRank = maxRank;
-        this.reference = reference;
+        clazz = (Class<T>) reference.getBundle().loadClass( clazzName );
 
         final Object name = reference.getProperty( "name" );
         if ( name instanceof String && ( (String) name ).length() > 0 )
         {
-            serviceKey = Key.get( type, Names.named( (String) name ) );
+            key = Key.get( clazz, Names.named( (String) name ) );
         }
         else
         {
-            serviceKey = Key.get( type );
+            key = Key.get( clazz );
         }
+
+        instance = context.getService( reference );
+
+        // limit the exposed rank to the given maximum
+        final int serviceRank = ( (Number) reference.getProperty( Constants.SERVICE_RANKING ) ).intValue();
+        rank = serviceRank < maxRank ? serviceRank : maxRank;
     }
 
     // ----------------------------------------------------------------------
@@ -70,26 +78,12 @@ final class ServiceBinding<T>
 
     public T get()
     {
-        return context.getService( reference );
-    }
-
-    public int rank()
-    {
-        if ( maxRank > Integer.MIN_VALUE )
-        {
-            // limit the exposed rank to the given maximum
-            final int serviceRank = ( (Number) reference.getProperty( Constants.SERVICE_RANKING ) ).intValue();
-            if ( serviceRank < maxRank )
-            {
-                return serviceRank;
-            }
-        }
-        return maxRank;
+        return instance;
     }
 
     public Key<T> getKey()
     {
-        return serviceKey;
+        return key;
     }
 
     public Provider<T> getProvider()
@@ -99,7 +93,7 @@ final class ServiceBinding<T>
 
     public Object getSource()
     {
-        return reference;
+        return null;
     }
 
     public void applyTo( final Binder binder )
@@ -119,6 +113,20 @@ final class ServiceBinding<T>
 
     public <V> V acceptScopingVisitor( final BindingScopingVisitor<V> visitor )
     {
-        return visitor.visitNoScoping();
+        return visitor.visitScopeAnnotation( Singleton.class );
+    }
+
+    // ----------------------------------------------------------------------
+    // Local methods
+    // ----------------------------------------------------------------------
+
+    boolean isCompatibleWith( final BindingSubscriber<T> subscriber )
+    {
+        return clazz.equals( subscriber.type().getRawType() );
+    }
+
+    int rank()
+    {
+        return rank;
     }
 }

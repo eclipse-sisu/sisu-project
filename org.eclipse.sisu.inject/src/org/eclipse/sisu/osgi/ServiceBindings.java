@@ -22,7 +22,6 @@ import org.eclipse.sisu.inject.Logs;
 import org.osgi.framework.BundleContext;
 
 import com.google.inject.Binding;
-import com.google.inject.TypeLiteral;
 
 /**
  * Publisher of {@link Binding}s from the OSGi service registry.
@@ -46,8 +45,8 @@ public final class ServiceBindings
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final ConcurrentMap<TypeLiteral<?>, BindingTracker<?>> trackers =
-        new ConcurrentHashMap<TypeLiteral<?>, BindingTracker<?>>();
+    private final ConcurrentMap<String, BindingTracker<?>> trackers =
+        new ConcurrentHashMap<String, BindingTracker<?>>();
 
     private final BundleContext context;
 
@@ -88,14 +87,14 @@ public final class ServiceBindings
     @SuppressWarnings( { "rawtypes", "unchecked" } )
     public <T> void subscribe( final BindingSubscriber<T> subscriber )
     {
-        final TypeLiteral<T> type = subscriber.type();
-        if ( isIncluded( type.getRawType().getName() ) )
+        final String clazzName = subscriber.type().getRawType().getName();
+        if ( isAllowed( clazzName ) )
         {
-            BindingTracker tracker = trackers.get( type );
+            BindingTracker tracker = trackers.get( clazzName );
             if ( null == tracker )
             {
-                tracker = new BindingTracker<T>( context, maxRank, type );
-                final BindingTracker oldTracker = trackers.putIfAbsent( type, tracker );
+                tracker = new BindingTracker<T>( context, maxRank, clazzName );
+                final BindingTracker oldTracker = trackers.putIfAbsent( clazzName, tracker );
                 if ( null != oldTracker )
                 {
                     tracker = oldTracker; // someone got there first, use their tracker
@@ -105,10 +104,11 @@ public final class ServiceBindings
         }
     }
 
+    @SuppressWarnings( { "rawtypes", "unchecked" } )
     public <T> void unsubscribe( final BindingSubscriber<T> subscriber )
     {
-        @SuppressWarnings( "unchecked" )
-        final BindingTracker<T> tracker = (BindingTracker<T>) trackers.get( subscriber.type() );
+        final String clazzName = subscriber.type().getRawType().getName();
+        final BindingTracker tracker = trackers.get( clazzName );
         if ( null != tracker )
         {
             tracker.unsubscribe( subscriber );
@@ -124,7 +124,7 @@ public final class ServiceBindings
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    private static boolean isIncluded( final String name )
+    private static boolean isAllowed( final String name )
     {
         for ( final Pattern include : INCLUDES )
         {
