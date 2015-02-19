@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.eclipse.sisu.inject.extender;singleton:=true
-Bundle-Version: 0.3.0
+Bundle-Version: 0.4.0.qualifier
 Bundle-Name: Sisu-Inject Extender (Incubation)
 Bundle-Activator: org.eclipse.sisu.launch.SisuExtender
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

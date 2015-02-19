@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Main-Class: org.eclipse.sisu.launch.Main
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.eclipse.sisu.inject;singleton:=true
-Bundle-Version: 0.3.0
+Bundle-Version: 0.4.0.qualifier
 Bundle-Name: Sisu-Inject (Incubation)
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: Eclipse Sisu
