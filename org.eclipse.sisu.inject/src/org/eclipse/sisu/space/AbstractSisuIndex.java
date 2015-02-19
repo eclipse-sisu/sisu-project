@@ -15,7 +15,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -40,7 +40,7 @@ abstract class AbstractSisuIndex
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final Map<Object, Set<String>> index = new HashMap<Object, Set<String>>();
+    private final Map<Object, Set<String>> index = new LinkedHashMap<Object, Set<String>>();
 
     // ----------------------------------------------------------------------
     // Common methods
