@@ -44,9 +44,9 @@ public final class ServiceBindings
 
     private final BundleContext context;
 
-    private final Pattern[] includes;
+    private final Pattern[] allowed;
 
-    private final Pattern[] excludes;
+    private final Pattern[] ignored;
 
     private final int maxRank;
 
@@ -61,28 +61,29 @@ public final class ServiceBindings
      * Any published bindings are ranked according to their service ranking (up to the given maximum).
      * 
      * @param context The tracking context
-     * @param includes Globbed pattern of packages/types to allow
-     * @param excludes Globbed pattern of packages/types to ignore
+     * @param allow Globbed pattern of packages/types to allow
+     * @param ignore Globbed pattern of packages/types to ignore
      * @param maxRank Maximum binding rank
      */
-    public ServiceBindings( final BundleContext context, final String includes, final String excludes, final int maxRank )
+    public ServiceBindings( final BundleContext context, final String allow, final String ignore, final int maxRank )
     {
         this.context = context;
-        this.includes = parseGlobs( includes );
-        this.excludes = parseGlobs( excludes );
         this.maxRank = maxRank;
+
+        allowed = parseGlobs( allow );
+        ignored = parseGlobs( ignore );
     }
 
     /**
      * Creates new publisher of service bindings, using the given OSGi {@link BundleContext} to track services.<br>
      * <br>
-     * Uses the default includes/excludes and assigns any published services the lowest possible ranking.
+     * Uses default allow/ignore settings and assigns any published services the lowest possible ranking.
      * 
      * @param context The tracking context
      */
     public ServiceBindings( final BundleContext context )
     {
-        this( context, defaultIncludes(), defaultExcludes(), Integer.MIN_VALUE );
+        this( context, defaultAllow(), defaultIgnore(), Integer.MIN_VALUE );
     }
 
     // ----------------------------------------------------------------------
@@ -91,20 +92,20 @@ public final class ServiceBindings
 
     /**
      * @return Globbed pattern of types to allow
-     * @see {@code org.eclipse.sisu.osgi.ServiceBindings.includes} system property
+     * @see {@code org.eclipse.sisu.osgi.ServiceBindings.allow} system property
      */
-    public static String defaultIncludes()
+    public static String defaultAllow()
     {
-        return System.getProperty( ServiceBindings.class.getName() + ".includes", "" );
+        return System.getProperty( ServiceBindings.class.getName() + ".allow", "" );
     }
 
     /**
      * @return Globbed pattern of types to ignore
-     * @see {@code org.eclipse.sisu.osgi.ServiceBindings.excludes} system property
+     * @see {@code org.eclipse.sisu.osgi.ServiceBindings.ignore} system property
      */
-    public static String defaultExcludes()
+    public static String defaultIgnore()
     {
-        return System.getProperty( ServiceBindings.class.getName() + ".excludes", "" );
+        return System.getProperty( ServiceBindings.class.getName() + ".ignore", "" );
     }
 
     @SuppressWarnings( { "rawtypes", "unchecked" } )
@@ -149,13 +150,13 @@ public final class ServiceBindings
 
     private boolean shouldTrack( final String clazzName )
     {
-        for ( final Pattern include : includes )
+        for ( final Pattern allow : allowed )
         {
-            if ( include.matcher( clazzName ).matches() )
+            if ( allow.matcher( clazzName ).matches() )
             {
-                for ( final Pattern exclude : excludes )
+                for ( final Pattern ignore : ignored )
                 {
-                    if ( exclude.matcher( clazzName ).matches() )
+                    if ( ignore.matcher( clazzName ).matches() )
                     {
                         return false;
                     }
