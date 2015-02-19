@@ -24,7 +24,7 @@ import org.osgi.framework.BundleContext;
 import com.google.inject.Binding;
 
 /**
- * Publisher of {@link Binding}s from the OSGi service registry.
+ * On-demand publisher of {@link Binding}s from the OSGi service registry.
  */
 public final class ServiceBindings
     implements BindingPublisher
@@ -35,12 +35,6 @@ public final class ServiceBindings
 
     private static final Pattern GLOB_SYNTAX = Pattern.compile( "(?:\\w+|\\*)(?:\\.?(?:\\w+|\\*))*" );
 
-    private static final Pattern[] INCLUDES = //
-        parseGlobs( System.getProperty( ServiceBindings.class.getName() + ".includes", "" ) );
-
-    private static final Pattern[] EXCLUDES = //
-        parseGlobs( System.getProperty( ServiceBindings.class.getName() + ".excludes", "" ) );
-
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -50,6 +44,10 @@ public final class ServiceBindings
 
     private final BundleContext context;
 
+    private final Pattern[] includes;
+
+    private final Pattern[] excludes;
+
     private final int maxRank;
 
     // ----------------------------------------------------------------------
@@ -57,32 +55,57 @@ public final class ServiceBindings
     // ----------------------------------------------------------------------
 
     /**
-     * Creates new publisher of service bindings, using the given OSGi {@link BundleContext} to track services. <br>
-     * The published bindings are ranked according to their service ranking (up to the given maximum).
+     * Creates new publisher of service bindings, using the given OSGi {@link BundleContext} to track services.<br>
+     * <br>
+     * The globbed patterns control whether tracking requests for particular types are allowed or ignored.<br>
+     * Any published bindings are ranked according to their service ranking (up to the given maximum).
      * 
      * @param context The tracking context
+     * @param includes Globbed pattern of packages/types to allow
+     * @param excludes Globbed pattern of packages/types to ignore
      * @param maxRank Maximum binding rank
      */
-    public ServiceBindings( final BundleContext context, final int maxRank )
+    public ServiceBindings( final BundleContext context, final String includes, final String excludes, final int maxRank )
     {
         this.context = context;
+        this.includes = parseGlobs( includes );
+        this.excludes = parseGlobs( excludes );
         this.maxRank = maxRank;
     }
 
     /**
-     * Creates new publisher of service bindings, using the given OSGi {@link BundleContext} to track services. <br>
-     * The published bindings are given the lowest possible rank so that other bindings take precedent.
+     * Creates new publisher of service bindings, using the given OSGi {@link BundleContext} to track services.<br>
+     * <br>
+     * Uses the default includes/excludes and assigns any published services the lowest possible ranking.
      * 
      * @param context The tracking context
      */
     public ServiceBindings( final BundleContext context )
     {
-        this( context, Integer.MIN_VALUE );
+        this( context, defaultIncludes(), defaultExcludes(), Integer.MIN_VALUE );
     }
 
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
+
+    /**
+     * @return Globbed pattern of types to allow
+     * @see {@code org.eclipse.sisu.osgi.ServiceBindings.includes} system property
+     */
+    public static String defaultIncludes()
+    {
+        return System.getProperty( ServiceBindings.class.getName() + ".includes", "" );
+    }
+
+    /**
+     * @return Globbed pattern of types to ignore
+     * @see {@code org.eclipse.sisu.osgi.ServiceBindings.excludes} system property
+     */
+    public static String defaultExcludes()
+    {
+        return System.getProperty( ServiceBindings.class.getName() + ".excludes", "" );
+    }
 
     @SuppressWarnings( { "rawtypes", "unchecked" } )
     public <T> void subscribe( final BindingSubscriber<T> subscriber )
@@ -124,13 +147,13 @@ public final class ServiceBindings
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    private static boolean shouldTrack( final String clazzName )
+    private boolean shouldTrack( final String clazzName )
     {
-        for ( final Pattern include : INCLUDES )
+        for ( final Pattern include : includes )
         {
             if ( include.matcher( clazzName ).matches() )
             {
-                for ( final Pattern exclude : EXCLUDES )
+                for ( final Pattern exclude : excludes )
                 {
                     if ( exclude.matcher( clazzName ).matches() )
                     {
