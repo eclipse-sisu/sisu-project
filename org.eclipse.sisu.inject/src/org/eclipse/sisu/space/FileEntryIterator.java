@@ -113,24 +113,16 @@ final class FileEntryIterator
                     {
                         buf.append( (char) ( hi << 4 | lo ) );
                     }
-                    else if ( hi == 12 || hi == 13 )
+                    else if ( hi >= 12 )
                     {
-                        codePoint = ( hi == 12 ? lo : 0x10 | lo ) << 6;
-                        expectBytes = 1;
-                    }
-                    else if ( hi == 14 )
-                    {
-                        codePoint = lo << 12;
-                        expectBytes = 2;
-                    }
-                    else if ( hi == 15 )
-                    {
-                        codePoint = lo << 18;
-                        expectBytes = 3;
+                        // prepare multi-byte UTF-8 sequence
+                        expectBytes = 12 == hi ? 1 : hi - 12;
+                        codePoint = ( 13 == hi ? 0x10 + lo : lo ) << 6 * expectBytes;
                     }
                     else if ( expectBytes > 0 )
                     {
-                        codePoint |= ( ( hi & 0x3 ) << 4 | lo ) << 6 * --expectBytes;
+                        // update multi-byte UTF-8 sequence
+                        codePoint |= ( ( 0x03 & hi ) << 4 | lo ) << 6 * --expectBytes;
                         if ( expectBytes <= 0 )
                         {
                             buf.appendCodePoint( codePoint );
