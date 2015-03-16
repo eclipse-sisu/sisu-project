@@ -95,6 +95,7 @@ final class FileEntryIterator
         }
 
         final String path = url.getPath();
+        int codePoint = 0, expectBytes = 0;
         for ( int i = 0, length = path.length(); i < length; i++ )
         {
             final char c = path.charAt( i );
@@ -108,7 +109,33 @@ final class FileEntryIterator
                 final int lo = Character.digit( path.charAt( i + 2 ), 16 );
                 if ( hi >= 0 && lo >= 0 )
                 {
-                    buf.append( (char) ( hi << 4 | lo ) );
+                    if ( hi < 8 )
+                    {
+                        buf.append( (char) ( hi << 4 | lo ) );
+                    }
+                    else if ( hi == 12 || hi == 13 )
+                    {
+                        codePoint = ( hi == 12 ? lo : 0x10 | lo ) << 6;
+                        expectBytes = 1;
+                    }
+                    else if ( hi == 14 )
+                    {
+                        codePoint = lo << 12;
+                        expectBytes = 2;
+                    }
+                    else if ( hi == 15 )
+                    {
+                        codePoint = lo << 18;
+                        expectBytes = 3;
+                    }
+                    else if ( expectBytes > 0 )
+                    {
+                        codePoint |= ( ( hi & 0x3 ) << 4 | lo ) << 6 * --expectBytes;
+                        if ( expectBytes <= 0 )
+                        {
+                            buf.appendCodePoint( codePoint );
+                        }
+                    }
                     i += 2;
                 }
                 else
