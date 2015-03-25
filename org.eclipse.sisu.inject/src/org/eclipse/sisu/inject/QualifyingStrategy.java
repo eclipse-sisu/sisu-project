@@ -153,11 +153,17 @@ enum QualifyingStrategy
      */
     static final Annotation qualify( final Key<?> key )
     {
-        if ( key instanceof Provider<?> )
+        if ( null == key.getAnnotationType() )
         {
-            final Object qualifier = ( (Provider<?>) key ).get();
-            return qualifier instanceof Annotation ? (Annotation) qualifier : DEFAULT_QUALIFIER;
+            return DEFAULT_QUALIFIER;
         }
-        return null != key.getAnnotationType() ? key.getAnnotation() : DEFAULT_QUALIFIER;
+        final Annotation qualifier = key.getAnnotation();
+        if ( qualifier instanceof Provider<?> )
+        {
+            // the qualifier is actually a wrapper around the original
+            final Object original = ( (Provider<?>) qualifier ).get();
+            return original instanceof Annotation ? (Annotation) original : DEFAULT_QUALIFIER;
+        }
+        return qualifier;
     }
 }

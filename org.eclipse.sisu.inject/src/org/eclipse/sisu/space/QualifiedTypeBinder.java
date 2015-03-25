@@ -273,7 +273,7 @@ public final class QualifiedTypeBinder
         }
         else
         {
-            binder.bind( new WildcardKey( qualifiedType, bindingName ) ).to( qualifiedType );
+            binder.bind( WildcardKey.get( qualifiedType, bindingName ) ).to( qualifiedType );
         }
     }
 

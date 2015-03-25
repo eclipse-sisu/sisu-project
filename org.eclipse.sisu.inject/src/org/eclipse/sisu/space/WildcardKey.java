@@ -18,44 +18,42 @@ import javax.inject.Provider;
 import javax.inject.Qualifier;
 
 import com.google.inject.Key;
+import com.google.inject.TypeLiteral;
 
 /**
  * Binding {@link Key} for implementations that act as "wild-cards", meaning they match against any assignable type.
  * <p>
  * Since the wild-card type is {@link Object} and the associated qualifier may not be unique between implementations,
  * the qualifier is saved and replaced with a unique (per-implementation) pseudo-qualifier. The original qualifier is
- * available from {@link #get()}.
+ * available by casting the pseudo-qualifier to {@link Provider} and calling {@code get()}.
  */
 final class WildcardKey
-    extends Key<Object>
-    implements Provider<Annotation>
 {
     // ----------------------------------------------------------------------
-    // Implementation fields
+    // Constants
     // ----------------------------------------------------------------------
 
-    private final Annotation qualifier;
+    private static final TypeLiteral<Object> OBJECT_TYPE_LITERAL = TypeLiteral.get( Object.class );
 
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
-    WildcardKey( final Class<?> type, final Annotation qualifier )
+    private WildcardKey()
     {
-        super( new QualifiedImpl( type ) );
-        this.qualifier = qualifier;
+        // static utility class, not allowed to create instances
     }
 
     // ----------------------------------------------------------------------
-    // Public methods
+    // Utility methods
     // ----------------------------------------------------------------------
 
     /**
-     * @return Original qualifier associated with the implementation
+     * @return Wildcard key for the given implementation type and qualifier
      */
-    public Annotation get()
+    public static Key<Object> get( final Class<?> type, final Annotation qualifier )
     {
-        return qualifier;
+        return Key.get( OBJECT_TYPE_LITERAL, new QualifiedImpl( type, qualifier ) );
     }
 
     // ----------------------------------------------------------------------
@@ -76,7 +74,7 @@ final class WildcardKey
      * Pseudo-{@link Annotation} that can wrap any implementation type as a {@link Qualifier}.
      */
     private static final class QualifiedImpl
-        implements Qualified
+        implements Qualified, Provider<Annotation>
     {
         // ----------------------------------------------------------------------
         // Implementation fields
@@ -84,13 +82,16 @@ final class WildcardKey
 
         private final Class<?> value;
 
+        private final Annotation qualifier;
+
         // ----------------------------------------------------------------------
         // Constructors
         // ----------------------------------------------------------------------
 
-        QualifiedImpl( final Class<?> value )
+        QualifiedImpl( final Class<?> value, final Annotation qualifier )
         {
             this.value = value;
+            this.qualifier = qualifier;
         }
 
         // ----------------------------------------------------------------------
@@ -100,6 +101,11 @@ final class WildcardKey
         public Class<?> value()
         {
             return value;
+        }
+
+        public Annotation get()
+        {
+            return qualifier;
         }
 
         public Class<? extends Annotation> annotationType()
