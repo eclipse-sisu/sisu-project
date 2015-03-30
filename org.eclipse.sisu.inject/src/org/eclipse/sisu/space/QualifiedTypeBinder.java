@@ -59,7 +59,7 @@ public final class QualifiedTypeBinder
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final TypeLiteral<?> OBJECT_TYPE_LITERAL = TypeLiteral.get( Object.class );
+    private static final TypeLiteral<Object> OBJECT_TYPE_LITERAL = TypeLiteral.get( Object.class );
 
     private static final boolean HAS_JSR299_TYPED;
 
@@ -167,7 +167,7 @@ public final class QualifiedTypeBinder
             final Mediator mediator = newInstance( mediatorType );
             if ( null != mediator )
             {
-                mediate( watchedKey( args[1], (Class) args[0].getRawType() ), mediator, args[2].getRawType() );
+                mediate( watchedKey( args[1], args[0].getRawType() ), mediator, args[2].getRawType() );
             }
         }
     }
@@ -185,7 +185,7 @@ public final class QualifiedTypeBinder
             final Mediator mediator = org.eclipse.sisu.inject.Legacy.adapt( newInstance( mediatorType ) );
             if ( null != mediator )
             {
-                mediate( watchedKey( args[1], (Class) args[0].getRawType() ), mediator, args[2].getRawType() );
+                mediate( watchedKey( args[1], args[0].getRawType() ), mediator, args[2].getRawType() );
             }
         }
     }
@@ -395,8 +395,8 @@ public final class QualifiedTypeBinder
             || type.isAnnotationPresent( org.sonatype.inject.EagerSingleton.class );
     }
 
-    private static <T> Key<T> watchedKey( final TypeLiteral<T> type, final Class<? extends Annotation> annotationType )
+    private static <T> Key<T> watchedKey( final TypeLiteral<T> type, final Class qualifierType )
     {
-        return Annotation.class != annotationType ? Key.get( type, annotationType ) : Key.get( type );
+        return qualifierType.isAnnotation() ? Key.get( type, qualifierType ) : Key.get( type );
     }
 }

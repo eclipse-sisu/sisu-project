@@ -35,9 +35,9 @@ public final class TypeArguments
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final TypeLiteral<?>[] NO_TYPE_LITERALS = {};
+    private static final TypeLiteral<Object> OBJECT_TYPE_LITERAL = TypeLiteral.get( Object.class );
 
-    private static final TypeLiteral<?> OBJECT_TYPE_LITERAL = TypeLiteral.get( Object.class );
+    private static final TypeLiteral<?>[] NO_TYPE_LITERALS = {};
 
     // ----------------------------------------------------------------------
     // Constructors

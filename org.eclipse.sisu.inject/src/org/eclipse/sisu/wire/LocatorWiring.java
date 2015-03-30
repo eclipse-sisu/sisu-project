@@ -112,9 +112,13 @@ public final class LocatorWiring
             {
                 binder.bind( key ).toProvider( beanProviders.stringMapOf( args[1] ) );
             }
-            else if ( qualifierType.isAnnotationPresent( Qualifier.class ) )
+            else if ( qualifierType.isAnnotation() )
             {
                 binder.bind( key ).toProvider( beanProviders.mapOf( Key.get( args[1], qualifierType ) ) );
+            }
+            else if ( Annotation.class == qualifierType )
+            {
+                binder.bind( key ).toProvider( beanProviders.mapOf( Key.get( args[1] ) ) );
             }
         }
     }
@@ -160,13 +164,11 @@ public final class LocatorWiring
         if ( 2 == args.length )
         {
             final Class qualifierType = args[0].getRawType();
-            if ( qualifierType.isAnnotationPresent( Qualifier.class ) )
-            {
-                final Key beanKey = Key.get( args[1], qualifierType );
-                final Provider beanEntries = beanProviders.beanEntriesOf( beanKey );
-                return BeanEntry.class == entryType.getRawType() ? beanEntries
-                                : org.eclipse.sisu.inject.Legacy.adapt( beanEntries );
-            }
+            final Key key = qualifierType.isAnnotation() ? Key.get( args[1], qualifierType ) : Key.get( args[1] );
+            final Provider beanEntries = beanProviders.beanEntriesOf( key );
+
+            return BeanEntry.class == entryType.getRawType() ? beanEntries
+                            : org.eclipse.sisu.inject.Legacy.adapt( beanEntries );
         }
         return null;
     }

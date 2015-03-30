@@ -174,6 +174,9 @@ public class BeanImportTest
         Y fixed;
 
         @Inject
+        Map<Annotation, Y> annotatedMap;
+
+        @Inject
         Map<Named, Y> namedMap;
 
         @Inject
@@ -264,7 +267,10 @@ public class BeanImportTest
         implements X
     {
         @Inject
-        Iterable<BeanEntry<Named, Y>> entries;
+        Iterable<BeanEntry<?, Y>> entries;
+
+        @Inject
+        Iterable<BeanEntry<Named, Y>> namedEntries;
     }
 
     static class PlaceholderInstance
@@ -547,11 +553,19 @@ public class BeanImportTest
         final BeanEntries beans = (BeanEntries) injector.getInstance( Key.get( X.class, Names.named( "BE" ) ) );
         final HintMap hintMap = (HintMap) injector.getInstance( Key.get( X.class, Names.named( "HM" ) ) );
 
-        final Iterator<BeanEntry<Named, Y>> i = beans.entries.iterator();
+        Iterator<? extends BeanEntry<?, Y>> i = beans.namedEntries.iterator();
 
         assertTrue( i.hasNext() );
         assertSame( hintMap.map.get( "fixed" ), i.next().getValue() );
         assertNotSame( hintMap.map.get( "unscoped" ), i.next().getValue() );
+        assertFalse( i.hasNext() );
+
+        i = beans.entries.iterator();
+
+        assertTrue( i.hasNext() );
+        assertEquals( Names.named( "fixed" ), i.next().getKey() );
+        assertNotSame( Names.named( "unscoped" ), i.next().getKey() );
+        assertNotSame( new FuzzyImpl(), i.next().getKey() );
         assertFalse( i.hasNext() );
     }
 
