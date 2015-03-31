@@ -42,21 +42,31 @@ public class SisuTracker
     implements BundlePlan
 {
     // ----------------------------------------------------------------------
+    // Static initialization
+    // ----------------------------------------------------------------------
+
+    static
+    {
+        final Set<String> supportBundleNames = new HashSet<String>();
+        final Class<?>[] supportTypes = { Inject.class, Guice.class, SisuExtender.class };
+        for ( final Class<?> type : supportTypes )
+        {
+            final Bundle bundle = FrameworkUtil.getBundle( type );
+            if ( null != bundle )
+            {
+                supportBundleNames.add( bundle.getSymbolicName() );
+            }
+        }
+        SUPPORT_BUNDLE_NAMES = supportBundleNames;
+    }
+
+    // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
 
     private static final Object PLACEHOLDER = new Object();
 
-    private static final Set<String> SUPPORT_BUNDLE_NAMES = new HashSet<String>();
-
-    static
-    {
-        final Class<?>[] supportTypes = { Inject.class, Guice.class, SisuExtender.class };
-        for ( final Class<?> type : supportTypes )
-        {
-            SUPPORT_BUNDLE_NAMES.add( FrameworkUtil.getBundle( type ).getSymbolicName() );
-        }
-    }
+    private static final Set<String> SUPPORT_BUNDLE_NAMES;
 
     // ----------------------------------------------------------------------
     // Implementation fields
