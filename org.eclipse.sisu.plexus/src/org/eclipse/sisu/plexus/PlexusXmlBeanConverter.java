@@ -24,6 +24,8 @@ import javax.inject.Inject;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.eclipse.sisu.bean.BeanProperties;
 import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.inject.Logs;
@@ -109,6 +111,10 @@ public final class PlexusXmlBeanConverter
         parser.require( XmlPullParser.START_TAG, null, null );
 
         final Class<?> rawType = toType.getRawType();
+        if ( Xpp3Dom.class.isAssignableFrom( rawType ) )
+        {
+            return parseXpp3Dom( parser );
+        }
         if ( Properties.class.isAssignableFrom( rawType ) )
         {
             return parseProperties( parser );
@@ -126,6 +132,18 @@ public final class PlexusXmlBeanConverter
             return parseArray( parser, TypeArguments.get( toType, 0 ) );
         }
         return parseBean( parser, toType, rawType );
+    }
+
+    /**
+     * Parses an XML subtree and converts it to the {@link Xpp3Dom} type.
+     * 
+     * @param parser The XML parser
+     * @return Converted Xpp3Dom instance
+     */
+    private static Xpp3Dom parseXpp3Dom( final XmlPullParser parser )
+        throws Exception
+    {
+        return Xpp3DomBuilder.build( parser );
     }
 
     /**

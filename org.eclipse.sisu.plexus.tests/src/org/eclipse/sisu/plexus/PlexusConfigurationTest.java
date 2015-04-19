@@ -16,6 +16,7 @@ import junit.framework.TestCase;
 
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Configuration;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.sisu.bean.BeanManager;
 import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.bean.PropertyBinding;
@@ -103,6 +104,9 @@ public class PlexusConfigurationTest
 
         @Configuration( "5" )
         double e;
+        
+        @Configuration( "<container><xml><element/></xml></container>" )
+        XmlContainerComponent xmlContainer;
     }
 
     @Component( role = Object.class )
@@ -122,6 +126,11 @@ public class PlexusConfigurationTest
             }
         }
     }
+    
+    public static class XmlContainerComponent
+    {
+        Xpp3Dom xml;
+    }
 
     public void testConfiguration()
     {
@@ -130,6 +139,12 @@ public class PlexusConfigurationTest
         assertEquals( 3, component.c );
         assertEquals( Double.valueOf( 4.0 ), component.d );
         assertEquals( 5.0, component.e, 0 );
+        
+        assertNotNull( component.xmlContainer );
+        assertNotNull( component.xmlContainer.xml );
+        assertEquals( "xml", component.xmlContainer.xml.getName() );
+        assertEquals( 1, component.xmlContainer.xml.getChildCount() );
+        assertEquals( "element", component.xmlContainer.xml.getChild(0).getName() );
 
         assertEquals( 1, ComponentManager.SEEN );
 
