@@ -13,6 +13,7 @@ package org.eclipse.sisu.inject;
 import javax.inject.Provider;
 
 import com.google.inject.Binding;
+import com.google.inject.Key;
 import com.google.inject.Scopes;
 import com.google.inject.spi.ProviderInstanceBinding;
 
@@ -62,8 +63,8 @@ public final class Guice4
         boolean hasLazyScopesSingleton;
         try
         {
-            // detect future where applying this scope outside of the injector throws OutOfScopeException
-            hasLazyScopesSingleton = Scopes.SINGLETON.scope( null /* key */, null /* provider */) != null;
+            // detect possible future where applying this scope outside of the injector throws OutOfScopeException
+            hasLazyScopesSingleton = Scopes.SINGLETON.scope( Key.get( Object.class ), null /* provider */) != null;
         }
         catch ( final Exception e )
         {
