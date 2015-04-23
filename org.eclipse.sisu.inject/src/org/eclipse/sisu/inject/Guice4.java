@@ -30,7 +30,7 @@ public final class Guice4
         boolean hasDeclaringSource;
         try
         {
-            // support future where binding.getSource() returns ElementSource and not the original declaring source
+            // in Guice4 binding.getSource() returns ElementSource and not the original declaring source
             hasDeclaringSource = com.google.inject.spi.ElementSource.class.getMethod( "getDeclaringSource" ) != null; // NOSONAR
         }
         catch ( final Exception e )
@@ -46,7 +46,7 @@ public final class Guice4
         boolean hasUserSuppliedProvider;
         try
         {
-            // support future where getProviderInstance() is deprecated in favour of getUserSuppliedProvider()
+            // in Guice4 getProviderInstance() is deprecated in favour of getUserSuppliedProvider()
             hasUserSuppliedProvider = ProviderInstanceBinding.class.getMethod( "getUserSuppliedProvider" ) != null; // NOSONAR
         }
         catch ( final Exception e )
@@ -59,21 +59,22 @@ public final class Guice4
         }
         HAS_USER_SUPPLIED_PROVIDER = hasUserSuppliedProvider;
 
-        boolean hasLazyScopesSingleton;
+        boolean hasOldScopesSingleton;
         try
         {
-            // detect future where applying this scope outside of the injector throws OutOfScopeException
-            hasLazyScopesSingleton = Scopes.SINGLETON.scope( null /* key */, null /* provider */) != null;
+            // in Guice4 using Scopes.SINGLETON.scope(...) outside of the Injector is deprecated
+            hasOldScopesSingleton = Scopes.class.equals( Scopes.SINGLETON.getClass().getEnclosingClass() ) //
+                && Scopes.SINGLETON.scope( null /* key */, null /* provider */) != null;
         }
         catch ( final Exception e )
         {
-            hasLazyScopesSingleton = false;
+            hasOldScopesSingleton = false;
         }
         catch ( final LinkageError e )
         {
-            hasLazyScopesSingleton = false;
+            hasOldScopesSingleton = false;
         }
-        HAS_LAZY_SCOPES_SINGLETON = hasLazyScopesSingleton;
+        HAS_OLD_SCOPES_SINGLETON = hasOldScopesSingleton;
     }
 
     // ----------------------------------------------------------------------
@@ -84,7 +85,7 @@ public final class Guice4
 
     private static final boolean HAS_USER_SUPPLIED_PROVIDER;
 
-    private static final boolean HAS_LAZY_SCOPES_SINGLETON;
+    private static final boolean HAS_OLD_SCOPES_SINGLETON;
 
     static final Object NIL = new Object();
 
@@ -138,7 +139,7 @@ public final class Guice4
     @SuppressWarnings( "unchecked" )
     public static <T> Provider<T> lazy( final Binding<T> binding )
     {
-        if ( HAS_LAZY_SCOPES_SINGLETON )
+        if ( HAS_OLD_SCOPES_SINGLETON )
         {
             // avoids introducing extra locks, but won't be supported going forwards
             return Scopes.SINGLETON.scope( binding.getKey(), binding.getProvider() );
