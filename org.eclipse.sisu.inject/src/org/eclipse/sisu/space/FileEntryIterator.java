@@ -123,7 +123,7 @@ final class FileEntryIterator
                     {
                         // update multi-byte UTF-8 sequence
                         codePoint |= ( ( 0x03 & hi ) << 4 | lo ) << 6 * --expectBytes;
-                        if ( expectBytes <= 0 )
+                        if ( expectBytes == 0 )
                         {
                             buf.appendCodePoint( codePoint );
                         }
