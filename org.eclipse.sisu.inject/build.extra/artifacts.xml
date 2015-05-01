@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <?artifactRepository version='1.1.0'?>
-<repository name='org.eclipse.sisu.inject.extra' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='5'>
+<repository name='org.eclipse.sisu.inject.extra' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='6'>
   <properties size='2'>
-    <property name='p2.timestamp' value='1412955013285'/>
+    <property name='p2.timestamp' value='1430486245750'/>
     <property name='p2.compressed' value='false'/>
   </properties>
   <mappings size='4'>
     <rule filter='(&amp; (id=com.google.guava))' output='http://repo.maven.apache.org/maven2/com/google/guava/guava/16.0/guava-16.0.jar'/>
-    <rule filter='(&amp; (id=com.google.inject))' output='http://repo.maven.apache.org/maven2/com/google/inject/guice/4.0-beta5/guice-4.0-beta5.jar'/>
-    <rule filter='(&amp; (id=com.google.inject.servlet))' output='http://repo.maven.apache.org/maven2/com/google/inject/extensions/guice-servlet/4.0-beta5/guice-servlet-4.0-beta5.jar'/>
+    <rule filter='(&amp; (id=com.google.inject))' output='http://repo.maven.apache.org/maven2/com/google/inject/guice/4.0/guice-4.0.jar'/>
+    <rule filter='(&amp; (id=com.google.inject.servlet))' output='http://repo.maven.apache.org/maven2/com/google/inject/extensions/guice-servlet/4.0/guice-servlet-4.0.jar'/>
     <rule filter='(&amp; (id=org.testng))' output='http://repo.maven.apache.org/maven2/org/testng/testng/6.7/testng-6.7.jar'/>
   </mappings>
   <artifacts size='4'>
@@ -19,18 +19,18 @@
         <property name='download.md5' value='5286e2b8c38ff1ca83fb51e30af71f5a'/>
       </properties>
     </artifact>
-    <artifact classifier='osgi.bundle' id='com.google.inject' version='4.0.0.beta5'>
+    <artifact classifier='osgi.bundle' id='com.google.inject' version='4.0.0'>
       <properties size='3'>
-        <property name='artifact.size' value='642741'/>
-        <property name='download.size' value='642741'/>
-        <property name='download.md5' value='558420aa2b09594b91f22c1d033feff1'/>
+        <property name='artifact.size' value='668235'/>
+        <property name='download.size' value='668235'/>
+        <property name='download.md5' value='969e114e22733923ba147331dd779ed5'/>
       </properties>
     </artifact>
-    <artifact classifier='osgi.bundle' id='com.google.inject.servlet' version='4.0.0.beta5'>
+    <artifact classifier='osgi.bundle' id='com.google.inject.servlet' version='4.0.0'>
       <properties size='3'>
-        <property name='artifact.size' value='76375'/>
-        <property name='download.size' value='76375'/>
-        <property name='download.md5' value='d9039687b29bb0045ae9a16ad3cb5fc2'/>
+        <property name='artifact.size' value='76983'/>
+        <property name='download.size' value='76983'/>
+        <property name='download.md5' value='b6f771dfeb63ceeb123175a1229df809'/>
       </properties>
     </artifact>
     <artifact classifier='osgi.bundle' id='org.testng' version='6.7.0'>
