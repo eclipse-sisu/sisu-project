@@ -65,7 +65,7 @@ public final class SisuIndexAPT6
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final String QUALIFIERS = "qualifiers";
+    private static final String QUALIFIERS = "sisu.qualifiers";
 
     private static final String ALL = "all";
 

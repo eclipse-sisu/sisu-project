@@ -33,7 +33,7 @@ final class QualifierCache
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private static final Map<String, Boolean> cachedResults = new ConcurrentHashMap<String, Boolean>( 32, 0.75f, 1 );
+    private static final Map<String, Boolean> cachedResults = seedResults();
 
     private boolean isQualified;
 
@@ -86,5 +86,34 @@ final class QualifierCache
             return isQualified;
         }
         return result.booleanValue();
+    }
+
+    /**
+     * Seeds the cache with the fully-qualified names listed in the 'sisu.qualifier' system property.
+     * 
+     * @return Seeded results
+     */
+    private static Map<String, Boolean> seedResults()
+    {
+        final Map<String, Boolean> results = new ConcurrentHashMap<String, Boolean>( 32, 0.75f, 1 );
+        try
+        {
+            final String qualifiers = System.getProperty( "sisu.qualifiers" );
+            if ( qualifiers != null && qualifiers.length() > 0 )
+            {
+                final StringBuilder buf = new StringBuilder( "L" );
+                for ( final String q : qualifiers.trim().split( "\\s*,\\s*" ) )
+                {
+                    buf.append( q.replace( '.', '/' ) ).append( ';' );
+                    results.put( buf.toString(), Boolean.TRUE );
+                    buf.setLength( 1 );
+                }
+            }
+        }
+        catch ( final RuntimeException e ) // NOPMD
+        {
+            // couldn't access system property, leave results unseeded
+        }
+        return results;
     }
 }
