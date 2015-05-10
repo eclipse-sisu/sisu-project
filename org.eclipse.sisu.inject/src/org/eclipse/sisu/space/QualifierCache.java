@@ -89,7 +89,7 @@ final class QualifierCache
     }
 
     /**
-     * Seeds the cache with the fully-qualified names listed in the 'sisu.qualifier' system property.
+     * Seeds the cache with the fully-qualified names listed in the 'sisu.qualifiers' system property.
      * 
      * @return Seeded results
      */
