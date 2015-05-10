@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.processing.Completion;
@@ -131,6 +132,12 @@ public final class SisuIndexAPT6
         {
             return Collections.emptySet();
         }
+        if ( qualifiers != null && qualifiers.length() > 0 )
+        {
+            final Set<String> annotationTypes = new HashSet<String>();
+            Collections.addAll( annotationTypes, qualifiers.trim().split( "\\s*,\\s*" ) );
+            return annotationTypes;
+        }
         return Collections.singleton( NAMED );
     }
 
@@ -174,6 +181,10 @@ public final class SisuIndexAPT6
     {
         return environment.getFiler().createResource( StandardLocation.CLASS_OUTPUT, "", path ).openWriter();
     }
+
+    // ----------------------------------------------------------------------
+    // Implementation methods
+    // ----------------------------------------------------------------------
 
     private static boolean hasQualifier( final TypeElement anno )
     {
