@@ -89,6 +89,10 @@ public final class SisuIndexAPT6
     {
         environment = _environment;
         qualifiers = _environment.getOptions().get( QUALIFIERS );
+        if ( null == qualifiers )
+        {
+            qualifiers = System.getProperty( QUALIFIERS );
+        }
     }
 
     public boolean process( final Set<? extends TypeElement> annotations, final RoundEnvironment round )
