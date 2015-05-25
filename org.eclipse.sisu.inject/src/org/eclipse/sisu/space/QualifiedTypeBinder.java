@@ -278,6 +278,32 @@ public final class QualifiedTypeBinder
     }
 
     /**
+     * Binds the given qualified instance using a binding key determined by common-use heuristics.
+     * 
+     * @param qualifiedInstance The qualified instance
+     */
+    private void bindQualifiedInstance( final Object qualifiedInstance )
+    {
+        final Class qualifiedType = qualifiedInstance.getClass();
+
+        final Named bindingName = getBindingName( qualifiedType );
+        final Class<?>[] types = getBindingTypes( qualifiedType );
+
+        if ( null != types )
+        {
+            final Key key = getBindingKey( OBJECT_TYPE_LITERAL, bindingName );
+            for ( final Class bindingType : types )
+            {
+                binder.bind( key.ofType( bindingType ) ).toInstance( qualifiedInstance );
+            }
+        }
+        else
+        {
+            binder.bind( WildcardKey.get( qualifiedType, bindingName ) ).toInstance( qualifiedInstance );
+        }
+    }
+
+    /**
      * Attempts to create a new instance of the given type.
      * 
      * @param type The instance type
@@ -290,7 +316,12 @@ public final class QualifiedTypeBinder
             // slightly roundabout approach, but it might be private
             final Constructor<T> ctor = type.getDeclaredConstructor();
             ctor.setAccessible( true );
-            return ctor.newInstance();
+
+            // record this instance was created
+            final T instance = ctor.newInstance();
+            bindQualifiedInstance( instance );
+
+            return instance;
         }
         catch ( final Exception e )
         {
