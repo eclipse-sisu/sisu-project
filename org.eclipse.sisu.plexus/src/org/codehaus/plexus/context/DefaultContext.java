@@ -24,7 +24,8 @@ public class DefaultContext
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    protected final Map<Object, Object> contextData = new ConcurrentHashMap<Object, Object>();
+    protected final Map<Object, Object> contextData = //
+        new ConcurrentHashMap<Object, Object>( 16, 0.75f, 1 );
 
     // ----------------------------------------------------------------------
     // Constructors

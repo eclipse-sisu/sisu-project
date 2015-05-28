@@ -67,7 +67,8 @@ public final class ClassRealmManager
 
     private static final Map<ClassRealm, Set<String>> visibility = Weak.concurrentKeys();
 
-    private final ConcurrentMap<ClassRealm, Injector> injectors = new ConcurrentHashMap<ClassRealm, Injector>();
+    private final ConcurrentMap<ClassRealm, Injector> injectors =
+        new ConcurrentHashMap<ClassRealm, Injector>( 16, 0.75f, 1 );
 
     private final MutablePlexusContainer plexusContainer;
 
