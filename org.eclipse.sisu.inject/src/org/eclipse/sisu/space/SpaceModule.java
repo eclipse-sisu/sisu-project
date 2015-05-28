@@ -50,7 +50,8 @@ public final class SpaceModule
 
     private static final class RecordedElements
     {
-        static final ConcurrentMap<String, List<Element>> cache = new ConcurrentHashMap<String, List<Element>>();
+        static final ConcurrentMap<String, List<Element>> cache = //
+            new ConcurrentHashMap<String, List<Element>>( 16, 0.75f, 1 );
     }
 
     private final boolean caching;

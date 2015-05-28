@@ -28,7 +28,8 @@ public final class LifecycleManager
 
     private final LifecycleBuilder builder = new LifecycleBuilder();
 
-    private final Map<Class<?>, BeanLifecycle> lifecycles = new ConcurrentHashMap<Class<?>, BeanLifecycle>();
+    private final Map<Class<?>, BeanLifecycle> lifecycles = //
+        new ConcurrentHashMap<Class<?>, BeanLifecycle>( 16, 0.75f, 1 );
 
     private final List<Object> stoppableBeans = new ArrayList<Object>();
 

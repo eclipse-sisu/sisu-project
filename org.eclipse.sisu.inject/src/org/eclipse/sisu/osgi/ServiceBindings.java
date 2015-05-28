@@ -40,7 +40,7 @@ public final class ServiceBindings
     // ----------------------------------------------------------------------
 
     private final ConcurrentMap<String, BindingTracker<?>> trackers =
-        new ConcurrentHashMap<String, BindingTracker<?>>();
+        new ConcurrentHashMap<String, BindingTracker<?>>( 16, 0.75f, 1 );
 
     private final BundleContext context;
 
