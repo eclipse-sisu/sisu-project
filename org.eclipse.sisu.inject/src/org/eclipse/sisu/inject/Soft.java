@@ -76,7 +76,7 @@ public final class Soft
      */
     public static <K, V> ConcurrentMap<K, V> concurrentKeys()
     {
-        return concurrentKeys( 16, 4 );
+        return concurrentKeys( 16, 1 );
     }
 
     /**
@@ -111,7 +111,7 @@ public final class Soft
      */
     public static <K, V> ConcurrentMap<K, V> concurrentValues()
     {
-        return concurrentValues( 16, 4 );
+        return concurrentValues( 16, 1 );
     }
 
     /**
