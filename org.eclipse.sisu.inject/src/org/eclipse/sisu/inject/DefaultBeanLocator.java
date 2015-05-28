@@ -38,7 +38,7 @@ public final class DefaultBeanLocator
 
     private final RankedSequence<BindingPublisher> publishers = new RankedSequence<BindingPublisher>();
 
-    private final ConcurrentMap<Long, RankedBindings> cachedBindings = Weak.concurrentValues( 256, 8 );
+    private final ConcurrentMap<Long, RankedBindings> cachedBindings = Weak.concurrentValues( 256, 1 );
 
     // reverse mapping; can't use watcher as key since it may not be unique
     private final Map<WatchedBeans, Object> cachedWatchers = Weak.values();
