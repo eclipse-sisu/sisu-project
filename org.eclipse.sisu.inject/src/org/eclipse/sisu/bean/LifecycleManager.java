@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.sisu.bean;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -30,7 +30,7 @@ public final class LifecycleManager
 
     private final Map<Class<?>, BeanLifecycle> lifecycles = new ConcurrentHashMap<Class<?>, BeanLifecycle>();
 
-    private final List<Object> stoppableBeans = new ArrayList<Object>();
+    private final Deque<Object> stoppableBeans = new ArrayDeque<Object>();
 
     // ----------------------------------------------------------------------
     // Public methods
@@ -132,11 +132,11 @@ public final class LifecycleManager
         return BeanLifecycle.NO_OP;
     }
 
-    private boolean pushStoppable( final Object bean )
+    private void pushStoppable( final Object bean )
     {
         synchronized ( stoppableBeans )
         {
-            return stoppableBeans.add( bean );
+            stoppableBeans.addLast( bean );
         }
     }
 
@@ -152,8 +152,7 @@ public final class LifecycleManager
     {
         synchronized ( stoppableBeans )
         {
-            final int size = stoppableBeans.size();
-            return size > 0 ? stoppableBeans.remove( size - 1 ) : null;
+            return stoppableBeans.pollLast();
         }
     }
 }
