@@ -11,8 +11,8 @@
 package org.eclipse.sisu.plexus;
 
 import java.security.SecureClassLoader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 import javax.inject.Provider;
 
@@ -52,9 +52,9 @@ public final class PlexusLifecycleManager
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final List<Startable> startableBeans = new ArrayList<Startable>();
+    private final Deque<Startable> startableBeans = new ArrayDeque<Startable>();
 
-    private final List<Disposable> disposableBeans = new ArrayList<Disposable>();
+    private final Deque<Disposable> disposableBeans = new ArrayDeque<Disposable>();
 
     private final Logger consoleLogger = new ConsoleLogger();
 
@@ -136,7 +136,7 @@ public final class PlexusLifecycleManager
     {
         if ( bean instanceof Disposable )
         {
-            synchronizedAdd( disposableBeans, (Disposable) bean );
+            synchronizedPush( disposableBeans, (Disposable) bean );
         }
         if ( bean instanceof LogEnabled )
         {
@@ -164,11 +164,11 @@ public final class PlexusLifecycleManager
 
     public boolean unmanage()
     {
-        for ( Startable bean; ( bean = synchronizedRemoveLast( startableBeans ) ) != null; )
+        for ( Startable bean; ( bean = synchronizedPop( startableBeans ) ) != null; )
         {
             stop( bean );
         }
-        for ( Disposable bean; ( bean = synchronizedRemoveLast( disposableBeans ) ) != null; )
+        for ( Disposable bean; ( bean = synchronizedPop( disposableBeans ) ) != null; )
         {
             dispose( bean );
         }
@@ -210,7 +210,7 @@ public final class PlexusLifecycleManager
             {
                 // register before calling start in case it fails
                 final Startable startableBean = (Startable) bean;
-                synchronizedAdd( startableBeans, startableBean );
+                synchronizedPush( startableBeans, startableBean );
                 start( startableBean );
             }
         }
@@ -250,32 +250,27 @@ public final class PlexusLifecycleManager
         }
     }
 
-    private static <T> boolean synchronizedAdd( final List<T> list, final T element )
+    private static <T> void synchronizedPush( final Deque<T> deque, final T element )
     {
-        synchronized ( list )
+        synchronized ( deque )
         {
-            return list.add( element );
+            deque.addLast( element );
         }
     }
 
-    private static boolean synchronizedRemove( final List<?> list, final Object element )
+    private static boolean synchronizedRemove( final Deque<?> deque, final Object element )
     {
-        synchronized ( list )
+        synchronized ( deque )
         {
-            return list.remove( element );
+            return deque.remove( element );
         }
     }
 
-    private static <T> T synchronizedRemoveLast( final List<T> list )
+    private static <T> T synchronizedPop( final Deque<T> deque )
     {
-        synchronized ( list )
+        synchronized ( deque )
         {
-            final int size = list.size();
-            if ( size > 0 )
-            {
-                return list.remove( size - 1 );
-            }
-            return null;
+            return deque.pollLast();
         }
     }
 
