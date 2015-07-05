@@ -12,6 +12,7 @@ package org.eclipse.sisu.plexus;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -72,12 +73,12 @@ public class DateConstantTest
 
     public void testDateFormat1()
     {
-        assertEquals( dateText1, new SimpleDateFormat( "yyyy-MM-dd h:mm:ss.S a" ).format( date1 ) );
+        assertEquals( dateText1, new SimpleDateFormat( "yyyy-MM-dd h:mm:ss.S a", Locale.US ).format( date1 ) );
     }
 
     public void testDateFormat2()
     {
-        assertEquals( dateText2, new SimpleDateFormat( "yyyy-MM-dd h:mm:ssa" ).format( date2 ) );
+        assertEquals( dateText2, new SimpleDateFormat( "yyyy-MM-dd h:mm:ssa", Locale.US ).format( date2 ) );
     }
 
     public void testBadDateFormat()
