@@ -48,7 +48,7 @@ public abstract class AbstractConfigurationConverter
             {
                 result = evaluator.evaluate( value );
             }
-            if ( null == result )
+            if ( null == result && configuration.getChildCount() == 0 )
             {
                 value = configuration.getAttribute( "default-value" );
                 if ( null != value && value.length() > 0 )
