@@ -23,17 +23,14 @@
   <artifactId>org.eclipse.sisu.inject</artifactId>
   <packaging>eclipse-plugin</packaging>
 
-  <!--
-   | Minimum requirements
-  -->
   <dependencies>
     <!--
-     | Can use guice or sisu-guice; AOP or No-AOP (faster)
+     | Sisu is compatible with Guice 3.0+
     -->
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
-      <version>3.0</version>
+      <version>4.0</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
