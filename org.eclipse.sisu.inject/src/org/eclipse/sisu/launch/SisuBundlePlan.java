@@ -59,6 +59,10 @@ public class SisuBundlePlan
      */
     protected boolean appliesTo( final Bundle bundle )
     {
+        if (bundle.getHeaders().get("Bundle-Blueprint") != null)
+        {
+            return false;
+        }
         final String imports = bundle.getHeaders().get( Constants.IMPORT_PACKAGE );
         return null != imports && ( imports.contains( "javax.inject" ) || imports.contains( "com.google.inject" ) );
     }
