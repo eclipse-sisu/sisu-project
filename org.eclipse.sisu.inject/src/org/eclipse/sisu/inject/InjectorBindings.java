@@ -135,12 +135,14 @@ public final class InjectorBindings
 
     private static <T, S> boolean isAssignableFrom( final TypeLiteral<T> type, final Binding<S> binding )
     {
-        // don't match the exact implementation as it's already covered by an explicit binding
         final Class<?> implementation = Implementations.find( binding );
         if ( null != implementation && type.getRawType() != implementation )
         {
             return TypeArguments.isAssignableFrom( type, TypeLiteral.get( implementation ) );
         }
+        // either the implementation couldn't be deduced or we're looking up the exact implementation;
+        // Guice includes an untargeted binding for the implementation which will have been reported
+        // by publishExactMatches, so ignore generic/wildcard matches here to avoid duplicate results.
         return false;
     }
 

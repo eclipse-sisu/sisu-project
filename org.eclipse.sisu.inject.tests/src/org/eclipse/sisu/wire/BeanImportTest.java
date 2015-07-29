@@ -122,6 +122,11 @@ public class BeanImportTest
         }
     }
 
+    @Named( "CustomName" )
+    public static class ImplWithName
+    {
+    }
+
     public static abstract class AbstractY
         implements Y
     {
@@ -172,6 +177,10 @@ public class BeanImportTest
         @Inject
         @Named( "fixed" )
         Y fixed;
+
+        @Inject
+        @Named( "CustomName" )
+        ImplWithName implWithName;
 
         @Inject
         Map<Annotation, Y> annotatedMap;
@@ -419,6 +428,8 @@ public class BeanImportTest
             {
             } );
             bind( Z.class ).annotatedWith( Names.named( "raw" ) ).to( ZImpl.class );
+
+            bind( ImplWithName.class );
 
             bind( ParameterKeys.PROPERTIES ).toInstance( PROPS );
         }
