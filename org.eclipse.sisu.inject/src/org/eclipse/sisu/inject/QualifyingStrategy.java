@@ -19,6 +19,7 @@ import com.google.inject.Binding;
 import com.google.inject.Key;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
+import com.google.inject.spi.ConstructorBinding;
 import com.google.inject.spi.ProviderKeyBinding;
 
 /**
@@ -54,7 +55,24 @@ enum QualifyingStrategy
         final Annotation qualifies( final Key<?> requirement, final Binding<?> binding )
         {
             final Annotation qualifier = qualify( binding.getKey() );
-            return requirement.getAnnotation().equals( qualifier ) ? qualifier : null;
+            if ( requirement.getAnnotation().equals( qualifier ) )
+            {
+                return qualifier;
+            }
+
+            // special case for untargeted constructor binding: treat @Named on implementation as an alias
+            if ( binding instanceof ConstructorBinding<?> && null == binding.getKey().getAnnotationType() )
+            {
+                final Class<?> clazz = binding.getKey().getTypeLiteral().getRawType();
+                final javax.inject.Named alias = clazz.getAnnotation( javax.inject.Named.class );
+                if ( null != alias && alias.value().equals( ( (Named) requirement.getAnnotation() ).value() )
+                    && clazz.equals( Implementations.find( binding ) ) )
+                {
+                    return requirement.getAnnotation();
+                }
+            }
+
+            return null;
         }
     },
     MARKED
