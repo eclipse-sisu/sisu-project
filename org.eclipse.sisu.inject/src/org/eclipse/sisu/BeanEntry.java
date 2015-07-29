@@ -79,7 +79,7 @@ public interface BeanEntry<Q extends Annotation, T>
      * Returns the bean's rank; higher ranked beans override lower ranked beans.
      * 
      * @return Assigned rank
-     * @see org.eclipse.sisu.inject.RankingFunction
+     * @see Priority
      */
     int getRank();
 }

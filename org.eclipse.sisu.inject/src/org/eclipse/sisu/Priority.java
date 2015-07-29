@@ -17,7 +17,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Defines the priority ordering of a bean:<br>
+ * Defines the priority ordering of a bean, higher values have higher priority:<br>
  * <br>
  * 
  * <pre>
@@ -28,6 +28,12 @@ import java.lang.annotation.Target;
  *     //
  * }
  * </pre>
+ * 
+ * Implicit priorities start at zero for default beans, negative for non-default.<br>
+ * <br>
+ * 
+ * @see org.eclipse.sisu.inject.RankingFunction
+ * @see BeanEntry#getRank()
  */
 @Target( value = { ElementType.TYPE } )
 @Retention( RetentionPolicy.RUNTIME )
