@@ -33,5 +33,10 @@
 <unit id="org.eclipse.jdt.apt.core" version="3.3.500.v20110420-1015"/>
 <repository location="http://download.eclipse.org/eclipse/updates/3.7/"/>
 </location>
+<location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
+<unit id="org.eclipse.sisu.inject" version="0.0.0"/>
+<unit id="org.eclipse.sisu.inject.extender" version="0.0.0"/>
+<repository location="https://hudson.eclipse.org/sisu/job/sisu-inject-nightly/lastSuccessfulBuild/artifact/org.eclipse.sisu.inject.site/target/repository/"/>
+</location>
 </locations>
 </target>
