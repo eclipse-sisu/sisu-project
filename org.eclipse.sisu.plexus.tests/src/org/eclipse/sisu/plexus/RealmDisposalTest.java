@@ -17,7 +17,7 @@ import junit.framework.TestCase;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 
-public class DefaultPlexusContainerTest
+public class RealmDisposalTest
     extends TestCase
 {
     private ClassLoader origCL;
