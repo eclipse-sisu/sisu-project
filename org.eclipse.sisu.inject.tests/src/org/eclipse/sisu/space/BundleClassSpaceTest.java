@@ -11,9 +11,10 @@
 package org.eclipse.sisu.space;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.net.URL;
-import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,11 +27,7 @@ import org.apache.felix.framework.FrameworkFactory;
 import org.eclipse.sisu.inject.DeferredClass;
 import org.junit.Ignore;
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
-import org.osgi.framework.ServiceReference;
-import org.osgi.framework.Version;
 import org.osgi.framework.launch.Framework;
 
 @Ignore( "Need to replace some test archives" )
@@ -200,140 +197,18 @@ public class BundleClassSpaceTest
 
     public void testBrokenResources()
     {
-        final ClassSpace space = new BundleClassSpace( new Bundle()
+        final InvocationHandler handler = new InvocationHandler()
         {
-            public Enumeration<?> getResources( final String name )
-                throws IOException
+            public Object invoke( final Object proxy, final Method method, final Object[] args )
+                throws Throwable
             {
-                throw new IOException(); // the rest of the methods aren't used...
+                throw new IOException();
             }
+        };
 
-            public void update( final InputStream input )
-                throws BundleException
-            {
-            }
-
-            public void update()
-                throws BundleException
-            {
-            }
-
-            public void uninstall()
-                throws BundleException
-            {
-            }
-
-            public void stop( final int options )
-                throws BundleException
-            {
-            }
-
-            public void stop()
-                throws BundleException
-            {
-            }
-
-            public void start( final int options )
-                throws BundleException
-            {
-            }
-
-            public void start()
-                throws BundleException
-            {
-            }
-
-            public Class<?> loadClass( final String name )
-                throws ClassNotFoundException
-            {
-                return null;
-            }
-
-            public boolean hasPermission( final Object permission )
-            {
-                return false;
-            }
-
-            public Version getVersion()
-            {
-                return null;
-            }
-
-            public String getSymbolicName()
-            {
-                return null;
-            }
-
-            public int getState()
-            {
-                return 0;
-            }
-
-            public Map<?, ?> getSignerCertificates( final int signersType )
-            {
-                return null;
-            }
-
-            public ServiceReference[] getServicesInUse()
-            {
-                return null;
-            }
-
-            public URL getResource( final String name )
-            {
-                return null;
-            }
-
-            public ServiceReference[] getRegisteredServices()
-            {
-                return null;
-            }
-
-            public String getLocation()
-            {
-                return null;
-            }
-
-            public long getLastModified()
-            {
-                return 0;
-            }
-
-            public Dictionary<?, ?> getHeaders( final String locale )
-            {
-                return null;
-            }
-
-            public Dictionary<?, ?> getHeaders()
-            {
-                return null;
-            }
-
-            public Enumeration<?> getEntryPaths( final String path )
-            {
-                return null;
-            }
-
-            public URL getEntry( final String path )
-            {
-                return null;
-            }
-
-            public long getBundleId()
-            {
-                return 0;
-            }
-
-            public BundleContext getBundleContext()
-            {
-                return null;
-            }
-
-            public Enumeration<?> findEntries( final String path, final String filePattern, final boolean recurse )
-            {
-                return null;
-            }
-        } );
+        final ClassSpace space =
+            new BundleClassSpace( (Bundle) Proxy.newProxyInstance( Bundle.class.getClassLoader(),
+                                                                   new Class<?>[] { Bundle.class }, handler ) );
 
         assertFalse( space.getResources( "error" ).hasMoreElements() );
     }
