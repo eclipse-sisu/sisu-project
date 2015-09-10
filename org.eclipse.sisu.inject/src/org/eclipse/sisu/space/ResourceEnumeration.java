@@ -141,7 +141,7 @@ final class ResourceEnumeration
      * @param path The path to normalize
      * @return Normalized search path
      */
-    private static String normalizeSearchPath( final String path )
+    static String normalizeSearchPath( final String path )
     {
         if ( null == path || "/".equals( path ) )
         {
