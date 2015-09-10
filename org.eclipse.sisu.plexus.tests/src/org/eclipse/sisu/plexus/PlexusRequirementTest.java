@@ -600,7 +600,7 @@ public class PlexusRequirementTest
     {
         final List<URL> urls = new ArrayList<URL>();
         urls.add( new File( "target/dependency/plexus-component-annotations-1.2.1.jar" ).toURI().toURL() );
-        Collections.addAll( urls, ( (URLClassLoader) getClass().getClassLoader() ).getURLs() );
+        Collections.addAll( urls, new URLClassSpace( getClass().getClassLoader() ).getURLs() );
 
         // check binding works with Plexus 1.2.1 annotations: @Requirement does not have optional setting
         final ClassLoader legacyLoader = new URLClassLoader( urls.toArray( new URL[urls.size()] ), null )

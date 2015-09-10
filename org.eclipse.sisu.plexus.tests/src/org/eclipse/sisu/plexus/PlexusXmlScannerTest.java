@@ -366,7 +366,7 @@ public class PlexusXmlScannerTest
 
             // check everything still works without any SLF4J jars
             final ClassLoader noLoggingLoader =
-                new URLClassLoader( ( (URLClassLoader) getClass().getClassLoader() ).getURLs(), null )
+                new URLClassLoader( new URLClassSpace( getClass().getClassLoader() ).getURLs(), null )
                 {
                     @Override
                     protected synchronized Class<?> loadClass( final String name, final boolean resolve )
