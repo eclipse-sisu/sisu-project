@@ -264,7 +264,7 @@ public class URLClassSpace
         {
             try
             {
-                urls[i] = ( new File( paths[i] ).toURI().toURL() );
+                urls[i] = new File( paths[i] ).toURI().toURL();
             }
             catch ( final MalformedURLException e )
             {
