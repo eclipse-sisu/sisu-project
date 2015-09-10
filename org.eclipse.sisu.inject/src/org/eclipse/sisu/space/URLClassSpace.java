@@ -173,13 +173,11 @@ public class URLClassSpace
 
     public final Enumeration<URL> findEntries( final String path, final String glob, final boolean recurse )
     {
-        if ( null != SYSTEM_LOADER && loader == SYSTEM_LOADER && null == pathDetails )
+        // short-circuit finding resources with fixed names from default system class-path
+        if ( null != SYSTEM_LOADER && loader == SYSTEM_LOADER && null == pathDetails // NOSONAR
+            && !recurse && null != glob && glob.indexOf( '*' ) < 0 )
         {
-            // short-circuit finding resources with fixed names from default system class-path
-            if ( !recurse && null != glob && glob.indexOf( '*' ) < 0 )
-            {
-                return getResources( ResourceEnumeration.normalizeSearchPath( path ) + glob );
-            }
+            return getResources( ResourceEnumeration.normalizeSearchPath( path ) + glob );
         }
         return new ResourceEnumeration( path, glob, recurse, getClassPath() );
     }
@@ -238,7 +236,7 @@ public class URLClassSpace
                         break;
                     }
                 }
-                else if ( null != SYSTEM_LOADER && l == SYSTEM_LOADER )
+                else if ( null != SYSTEM_LOADER && l == SYSTEM_LOADER ) // NOSONAR
                 {
                     classPath = expandClassPath( getSystemClassPath() );
                     break;
