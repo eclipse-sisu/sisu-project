@@ -10,12 +10,7 @@
  *******************************************************************************/
 package org.eclipse.sisu.inject;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,10 +22,6 @@ import org.slf4j.LoggerFactory;
 public class LogsTest
     extends TestCase
 {
-    public static final ClassLoader WITH_SLF4J = isolatedClassLoader( false );
-
-    public static final ClassLoader WITHOUT_SLF4J = isolatedClassLoader( true );
-
     public void testLogging()
     {
         new LoggingExample();
@@ -43,11 +34,25 @@ public class LogsTest
         {
             ( (ch.qos.logback.classic.Logger) LoggerFactory.getLogger( Logs.class ) ).setLevel( ch.qos.logback.classic.Level.WARN );
 
-            WITH_SLF4J.loadClass( LoggingExample.class.getName() ).newInstance();
+            final ClassLoader productionLoader =
+                new URLClassLoader( ( (URLClassLoader) getClass().getClassLoader() ).getURLs(), null )
+                {
+                    @Override
+                    protected synchronized Class<?> loadClass( final String name, final boolean resolve )
+                        throws ClassNotFoundException
+                    {
+                        if ( name.startsWith( "ch" ) || name.contains( "cobertura" ) )
+                        {
+                            return LogsTest.class.getClassLoader().loadClass( name );
+                        }
+                        return super.loadClass( name, resolve );
+                    }
+                };
+
+            productionLoader.loadClass( LoggingExample.class.getName() ).newInstance();
         }
         finally
         {
-            // no-op
         }
     }
 
@@ -67,7 +72,26 @@ public class LogsTest
         {
             rootLogger.setLevel( Level.FINE );
 
-            WITHOUT_SLF4J.loadClass( LoggingExample.class.getName() ).newInstance();
+            final ClassLoader noSLF4JLoader =
+                new URLClassLoader( ( (URLClassLoader) getClass().getClassLoader() ).getURLs(), null )
+                {
+                    @Override
+                    protected synchronized Class<?> loadClass( final String name, final boolean resolve )
+                        throws ClassNotFoundException
+                    {
+                        if ( name.contains( "slf4j" ) )
+                        {
+                            throw new ClassNotFoundException( name );
+                        }
+                        if ( name.contains( "cobertura" ) )
+                        {
+                            return LogsTest.class.getClassLoader().loadClass( name );
+                        }
+                        return super.loadClass( name, resolve );
+                    }
+                };
+
+            noSLF4JLoader.loadClass( LoggingExample.class.getName() ).newInstance();
         }
         finally
         {
@@ -81,54 +105,26 @@ public class LogsTest
         System.setProperty( "org.eclipse.sisu.log", "console" );
         try
         {
-            WITH_SLF4J.loadClass( LoggingExample.class.getName() ).newInstance();
+            final ClassLoader consoleLoader =
+                new URLClassLoader( ( (URLClassLoader) getClass().getClassLoader() ).getURLs(), null )
+                {
+                    @Override
+                    protected synchronized Class<?> loadClass( final String name, final boolean resolve )
+                        throws ClassNotFoundException
+                    {
+                        if ( name.contains( "cobertura" ) )
+                        {
+                            return LogsTest.class.getClassLoader().loadClass( name );
+                        }
+                        return super.loadClass( name, resolve );
+                    }
+                };
+
+            consoleLoader.loadClass( LoggingExample.class.getName() ).newInstance();
         }
         finally
         {
             System.clearProperty( "org.eclipse.sisu.log" );
         }
-    }
-
-    private static ClassLoader isolatedClassLoader( final boolean hideSLF4j )
-    {
-        return new URLClassLoader( systemClassPath(), null )
-        {
-            @Override
-            protected synchronized Class<?> loadClass( final String name, final boolean resolve )
-                throws ClassNotFoundException
-            {
-                if ( hideSLF4j && name.contains( "slf4j" ) )
-                {
-                    throw new ClassNotFoundException( name );
-                }
-                if ( !hideSLF4j && name.startsWith( "ch" ) || name.contains( "cobertura" ) )
-                {
-                    return LogsTest.class.getClassLoader().loadClass( name );
-                }
-                return super.loadClass( name, resolve );
-            }
-        };
-    }
-
-    private static URL[] systemClassPath()
-    {
-        final ClassLoader testClassLoader = LogsTest.class.getClassLoader();
-        if ( testClassLoader instanceof URLClassLoader )
-        {
-            return ( (URLClassLoader) testClassLoader ).getURLs();
-        }
-        final List<URL> urls = new ArrayList<URL>();
-        for ( final String path : System.getProperty( "java.class.path", "." ).split( File.pathSeparator ) )
-        {
-            try
-            {
-                urls.add( new File( path ).getAbsoluteFile().toURI().toURL() );
-            }
-            catch ( final MalformedURLException e )
-            {
-                // skip bad classpath entry
-            }
-        }
-        return urls.toArray( new URL[urls.size()] );
     }
 }
