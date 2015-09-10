@@ -175,7 +175,7 @@ public class URLClassSpace
     {
         if ( null != SYSTEM_LOADER && loader == SYSTEM_LOADER && null == pathDetails )
         {
-            // short-circuit look up resources with fixed names from default system class-path
+            // short-circuit finding resources with fixed names from default system class-path
             if ( !recurse && null != glob && glob.indexOf( '*' ) < 0 )
             {
                 return getResources( ResourceEnumeration.normalizeSearchPath( path ) + glob );
