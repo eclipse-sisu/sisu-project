@@ -173,9 +173,9 @@ public class URLClassSpace
 
     public final Enumeration<URL> findEntries( final String path, final String glob, final boolean recurse )
     {
-        if ( null != SYSTEM_LOADER && loader == SYSTEM_LOADER )
+        if ( null != SYSTEM_LOADER && loader == SYSTEM_LOADER && null == pathDetails )
         {
-            // short-circuit looking up fixed names from system loader
+            // short-circuit look up resources with fixed names from default system class-path
             if ( !recurse && null != glob && glob.indexOf( '*' ) < 0 )
             {
                 return getResources( ResourceEnumeration.normalizeSearchPath( path ) + glob );
