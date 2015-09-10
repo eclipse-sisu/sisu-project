@@ -15,6 +15,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.net.URLStreamHandler;
 import java.net.URLStreamHandlerFactory;
 import java.util.ArrayList;
@@ -33,7 +34,6 @@ import javax.inject.Singleton;
 import junit.framework.TestCase;
 
 import org.eclipse.sisu.inject.DeferredClass;
-import org.eclipse.sisu.inject.LogsTest;
 import org.eclipse.sisu.space.oops.Handler;
 import org.junit.Ignore;
 
@@ -315,7 +315,26 @@ public class QualifiedScanningTest
             Logger.getLogger( "" ).setLevel( Level.SEVERE );
 
             // check everything still works without any SLF4J jars
-            LogsTest.WITHOUT_SLF4J.loadClass( BrokenScanningExample.class.getName() ).newInstance();
+            final ClassLoader noLoggingLoader =
+                new URLClassLoader( ( (URLClassLoader) getClass().getClassLoader() ).getURLs(), null )
+                {
+                    @Override
+                    protected synchronized Class<?> loadClass( final String name, final boolean resolve )
+                        throws ClassNotFoundException
+                    {
+                        if ( name.contains( "slf4j" ) )
+                        {
+                            throw new ClassNotFoundException( name );
+                        }
+                        if ( name.contains( "cobertura" ) )
+                        {
+                            return QualifiedScanningTest.class.getClassLoader().loadClass( name );
+                        }
+                        return super.loadClass( name, resolve );
+                    }
+                };
+
+            noLoggingLoader.loadClass( BrokenScanningExample.class.getName() ).newInstance();
         }
         finally
         {
