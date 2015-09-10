@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.sisu.space;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -35,6 +36,33 @@ public class URLClassSpace
     implements ClassSpace
 {
     // ----------------------------------------------------------------------
+    // Static initialization
+    // ----------------------------------------------------------------------
+
+    static
+    {
+        ClassLoader systemLoader;
+        String classPath;
+        try
+        {
+            systemLoader = ClassLoader.getSystemClassLoader();
+            classPath = System.getProperty( "java.class.path", "." );
+        }
+        catch ( final RuntimeException e )
+        {
+            systemLoader = null;
+            classPath = null;
+        }
+        catch ( final LinkageError e )
+        {
+            systemLoader = null;
+            classPath = null;
+        }
+        SYSTEM_LOADER = systemLoader;
+        SYSTEM_CLASSPATH = classPath;
+    }
+
+    // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
 
@@ -45,6 +73,10 @@ public class URLClassSpace
     private static final Enumeration<URL> NO_ENTRIES = Collections.enumeration( Collections.<URL> emptySet() );
 
     private static final String[] EMPTY_CLASSPATH = {};
+
+    private static final ClassLoader SYSTEM_LOADER;
+
+    private static final String SYSTEM_CLASSPATH;
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -198,6 +230,11 @@ public class URLClassSpace
                         break;
                     }
                 }
+                else if ( null != SYSTEM_LOADER && l == SYSTEM_LOADER )
+                {
+                    classPath = expandClassPath( getSystemClassPath() );
+                    break;
+                }
             }
             if ( null == classPath )
             {
@@ -205,6 +242,28 @@ public class URLClassSpace
             }
         }
         return classPath;
+    }
+
+    /**
+     * Returns the system {@link URL} class path.
+     */
+    private static URL[] getSystemClassPath()
+    {
+        final String[] paths = SYSTEM_CLASSPATH.split( File.pathSeparator );
+
+        final URL[] urls = new URL[paths.length];
+        for ( int i = 0; i < paths.length; i++ )
+        {
+            try
+            {
+                urls[i] = ( new File( paths[i] ).toURI().toURL() );
+            }
+            catch ( final MalformedURLException e )
+            {
+                urls[i] = null; // ignore malformed class-path entry
+            }
+        }
+        return urls;
     }
 
     /**
