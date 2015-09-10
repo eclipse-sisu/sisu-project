@@ -29,8 +29,7 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  * 
- * Implicit priorities start at zero for default beans, negative for non-default.<br>
- * <br>
+ * Implicit priorities start at zero for default beans, negative for non-default.
  * 
  * @see org.eclipse.sisu.inject.RankingFunction
  * @see BeanEntry#getRank()
