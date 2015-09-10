@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 import junit.framework.TestCase;
 
+import org.eclipse.sisu.space.URLClassSpace;
 import org.slf4j.LoggerFactory;
 
 public class LogsTest
@@ -35,7 +36,7 @@ public class LogsTest
             ( (ch.qos.logback.classic.Logger) LoggerFactory.getLogger( Logs.class ) ).setLevel( ch.qos.logback.classic.Level.WARN );
 
             final ClassLoader productionLoader =
-                new URLClassLoader( ( (URLClassLoader) getClass().getClassLoader() ).getURLs(), null )
+                new URLClassLoader( new URLClassSpace( getClass().getClassLoader() ).getURLs(), null )
                 {
                     @Override
                     protected synchronized Class<?> loadClass( final String name, final boolean resolve )
@@ -73,7 +74,7 @@ public class LogsTest
             rootLogger.setLevel( Level.FINE );
 
             final ClassLoader noSLF4JLoader =
-                new URLClassLoader( ( (URLClassLoader) getClass().getClassLoader() ).getURLs(), null )
+                new URLClassLoader( new URLClassSpace( getClass().getClassLoader() ).getURLs(), null )
                 {
                     @Override
                     protected synchronized Class<?> loadClass( final String name, final boolean resolve )
@@ -106,7 +107,7 @@ public class LogsTest
         try
         {
             final ClassLoader consoleLoader =
-                new URLClassLoader( ( (URLClassLoader) getClass().getClassLoader() ).getURLs(), null )
+                new URLClassLoader( new URLClassSpace( getClass().getClassLoader() ).getURLs(), null )
                 {
                     @Override
                     protected synchronized Class<?> loadClass( final String name, final boolean resolve )
