@@ -315,7 +315,10 @@ public final class QualifiedTypeBinder
         {
             // slightly roundabout approach, but it might be private
             final Constructor<T> ctor = type.getDeclaredConstructor();
-            ctor.setAccessible( true );
+            if ( !ctor.isAccessible() )
+            {
+                ctor.setAccessible( true );
+            }
 
             // record this instance was created
             final T instance = ctor.newInstance();
