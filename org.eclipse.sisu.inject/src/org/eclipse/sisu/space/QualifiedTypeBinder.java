@@ -14,6 +14,8 @@ import java.lang.annotation.Annotation;
 import java.lang.annotation.IncompleteAnnotationException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 import javax.inject.Provider;
 
@@ -291,7 +293,14 @@ public final class QualifiedTypeBinder
             final Constructor<T> ctor = type.getDeclaredConstructor();
             if ( !ctor.isAccessible() )
             {
-                ctor.setAccessible( true );
+                AccessController.doPrivileged( new PrivilegedAction<Void>()
+                {
+                    public Void run()
+                    {
+                        ctor.setAccessible( true );
+                        return null;
+                    }
+                } );
             }
             return ctor.newInstance();
         }
