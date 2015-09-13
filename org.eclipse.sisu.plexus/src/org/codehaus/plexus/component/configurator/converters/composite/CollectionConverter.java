@@ -67,7 +67,7 @@ public class CollectionConverter
                 elements =
                     fromChildren( lookup, configuration, type, enclosingType, loader, evaluator, listener, elementType );
             }
-            else if ( value instanceof String && ( "".equals( value ) || !value.equals( configuration.getValue() ) ) )
+            else if ( value instanceof String )
             {
                 final PlexusConfiguration xml = csvToXml( configuration, (String) value );
                 elements = fromChildren( lookup, xml, type, enclosingType, loader, evaluator, listener, elementType );
