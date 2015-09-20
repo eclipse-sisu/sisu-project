@@ -114,13 +114,6 @@
           </plugin>
         </plugins>
       </build>
-      <dependencies>
-        <dependency>
-          <groupId>org.eclipse.tycho</groupId>
-          <artifactId>org.eclipse.osgi</artifactId>
-          <version>3.9.1.v20130814-1242</version>
-        </dependency>
-      </dependencies>
     </profile>
   </profiles>
 
