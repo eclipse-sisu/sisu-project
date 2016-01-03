@@ -146,16 +146,6 @@ public final class DefaultBeanLocator
         }
     }
 
-    public void add( final Injector injector, final int rank )
-    {
-        add( new InjectorBindings( injector, new DefaultRankingFunction( rank ) ) );
-    }
-
-    public void remove( final Injector injector )
-    {
-        remove( new InjectorBindings( injector, null /* unused */) );
-    }
-
     // ----------------------------------------------------------------------
     // Implementation methods
     // ----------------------------------------------------------------------

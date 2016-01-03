@@ -192,7 +192,6 @@ public class DefaultBeanLocatorTest
         assertFalse( new InjectorBindings( child2, function2 ).hashCode() == new InjectorBindings( child1, function2 ).hashCode() );
     }
 
-    @SuppressWarnings( "deprecation" )
     public void testInjectorOrdering()
     {
         final MutableBeanLocator locator = new DefaultBeanLocator();
@@ -200,11 +199,11 @@ public class DefaultBeanLocatorTest
         final Iterable<? extends Entry<Named, Bean>> roles =
             locator.<Named, Bean> locate( Key.get( Bean.class, Named.class ) );
 
-        locator.add( parent, 0 );
-        locator.add( child1, 1 );
-        locator.add( child2, 2 );
-        locator.add( child3, 3 );
-        locator.add( child4, 4 );
+        publishInjector( locator, parent, 0 );
+        publishInjector( locator, child1, 1 );
+        publishInjector( locator, child2, 2 );
+        publishInjector( locator, child3, 3 );
+        publishInjector( locator, child4, 4 );
 
         Iterator<? extends Entry<Named, Bean>> i;
 
@@ -220,7 +219,7 @@ public class DefaultBeanLocatorTest
         assertEquals( Names.named( "Z" ), i.next().getKey() );
         assertFalse( i.hasNext() );
 
-        locator.remove( child1 );
+        unpublishInjector( locator, child1 );
 
         i = roles.iterator();
         assertEquals( Names.named( "default" ), i.next().getKey() );
@@ -231,7 +230,7 @@ public class DefaultBeanLocatorTest
         assertEquals( Names.named( "Z" ), i.next().getKey() );
         assertFalse( i.hasNext() );
 
-        locator.add( child1, 4 );
+        publishInjector( locator, child1, 4 );
 
         i = roles.iterator();
         assertEquals( Names.named( "default" ), i.next().getKey() );
@@ -245,8 +244,8 @@ public class DefaultBeanLocatorTest
         assertEquals( Names.named( "Z" ), i.next().getKey() );
         assertFalse( i.hasNext() );
 
-        locator.remove( child2 );
-        locator.remove( child2 );
+        unpublishInjector( locator, child2 );
+        unpublishInjector( locator, child2 );
 
         i = roles.iterator();
         assertEquals( Names.named( "default" ), i.next().getKey() );
@@ -260,9 +259,9 @@ public class DefaultBeanLocatorTest
         assertEquals( Names.named( "Z" ), i.next().getKey() );
         assertFalse( i.hasNext() );
 
-        locator.remove( child3 );
-        locator.add( child3, 5 );
-        locator.add( child3, 5 );
+        unpublishInjector( locator, child3 );
+        publishInjector( locator, child3, 5 );
+        publishInjector( locator, child3, 5 );
 
         i = roles.iterator();
         assertEquals( Names.named( "default" ), i.next().getKey() );
@@ -276,7 +275,7 @@ public class DefaultBeanLocatorTest
         assertEquals( Names.named( "Z" ), i.next().getKey() );
         assertFalse( i.hasNext() );
 
-        locator.remove( parent );
+        unpublishInjector( locator, parent );
 
         i = roles.iterator();
         assertEquals( Names.named( "default" ), i.next().getKey() );
@@ -287,7 +286,7 @@ public class DefaultBeanLocatorTest
         assertEquals( Names.named( "N1" ), i.next().getKey() );
         assertFalse( i.hasNext() );
 
-        locator.remove( child1 );
+        unpublishInjector( locator, child1 );
 
         i = roles.iterator();
         assertEquals( Names.named( "default" ), i.next().getKey() );
@@ -295,15 +294,15 @@ public class DefaultBeanLocatorTest
         assertEquals( Names.named( "N3" ), i.next().getKey() );
         assertFalse( i.hasNext() );
 
-        locator.remove( child3 );
+        unpublishInjector( locator, child3 );
 
         i = roles.iterator();
         assertFalse( i.hasNext() );
 
-        locator.add( parent, 3 );
-        locator.add( child1, 2 );
-        locator.add( child2, 1 );
-        locator.add( child3, 0 );
+        publishInjector( locator, parent, 3 );
+        publishInjector( locator, child1, 2 );
+        publishInjector( locator, child2, 1 );
+        publishInjector( locator, child3, 0 );
 
         i = roles.iterator();
         assertEquals( Names.named( "default" ), i.next().getKey() );
@@ -323,19 +322,18 @@ public class DefaultBeanLocatorTest
         assertFalse( i.hasNext() );
     }
 
-    @SuppressWarnings( "deprecation" )
     public void testExistingInjectors()
     {
         final MutableBeanLocator locator = new DefaultBeanLocator();
 
-        locator.add( parent, 0 );
-        locator.add( child1, 1 );
+        publishInjector( locator, parent, 0 );
+        publishInjector( locator, child1, 1 );
 
         Iterable<? extends Entry<Named, Bean>> roles =
             locator.<Named, Bean> locate( Key.get( Bean.class, Named.class ) );
 
-        locator.add( child2, 2 );
-        locator.add( child3, 3 );
+        publishInjector( locator, child2, 2 );
+        publishInjector( locator, child3, 3 );
 
         Iterator<? extends Entry<Named, Bean>> i;
 
@@ -356,5 +354,15 @@ public class DefaultBeanLocatorTest
         System.gc();
 
         locator.clear();
+    }
+
+    private static void publishInjector( final MutableBeanLocator locator, final Injector injector, final int rank )
+    {
+        locator.add( new InjectorBindings( injector, new DefaultRankingFunction( rank ) ) );
+    }
+
+    private static void unpublishInjector( final MutableBeanLocator locator, final Injector injector )
+    {
+        locator.remove( new InjectorBindings( injector, null /* unused */ ) );
     }
 }

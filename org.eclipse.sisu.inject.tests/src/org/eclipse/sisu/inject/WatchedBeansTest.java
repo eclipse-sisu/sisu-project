@@ -97,7 +97,7 @@ public class WatchedBeansTest
         }
     }
 
-    @SuppressWarnings( { "deprecation", "rawtypes", "unchecked" } )
+    @SuppressWarnings( { "rawtypes", "unchecked" } )
     public void testWatchedBeans()
     {
         final MutableBeanLocator locator = new DefaultBeanLocator();
@@ -107,11 +107,11 @@ public class WatchedBeansTest
 
         assertTrue( names.isEmpty() );
 
-        locator.add( parent, 0 );
+        publishInjector( locator, parent, 0 );
 
         checkNames( names, "A", "B", "C" );
 
-        locator.add( child1, 1 );
+        publishInjector( locator, child1, 1 );
 
         checkNames( names, "X", "A", "B", "C" );
 
@@ -142,7 +142,7 @@ public class WatchedBeansTest
 
         checkNames( names, "X", "A", "B", "C", "Y" );
 
-        locator.remove( parent );
+        unpublishInjector( locator, parent );
 
         checkNames( names, "X", "Y" );
 
@@ -154,7 +154,7 @@ public class WatchedBeansTest
 
         checkNames( names, "X" );
 
-        locator.add( child1, 42 );
+        publishInjector( locator, child1, 42 );
 
         checkNames( names, "X" );
 
@@ -162,11 +162,11 @@ public class WatchedBeansTest
 
         checkNames( names, "X" );
 
-        locator.add( child3, 3 );
+        publishInjector( locator, child3, 3 );
 
         checkNames( names, "Z", "X" );
 
-        locator.add( parent, 2 );
+        publishInjector( locator, parent, 2 );
 
         checkNames( names, "Z", "A", "B", "C", "X" );
 
@@ -177,8 +177,8 @@ public class WatchedBeansTest
         names = null;
         System.gc();
 
-        locator.add( parent, Integer.MAX_VALUE );
-        locator.remove( parent );
+        publishInjector( locator, parent, Integer.MAX_VALUE );
+        unpublishInjector( locator, parent );
     }
 
     static class BrokenMediator
@@ -195,16 +195,16 @@ public class WatchedBeansTest
         }
     }
 
-    @SuppressWarnings( { "deprecation", "rawtypes", "unchecked" } )
+    @SuppressWarnings( { "rawtypes", "unchecked" } )
     public void testBrokenWatcher()
     {
         final MutableBeanLocator locator = new DefaultBeanLocator();
 
         Object keepAlive = new Object();
 
-        locator.add( parent, 0 );
+        publishInjector( locator, parent, 0 );
         locator.watch( Key.get( Bean.class, Named.class ), new BrokenMediator(), keepAlive );
-        locator.remove( parent );
+        unpublishInjector( locator, parent );
 
         final BindingSubscriber[] subscriberHolder = new BindingSubscriber[1];
         final BindingPublisher subscriberHook = new BindingPublisher()
@@ -245,5 +245,15 @@ public class WatchedBeansTest
             assertEquals( n, itr.next() );
         }
         assertFalse( itr.hasNext() );
+    }
+
+    private static void publishInjector( final MutableBeanLocator locator, final Injector injector, final int rank )
+    {
+        locator.add( new InjectorBindings( injector, new DefaultRankingFunction( rank ) ) );
+    }
+
+    private static void unpublishInjector( final MutableBeanLocator locator, final Injector injector )
+    {
+        locator.remove( new InjectorBindings( injector, null /* unused */ ) );
     }
 }

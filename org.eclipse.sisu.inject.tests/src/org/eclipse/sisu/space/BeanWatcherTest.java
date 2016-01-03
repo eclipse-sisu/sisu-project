@@ -23,6 +23,7 @@ import javax.inject.Qualifier;
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.EagerSingleton;
 import org.eclipse.sisu.Mediator;
+import org.eclipse.sisu.inject.InjectorBindings;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 
 import com.google.inject.AbstractModule;
@@ -185,7 +186,6 @@ public class BeanWatcherTest
         } ).injectMembers( this );
     }
 
-    @SuppressWarnings( "deprecation" )
     public void testWatchers()
     {
         assertTrue( CItem.initialized );
@@ -205,7 +205,7 @@ public class BeanWatcherTest
         assertTrue( markedItemWatcher.items.get( Integer.valueOf( 0 ) ) instanceof BItem );
         assertTrue( markedItemWatcher.items.get( Integer.valueOf( 1 ) ) instanceof DItem );
 
-        injector.getInstance( MutableBeanLocator.class ).remove( injector );
+        injector.getInstance( MutableBeanLocator.class ).remove( new InjectorBindings( injector, null /* unused */ ) );
 
         assertEquals( 0, namedItemWatcher.items.size() );
         assertEquals( 0, markedItemWatcher.items.size() );
