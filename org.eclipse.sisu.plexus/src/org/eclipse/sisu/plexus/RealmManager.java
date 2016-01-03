@@ -30,7 +30,7 @@ import com.google.inject.Injector;
 /**
  * Manages {@link ClassRealm} associated data for the Plexus container.
  */
-public final class ClassRealmManager
+public final class RealmManager
     implements ClassWorldListener
 {
     // ----------------------------------------------------------------------
@@ -79,7 +79,7 @@ public final class ClassRealmManager
     // Constructors
     // ----------------------------------------------------------------------
 
-    public ClassRealmManager( final MutablePlexusContainer plexusContainer, final MutableBeanLocator beanLocator )
+    public RealmManager( final MutablePlexusContainer plexusContainer, final MutableBeanLocator beanLocator )
     {
         this.plexusContainer = plexusContainer;
         this.beanLocator = beanLocator;

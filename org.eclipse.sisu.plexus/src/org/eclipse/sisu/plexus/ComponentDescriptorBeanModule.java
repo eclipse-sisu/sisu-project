@@ -181,7 +181,7 @@ public final class ComponentDescriptorBeanModule
                 ClassRealm contextRealm = container.getLookupRealm();
                 if ( null == contextRealm )
                 {
-                    contextRealm = ClassRealmManager.contextRealm();
+                    contextRealm = RealmManager.contextRealm();
                 }
                 if ( null == contextRealm )
                 {

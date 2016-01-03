@@ -46,7 +46,7 @@ final class RealmFilteredBeans<T>
 
     public Iterator<BeanEntry<Named, T>> iterator()
     {
-        final Set<String> realmNames = ClassRealmManager.visibleRealmNames( ClassRealmManager.contextRealm() );
+        final Set<String> realmNames = RealmManager.visibleRealmNames( RealmManager.contextRealm() );
         if ( null != realmNames && realmNames.size() > 0 )
         {
             return new FilteredItr( realmNames );

@@ -52,7 +52,6 @@ import org.eclipse.sisu.inject.DeferredProvider;
 import org.eclipse.sisu.inject.InjectorBindings;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.inject.RankingFunction;
-import org.eclipse.sisu.plexus.ClassRealmManager;
 import org.eclipse.sisu.plexus.ComponentDescriptorBeanModule;
 import org.eclipse.sisu.plexus.DefaultPlexusBeanLocator;
 import org.eclipse.sisu.plexus.Hints;
@@ -66,6 +65,7 @@ import org.eclipse.sisu.plexus.PlexusDateTypeConverter;
 import org.eclipse.sisu.plexus.PlexusLifecycleManager;
 import org.eclipse.sisu.plexus.PlexusXmlBeanConverter;
 import org.eclipse.sisu.plexus.PlexusXmlBeanModule;
+import org.eclipse.sisu.plexus.RealmManager;
 import org.eclipse.sisu.space.BeanScanning;
 import org.eclipse.sisu.space.ClassSpace;
 import org.eclipse.sisu.space.LoadedClass;
@@ -131,7 +131,7 @@ public final class DefaultPlexusContainer
 
     final ClassRealm containerRealm;
 
-    final ClassRealmManager classRealmManager;
+    final RealmManager realmManager;
 
     final PlexusBeanLocator plexusBeanLocator;
 
@@ -180,8 +180,8 @@ public final class DefaultPlexusContainer
         variables = new ContextMapAdapter( context );
 
         containerRealm = lookupContainerRealm( configuration );
-        classRealmManager = new ClassRealmManager( this, qualifiedBeanLocator );
-        containerRealm.getWorld().addListener( classRealmManager );
+        realmManager = new RealmManager( this, qualifiedBeanLocator );
+        containerRealm.getWorld().addListener( realmManager );
 
         componentVisibility = configuration.getComponentVisibility();
         isAutoWiringEnabled = configuration.getAutoWiring();
@@ -448,7 +448,7 @@ public final class DefaultPlexusContainer
                 {
                     beanModules.add( new ComponentDescriptorBeanModule( space, descriptors ) );
                 }
-                if ( !classRealmManager.isManaged( realm ) )
+                if ( !realmManager.isManaged( realm ) )
                 {
                     beanModules.add( new PlexusXmlBeanModule( space, variables ) );
                     final BeanScanning local = BeanScanning.GLOBAL_INDEX == scanning ? BeanScanning.INDEX : scanning;
@@ -457,7 +457,7 @@ public final class DefaultPlexusContainer
             }
             if ( !beanModules.isEmpty() )
             {
-                classRealmManager.manage( realm, addPlexusInjector( beanModules, customModules ) );
+                realmManager.manage( realm, addPlexusInjector( beanModules, customModules ) );
             }
         }
         catch ( final RuntimeException e )
@@ -593,7 +593,7 @@ public final class DefaultPlexusContainer
 
         lookupRealm.remove();
 
-        containerRealm.getWorld().removeListener( classRealmManager );
+        containerRealm.getWorld().removeListener( realmManager );
     }
 
     // ----------------------------------------------------------------------
@@ -759,14 +759,14 @@ public final class DefaultPlexusContainer
         {
             visibleRealms.add( currentLookupRealm );
         }
-        final ClassRealm threadContextRealm = ClassRealmManager.contextRealm();
+        final ClassRealm threadContextRealm = RealmManager.contextRealm();
         if ( null != threadContextRealm )
         {
             visibleRealms.add( threadContextRealm );
         }
         if ( PlexusConstants.REALM_VISIBILITY.equalsIgnoreCase( componentVisibility ) )
         {
-            final Collection<String> realmNames = ClassRealmManager.visibleRealmNames( threadContextRealm );
+            final Collection<String> realmNames = RealmManager.visibleRealmNames( threadContextRealm );
             if ( null != realmNames && realmNames.size() > 0 )
             {
                 for ( int i = realms.length - 1; i >= 0; i-- )
