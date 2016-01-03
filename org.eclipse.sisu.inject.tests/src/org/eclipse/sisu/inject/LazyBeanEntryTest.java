@@ -13,8 +13,6 @@ package org.eclipse.sisu.inject;
 import java.lang.annotation.Annotation;
 import java.util.Map.Entry;
 
-import junit.framework.TestCase;
-
 import org.eclipse.sisu.Description;
 import org.eclipse.sisu.inject.RankedBindingsTest.Bean;
 import org.eclipse.sisu.inject.RankedBindingsTest.BeanImpl;
@@ -30,6 +28,8 @@ import com.google.inject.Scopes;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 import com.google.inject.util.Providers;
+
+import junit.framework.TestCase;
 
 public class LazyBeanEntryTest
     extends TestCase

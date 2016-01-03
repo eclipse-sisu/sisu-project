@@ -12,8 +12,6 @@ package org.eclipse.sisu.bean;
 
 import javax.inject.Named;
 
-import junit.framework.TestCase;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.ConfigurationException;
 import com.google.inject.Guice;
@@ -23,6 +21,8 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.AbstractMatcher;
 import com.google.inject.name.Names;
 import com.google.inject.spi.TypeEncounter;
+
+import junit.framework.TestCase;
 
 public class PropertyListenerTest
     extends TestCase

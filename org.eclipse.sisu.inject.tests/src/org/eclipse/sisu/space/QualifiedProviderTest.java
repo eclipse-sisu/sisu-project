@@ -18,9 +18,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
 
-import junit.framework.TestCase;
-
 import com.google.inject.Guice;
+
+import junit.framework.TestCase;
 
 public class QualifiedProviderTest
     extends TestCase

@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.sisu.bean;
 
-import junit.framework.TestCase;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+
+import junit.framework.TestCase;
 
 public class LifecycleTest
     extends TestCase

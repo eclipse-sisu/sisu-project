@@ -15,10 +15,10 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import junit.framework.TestCase;
-
 import org.eclipse.sisu.space.URLClassSpace;
 import org.slf4j.LoggerFactory;
+
+import junit.framework.TestCase;
 
 public class LogsTest
     extends TestCase

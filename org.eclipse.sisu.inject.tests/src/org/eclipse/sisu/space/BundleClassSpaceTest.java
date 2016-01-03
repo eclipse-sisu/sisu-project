@@ -21,14 +21,14 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.jar.Manifest;
 
-import junit.framework.TestCase;
-
 import org.apache.felix.framework.FrameworkFactory;
 import org.eclipse.sisu.inject.DeferredClass;
 import org.junit.Ignore;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
 import org.osgi.framework.launch.Framework;
+
+import junit.framework.TestCase;
 
 @Ignore( "Need to replace some test archives" )
 public class BundleClassSpaceTest

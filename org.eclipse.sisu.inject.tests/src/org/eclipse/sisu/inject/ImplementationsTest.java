@@ -12,8 +12,6 @@ package org.eclipse.sisu.inject;
 
 import java.util.Iterator;
 
-import junit.framework.TestCase;
-
 import org.eclipse.sisu.inject.RankedBindingsTest.Bean;
 import org.eclipse.sisu.inject.RankedBindingsTest.BeanImpl;
 import org.eclipse.sisu.space.LoadedClass;
@@ -33,6 +31,8 @@ import com.google.inject.spi.BindingTargetVisitor;
 import com.google.inject.spi.ElementVisitor;
 import com.google.inject.spi.UntargettedBinding;
 import com.google.inject.util.Providers;
+
+import junit.framework.TestCase;
 
 public class ImplementationsTest
     extends TestCase

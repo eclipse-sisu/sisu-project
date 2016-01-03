@@ -24,13 +24,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
-import junit.framework.TestCase;
-
 import com.google.inject.ImplementedBy;
 import com.google.inject.ProvidedBy;
 import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
 import com.google.inject.util.Types;
+
+import junit.framework.TestCase;
 
 public class TypeArgumentsTest
     extends TestCase

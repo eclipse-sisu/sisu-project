@@ -14,9 +14,9 @@ import java.lang.reflect.Member;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import junit.framework.TestCase;
-
 import org.junit.Ignore;
+
+import junit.framework.TestCase;
 
 public class DeclaredMembersTest
     extends TestCase

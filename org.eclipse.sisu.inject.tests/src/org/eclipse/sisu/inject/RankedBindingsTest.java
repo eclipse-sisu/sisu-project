@@ -13,8 +13,6 @@ package org.eclipse.sisu.inject;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import junit.framework.TestCase;
-
 import org.eclipse.sisu.Hidden;
 
 import com.google.inject.AbstractModule;
@@ -24,6 +22,8 @@ import com.google.inject.ImplementedBy;
 import com.google.inject.Injector;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
+
+import junit.framework.TestCase;
 
 public class RankedBindingsTest
     extends TestCase

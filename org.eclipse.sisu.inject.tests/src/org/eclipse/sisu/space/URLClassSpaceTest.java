@@ -20,11 +20,11 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.jar.Manifest;
 
-import junit.framework.TestCase;
-
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.space.oops.Handler;
 import org.junit.Ignore;
+
+import junit.framework.TestCase;
 
 @Ignore( "Need to replace some test archives" )
 public class URLClassSpaceTest

@@ -28,8 +28,6 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import junit.framework.TestCase;
-
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.Dynamic;
 import org.eclipse.sisu.Nullable;
@@ -54,6 +52,8 @@ import com.google.inject.ProvisionException;
 import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
+
+import junit.framework.TestCase;
 
 public class BeanImportTest
     extends TestCase

@@ -14,8 +14,6 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 
-import junit.framework.TestCase;
-
 import org.eclipse.sisu.inject.RankedBindingsTest.Bean;
 import org.eclipse.sisu.inject.RankedBindingsTest.BeanImpl;
 import org.eclipse.sisu.inject.RankedBindingsTest.BeanImpl2;
@@ -27,6 +25,8 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
+
+import junit.framework.TestCase;
 
 public class DefaultBeanLocatorTest
     extends TestCase

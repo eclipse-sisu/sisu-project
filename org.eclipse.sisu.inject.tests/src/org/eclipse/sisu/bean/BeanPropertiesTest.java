@@ -27,10 +27,10 @@ import java.util.NoSuchElementException;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import junit.framework.TestCase;
-
 import com.google.inject.TypeLiteral;
 import com.google.inject.util.Types;
+
+import junit.framework.TestCase;
 
 @SuppressWarnings( "unused" )
 public class BeanPropertiesTest

@@ -15,10 +15,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import junit.framework.TestCase;
-
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
+
+import junit.framework.TestCase;
 
 public class NamedIterableAdapterTest
     extends TestCase

@@ -20,8 +20,6 @@ import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Qualifier;
 
-import junit.framework.TestCase;
-
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.inject.RankedBindingsTest.Bean;
 import org.eclipse.sisu.inject.RankedBindingsTest.BeanImpl;
@@ -33,6 +31,8 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
 import com.google.inject.util.Providers;
+
+import junit.framework.TestCase;
 
 public class LocatedBeansTest
     extends TestCase

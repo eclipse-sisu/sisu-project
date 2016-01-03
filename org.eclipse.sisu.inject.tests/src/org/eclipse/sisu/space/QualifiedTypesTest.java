@@ -24,8 +24,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Qualifier;
 
-import junit.framework.TestCase;
-
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.EagerSingleton;
 import org.eclipse.sisu.Mediator;
@@ -39,6 +37,8 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
+
+import junit.framework.TestCase;
 
 public class QualifiedTypesTest
     extends TestCase

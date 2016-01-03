@@ -25,9 +25,9 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import junit.framework.TestCase;
-
 import org.junit.Ignore;
+
+import junit.framework.TestCase;
 
 @Ignore( "Need to replace some test archives" )
 public class FileEntryIteratorTest

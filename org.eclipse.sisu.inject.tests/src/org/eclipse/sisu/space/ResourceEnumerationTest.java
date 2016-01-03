@@ -17,9 +17,9 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
-import junit.framework.TestCase;
-
 import org.junit.Ignore;
+
+import junit.framework.TestCase;
 
 @Ignore( "Need to replace some test archives" )
 public class ResourceEnumerationTest

@@ -15,9 +15,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 
-import junit.framework.TestCase;
-
 import org.junit.Ignore;
+
+import junit.framework.TestCase;
 
 @Ignore( "Need to replace some test archives" )
 public class ZipEntryIteratorTest

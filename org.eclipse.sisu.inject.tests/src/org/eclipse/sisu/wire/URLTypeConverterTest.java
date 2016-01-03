@@ -12,13 +12,13 @@ package org.eclipse.sisu.wire;
 
 import java.net.URL;
 
-import junit.framework.TestCase;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.ConfigurationException;
 import com.google.inject.Guice;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
+
+import junit.framework.TestCase;
 
 public class URLTypeConverterTest
     extends TestCase

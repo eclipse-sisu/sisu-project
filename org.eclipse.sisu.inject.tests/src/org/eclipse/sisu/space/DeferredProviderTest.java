@@ -12,8 +12,6 @@ package org.eclipse.sisu.space;
 
 import javax.inject.Inject;
 
-import junit.framework.TestCase;
-
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.inject.DeferredProvider;
 
@@ -21,6 +19,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Provider;
 import com.google.inject.ProvisionException;
+
+import junit.framework.TestCase;
 
 public class DeferredProviderTest
     extends TestCase

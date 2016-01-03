@@ -13,14 +13,14 @@ package org.eclipse.sisu.inject;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import junit.framework.TestCase;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
+
+import junit.framework.TestCase;
 
 public class PriorityTest
     extends TestCase

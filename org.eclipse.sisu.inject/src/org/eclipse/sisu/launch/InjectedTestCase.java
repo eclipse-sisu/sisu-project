@@ -18,8 +18,6 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
-import junit.framework.TestCase;
-
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.space.BeanScanning;
 import org.eclipse.sisu.space.ClassSpace;
@@ -33,6 +31,8 @@ import com.google.inject.Guice;
 import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
+
+import junit.framework.TestCase;
 
 /**
  * Abstract JUnit3 {@link TestCase} that automatically binds and injects itself.

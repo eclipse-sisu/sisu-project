@@ -31,11 +31,11 @@ import javax.inject.Named;
 import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
-import junit.framework.TestCase;
-
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.space.oops.Handler;
 import org.junit.Ignore;
+
+import junit.framework.TestCase;
 
 public class QualifiedScanningTest
     extends TestCase

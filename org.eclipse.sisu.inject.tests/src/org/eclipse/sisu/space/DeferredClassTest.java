@@ -15,10 +15,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import junit.framework.TestCase;
-
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.inject.DeferredProvider;
+
+import junit.framework.TestCase;
 
 public class DeferredClassTest
     extends TestCase

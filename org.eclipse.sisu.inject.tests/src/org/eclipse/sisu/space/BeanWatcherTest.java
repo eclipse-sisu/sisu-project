@@ -20,8 +20,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Qualifier;
 
-import junit.framework.TestCase;
-
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.EagerSingleton;
 import org.eclipse.sisu.Mediator;
@@ -30,6 +28,8 @@ import org.eclipse.sisu.inject.MutableBeanLocator;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+
+import junit.framework.TestCase;
 
 public class BeanWatcherTest
     extends TestCase
