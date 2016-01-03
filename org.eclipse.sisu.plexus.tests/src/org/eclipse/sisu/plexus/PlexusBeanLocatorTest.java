@@ -13,8 +13,6 @@ package org.eclipse.sisu.plexus;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import junit.framework.TestCase;
-
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.classworlds.ClassWorldException;
 import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
@@ -33,6 +31,8 @@ import com.google.inject.Provider;
 import com.google.inject.ProvisionException;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
+
+import junit.framework.TestCase;
 
 @SuppressWarnings( "deprecation" )
 public class PlexusBeanLocatorTest

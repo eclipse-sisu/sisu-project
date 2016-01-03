@@ -12,8 +12,6 @@ package org.eclipse.sisu.plexus;
 
 import javax.inject.Inject;
 
-import junit.framework.TestCase;
-
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.bean.BeanManager;
@@ -24,6 +22,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
+
+import junit.framework.TestCase;
 
 public class PlexusLoggingTest
     extends TestCase

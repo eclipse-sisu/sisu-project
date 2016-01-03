@@ -12,10 +12,10 @@ package org.eclipse.sisu.plexus;
 
 import java.io.File;
 
-import junit.framework.TestCase;
-
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
+
+import junit.framework.TestCase;
 
 public class RealmDisposalTest
     extends TestCase

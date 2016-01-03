@@ -19,11 +19,11 @@ import java.util.Properties;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import junit.framework.TestCase;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.name.Names;
+
+import junit.framework.TestCase;
 
 public class MapConstantTest
     extends TestCase

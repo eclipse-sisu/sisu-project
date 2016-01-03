@@ -16,9 +16,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.codehaus.plexus.component.annotations.Requirement;
+
+import junit.framework.TestCase;
 
 public class RequirementAnnotationTest
     extends TestCase

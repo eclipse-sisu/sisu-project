@@ -13,9 +13,9 @@ package org.eclipse.sisu.plexus;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import junit.framework.TestCase;
-
 import org.codehaus.plexus.component.annotations.Component;
+
+import junit.framework.TestCase;
 
 public class ComponentAnnotationTest
     extends TestCase

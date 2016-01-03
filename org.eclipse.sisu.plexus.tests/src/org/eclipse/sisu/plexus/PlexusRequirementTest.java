@@ -23,8 +23,6 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import junit.framework.TestCase;
-
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.inject.DeferredClass;
@@ -39,6 +37,8 @@ import com.google.inject.Injector;
 import com.google.inject.ProvisionException;
 import com.google.inject.Scopes;
 import com.google.inject.name.Names;
+
+import junit.framework.TestCase;
 
 public class PlexusRequirementTest
     extends TestCase

@@ -12,8 +12,6 @@ package org.eclipse.sisu.plexus;
 
 import javax.inject.Inject;
 
-import junit.framework.TestCase;
-
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
@@ -25,6 +23,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.ProvisionException;
+
+import junit.framework.TestCase;
 
 public class PlexusConfigurationTest
     extends TestCase

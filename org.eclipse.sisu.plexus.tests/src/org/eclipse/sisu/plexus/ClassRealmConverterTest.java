@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
-import junit.framework.TestCase;
-
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.configurator.converters.special.ClassRealmConverter;
+
+import junit.framework.TestCase;
 
 public class ClassRealmConverterTest
     extends TestCase

@@ -13,8 +13,6 @@ package org.eclipse.sisu.plexus;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import junit.framework.TestCase;
-
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.bean.BeanManager;
@@ -29,6 +27,8 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
+
+import junit.framework.TestCase;
 
 public class PlexusBeanMetadataTest
     extends TestCase

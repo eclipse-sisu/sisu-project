@@ -13,8 +13,6 @@ package org.eclipse.sisu.plexus;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 
@@ -23,6 +21,8 @@ import com.google.inject.ProvisionException;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
 import com.google.inject.util.Types;
+
+import junit.framework.TestCase;
 
 public class RolesTest
     extends TestCase

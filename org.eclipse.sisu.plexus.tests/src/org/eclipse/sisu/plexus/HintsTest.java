@@ -13,9 +13,9 @@ package org.eclipse.sisu.plexus;
 import java.util.Arrays;
 import java.util.Collections;
 
-import junit.framework.TestCase;
-
 import org.codehaus.plexus.component.annotations.Requirement;
+
+import junit.framework.TestCase;
 
 public class HintsTest
     extends TestCase

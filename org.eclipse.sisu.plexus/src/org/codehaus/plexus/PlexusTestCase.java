@@ -16,12 +16,12 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
 import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.DefaultContext;
+
+import junit.framework.TestCase;
 
 public abstract class PlexusTestCase
     extends TestCase

@@ -14,13 +14,13 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.bean.BeanProperties;
 import org.eclipse.sisu.bean.BeanProperty;
+
+import junit.framework.TestCase;
 
 public class PlexusAnnotatedBeanMetadataTest
     extends TestCase

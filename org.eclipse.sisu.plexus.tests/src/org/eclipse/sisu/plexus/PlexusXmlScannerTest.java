@@ -21,8 +21,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import junit.framework.TestCase;
-
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.bean.BeanProperty;
@@ -36,6 +34,8 @@ import org.eclipse.sisu.space.asm.MethodVisitor;
 import org.eclipse.sisu.space.asm.Opcodes;
 
 import com.google.inject.TypeLiteral;
+
+import junit.framework.TestCase;
 
 public class PlexusXmlScannerTest
     extends TestCase

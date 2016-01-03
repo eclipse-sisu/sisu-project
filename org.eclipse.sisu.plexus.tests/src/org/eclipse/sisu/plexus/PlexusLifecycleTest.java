@@ -13,8 +13,6 @@ package org.eclipse.sisu.plexus;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import junit.framework.TestCase;
-
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
@@ -22,6 +20,8 @@ import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 
 import com.google.inject.AbstractModule;
+
+import junit.framework.TestCase;
 
 public class PlexusLifecycleTest
     extends TestCase
