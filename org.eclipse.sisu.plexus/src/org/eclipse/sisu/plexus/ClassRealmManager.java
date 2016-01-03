@@ -21,6 +21,7 @@ import java.util.concurrent.ConcurrentMap;
 import org.codehaus.plexus.MutablePlexusContainer;
 import org.codehaus.plexus.classworlds.ClassWorldListener;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
+import org.eclipse.sisu.inject.InjectorBindings;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.inject.Weak;
 
@@ -147,14 +148,13 @@ public final class ClassRealmManager
         // nothing to do
     }
 
-    @SuppressWarnings( "deprecation" )
     public void realmDisposed( final ClassRealm realm )
     {
         visibility.remove( realm );
         final Injector injector = injectors.remove( realm );
         if ( null != injector )
         {
-            beanLocator.remove( injector );
+            beanLocator.remove( new InjectorBindings( injector, null /* unused */ ) );
         }
     }
 

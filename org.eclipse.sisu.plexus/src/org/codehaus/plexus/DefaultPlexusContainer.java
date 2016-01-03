@@ -49,6 +49,7 @@ import org.eclipse.sisu.inject.DefaultBeanLocator;
 import org.eclipse.sisu.inject.DefaultRankingFunction;
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.inject.DeferredProvider;
+import org.eclipse.sisu.inject.InjectorBindings;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.inject.RankingFunction;
 import org.eclipse.sisu.plexus.ClassRealmManager;
@@ -337,11 +338,10 @@ public final class DefaultPlexusContainer
         }
     }
 
-    @SuppressWarnings( "deprecation" )
     public <T> void addComponent( final T component, final Class<?> role, final String hint )
     {
         // this is only used in Maven3 tests, so keep it simple...
-        qualifiedBeanLocator.add( Guice.createInjector( new Module()
+        qualifiedBeanLocator.add( new InjectorBindings( Guice.createInjector( new Module()
         {
             public void configure( final Binder binder )
             {
@@ -354,7 +354,7 @@ public final class DefaultPlexusContainer
                     binder.bind( (Class) role ).annotatedWith( Names.named( hint ) ).toInstance( component );
                 }
             }
-        } ), plexusRank.incrementAndGet() );
+        } ), new DefaultRankingFunction( plexusRank.incrementAndGet() ) ) );
     }
 
     public <T> void addComponentDescriptor( final ComponentDescriptor<T> descriptor )
