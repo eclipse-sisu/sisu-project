@@ -29,14 +29,17 @@ final class RealmFilteredBeans<T>
     // Implementation fields
     // ----------------------------------------------------------------------
 
+    private final RealmManager realmManager;
+
     final Iterable<BeanEntry<Named, T>> beans;
 
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
-    RealmFilteredBeans( final Iterable<BeanEntry<Named, T>> beans )
+    RealmFilteredBeans( final RealmManager realmManager, final Iterable<BeanEntry<Named, T>> beans )
     {
+        this.realmManager = realmManager;
         this.beans = beans;
     }
 
@@ -46,7 +49,7 @@ final class RealmFilteredBeans<T>
 
     public Iterator<BeanEntry<Named, T>> iterator()
     {
-        final Set<String> realmNames = RealmManager.visibleRealmNames( RealmManager.contextRealm() );
+        final Set<String> realmNames = realmManager.visibleRealmNames( RealmManager.contextRealm() );
         if ( null != realmNames && realmNames.size() > 0 )
         {
             return new FilteredItr( realmNames );

@@ -13,17 +13,14 @@ package org.eclipse.sisu.plexus;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.codehaus.plexus.MutablePlexusContainer;
 import org.codehaus.plexus.classworlds.ClassWorldListener;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.eclipse.sisu.inject.InjectorBindings;
 import org.eclipse.sisu.inject.MutableBeanLocator;
-import org.eclipse.sisu.inject.Weak;
 
 import com.google.inject.Injector;
 
@@ -66,12 +63,11 @@ public final class RealmManager
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private static final Map<ClassRealm, Set<String>> visibility = Weak.concurrentKeys();
+    private final ConcurrentMap<ClassRealm, Set<String>> visibility =
+        new ConcurrentHashMap<ClassRealm, Set<String>>( 16, 0.75f, 1 );
 
     private final ConcurrentMap<ClassRealm, Injector> injectors =
         new ConcurrentHashMap<ClassRealm, Injector>( 16, 0.75f, 1 );
-
-    private final MutablePlexusContainer plexusContainer;
 
     private final MutableBeanLocator beanLocator;
 
@@ -79,9 +75,8 @@ public final class RealmManager
     // Constructors
     // ----------------------------------------------------------------------
 
-    public RealmManager( final MutablePlexusContainer plexusContainer, final MutableBeanLocator beanLocator )
+    public RealmManager( final MutableBeanLocator beanLocator )
     {
-        this.plexusContainer = plexusContainer;
         this.beanLocator = beanLocator;
     }
 
@@ -110,14 +105,14 @@ public final class RealmManager
      * @param contextRealm The initial realm
      * @return Names of all realms visible from the given realm
      */
-    public static Set<String> visibleRealmNames( final ClassRealm contextRealm )
+    public Set<String> visibleRealmNames( final ClassRealm contextRealm )
     {
         if ( GET_IMPORT_REALMS_SUPPORTED && null != contextRealm )
         {
             Set<String> names = visibility.get( contextRealm );
             if ( null == names )
             {
-                visibility.put( contextRealm, names = computeVisibleNames( contextRealm ) );
+                visibility.putIfAbsent( contextRealm, names = computeVisibleNames( contextRealm ) );
             }
             return names;
         }
@@ -129,7 +124,7 @@ public final class RealmManager
      */
     public boolean isManaged( final ClassRealm realm )
     {
-        return injectors.containsKey( realm ) || realm == plexusContainer.getContainerRealm();
+        return injectors.containsKey( realm );
     }
 
     /**

@@ -36,6 +36,8 @@ public final class DefaultPlexusBeanLocator
 
     private final BeanLocator beanLocator;
 
+    private final RealmManager realmManager;
+
     private final String visibility;
 
     // ----------------------------------------------------------------------
@@ -45,12 +47,15 @@ public final class DefaultPlexusBeanLocator
     @Inject
     public DefaultPlexusBeanLocator( final BeanLocator beanLocator )
     {
-        this( beanLocator, null );
+        this( beanLocator, null, null );
     }
 
-    public DefaultPlexusBeanLocator( final BeanLocator beanLocator, final String visibility )
+    public DefaultPlexusBeanLocator( final BeanLocator beanLocator,
+                                     final RealmManager realmManager,
+                                     final String visibility )
     {
         this.beanLocator = beanLocator;
+        this.realmManager = realmManager;
         this.visibility = visibility;
     }
 
@@ -65,7 +70,7 @@ public final class DefaultPlexusBeanLocator
         Iterable<BeanEntry<Named, T>> beans = (Iterable<BeanEntry<Named, T>>) beanLocator.<Named, T> locate( key );
         if ( PlexusConstants.REALM_VISIBILITY.equalsIgnoreCase( visibility ) )
         {
-            beans = new RealmFilteredBeans<T>( beans );
+            beans = new RealmFilteredBeans<T>( realmManager, beans );
         }
         return hints.length <= 1 ? new DefaultPlexusBeans<T>( beans ) : new HintedPlexusBeans<T>( beans, role, hints );
     }

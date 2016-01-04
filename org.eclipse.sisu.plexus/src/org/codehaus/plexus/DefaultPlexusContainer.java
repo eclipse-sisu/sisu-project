@@ -180,7 +180,7 @@ public final class DefaultPlexusContainer
         variables = new ContextMapAdapter( context );
 
         containerRealm = lookupContainerRealm( configuration );
-        realmManager = new RealmManager( this, qualifiedBeanLocator );
+        realmManager = new RealmManager( qualifiedBeanLocator );
         containerRealm.getWorld().addListener( realmManager );
 
         componentVisibility = configuration.getComponentVisibility();
@@ -188,7 +188,7 @@ public final class DefaultPlexusContainer
 
         scanning = parseScanningOption( configuration.getClassPathScanning() );
 
-        plexusBeanLocator = new DefaultPlexusBeanLocator( qualifiedBeanLocator, componentVisibility );
+        plexusBeanLocator = new DefaultPlexusBeanLocator( qualifiedBeanLocator, realmManager, componentVisibility );
         final BeanManager jsr250Lifecycle = configuration.getJSR250Lifecycle() ? new LifecycleManager() : null;
         plexusBeanManager = new PlexusLifecycleManager( Providers.of( context ), loggerManagerProvider, //
                                                         new SLF4JLoggerFactoryProvider(), jsr250Lifecycle );
@@ -448,7 +448,7 @@ public final class DefaultPlexusContainer
                 {
                     beanModules.add( new ComponentDescriptorBeanModule( space, descriptors ) );
                 }
-                if ( !realmManager.isManaged( realm ) )
+                if ( containerRealm != realm && !realmManager.isManaged( realm ) )
                 {
                     beanModules.add( new PlexusXmlBeanModule( space, variables ) );
                     final BeanScanning local = BeanScanning.GLOBAL_INDEX == scanning ? BeanScanning.INDEX : scanning;
@@ -766,7 +766,7 @@ public final class DefaultPlexusContainer
         }
         if ( PlexusConstants.REALM_VISIBILITY.equalsIgnoreCase( componentVisibility ) )
         {
-            final Collection<String> realmNames = RealmManager.visibleRealmNames( threadContextRealm );
+            final Collection<String> realmNames = realmManager.visibleRealmNames( threadContextRealm );
             if ( null != realmNames && realmNames.size() > 0 )
             {
                 for ( int i = realms.length - 1; i >= 0; i-- )
