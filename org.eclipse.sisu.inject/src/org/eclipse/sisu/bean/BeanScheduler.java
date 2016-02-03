@@ -16,6 +16,8 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.matcher.Matcher;
 import com.google.inject.matcher.Matchers;
+import com.google.inject.spi.BindingScopingVisitor;
+import com.google.inject.spi.DefaultBindingScopingVisitor;
 
 /**
  * Schedules safe activation of beans even when cyclic dependencies are involved.<br>
@@ -147,7 +149,7 @@ public abstract class BeanScheduler
         }
 
         /**
-         * Activates all pending beans in order of registration.
+         * Activates pending beans in order of registration, that is in the order they finished injection.
          */
         public void activate()
         {
@@ -164,10 +166,26 @@ public abstract class BeanScheduler
     static final class Activator
         implements com.google.inject.spi.ProvisionListener
     {
+        private static final BindingScopingVisitor<Boolean> IS_SCOPED = new DefaultBindingScopingVisitor<Boolean>()
+        {
+            @Override
+            public Boolean visitNoScoping()
+            {
+                return Boolean.FALSE;
+            }
+
+            @Override
+            protected Boolean visitOther()
+            {
+                return Boolean.TRUE;
+            }
+        };
+
         public <T> void onProvision( final ProvisionInvocation<T> pi )
         {
             final Object[] holder = getPendingHolder();
-            if ( null == holder[0] )
+            // Only defer activation below scoped dependencies, as we can't be in an injection cycle before then
+            if ( null == holder[0] && Boolean.TRUE.equals( pi.getBinding().acceptScopingVisitor( IS_SCOPED ) ) )
             {
                 final Object pending;
                 holder[0] = PLACEHOLDER;
