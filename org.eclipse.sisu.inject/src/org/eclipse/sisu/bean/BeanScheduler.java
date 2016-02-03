@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
+import com.google.inject.Scopes;
 import com.google.inject.matcher.Matcher;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.spi.BindingScopingVisitor;
@@ -56,7 +57,9 @@ public abstract class BeanScheduler
 
     static final Object ACTIVATOR;
 
-    static final Object PLACEHOLDER = new Object();
+    static final Object CANDIDATE_CYCLE = new Object();
+
+    static final Object CYCLE_CONFIRMED = new Object();
 
     public static final Module MODULE = new Module()
     {
@@ -80,6 +83,24 @@ public abstract class BeanScheduler
     // ----------------------------------------------------------------------
 
     /**
+     * Detects if a dependency cycle exists and activation needs to be deferred.
+     */
+    public static void detectCycle( final Object value )
+    {
+        if ( null != ACTIVATOR )
+        {
+            if ( Scopes.isCircularProxy( value ) )
+            {
+                final Object[] holder = getPendingHolder();
+                if ( holder[0] == CANDIDATE_CYCLE )
+                {
+                    holder[0] = CYCLE_CONFIRMED;
+                }
+            }
+        }
+    }
+
+    /**
      * Schedules activation of the given bean at the next safe activation point.
      * 
      * @param bean The managed bean
@@ -90,7 +111,7 @@ public abstract class BeanScheduler
         {
             final Object[] holder = getPendingHolder();
             final Object pending = holder[0];
-            if ( pending == PLACEHOLDER )
+            if ( pending == CYCLE_CONFIRMED )
             {
                 holder[0] = new Pending( bean );
                 return; // will be activated later
@@ -183,24 +204,27 @@ public abstract class BeanScheduler
 
         public <T> void onProvision( final ProvisionInvocation<T> pi )
         {
-            final Object[] holder = getPendingHolder();
-            // Only defer activation below scoped dependencies, as we can't be in an injection cycle before then
-            if ( null == holder[0] && Boolean.TRUE.equals( pi.getBinding().acceptScopingVisitor( IS_SCOPED ) ) )
+            // Only scoped dependencies like singletons are candidates for dependency cycles
+            if ( Boolean.TRUE.equals( pi.getBinding().acceptScopingVisitor( IS_SCOPED ) ) )
             {
-                final Object pending;
-                holder[0] = PLACEHOLDER;
-                try
+                final Object[] holder = getPendingHolder();
+                if ( null == holder[0] )
                 {
-                    pi.provision(); // may involve nested calls/cycles
-                }
-                finally
-                {
-                    pending = holder[0];
-                    holder[0] = null;
-                }
-                if ( pending instanceof Pending )
-                {
-                    ( (Pending) pending ).activate();
+                    final Object pending;
+                    holder[0] = CANDIDATE_CYCLE;
+                    try
+                    {
+                        pi.provision(); // may involve nested calls/cycles
+                    }
+                    finally
+                    {
+                        pending = holder[0];
+                        holder[0] = null;
+                    }
+                    if ( pending instanceof Pending )
+                    {
+                        ( (Pending) pending ).activate();
+                    }
                 }
             }
         }

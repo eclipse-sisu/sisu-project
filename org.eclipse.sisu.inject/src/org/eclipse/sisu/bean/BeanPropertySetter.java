@@ -71,6 +71,8 @@ final class BeanPropertySetter<T>
             AccessController.doPrivileged( this );
         }
 
+        BeanScheduler.detectCycle( value );
+
         try
         {
             method.invoke( bean, value );
