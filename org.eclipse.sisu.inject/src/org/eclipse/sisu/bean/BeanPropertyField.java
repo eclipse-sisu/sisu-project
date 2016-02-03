@@ -67,6 +67,8 @@ final class BeanPropertyField<T>
             AccessController.doPrivileged( this );
         }
 
+        BeanScheduler.detectCycle( value );
+
         try
         {
             field.set( bean, value );
