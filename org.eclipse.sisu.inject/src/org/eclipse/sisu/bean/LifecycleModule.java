@@ -81,7 +81,6 @@ public final class LifecycleModule
 
     public void configure( final Binder binder )
     {
-        BeanScheduler.MODULE.configure( binder );
         binder.bind( BeanManager.class ).toInstance( manager );
         binder.bindListener( matcher, typeListener );
     }
