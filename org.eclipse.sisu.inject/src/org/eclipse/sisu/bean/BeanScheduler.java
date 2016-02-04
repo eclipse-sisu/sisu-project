@@ -61,6 +61,9 @@ public abstract class BeanScheduler
 
     static final Object CYCLE_CONFIRMED = new Object();
 
+    /**
+     * Enables deferred activation of component cycles, only needed in legacy systems like Plexus.
+     */
     public static final Module MODULE = new Module()
     {
         public void configure( final Binder binder )
