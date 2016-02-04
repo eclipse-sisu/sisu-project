@@ -79,7 +79,7 @@ public abstract class BeanScheduler
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private static final ThreadLocal<Object[]> pendingHolder = new ThreadLocal<Object[]>();
+    static final ThreadLocal<Object[]> pendingHolder = new ThreadLocal<Object[]>();
 
     // ----------------------------------------------------------------------
     // Public methods
@@ -90,12 +90,13 @@ public abstract class BeanScheduler
      */
     public static void detectCycle( final Object value )
     {
-        if ( null != ACTIVATOR )
+        if ( null != ACTIVATOR && Scopes.isCircularProxy( value ) )
         {
-            if ( Scopes.isCircularProxy( value ) )
+            final Object[] holder = pendingHolder.get();
+            if ( null != holder )
             {
-                final Object[] holder = getPendingHolder();
-                if ( holder[0] == CANDIDATE_CYCLE )
+                final Object pending = holder[0];
+                if ( CANDIDATE_CYCLE.equals( pending ) )
                 {
                     holder[0] = CYCLE_CONFIRMED;
                 }
@@ -112,17 +113,20 @@ public abstract class BeanScheduler
     {
         if ( null != ACTIVATOR )
         {
-            final Object[] holder = getPendingHolder();
-            final Object pending = holder[0];
-            if ( pending == CYCLE_CONFIRMED )
+            final Object[] holder = pendingHolder.get();
+            if ( null != holder )
             {
-                holder[0] = new Pending( bean );
-                return; // will be activated later
-            }
-            else if ( pending instanceof Pending )
-            {
-                ( (Pending) pending ).add( bean );
-                return; // will be activated later
+                final Object pending = holder[0];
+                if ( CYCLE_CONFIRMED.equals( pending ) )
+                {
+                    holder[0] = new Pending( bean );
+                    return; // will be activated later
+                }
+                else if ( pending instanceof Pending )
+                {
+                    ( (Pending) pending ).add( bean );
+                    return; // will be activated later
+                }
             }
         }
         activate( bean ); // no ProvisionListener, so activate immediately
@@ -138,23 +142,6 @@ public abstract class BeanScheduler
      * @param bean The bean to activate
      */
     protected abstract void activate( final Object bean );
-
-    // ----------------------------------------------------------------------
-    // Implementation methods
-    // ----------------------------------------------------------------------
-
-    /**
-     * @return Thread-local holder of any pending beans
-     */
-    static Object[] getPendingHolder()
-    {
-        Object[] holder = pendingHolder.get();
-        if ( null == holder )
-        {
-            pendingHolder.set( holder = new Object[1] );
-        }
-        return holder;
-    }
 
     // ----------------------------------------------------------------------
     // Implementation types
@@ -210,7 +197,11 @@ public abstract class BeanScheduler
             // Only scoped dependencies like singletons are candidates for dependency cycles
             if ( Boolean.TRUE.equals( pi.getBinding().acceptScopingVisitor( IS_SCOPED ) ) )
             {
-                final Object[] holder = getPendingHolder();
+                Object[] holder = pendingHolder.get();
+                if ( null == holder )
+                {
+                    pendingHolder.set( holder = new Object[1] );
+                }
                 if ( null == holder[0] )
                 {
                     final Object pending;
