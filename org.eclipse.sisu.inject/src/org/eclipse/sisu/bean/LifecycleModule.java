@@ -59,7 +59,21 @@ public final class LifecycleModule
         }
     };
 
-    final LifecycleManager manager = new LifecycleManager();
+    final BeanManager manager;
+
+    // ----------------------------------------------------------------------
+    // Constructors
+    // ----------------------------------------------------------------------
+
+    public LifecycleModule()
+    {
+        this( new LifecycleManager() );
+    }
+
+    public LifecycleModule( final BeanManager manager )
+    {
+        this.manager = manager;
+    }
 
     // ----------------------------------------------------------------------
     // Public methods
