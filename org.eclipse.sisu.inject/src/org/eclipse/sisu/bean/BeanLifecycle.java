@@ -87,6 +87,8 @@ final class BeanLifecycle
      */
     public void start( final Object bean )
     {
+        Logs.trace( "PostConstruct: <>", bean, null );
+
         // start superclass before subclass, bail out at the first failure
         int i = startMethods.length - 1;
         try
@@ -119,6 +121,8 @@ final class BeanLifecycle
     @SuppressWarnings( "finally" )
     public void stop( final Object bean )
     {
+        Logs.trace( "PreDestroy: <>", bean, null );
+
         // stop subclass before superclass, log any failures along the way
         for ( int i = 0; i < stopMethods.length; i++ )
         {

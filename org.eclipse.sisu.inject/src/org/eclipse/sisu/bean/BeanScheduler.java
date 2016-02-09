@@ -37,8 +37,8 @@ public abstract class BeanScheduler
         {
             // extra check in case we have both old and new versions of guice overlapping on the runtime classpath
             Binder.class.getMethod( "bindListener", Matcher.class, com.google.inject.spi.ProvisionListener[].class );
-
-            activator = new Activator();
+            final boolean detectCycles = Boolean.parseBoolean( System.getProperty( "sisu.detect.cycles", "true" ) );
+            activator = detectCycles ? new Activator() : null;
         }
         catch ( final Exception e )
         {
