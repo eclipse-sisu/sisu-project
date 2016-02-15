@@ -32,34 +32,53 @@ public abstract class BeanScheduler
 
     static
     {
-        Object activator;
+        Object cycleActivator;
+        Object candidateCycle = new Object();
+        Object cycleConfirmed = new Object();
         try
         {
             // extra check in case we have both old and new versions of guice overlapping on the runtime classpath
             Binder.class.getMethod( "bindListener", Matcher.class, com.google.inject.spi.ProvisionListener[].class );
-            final boolean detectCycles = Boolean.parseBoolean( System.getProperty( "sisu.detect.cycles", "true" ) );
-            activator = detectCycles ? new Activator() : null;
+
+            // allow cycle detection to be turned off completely
+            final String detectCycles = System.getProperty( "sisu.detect.cycles" );
+            if ( "false".equalsIgnoreCase( detectCycles ) )
+            {
+                cycleActivator = null;
+            }
+            else
+            {
+                cycleActivator = new CycleActivator();
+            }
+
+            // support use of the old 'pessimistic' approach
+            if ( "pessimistic".equalsIgnoreCase( detectCycles ) )
+            {
+                candidateCycle = cycleConfirmed;
+            }
         }
         catch ( final Exception e )
         {
-            activator = null;
+            cycleActivator = null;
         }
         catch ( final LinkageError e )
         {
-            activator = null;
+            cycleActivator = null;
         }
-        ACTIVATOR = activator;
+        CYCLE_ACTIVATOR = cycleActivator;
+        CANDIDATE_CYCLE = candidateCycle;
+        CYCLE_CONFIRMED = cycleConfirmed;
     }
 
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
 
-    static final Object ACTIVATOR;
+    static final Object CYCLE_ACTIVATOR;
 
-    static final Object CANDIDATE_CYCLE = new Object();
+    static final Object CANDIDATE_CYCLE;
 
-    static final Object CYCLE_CONFIRMED = new Object();
+    static final Object CYCLE_CONFIRMED;
 
     /**
      * Enables deferred activation of component cycles, only needed in legacy systems like Plexus.
@@ -68,9 +87,9 @@ public abstract class BeanScheduler
     {
         public void configure( final Binder binder )
         {
-            if ( null != ACTIVATOR )
+            if ( null != CYCLE_ACTIVATOR )
             {
-                binder.bindListener( Matchers.any(), (com.google.inject.spi.ProvisionListener) ACTIVATOR );
+                binder.bindListener( Matchers.any(), (com.google.inject.spi.ProvisionListener) CYCLE_ACTIVATOR );
             }
         }
     };
@@ -90,7 +109,7 @@ public abstract class BeanScheduler
      */
     public static void detectCycle( final Object value )
     {
-        if ( null != ACTIVATOR && Scopes.isCircularProxy( value ) )
+        if ( null != CYCLE_ACTIVATOR && Scopes.isCircularProxy( value ) )
         {
             final Object[] holder = pendingHolder.get();
             if ( null != holder )
@@ -111,7 +130,7 @@ public abstract class BeanScheduler
      */
     public final void schedule( final Object bean )
     {
-        if ( null != ACTIVATOR )
+        if ( null != CYCLE_ACTIVATOR )
         {
             final Object[] holder = pendingHolder.get();
             if ( null != holder )
@@ -174,7 +193,7 @@ public abstract class BeanScheduler
     /**
      * Listens to provisioning events in order to determine safe activation points.
      */
-    static final class Activator
+    static final class CycleActivator
         implements com.google.inject.spi.ProvisionListener
     {
         private static final BindingScopingVisitor<Boolean> IS_SCOPED = new DefaultBindingScopingVisitor<Boolean>()
