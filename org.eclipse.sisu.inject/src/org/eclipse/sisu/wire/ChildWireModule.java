@@ -70,7 +70,7 @@ public final class ChildWireModule
 
     public void configure( final Binder binder )
     {
-        // make sure we're added to locator as early as possible
+        // workaround to support 'autoPublish' in child injectors
         binder.requestStaticInjection( DefaultBeanLocator.class );
 
         // ignore any inherited bindings/dependencies

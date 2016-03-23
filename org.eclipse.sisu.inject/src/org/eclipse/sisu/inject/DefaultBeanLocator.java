@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.Mediator;
 
+import com.google.inject.Binding;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Singleton;
@@ -177,19 +178,41 @@ public final class DefaultBeanLocator
     }
 
     /**
-     * Automatically publishes any {@link Injector} that contains a binding to this {@link BeanLocator}.
+     * Automatically publishes any {@link Injector} that contains a binding to this {@link BeanLocator}.<br>
+     * <br>
+     * Relies on Guice's auto-injection, bind the locator with a Provider to disable this feature.
      * 
      * @param injector The injector
      */
     @Inject
     void autoPublish( final Injector injector )
     {
-        staticAutoPublish( this, injector );
+        add( new InjectorBindings( injector ) );
     }
 
+    /**
+     * Automatically publishes child {@link Injector}s that inherit a binding to this {@link BeanLocator}.<br>
+     * <br>
+     * Assumes module(s) used to create the child injector request static injection of this class.
+     * 
+     * @param childInjector The child injector
+     */
     @Inject
-    static void staticAutoPublish( final MutableBeanLocator locator, final Injector injector )
+    static void autoPublishChild( final Injector childInjector )
     {
-        locator.add( new InjectorBindings( injector ) );
+        // Child injectors cannot use the first 'autoPublish' trick because the locator binding is typically inherited
+        // from their parent and the locator instance has already been auto-injected. We workaround this limitation by
+        // requesting static injection of this class in a child module, such as ChildWireModule.
+
+        // When the child injector calls us we introspect the locator binding to see if 'autoPublish' would have been
+        // called in the parent. We avoid checking the provided instance directly since it may have been deliberately
+        // hidden behind a Provider to disable the 'autoPublish' feature, and we need to respect that. Instead we use
+        // the Implementations utility to test whether the binding directly exposes this implementation class.
+
+        final Binding<?> locatorBinding = childInjector.getBinding( MutableBeanLocator.class );
+        if ( DefaultBeanLocator.class.equals( Implementations.find( locatorBinding ) ) )
+        {
+            ( (DefaultBeanLocator) locatorBinding.getProvider().get() ).autoPublish( childInjector );
+        }
     }
 }
