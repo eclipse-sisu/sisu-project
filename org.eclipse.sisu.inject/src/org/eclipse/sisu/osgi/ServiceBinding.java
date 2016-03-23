@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.sisu.osgi;
 
-import javax.inject.Singleton;
-
 import org.eclipse.sisu.inject.BindingSubscriber;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
@@ -21,6 +19,7 @@ import com.google.inject.Binder;
 import com.google.inject.Binding;
 import com.google.inject.Key;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 import com.google.inject.spi.BindingScopingVisitor;
 import com.google.inject.spi.BindingTargetVisitor;
