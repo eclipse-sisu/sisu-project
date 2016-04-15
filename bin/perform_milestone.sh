@@ -50,7 +50,7 @@ git checkout master ; git merge staging-${VERSION}
 
 NEW_VERSION=${VERSION%%.M*}-SNAPSHOT
 
-mvn org.eclipse.tycho:tycho-versions-plugin:0.24.0:set-version -DnewVersion=${NEW_VERSION}
+mvn org.eclipse.tycho:tycho-versions-plugin:0.25.0:set-version -DnewVersion=${NEW_VERSION}
 
 git add . ; git commit -m "Prepare for next round of development"
 
