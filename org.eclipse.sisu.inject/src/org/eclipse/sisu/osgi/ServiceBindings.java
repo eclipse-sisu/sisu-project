@@ -144,6 +144,11 @@ public final class ServiceBindings
         return maxRank;
     }
 
+    public <T> T adapt( final Class<T> type )
+    {
+        return null;
+    }
+
     // ----------------------------------------------------------------------
     // Implementation methods
     // ----------------------------------------------------------------------

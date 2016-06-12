@@ -167,6 +167,11 @@ public class DefaultBeanLocatorTest
             {
                 return 0;
             }
+
+            public <T> T adapt( final Class<T> type )
+            {
+                return null;
+            }
         }.equals( new InjectorBindings( child1, function1 ) ) );
 
         assertFalse( new InjectorBindings( child2, function2 ).equals( new BindingPublisher()
@@ -182,6 +187,11 @@ public class DefaultBeanLocatorTest
             public int maxBindingRank()
             {
                 return 0;
+            }
+
+            public <T> T adapt( final Class<T> type )
+            {
+                return null;
             }
         } ) );
 

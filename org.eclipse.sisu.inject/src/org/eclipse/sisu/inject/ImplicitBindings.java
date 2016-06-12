@@ -46,35 +46,37 @@ final class ImplicitBindings
     @SuppressWarnings( { "unchecked", "rawtypes" } )
     public <T> Binding<T> get( final TypeLiteral<T> type )
     {
+        // first round: check for any re-written implicit bindings
+
         final Key implicitKey = TypeArguments.implicitKey( type.getRawType() );
         for ( final BindingPublisher p : publishers )
         {
-            if ( p instanceof InjectorBindings )
+            final Injector injector = p.adapt( Injector.class );
+            if ( null != injector )
             {
-                // first round: check for any re-written implicit bindings
-                final Injector i = ( (InjectorBindings) p ).getInjector();
-                final Binding binding = i.getBindings().get( implicitKey );
+                final Binding binding = injector.getBindings().get( implicitKey );
                 if ( null != binding )
                 {
-                    Logs.trace( "Using implicit binding: {} from: <>", binding, i );
+                    Logs.trace( "Using implicit binding: {} from: <>", binding, injector );
                     return binding;
                 }
             }
         }
 
+        // second round: fall back to just-in-time binding lookup
+
         final Key justInTimeKey = Key.get( type );
         for ( final BindingPublisher p : publishers )
         {
-            if ( p instanceof InjectorBindings )
+            final Injector injector = p.adapt( Injector.class );
+            if ( null != injector )
             {
-                // second round: fall back to just-in-time binding lookup
-                final Injector i = ( (InjectorBindings) p ).getInjector();
                 try
                 {
-                    final Binding binding = i.getBinding( justInTimeKey );
+                    final Binding binding = injector.getBinding( justInTimeKey );
                     if ( null == Sources.getAnnotation( binding, Hidden.class ) )
                     {
-                        Logs.trace( "Using just-in-time binding: {} from: <>", binding, i );
+                        Logs.trace( "Using just-in-time binding: {} from: <>", binding, injector );
                         return binding;
                     }
                 }

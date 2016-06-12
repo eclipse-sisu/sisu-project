@@ -187,7 +187,7 @@ public final class DefaultBeanLocator
     @Inject
     void autoPublish( final Injector injector )
     {
-        add( new InjectorBindings( injector ) );
+        add( InjectorBindings.findBindingPublisher( injector ) );
     }
 
     /**

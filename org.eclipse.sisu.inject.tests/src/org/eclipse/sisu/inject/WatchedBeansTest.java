@@ -132,6 +132,11 @@ public class WatchedBeansTest
             {
                 return Integer.MIN_VALUE;
             }
+
+            public <T> T adapt( final Class<T> type )
+            {
+                return null;
+            }
         };
 
         locator.add( subscriberHook );
@@ -222,6 +227,11 @@ public class WatchedBeansTest
             public int maxBindingRank()
             {
                 return 0;
+            }
+
+            public <T> T adapt( final Class<T> type )
+            {
+                return null;
             }
         };
 

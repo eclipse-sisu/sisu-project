@@ -37,4 +37,12 @@ public interface BindingPublisher
      * @return Maximum binding rank
      */
     int maxBindingRank();
+
+    /**
+     * Attempts to adapt this publisher to the given type.
+     * 
+     * @param The target type
+     * @return Adapted instance; {@code null} if it couldn't be adapted
+     */
+    <T> T adapt( Class<T> type );
 }

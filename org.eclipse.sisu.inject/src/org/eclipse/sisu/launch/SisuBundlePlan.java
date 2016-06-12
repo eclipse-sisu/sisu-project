@@ -47,7 +47,7 @@ public class SisuBundlePlan
 
     public BindingPublisher prepare( final Bundle bundle )
     {
-        return appliesTo( bundle ) ? new InjectorBindings( inject( compose( bundle ) ) ) : null;
+        return appliesTo( bundle ) ? InjectorBindings.findBindingPublisher( inject( compose( bundle ) ) ) : null;
     }
 
     // ----------------------------------------------------------------------
@@ -59,7 +59,7 @@ public class SisuBundlePlan
      */
     protected boolean appliesTo( final Bundle bundle )
     {
-        if (bundle.getHeaders().get("Bundle-Blueprint") != null)
+        if ( bundle.getHeaders().get( "Bundle-Blueprint" ) != null )
         {
             return false;
         }

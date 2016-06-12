@@ -15,12 +15,14 @@ import javax.inject.Inject;
 import org.eclipse.sisu.Priority;
 
 import com.google.inject.Binding;
+import com.google.inject.Singleton;
 
 /**
  * Simple {@link RankingFunction} that partitions qualified bindings into two main groups.
  * <p>
  * Default bindings are given zero or positive ranks; the rest are given negative ranks.
  */
+@Singleton
 public final class DefaultRankingFunction
     implements RankingFunction
 {

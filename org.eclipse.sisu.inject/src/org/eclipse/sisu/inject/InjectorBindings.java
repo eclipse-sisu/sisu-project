@@ -10,26 +10,33 @@
  *******************************************************************************/
 package org.eclipse.sisu.inject;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import org.eclipse.sisu.Hidden;
 
 import com.google.inject.Binding;
 import com.google.inject.Injector;
 import com.google.inject.Key;
+import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 
 /**
  * Publisher of {@link Binding}s from a single {@link Injector}; ranked according to a given {@link RankingFunction}.
  */
+@Singleton
 public final class InjectorBindings
     implements BindingPublisher
 {
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
+
+    private static final Key<BindingPublisher> BINDING_PUBLISHER_KEY = Key.get( BindingPublisher.class );
 
     private static final Key<RankingFunction> RANKING_FUNCTION_KEY = Key.get( RankingFunction.class );
 
@@ -59,6 +66,7 @@ public final class InjectorBindings
         this.function = function;
     }
 
+    @Inject
     public InjectorBindings( final Injector injector )
     {
         this( injector, findRankingFunction( injector ) );
@@ -68,15 +76,45 @@ public final class InjectorBindings
     // Public methods
     // ----------------------------------------------------------------------
 
+    public static BindingPublisher findBindingPublisher( final Injector injector )
+    {
+        // check the injector's local explicit bindings first for custom publisher
+        Binding<?> binding = injector.getBindings().get( BINDING_PUBLISHER_KEY );
+        if ( null != binding )
+        {
+            return (BindingPublisher) binding.getProvider().get();
+        }
+        // otherwise check any parents for an explicit binding to use as a template
+        binding = findExplicitBinding( injector.getParent(), BINDING_PUBLISHER_KEY );
+        if ( null != binding )
+        {
+            final Class<?> impl = Implementations.find( binding );
+            if ( null != impl )
+            {
+                try
+                {
+                    // create a new instance from the parent template, this time using the current injector
+                    return (BindingPublisher) impl.getConstructor( Injector.class ).newInstance( injector );
+                }
+                catch ( final Exception e )
+                {
+                    final Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
+                    Logs.trace( "Problem creating: {}", impl, cause );
+                }
+                catch ( final LinkageError e )
+                {
+                    Logs.trace( "Problem creating: {}", impl, e );
+                }
+            }
+        }
+        // fall back to default implementation
+        return new InjectorBindings( injector );
+    }
+
     public static RankingFunction findRankingFunction( final Injector injector )
     {
         final Binding<RankingFunction> binding = findExplicitBinding( injector, RANKING_FUNCTION_KEY );
         return null != binding ? binding.getProvider().get() : DEFAULT_RANKING_FUNCTION;
-    }
-
-    public Injector getInjector()
-    {
-        return injector;
     }
 
     public <T> void subscribe( final BindingSubscriber<T> subscriber )
@@ -111,6 +149,12 @@ public final class InjectorBindings
     public int maxBindingRank()
     {
         return function.maxRank();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public <T> T adapt( final Class<T> type )
+    {
+        return Injector.class == type ? (T) injector : null;
     }
 
     @Override

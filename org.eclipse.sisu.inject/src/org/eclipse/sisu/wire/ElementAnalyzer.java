@@ -349,7 +349,7 @@ final class ElementAnalyzer
         final String name = key.getTypeLiteral().getRawType().getName();
         if ( name.startsWith( "org.eclipse.sisu.inject" ) || name.startsWith( "org.sonatype.guice.bean.locators" ) )
         {
-            return name.endsWith( "BeanLocator" ) || name.endsWith( "RankingFunction" );
+            return name.endsWith( "BeanLocator" ) || name.endsWith( "BindingPublisher" ) || name.endsWith( "RankingFunction" );
         }
         return "org.slf4j.Logger".equals( name );
     }
