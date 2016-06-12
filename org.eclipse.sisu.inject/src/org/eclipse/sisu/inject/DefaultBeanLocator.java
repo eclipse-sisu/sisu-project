@@ -48,23 +48,9 @@ public final class DefaultBeanLocator
 
     private final Long[] typeIdHolder = new Long[1];
 
-    private Strategy strategy = Strategy.DEFAULT;
-
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
-
-    /**
-     * Applies a new publisher {@link Strategy} to the locator.
-     * 
-     * @param _strategy The new strategy
-     * @return Updated locator
-     */
-    public MutableBeanLocator with( final Strategy _strategy )
-    {
-        strategy = _strategy;
-        return this;
-    }
 
     public Iterable<BeanEntry> locate( final Key key )
     {
@@ -162,35 +148,6 @@ public final class DefaultBeanLocator
     }
 
     // ----------------------------------------------------------------------
-    // Public types
-    // ----------------------------------------------------------------------
-
-    /**
-     * Publisher strategy.
-     */
-    public interface Strategy
-    {
-        /**
-         * Selects the {@link BindingPublisher} to be used for the given {@link Injector}.
-         * 
-         * @param injector The injector
-         * @return Selected publisher
-         */
-        BindingPublisher publisher( Injector injector );
-
-        /**
-         * Default publisher strategy; match and rank explicit bindings local to injector.
-         */
-        Strategy DEFAULT = new Strategy()
-        {
-            public BindingPublisher publisher( final Injector injector )
-            {
-                return new InjectorBindings( injector );
-            }
-        };
-    }
-
-    // ----------------------------------------------------------------------
     // Implementation methods
     // ----------------------------------------------------------------------
 
@@ -230,7 +187,7 @@ public final class DefaultBeanLocator
     @Inject
     void autoPublish( final Injector injector )
     {
-        add( strategy.publisher( injector ) );
+        add( new InjectorBindings( injector ) );
     }
 
     /**
