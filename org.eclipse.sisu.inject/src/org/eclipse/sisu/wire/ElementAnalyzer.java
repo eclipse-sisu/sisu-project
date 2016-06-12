@@ -22,7 +22,6 @@ import java.util.Set;
 import org.eclipse.sisu.Parameters;
 import org.eclipse.sisu.inject.BeanLocator;
 import org.eclipse.sisu.inject.DefaultBeanLocator;
-import org.eclipse.sisu.inject.DefaultRankingFunction;
 import org.eclipse.sisu.inject.Guice4;
 import org.eclipse.sisu.inject.Logs;
 import org.eclipse.sisu.inject.MutableBeanLocator;
@@ -90,7 +89,6 @@ final class ElementAnalyzer
         {
             binder.bind( BeanLocator.class ).to( MutableBeanLocator.class );
             binder.bind( MutableBeanLocator.class ).to( DefaultBeanLocator.class );
-            binder.bind( RankingFunction.class ).to( DefaultRankingFunction.class );
             binder.bind( TypeConverterCache.class );
         }
     } );

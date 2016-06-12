@@ -11,12 +11,10 @@
 package org.eclipse.sisu.inject;
 
 import com.google.inject.Binding;
-import com.google.inject.ImplementedBy;
 
 /**
  * Assigns each {@link Binding} a rank according to some function; higher ranks take precedence over lower ranks.
  */
-@ImplementedBy( DefaultRankingFunction.class )
 public interface RankingFunction
 {
     /**

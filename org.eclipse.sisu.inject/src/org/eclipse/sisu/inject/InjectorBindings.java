@@ -31,6 +31,10 @@ public final class InjectorBindings
     // Constants
     // ----------------------------------------------------------------------
 
+    private static final Key<RankingFunction> RANKING_FUNCTION_KEY = Key.get( RankingFunction.class );
+
+    private static final RankingFunction DEFAULT_RANKING_FUNCTION = new DefaultRankingFunction();
+
     private static final TypeLiteral<Object> OBJECT_TYPE_LITERAL = TypeLiteral.get( Object.class );
 
     private static final Binding<?>[] NO_BINDINGS = {};
@@ -57,12 +61,18 @@ public final class InjectorBindings
 
     public InjectorBindings( final Injector injector )
     {
-        this( injector, injector.getInstance( RankingFunction.class ) );
+        this( injector, findRankingFunction( injector ) );
     }
 
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
+
+    public static RankingFunction findRankingFunction( final Injector injector )
+    {
+        final Binding<RankingFunction> binding = findExplicitBinding( injector, RANKING_FUNCTION_KEY );
+        return null != binding ? binding.getProvider().get() : DEFAULT_RANKING_FUNCTION;
+    }
 
     public Injector getInjector()
     {
@@ -132,6 +142,28 @@ public final class InjectorBindings
     // ----------------------------------------------------------------------
     // Implementation methods
     // ----------------------------------------------------------------------
+
+    /**
+     * Searches {@link Injector} and its parents for an explicit binding of the given {@link Key}.
+     * 
+     * @param injector The injector
+     * @param key The binding key
+     * @return Explicit binding of the key; {@code null} if it doesn't exist
+     */
+    @SuppressWarnings( { "rawtypes", "unchecked" } )
+    private static <T> Binding<T> findExplicitBinding( final Injector injector, final Key<T> key )
+    {
+        Binding binding = null;
+        for ( Injector i = injector; i != null; i = i.getParent() )
+        {
+            binding = i.getBindings().get( key );
+            if ( binding != null )
+            {
+                break;
+            }
+        }
+        return binding;
+    }
 
     private static <T, S> boolean isAssignableFrom( final TypeLiteral<T> type, final Binding<S> binding )
     {
