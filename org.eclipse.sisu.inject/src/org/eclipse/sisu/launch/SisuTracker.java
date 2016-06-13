@@ -20,6 +20,7 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import org.eclipse.sisu.inject.BindingPublisher;
+import org.eclipse.sisu.inject.InjectorBindings;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.inject.Weak;
 import org.eclipse.sisu.space.BundleClassSpace;
@@ -31,6 +32,7 @@ import org.osgi.framework.FrameworkUtil;
 import org.osgi.util.tracker.BundleTracker;
 
 import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /**
  * OSGi {@link BundleTracker} that tracks component bundles and uses {@link BundlePlan}s to publish them.
@@ -220,15 +222,26 @@ public class SisuTracker
 
     private void addPublisher( final Long bundleId, final BindingPublisher publisher )
     {
-        bundlePublishers.put( bundleId, publisher );
-
-        locator.add( publisher );
+        if ( !locator.add( publisher ) && publisher instanceof InjectorBindings )
+        {
+            // track auto-published injector rather than its temporary wrapper
+            bundlePublishers.put( bundleId, publisher.adapt( Injector.class ) );
+        }
+        else
+        {
+            bundlePublishers.put( bundleId, publisher );
+        }
     }
 
     private void removePublisher( final Long bundleId )
     {
         final Object publisher = bundlePublishers.remove( bundleId );
-        if ( publisher instanceof BindingPublisher )
+        if ( publisher instanceof Injector )
+        {
+            // we're tracking an auto-published injector, use temporary wrapper to remove it
+            locator.remove( new InjectorBindings( (Injector) publisher, null /* unused */ ) );
+        }
+        else if ( publisher instanceof BindingPublisher )
         {
             locator.remove( (BindingPublisher) publisher );
         }
