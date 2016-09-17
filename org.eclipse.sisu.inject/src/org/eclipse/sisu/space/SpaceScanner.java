@@ -140,7 +140,7 @@ public final class SpaceScanner
      */
     private static org.eclipse.sisu.space.asm.ClassVisitor adapt( final ClassVisitor _cv )
     {
-        return null == _cv ? null : new org.eclipse.sisu.space.asm.ClassVisitor( Opcodes.ASM5 )
+        return null == _cv ? null : new org.eclipse.sisu.space.asm.ClassVisitor( Opcodes.ASM6 )
         {
             @Override
             public void visit( final int version, final int access, final String name, final String signature,
@@ -154,7 +154,7 @@ public final class SpaceScanner
                                                                                  final boolean visible )
             {
                 final AnnotationVisitor _av = _cv.visitAnnotation( desc );
-                return null == _av ? null : new org.eclipse.sisu.space.asm.AnnotationVisitor( Opcodes.ASM5 )
+                return null == _av ? null : new org.eclipse.sisu.space.asm.AnnotationVisitor( Opcodes.ASM6 )
                 {
                     {
                         _av.enterAnnotation();
