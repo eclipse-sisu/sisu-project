@@ -46,12 +46,12 @@ public class PropertiesConverter
             for ( int i = 0, size = configuration.getChildCount(); i < size; i++ )
             {
                 final PlexusConfiguration element = configuration.getChild( i );
-                if ( "property".equals( element.getName() ) && element.getChildCount() > 0 )
+                if ( element.getChildCount() > 0 )
                 {
                     final Object name = fromExpression( element.getChild( "name" ), evaluator );
                     setProperty( properties, name, element.getChild( "value" ), evaluator );
                 }
-                else if ( element.getChildCount() == 0 )
+                else
                 {
                     setProperty( properties, element.getName(), element, evaluator );
                 }
