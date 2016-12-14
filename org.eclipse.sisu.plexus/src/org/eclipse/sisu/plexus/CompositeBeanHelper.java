@@ -11,14 +11,10 @@
 package org.eclipse.sisu.plexus;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
-import java.lang.reflect.WildcardType;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 
@@ -39,12 +35,6 @@ import com.google.inject.TypeLiteral;
  */
 public final class CompositeBeanHelper
 {
-    // ----------------------------------------------------------------------
-    // Constants
-    // ----------------------------------------------------------------------
-
-    private static final Type[] NO_TYPES = {};
-
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -264,7 +254,7 @@ public final class CompositeBeanHelper
         final ConfigurationConverter converter = lookup.lookupConverterForType( rawPropertyType );
         if ( !( genericPropertyType instanceof Class<?> ) && converter instanceof ParameterizedConfigurationConverter )
         {
-            final Type[] propertyTypeArgs = getTypeArguments( genericPropertyType );
+            final Type[] propertyTypeArgs = TypeArguments.get( genericPropertyType );
             return ( (ParameterizedConfigurationConverter) converter ).fromConfiguration( lookup, configuration,
                                                                                           rawPropertyType,
                                                                                           propertyTypeArgs, beanType,
@@ -272,37 +262,6 @@ public final class CompositeBeanHelper
         }
         return converter.fromConfiguration( lookup, configuration, rawPropertyType, beanType, loader, evaluator,
                                             listener );
-    }
-
-    private static Type[] getTypeArguments( final Type type )
-    {
-        if ( type instanceof ParameterizedType )
-        {
-            final Type[] typeArguments = ( (ParameterizedType) type ).getActualTypeArguments();
-            for ( int i = 0; i < typeArguments.length; i++ )
-            {
-                typeArguments[i] = expandType( typeArguments[i] );
-            }
-            return typeArguments;
-        }
-        if ( type instanceof GenericArrayType )
-        {
-            return new Type[] { expandType( ( (GenericArrayType) type ).getGenericComponentType() ) };
-        }
-        return NO_TYPES;
-    }
-
-    private static Type expandType( final Type type )
-    {
-        if ( type instanceof WildcardType )
-        {
-            return ( (WildcardType) type ).getUpperBounds()[0];
-        }
-        if ( type instanceof TypeVariable<?> )
-        {
-            return ( (TypeVariable<?>) type ).getBounds()[0];
-        }
-        return type;
     }
 
     private static Method findMethod( final Class<?> beanType, final Type[] paramTypeHolder, final String methodName )
