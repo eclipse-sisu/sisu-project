@@ -16,10 +16,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Skeleton class that generates a qualified class index.
@@ -122,7 +122,7 @@ abstract class AbstractSisuIndex
      */
     private Set<String> readTable( final Object name )
     {
-        final Set<String> table = new LinkedHashSet<String>();
+        final Set<String> table = new TreeSet<String>();
         try
         {
             final BufferedReader reader = new BufferedReader( getReader( INDEX_FOLDER + name ) );
