@@ -59,6 +59,8 @@ public interface Opcodes {
     int V1_7 = 0 << 16 | 51;
     int V1_8 = 0 << 16 | 52;
 
+    int V14 = 0 << 16 | 58; // patch: relax scanning to work with Java14
+
     // access flags
 
     int ACC_PUBLIC = 0x0001; // class, field, method

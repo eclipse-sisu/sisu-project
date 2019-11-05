@@ -166,7 +166,7 @@ public final class ClassReader {
     public ClassReader(final byte[] b, final int off, final int len) {
         this.b = b;
         // checks the class version
-        if (readShort(off + 6) > Opcodes.V1_8) {
+        if (readShort(off + 6) > Opcodes.V14) { // patch: relax scanning to work with Java14
             throw new IllegalArgumentException();
         }
         // parses the constant pool
