@@ -22,7 +22,7 @@
 
   <groupId>org.eclipse.sisu</groupId>
   <artifactId>sisu-inject</artifactId>
-  <version>0.3.4-SNAPSHOT</version>
+  <version>0.3.4</version>
   <packaging>pom</packaging>
 
   <name>Sisu Inject</name>
