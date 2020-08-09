@@ -36,7 +36,7 @@
 <location includeAllPlatforms="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="org.eclipse.sisu.inject" version="0.0.0"/>
 <unit id="org.eclipse.sisu.inject.extender" version="0.0.0"/>
-<repository location="https://hudson.eclipse.org/sisu/job/sisu-inject-nightly/lastSuccessfulBuild/artifact/org.eclipse.sisu.inject.site/target/repository/"/>
+<repository location="https://ci.eclipse.org/sisu/job/sisu-inject-nightly/lastSuccessfulBuild/artifact/org.eclipse.sisu.inject.site/target/repository/"/>
 </location>
 </locations>
 </target>
