@@ -72,8 +72,8 @@
     <url>https://bugs.eclipse.org/bugs/enter_bug.cgi?product=Sisu&amp;component=Mojos&amp;format=guided</url>
   </issueManagement>
   <ciManagement>
-    <system>Hudson</system>
-    <url>https://hudson.eclipse.org/sisu/job/sisu-mojos-nightly/</url>
+    <system>Jenkins</system>
+    <url>https://ci.eclipse.org/sisu/job/sisu-mojos-nightly/</url>
   </ciManagement>
 
   <properties>
