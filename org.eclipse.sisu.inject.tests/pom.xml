@@ -24,6 +24,7 @@
 
   <properties>
     <test-guice-version>3.0</test-guice-version>
+    <sonar.skip>true</sonar.skip>
   </properties>
 
   <dependencies>
