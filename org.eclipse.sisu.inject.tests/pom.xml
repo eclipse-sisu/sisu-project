@@ -102,7 +102,7 @@
           <testSourceDirectory>${project.build.sourceDirectory}</testSourceDirectory>
           <testClassesDirectory>${project.build.outputDirectory}</testClassesDirectory>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
-          <argLine>-Xmx64m ${jacoco.argLine}</argLine>
+          <argLine>-Xmx64m @{jacoco.argLine}</argLine>
         </configuration>
       </plugin>
       <plugin>
@@ -113,9 +113,22 @@
         </configuration>
         <executions>
           <execution>
+            <id>jacoco-prepare</id>
             <goals>
               <goal>prepare-agent</goal>
             </goals>
+          </execution>
+          <execution>
+            <id>jacoco-report</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report-aggregate</goal>
+            </goals>
+            <configuration>
+              <excludes>
+                <exclude>**/asm/*</exclude>
+              </excludes>
+            </configuration>
           </execution>
         </executions>
       </plugin>
