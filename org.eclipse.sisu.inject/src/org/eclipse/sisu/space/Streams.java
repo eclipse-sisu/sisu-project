@@ -27,23 +27,32 @@ public final class Streams
 
     static
     {
-        boolean onWindows;
+        boolean useCaches;
         try
         {
-            onWindows = System.getProperty( "os.name" ).toLowerCase( Locale.US ).contains( "windows" );
+            String urlCaches = System.getProperty( "sisu.url.caches" );
+            if ( null != urlCaches && !urlCaches.isEmpty() )
+            {
+                useCaches = Boolean.parseBoolean( urlCaches );
+            }
+            else
+            {
+                String osName = System.getProperty( "os.name" ).toLowerCase( Locale.US );
+                useCaches = !osName.contains( "windows" );
+            }
         }
         catch ( final RuntimeException e )
         {
-            onWindows = false;
+            useCaches = true;
         }
-        ON_WINDOWS = onWindows;
+        USE_CACHES = useCaches;
     }
 
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final boolean ON_WINDOWS;
+    private static final boolean USE_CACHES;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -59,17 +68,19 @@ public final class Streams
     // ----------------------------------------------------------------------
 
     /**
-     * Opens an input stream to the given URL; disables JAR caching on Windows.
+     * Opens an input stream to the given URL; disables JAR caching on Windows
+     * or when the 'sisu.url.caches' system property is set to {@code false}.
      */
     public static InputStream open( final URL url )
         throws IOException
     {
-        if ( ON_WINDOWS )
+        if ( USE_CACHES )
         {
-            final URLConnection conn = url.openConnection();
-            conn.setUseCaches( false );
-            return conn.getInputStream();
+            return url.openStream();
         }
-        return url.openStream();
+
+        final URLConnection conn = url.openConnection();
+        conn.setUseCaches( false );
+        return conn.getInputStream();
     }
 }
