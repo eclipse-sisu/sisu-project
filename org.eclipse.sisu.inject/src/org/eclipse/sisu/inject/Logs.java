@@ -160,7 +160,7 @@ public final class Logs
      */
     public static String identityToString( final Object object )
     {
-        return null == object ? null : object.getClass().getName() + '@'
+        return null == object ? null : object.getClass().getName() + '@' //
             + Integer.toHexString( System.identityHashCode( object ) );
     }
 

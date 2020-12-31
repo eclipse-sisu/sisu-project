@@ -195,11 +195,19 @@ public class DefaultBeanLocatorTest
             }
         } ) );
 
-        assertTrue( new InjectorBindings( parent, function1 ).hashCode() == new InjectorBindings( parent, function2 ).hashCode() );
-        assertTrue( new InjectorBindings( parent, function2 ).hashCode() == new InjectorBindings( parent, function1 ).hashCode() );
+        assertTrue( new InjectorBindings( parent,
+                                          function1 ).hashCode() == new InjectorBindings( parent,
+                                                                                          function2 ).hashCode() );
+        assertTrue( new InjectorBindings( parent,
+                                          function2 ).hashCode() == new InjectorBindings( parent,
+                                                                                          function1 ).hashCode() );
 
-        assertFalse( new InjectorBindings( child1, function1 ).hashCode() == new InjectorBindings( child2, function1 ).hashCode() );
-        assertFalse( new InjectorBindings( child2, function2 ).hashCode() == new InjectorBindings( child1, function2 ).hashCode() );
+        assertFalse( new InjectorBindings( child1,
+                                           function1 ).hashCode() == new InjectorBindings( child2,
+                                                                                           function1 ).hashCode() );
+        assertFalse( new InjectorBindings( child2,
+                                           function2 ).hashCode() == new InjectorBindings( child1,
+                                                                                           function2 ).hashCode() );
     }
 
     public void testInjectorOrdering()

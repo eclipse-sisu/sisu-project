@@ -164,7 +164,7 @@ public class QualifiedScanningTest
     }
 
     @Ignore( "Need to replace some test archives" )
-    public void /* test */ignoreIndexedScanning()
+    public void /* test */ ignoreIndexedScanning()
     {
         final TestListener listener = new TestListener();
         final ClassSpace space =
@@ -272,7 +272,8 @@ public class QualifiedScanningTest
 
         final QualifiedTypeVisitor visitor = new QualifiedTypeVisitor( listener );
 
-        visitor.enterSpace( new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } ) );
+        visitor.enterSpace( new URLClassSpace( getClass().getClassLoader(),
+                                               new URL[] { getClass().getResource( "" ) } ) );
 
         assertEquals( 0, listener.sources.size() );
 

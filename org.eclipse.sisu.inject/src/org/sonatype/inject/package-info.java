@@ -12,4 +12,3 @@
  * Deprecated; new applications should use {@link org.eclipse.sisu}.
  */
 package org.sonatype.inject;
-

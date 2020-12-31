@@ -25,13 +25,15 @@ import junit.framework.TestCase;
 public class ResourceEnumerationTest
     extends TestCase
 {
-    private static final URL COMMONS_LOGGING_JAR = ZipEntryIteratorTest.class.getResource( "commons-logging-1.1.1.jar" );
+    private static final URL COMMONS_LOGGING_JAR =
+        ZipEntryIteratorTest.class.getResource( "commons-logging-1.1.1.jar" );
 
     public void testResourceEnumeration()
         throws Exception
     {
         final Enumeration<URL> e =
-            new ResourceEnumeration( null, null, true, new URL[] { COMMONS_LOGGING_JAR, expand( COMMONS_LOGGING_JAR ) } );
+            new ResourceEnumeration( null, null, true,
+                                     new URL[] { COMMONS_LOGGING_JAR, expand( COMMONS_LOGGING_JAR ) } );
 
         int n = 0;
         while ( e.hasMoreElements() )
@@ -53,15 +55,13 @@ public class ResourceEnumerationTest
 
     public void testFixedEnumeration()
     {
-        final Enumeration<URL> e1 =
-            new ResourceEnumeration( "org/apache/commons/logging", "LogFactory.clazz", false,
-                                     new URL[] { COMMONS_LOGGING_JAR } );
+        final Enumeration<URL> e1 = new ResourceEnumeration( "org/apache/commons/logging", "LogFactory.clazz", false,
+                                                             new URL[] { COMMONS_LOGGING_JAR } );
 
         assertFalse( e1.hasMoreElements() );
 
-        final Enumeration<URL> e2 =
-            new ResourceEnumeration( "org/apache/commons/logging", "LogFactory.class", false,
-                                     new URL[] { COMMONS_LOGGING_JAR } );
+        final Enumeration<URL> e2 = new ResourceEnumeration( "org/apache/commons/logging", "LogFactory.class", false,
+                                                             new URL[] { COMMONS_LOGGING_JAR } );
 
         final String prefix = COMMONS_LOGGING_JAR + "!/";
         assertEquals( prefix + "org/apache/commons/logging/LogFactory.class", e2.nextElement().getPath() );
@@ -92,7 +92,8 @@ public class ResourceEnumerationTest
 
     public void testGlobbedEnumerationStart()
     {
-        final Enumeration<URL> e = new ResourceEnumeration( null, "*$2.class", true, new URL[] { COMMONS_LOGGING_JAR } );
+        final Enumeration<URL> e =
+            new ResourceEnumeration( null, "*$2.class", true, new URL[] { COMMONS_LOGGING_JAR } );
 
         final String prefix = COMMONS_LOGGING_JAR + "!/";
         assertEquals( prefix + "org/apache/commons/logging/impl/LogFactoryImpl$2.class", e.nextElement().getPath() );
@@ -149,9 +150,8 @@ public class ResourceEnumerationTest
 
     public void testSubPathEnumeration()
     {
-        final Enumeration<URL> e =
-            new ResourceEnumeration( "/org/apache/commons/logging/impl", "*Fact*$*", true,
-                                     new URL[] { COMMONS_LOGGING_JAR } );
+        final Enumeration<URL> e = new ResourceEnumeration( "/org/apache/commons/logging/impl", "*Fact*$*", true,
+                                                            new URL[] { COMMONS_LOGGING_JAR } );
 
         final String prefix = COMMONS_LOGGING_JAR + "!/";
         assertEquals( prefix + "org/apache/commons/logging/impl/LogFactoryImpl$1.class", e.nextElement().getPath() );
@@ -162,9 +162,8 @@ public class ResourceEnumerationTest
 
     public void testNonRecursiveSubPathEnumeration()
     {
-        final Enumeration<URL> e =
-            new ResourceEnumeration( "/org/apache/commons/logging/", "*Fact*$*", false,
-                                     new URL[] { COMMONS_LOGGING_JAR } );
+        final Enumeration<URL> e = new ResourceEnumeration( "/org/apache/commons/logging/", "*Fact*$*", false,
+                                                            new URL[] { COMMONS_LOGGING_JAR } );
 
         final String prefix = COMMONS_LOGGING_JAR + "!/";
         assertEquals( prefix + "org/apache/commons/logging/LogFactory$1.class", e.nextElement().getPath() );

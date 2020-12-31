@@ -132,9 +132,8 @@ public class URLClassSpaceTest
             }
         } );
 
-        final URLClassSpace space =
-            new URLClassSpace( URLClassLoader.newInstance( new URL[] { SIMPLE_JAR, CLASS_PATH_JAR, null,
-                new URL( "oops:bad/" ), CLASS_PATH_JAR, CORRUPT_MANIFEST } ) );
+        final URLClassSpace space = new URLClassSpace( URLClassLoader.newInstance( new URL[] { SIMPLE_JAR,
+            CLASS_PATH_JAR, null, new URL( "oops:bad/" ), CLASS_PATH_JAR, CORRUPT_MANIFEST } ) );
 
         final Enumeration<URL> e = space.findEntries( "META-INF", "*.MF", false );
 
@@ -238,10 +237,9 @@ public class URLClassSpaceTest
     public void testNestedWar()
         throws MalformedURLException
     {
-        final URLClassSpace space =
-            new URLClassSpace( URLClassLoader.newInstance( new URL[] {
-                new URL( "jar:" + NESTED_WAR + "!/WEB-INF/classes/" ),
-                new URL( "jar:" + NESTED_WAR + "!/WEB-INF/lib/commons-logging-1.1.1.jar" ) } ) );
+        final URLClassSpace space = new URLClassSpace( URLClassLoader.newInstance( new URL[] {
+            new URL( "jar:" + NESTED_WAR + "!/WEB-INF/classes/" ),
+            new URL( "jar:" + NESTED_WAR + "!/WEB-INF/lib/commons-logging-1.1.1.jar" ) } ) );
 
         Enumeration<URL> e = space.findEntries( "META-INF", "*.MF", false );
 

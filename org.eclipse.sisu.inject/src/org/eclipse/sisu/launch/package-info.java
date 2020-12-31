@@ -32,4 +32,3 @@
  * And a helper class that discovers Sisu {@link org.eclipse.sisu.launch.SisuExtensions extensions} registered under {@code META-INF/services}.
  */
 package org.eclipse.sisu.launch;
-

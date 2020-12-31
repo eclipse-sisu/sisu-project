@@ -143,7 +143,7 @@ public class DeclaredMembersTest
     }
 
     @Ignore( "Need to replace some test archives" )
-    public void /* test */ignoreResumableIteration()
+    public void /* test */ ignoreResumableIteration()
         throws ClassNotFoundException
     {
         final Iterator<Member> itr = new DeclaredMembers( Class.forName( "Incomplete" ) ).iterator();

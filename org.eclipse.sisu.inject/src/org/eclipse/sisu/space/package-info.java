@@ -101,4 +101,3 @@
  * }</pre>
  */
 package org.eclipse.sisu.space;
-

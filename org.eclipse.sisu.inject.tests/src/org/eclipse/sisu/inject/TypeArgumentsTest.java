@@ -188,7 +188,8 @@ public class TypeArgumentsTest
         types = TypeArguments.get( getFieldType( "wildcardFloatShortMapArray" ) );
         assertEquals( getFieldType( "wildcardFloatShortMap" ), types[0] );
         assertEquals( types[0], TypeArguments.get( getFieldType( "wildcardFloatShortMapArray" ), 0 ) );
-        assertEquals( Types.mapOf( Types.subtypeOf( Float.class ), Types.subtypeOf( Short.class ) ), types[0].getType() );
+        assertEquals( Types.mapOf( Types.subtypeOf( Float.class ), Types.subtypeOf( Short.class ) ),
+                      types[0].getType() );
 
         types = TypeArguments.get( TypeArguments.get( getFieldType( "stringArrayList" ) )[0] );
         assertEquals( STRING_TYPE, types[0] );
@@ -268,9 +269,11 @@ public class TypeArgumentsTest
     {
         // === simple types ===
 
-        assertTrue( TypeArguments.isAssignableFrom( TypeLiteral.get( Object.class ), TypeLiteral.get( String.class ) ) );
+        assertTrue( TypeArguments.isAssignableFrom( TypeLiteral.get( Object.class ),
+                                                    TypeLiteral.get( String.class ) ) );
         assertTrue( TypeArguments.isAssignableFrom( TypeLiteral.get( Number.class ), TypeLiteral.get( Short.class ) ) );
-        assertTrue( TypeArguments.isAssignableFrom( TypeLiteral.get( Collection.class ), TypeLiteral.get( Set.class ) ) );
+        assertTrue( TypeArguments.isAssignableFrom( TypeLiteral.get( Collection.class ),
+                                                    TypeLiteral.get( Set.class ) ) );
 
         // === generic types ===
 
@@ -357,34 +360,33 @@ public class TypeArgumentsTest
 
         // === corner case ===
 
-        final Type T =
-            (Type) Proxy.newProxyInstance( getClass().getClassLoader(), new Class<?>[] { TypeVariable.class },
-                                           new InvocationHandler()
-                                           {
-                                               public Object invoke( final Object proxy, final Method method,
-                                                                     final Object[] args )
-                                                   throws Throwable
-                                               {
-                                                   final String name = method.getName();
-                                                   if ( "getBounds".equals( name ) )
-                                                   {
-                                                       return new Type[] { String.class };
-                                                   }
-                                                   if ( "getName".equals( name ) )
-                                                   {
-                                                       return "T";
-                                                   }
-                                                   if ( "hashCode".equals( name ) )
-                                                   {
-                                                       return hashCode();
-                                                   }
-                                                   if ( "equals".equals( name ) )
-                                                   {
-                                                       return equals( args[0] );
-                                                   }
-                                                   return null;
-                                               }
-                                           } );
+        final Type T = (Type) Proxy.newProxyInstance( getClass().getClassLoader(),
+                                                      new Class<?>[] { TypeVariable.class }, new InvocationHandler()
+                                                      {
+                                                          public Object invoke( final Object proxy, final Method method,
+                                                                                final Object[] args )
+                                                              throws Throwable
+                                                          {
+                                                              final String name = method.getName();
+                                                              if ( "getBounds".equals( name ) )
+                                                              {
+                                                                  return new Type[] { String.class };
+                                                              }
+                                                              if ( "getName".equals( name ) )
+                                                              {
+                                                                  return "T";
+                                                              }
+                                                              if ( "hashCode".equals( name ) )
+                                                              {
+                                                                  return hashCode();
+                                                              }
+                                                              if ( "equals".equals( name ) )
+                                                              {
+                                                                  return equals( args[0] );
+                                                              }
+                                                              return null;
+                                                          }
+                                                      } );
 
         final Type callableT =
             (Type) Proxy.newProxyInstance( getClass().getClassLoader(), new Class<?>[] { ParameterizedType.class },
@@ -415,7 +417,8 @@ public class TypeArgumentsTest
                                                }
                                            } );
 
-        assertFalse( TypeArguments.isAssignableFrom( TypeLiteral.get( callableT ), TypeLiteral.get( Callable.class ) ) );
+        assertFalse( TypeArguments.isAssignableFrom( TypeLiteral.get( callableT ),
+                                                     TypeLiteral.get( Callable.class ) ) );
 
         assertFalse( TypeArguments.isAssignableFrom( TypeLiteral.get( callableT ),
                                                      TypeLiteral.get( CallableNumberImpl.class ) ) );

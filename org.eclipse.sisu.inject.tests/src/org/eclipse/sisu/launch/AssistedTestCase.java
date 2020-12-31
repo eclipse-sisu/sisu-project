@@ -51,7 +51,8 @@ public final class AssistedTestCase
     @Override
     public void configure( final Binder binder )
     {
-        binder.install( new FactoryModuleBuilder().implement( Foo.class, AssistedFoo.class ).build( FooFactory.class ) );
+        binder.install( new FactoryModuleBuilder().implement( Foo.class,
+                                                              AssistedFoo.class ).build( FooFactory.class ) );
     }
 
     @Override

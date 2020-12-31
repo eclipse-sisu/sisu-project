@@ -58,10 +58,12 @@ public class LifecycleTest
 
         injector.getInstance( BeanManager.class ).unmanage();
 
-        assertEquals( "bcdAZwxy", injector.getInstance( org.eclipse.sisu.bean.alpha.OverriddenPublic.class ).results() );
+        assertEquals( "bcdAZwxy",
+                      injector.getInstance( org.eclipse.sisu.bean.alpha.OverriddenPublic.class ).results() );
         assertEquals( "cdABYZwx",
                       injector.getInstance( org.eclipse.sisu.bean.alpha.OverriddenProtected.class ).results() );
-        assertEquals( "dABCXYZw", injector.getInstance( org.eclipse.sisu.bean.alpha.OverriddenPackage.class ).results() );
+        assertEquals( "dABCXYZw",
+                      injector.getInstance( org.eclipse.sisu.bean.alpha.OverriddenPackage.class ).results() );
         assertEquals( "dABCDWXYZw",
                       injector.getInstance( org.eclipse.sisu.bean.alpha.OverriddenPrivate.class ).results() );
     }

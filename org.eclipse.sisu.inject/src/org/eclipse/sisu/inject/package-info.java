@@ -47,4 +47,3 @@
  * bind( RankingFunction.class ).to( MyRankingFunction.class );</pre>
  */
 package org.eclipse.sisu.inject;
-

@@ -12,4 +12,3 @@
  * Injectable API for Sisu components (a.k.a beans).
  */
 package org.eclipse.sisu;
-

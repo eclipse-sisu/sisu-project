@@ -64,7 +64,7 @@ public final class Guice4
         {
             // in Guice4 using Scopes.SINGLETON.scope(...) outside of the Injector is deprecated
             hasOldScopesSingleton = Scopes.class.equals( Scopes.SINGLETON.getClass().getEnclosingClass() ) //
-                && Scopes.SINGLETON.scope( null /* key */, null /* provider */) != null;
+                && Scopes.SINGLETON.scope( null /* key */, null /* provider */ ) != null;
         }
         catch ( final Exception e )
         {

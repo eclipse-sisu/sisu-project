@@ -26,4 +26,3 @@
  * Those {@code PropertyBinding}s are then used to automatically configure any injected instances of Foo.
  */
 package org.eclipse.sisu.bean;
-

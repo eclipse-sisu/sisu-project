@@ -55,7 +55,8 @@ final class MildElements<T>
     {
         compact();
 
-        return list.add( soft ? new Soft<T>( element, queue, list.size() ) : new Weak<T>( element, queue, list.size() ) );
+        return list.add( soft ? new Soft<T>( element, queue, list.size() )
+                              : new Weak<T>( element, queue, list.size() ) );
     }
 
     @Override

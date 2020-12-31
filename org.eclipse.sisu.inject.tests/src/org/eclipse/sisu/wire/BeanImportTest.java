@@ -807,7 +807,8 @@ public class BeanImportTest
 
         // ZImpl<String> is best match for Z<String>
         assertEquals( TypeLiteral.get( String.class ),
-                      TypeArguments.get( TypeLiteral.get( genericInstance.chars.getClass() ).getSupertype( Z.class ), 0 ) );
+                      TypeArguments.get( TypeLiteral.get( genericInstance.chars.getClass() ).getSupertype( Z.class ),
+                                         0 ) );
 
         // raw ZImpl is best match for Z<Random>
         assertEquals( TypeLiteral.get( Object.class ),
@@ -839,8 +840,10 @@ public class BeanImportTest
 
         final Injector grandchild = child.createChildInjector( new ChildWireModule( child, new TestModule() ) );
 
-        assertSame( y, ( (PlaceholderString) grandchild.getInstance( Key.get( X.class, Names.named( "PS" ) ) ) ).fixed );
-        assertSame( y, ( (PlaceholderString) grandchild.getInstance( Key.get( X.class, Names.named( "PS" ) ) ) ).fuzzy );
+        assertSame( y,
+                    ( (PlaceholderString) grandchild.getInstance( Key.get( X.class, Names.named( "PS" ) ) ) ).fixed );
+        assertSame( y,
+                    ( (PlaceholderString) grandchild.getInstance( Key.get( X.class, Names.named( "PS" ) ) ) ).fuzzy );
     }
 
     public void testParametersLookup()

@@ -60,8 +60,7 @@ public class ImplementationsTest
 
                 bind( Bean.class ).annotatedWith( Names.named( "instance" ) ).toInstance( new BeanImpl() );
 
-                bind( Bean.class ).annotatedWith( Names.named( "deferred" ) ).toProvider( new LoadedClass<Bean>(
-                                                                                                                 BeanImpl.class ) );
+                bind( Bean.class ).annotatedWith( Names.named( "deferred" ) ).toProvider( new LoadedClass<Bean>( BeanImpl.class ) );
 
                 install( new PrivateModule()
                 {

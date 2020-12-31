@@ -68,4 +68,3 @@
  * &#064;Inject Map&lt;String, Provider&lt;MyType&gt;&gt; providerMap</pre>
  */
 package org.eclipse.sisu.wire;
-
