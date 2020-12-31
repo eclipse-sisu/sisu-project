@@ -41,9 +41,10 @@ public class ArrayConstantTest
             {
                 bind( "Empty", "<items/>" );
 
-                bind( "Custom", "<items><item implementation='java.lang.Boolean'>true</item>"
-                    + "<item implementation='java.net.URI'>file:temp</item>"
-                    + "<item implementation='java.lang.Float'>8.1</item></items>" );
+                bind( "Custom",
+                      "<items><item implementation='java.lang.Boolean'>true</item>"
+                          + "<item implementation='java.net.URI'>file:temp</item>"
+                          + "<item implementation='java.lang.Float'>8.1</item></items>" );
 
                 bind( "Text", "<items><item>1</item><item>2</item><item>3</item></items>" );
 

@@ -72,7 +72,8 @@ final class PlexusPropertyBinder
     // Constructors
     // ----------------------------------------------------------------------
 
-    PlexusPropertyBinder( final BeanManager manager, final TypeEncounter<?> encounter, final PlexusBeanMetadata metadata )
+    PlexusPropertyBinder( final BeanManager manager, final TypeEncounter<?> encounter,
+                          final PlexusBeanMetadata metadata )
     {
         this.manager = manager;
         this.metadata = metadata;

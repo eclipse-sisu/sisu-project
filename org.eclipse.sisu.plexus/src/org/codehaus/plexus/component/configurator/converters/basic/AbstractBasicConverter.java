@@ -66,8 +66,8 @@ public abstract class AbstractBasicConverter
     // ----------------------------------------------------------------------
 
     @Override
-    protected final Object fromExpression( final PlexusConfiguration configuration,
-                                           final ExpressionEvaluator evaluator, final Class<?> type )
+    protected final Object fromExpression( final PlexusConfiguration configuration, final ExpressionEvaluator evaluator,
+                                           final Class<?> type )
         throws ComponentConfigurationException
     {
         String value = configuration.getValue();
@@ -104,9 +104,8 @@ public abstract class AbstractBasicConverter
         }
         catch ( final ExpressionEvaluationException e )
         {
-            final String reason =
-                String.format( "Cannot evaluate expression '%s' for configuration entry '%s'", value,
-                               configuration.getName() );
+            final String reason = String.format( "Cannot evaluate expression '%s' for configuration entry '%s'", value,
+                                                 configuration.getName() );
 
             throw new ComponentConfigurationException( configuration, reason, e );
         }

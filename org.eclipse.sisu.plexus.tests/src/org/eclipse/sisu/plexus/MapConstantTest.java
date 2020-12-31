@@ -44,9 +44,10 @@ public class MapConstantTest
             {
                 bind( "Empty", "<items/>" );
 
-                bind( "Custom", "<items implementation='java.util.LinkedHashMap'>"
-                    + "<builder implementation='java.lang.StringBuilder'>TEST</builder>"
-                    + "<file implementation='java.io.File'>TEST</file>" + "</items>" );
+                bind( "Custom",
+                      "<items implementation='java.util.LinkedHashMap'>"
+                          + "<builder implementation='java.lang.StringBuilder'>TEST</builder>"
+                          + "<file implementation='java.io.File'>TEST</file>" + "</items>" );
 
                 bind( "Map", "<items><key1>value1</key1><key2>value2</key2></items>" );
 

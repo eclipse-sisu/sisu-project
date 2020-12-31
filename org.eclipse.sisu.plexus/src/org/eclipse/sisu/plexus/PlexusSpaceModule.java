@@ -80,9 +80,10 @@ public final class PlexusSpaceModule
 
         final BeanManager manager =
             delegate instanceof PlexusLifecycleManager ? delegate
-                            : new PlexusLifecycleManager( binder.getProvider( Context.class ),
-                                                          binder.getProvider( LoggerManager.class ),
-                                                          slf4jLoggerFactoryProvider, delegate );
+                                                       : new PlexusLifecycleManager( binder.getProvider( Context.class ),
+                                                                                     binder.getProvider( LoggerManager.class ),
+                                                                                     slf4jLoggerFactoryProvider,
+                                                                                     delegate );
 
         binder.bind( BeanManager.class ).toInstance( manager );
 

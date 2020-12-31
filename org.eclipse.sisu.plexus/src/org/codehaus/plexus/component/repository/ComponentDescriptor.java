@@ -322,8 +322,8 @@ public class ComponentDescriptor<T>
     @Override
     public final String toString()
     {
-        return getClass().getName() + " [role: '" + getRole() + "', hint: '" + getRoleHint() + "', realm: "
-            + classRealm + "]";
+        return getClass().getName() + " [role: '" + getRole() + "', hint: '" + getRoleHint() + "', realm: " + classRealm
+            + "]";
     }
 
     @Override

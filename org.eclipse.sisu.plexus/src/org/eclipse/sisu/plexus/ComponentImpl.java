@@ -43,7 +43,8 @@ public final class ComponentImpl
     // Constructors
     // ----------------------------------------------------------------------
 
-    public ComponentImpl( final Class<?> role, final String hint, final String instantiationStrategy, final String description )
+    public ComponentImpl( final Class<?> role, final String hint, final String instantiationStrategy,
+                          final String description )
     {
         if ( null == role || null == hint || null == instantiationStrategy || null == description )
         {
@@ -146,9 +147,8 @@ public final class ComponentImpl
                 && description.equals( cmp.description() ) )
             {
                 // optimization: we hard-code all these attributes to be empty
-                final String hardCodedAttributes =
-                    cmp.alias() + cmp.composer() + cmp.configurator() + cmp.factory() + cmp.lifecycleHandler()
-                        + cmp.profile() + cmp.type() + cmp.version();
+                final String hardCodedAttributes = cmp.alias() + cmp.composer() + cmp.configurator() + cmp.factory()
+                    + cmp.lifecycleHandler() + cmp.profile() + cmp.type() + cmp.version();
 
                 return hardCodedAttributes.length() == 0 && !cmp.isolatedRealm();
             }

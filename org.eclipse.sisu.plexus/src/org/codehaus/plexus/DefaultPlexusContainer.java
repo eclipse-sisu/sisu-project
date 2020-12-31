@@ -386,7 +386,8 @@ public final class DefaultPlexusContainer
         return getComponentDescriptor( null, role, hint );
     }
 
-    public <T> ComponentDescriptor<T> getComponentDescriptor( final Class<T> type, final String role, final String hint )
+    public <T> ComponentDescriptor<T> getComponentDescriptor( final Class<T> type, final String role,
+                                                              final String hint )
     {
         final Iterator<PlexusBean<T>> i = locate( role, type, hint ).iterator();
         if ( i.hasNext() )

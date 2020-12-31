@@ -32,8 +32,7 @@ public class MapOrientedComponentConfigurator
         if ( component instanceof MapOrientedComponent )
         {
             Object map = new MapConverter().fromConfiguration( converterLookup, configuration, Map.class,
-                                                                        component.getClass(), realm, evaluator,
-                                                                        listener );
+                                                               component.getClass(), realm, evaluator, listener );
             ( (MapOrientedComponent) component ).setComponentConfiguration( (Map<?, ?>) map );
         }
         else

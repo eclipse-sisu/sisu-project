@@ -35,7 +35,7 @@ public class DateConverter
     {
         try
         {
-            return DATE_CONVERTER.convert( value, null /* unused */);
+            return DATE_CONVERTER.convert( value, null /* unused */ );
         }
         catch ( final RuntimeException e )
         {

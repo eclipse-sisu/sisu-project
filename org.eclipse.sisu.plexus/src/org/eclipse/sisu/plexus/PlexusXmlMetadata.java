@@ -36,7 +36,8 @@ final class PlexusXmlMetadata
     // Constructors
     // ----------------------------------------------------------------------
 
-    PlexusXmlMetadata( final Map<String, Configuration> configurationMap, final Map<String, Requirement> requirementMap )
+    PlexusXmlMetadata( final Map<String, Configuration> configurationMap,
+                       final Map<String, Requirement> requirementMap )
     {
         merge( configurationMap, requirementMap );
     }

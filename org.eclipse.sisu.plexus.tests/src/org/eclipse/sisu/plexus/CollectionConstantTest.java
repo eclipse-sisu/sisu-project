@@ -49,7 +49,8 @@ public class CollectionConstantTest
                 bind( "Custom", "<items implementation='java.util.LinkedHashSet'>"
                     + "<item implementation='java.io.File'>FOO</item><item>BAR</item></items>" );
 
-                bind( "Animals", "<animals><animal>cat</animal><animal>dog</animal><animal>aardvark</animal></animals>" );
+                bind( "Animals",
+                      "<animals><animal>cat</animal><animal>dog</animal><animal>aardvark</animal></animals>" );
 
                 bind( "Numbers", "<as><a><b>1</b><b>2</b></a><a><b>3</b><b>4</b></a><a><b>5</b><b>6</b></a></as>" );
 

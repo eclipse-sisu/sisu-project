@@ -45,8 +45,8 @@ public final class PlexusLifecycleManager
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final Class<?>[] LIFECYCLE_TYPES = { LogEnabled.class, Contextualizable.class, Initializable.class,
-        Startable.class, Disposable.class };
+    private static final Class<?>[] LIFECYCLE_TYPES =
+        { LogEnabled.class, Contextualizable.class, Initializable.class, Startable.class, Disposable.class };
 
     // ----------------------------------------------------------------------
     // Implementation fields

@@ -50,8 +50,7 @@ public final class DefaultPlexusBeanLocator
         this( beanLocator, null, null );
     }
 
-    public DefaultPlexusBeanLocator( final BeanLocator beanLocator,
-                                     final RealmManager realmManager,
+    public DefaultPlexusBeanLocator( final BeanLocator beanLocator, final RealmManager realmManager,
                                      final String visibility )
     {
         this.beanLocator = beanLocator;

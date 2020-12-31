@@ -196,7 +196,8 @@ public class BeanConstantTest
 
     public void testSimpleUrlBean()
     {
-        assertEquals( "www.sonatype.org", injector.getInstance( Key.get( URL.class, Names.named( "SITE" ) ) ).getHost() );
+        assertEquals( "www.sonatype.org",
+                      injector.getInstance( Key.get( URL.class, Names.named( "SITE" ) ) ).getHost() );
     }
 
     public void testNonBean()

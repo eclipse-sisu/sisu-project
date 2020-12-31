@@ -58,14 +58,15 @@ public abstract class AbstractComponentConfigurator
             try
             {
                 configureMethod = clazz.getMethod( "configureComponent", Object.class, PlexusConfiguration.class,
-                                 ExpressionEvaluator.class, org.codehaus.classworlds.ClassRealm.class,
-                                 ConfigurationListener.class );
+                                                   ExpressionEvaluator.class, org.codehaus.classworlds.ClassRealm.class,
+                                                   ConfigurationListener.class );
                 configureMethod.invoke( this, component, configuration, evaluator, legacyRealm, listener );
             }
             catch ( final NoSuchMethodException ignore )
             {
-                configureMethod = clazz.getMethod( "configureComponent", Object.class, PlexusConfiguration.class,
-                                 ExpressionEvaluator.class, org.codehaus.classworlds.ClassRealm.class );
+                configureMethod =
+                    clazz.getMethod( "configureComponent", Object.class, PlexusConfiguration.class,
+                                     ExpressionEvaluator.class, org.codehaus.classworlds.ClassRealm.class );
                 configureMethod.invoke( this, component, configuration, evaluator, legacyRealm );
             }
         }

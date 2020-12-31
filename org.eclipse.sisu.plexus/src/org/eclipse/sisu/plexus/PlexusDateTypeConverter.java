@@ -33,11 +33,11 @@ public final class PlexusDateTypeConverter
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final DateFormat[] PLEXUS_DATE_FORMATS = {
-        new SimpleDateFormat( "yyyy-MM-dd hh:mm:ss.S a", Locale.US ),
-        new SimpleDateFormat( "yyyy-MM-dd hh:mm:ssa", Locale.US ),
-        new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss.S", Locale.US ),
-        new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss", Locale.US ) };
+    private static final DateFormat[] PLEXUS_DATE_FORMATS =
+        { new SimpleDateFormat( "yyyy-MM-dd hh:mm:ss.S a", Locale.US ),
+            new SimpleDateFormat( "yyyy-MM-dd hh:mm:ssa", Locale.US ),
+            new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss.S", Locale.US ),
+            new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss", Locale.US ) };
 
     private static final String CONVERSION_ERROR = "Cannot convert: \"%s\" to: %s";
 

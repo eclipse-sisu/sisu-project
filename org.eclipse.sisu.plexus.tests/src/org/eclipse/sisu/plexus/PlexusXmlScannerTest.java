@@ -148,7 +148,8 @@ public class PlexusXmlScannerTest
             new ComponentImpl( DefaultBean.class, Hints.DEFAULT_HINT, Strategies.LOAD_ON_START, "" );
         assertEquals( DefaultBean.class, componentMap.get( component1 ).load() );
 
-        final Component component2 = new ComponentImpl( Bean.class, "debug", Strategies.LOAD_ON_START, "For debugging" );
+        final Component component2 =
+            new ComponentImpl( Bean.class, "debug", Strategies.LOAD_ON_START, "For debugging" );
         assertEquals( DebugBean.class, componentMap.get( component2 ).load() );
     }
 
@@ -198,7 +199,8 @@ public class PlexusXmlScannerTest
 
         assertFalse( metadata1.isEmpty() );
 
-        assertEquals( new ConfigurationImpl( "someFieldName", "<some-field-name><item>PRIMARY</item></some-field-name>" ),
+        assertEquals( new ConfigurationImpl( "someFieldName",
+                                             "<some-field-name><item>PRIMARY</item></some-field-name>" ),
                       metadata1.getConfiguration( new NamedProperty( "someFieldName" ) ) );
 
         assertEquals( new ConfigurationImpl( "simple", "value" ),

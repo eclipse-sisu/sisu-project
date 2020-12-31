@@ -60,9 +60,8 @@ public abstract class AbstractConfigurationConverter
         }
         catch ( final ExpressionEvaluationException e )
         {
-            final String reason =
-                String.format( "Cannot evaluate expression '%s' for configuration entry '%s'", value,
-                               configuration.getName() );
+            final String reason = String.format( "Cannot evaluate expression '%s' for configuration entry '%s'", value,
+                                                 configuration.getName() );
 
             throw new ComponentConfigurationException( configuration, reason, e );
         }

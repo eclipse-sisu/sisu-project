@@ -48,8 +48,8 @@ public class ArrayConverter
             final Class<?> elementType = type.getComponentType();
             if ( null == value )
             {
-                elements =
-                    fromChildren( lookup, configuration, type, enclosingType, loader, evaluator, listener, elementType );
+                elements = fromChildren( lookup, configuration, type, enclosingType, loader, evaluator, listener,
+                                         elementType );
             }
             else if ( value instanceof String )
             {

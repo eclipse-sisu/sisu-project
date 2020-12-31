@@ -186,7 +186,8 @@ final class PseudoPlexusContainer
         throw new UnsupportedOperationException();
     }
 
-    public <T> ComponentDescriptor<T> getComponentDescriptor( final Class<T> type, final String role, final String hint )
+    public <T> ComponentDescriptor<T> getComponentDescriptor( final Class<T> type, final String role,
+                                                              final String hint )
     {
         throw new UnsupportedOperationException();
     }

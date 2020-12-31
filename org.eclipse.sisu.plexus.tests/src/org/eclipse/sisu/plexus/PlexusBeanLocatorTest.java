@@ -456,7 +456,8 @@ public class PlexusBeanLocatorTest
         } ), 9 );
 
         final Iterable<? extends Entry<String, Bean>> beans =
-            new DefaultPlexusBeanLocator( locator, new RealmManager( locator ), "realm" ).locate( TypeLiteral.get( Bean.class ) );
+            new DefaultPlexusBeanLocator( locator, new RealmManager( locator ),
+                                          "realm" ).locate( TypeLiteral.get( Bean.class ) );
 
         Iterator<? extends Entry<String, Bean>> i;
 

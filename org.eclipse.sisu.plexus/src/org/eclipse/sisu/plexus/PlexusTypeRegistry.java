@@ -31,8 +31,8 @@ final class PlexusTypeRegistry
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final Component LOAD_ON_START_PLACEHOLDER = new ComponentImpl( Object.class, "",
-                                                                                  Strategies.LOAD_ON_START, "" );
+    private static final Component LOAD_ON_START_PLACEHOLDER =
+        new ComponentImpl( Object.class, "", Strategies.LOAD_ON_START, "" );
 
     // ----------------------------------------------------------------------
     // Implementation fields

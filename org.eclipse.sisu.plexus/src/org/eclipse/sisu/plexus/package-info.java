@@ -12,4 +12,3 @@
  * Sisu-Plexus backend implementation.
  */
 package org.eclipse.sisu.plexus;
-
