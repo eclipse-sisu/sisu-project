@@ -13,6 +13,7 @@
 package org.codehaus.plexus.component.configurator;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import org.codehaus.classworlds.ClassRealmAdapter;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
@@ -53,18 +54,19 @@ public abstract class AbstractComponentConfigurator
         final Class<?> clazz = getClass();
         try
         {
+            Method configureMethod;
             try
             {
-                clazz.getMethod( "configureComponent", Object.class, PlexusConfiguration.class,
+                configureMethod = clazz.getMethod( "configureComponent", Object.class, PlexusConfiguration.class,
                                  ExpressionEvaluator.class, org.codehaus.classworlds.ClassRealm.class,
-                                 ConfigurationListener.class )
-                /* ---> */.invoke( this, component, configuration, evaluator, legacyRealm, listener );
+                                 ConfigurationListener.class );
+                configureMethod.invoke( this, component, configuration, evaluator, legacyRealm, listener );
             }
             catch ( final NoSuchMethodException ignore )
             {
-                clazz.getMethod( "configureComponent", Object.class, PlexusConfiguration.class,
-                                 ExpressionEvaluator.class, org.codehaus.classworlds.ClassRealm.class )
-                /* ---> */.invoke( this, component, configuration, evaluator, legacyRealm );
+                configureMethod = clazz.getMethod( "configureComponent", Object.class, PlexusConfiguration.class,
+                                 ExpressionEvaluator.class, org.codehaus.classworlds.ClassRealm.class );
+                configureMethod.invoke( this, component, configuration, evaluator, legacyRealm );
             }
         }
         catch ( final InvocationTargetException e )

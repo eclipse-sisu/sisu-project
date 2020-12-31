@@ -31,10 +31,10 @@ public class MapOrientedComponentConfigurator
     {
         if ( component instanceof MapOrientedComponent )
         {
-            ( (MapOrientedComponent) component ).setComponentConfiguration(
-            /* <--- */(Map<?, ?>) new MapConverter().fromConfiguration( converterLookup, configuration, Map.class,
+            Object map = new MapConverter().fromConfiguration( converterLookup, configuration, Map.class,
                                                                         component.getClass(), realm, evaluator,
-                                                                        listener ) );
+                                                                        listener );
+            ( (MapOrientedComponent) component ).setComponentConfiguration( (Map<?, ?>) map );
         }
         else
         {
