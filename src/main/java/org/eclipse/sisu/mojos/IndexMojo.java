@@ -196,9 +196,11 @@ public class IndexMojo
             filter.addFilter( new ProjectTransitivityFilter( project.getDependencyArtifacts(), excludeTransitive ) );
             filter.addFilter( new ScopeFilter( cleanList( includeScope ), cleanList( excludeScope ) ) );
             filter.addFilter( new TypeFilter( cleanList( includeTypes ), cleanList( excludeTypes ) ) );
-            filter.addFilter( new ClassifierFilter( cleanList( includeClassifiers ), cleanList( excludeClassifiers ) ) );
+            filter.addFilter( new ClassifierFilter( cleanList( includeClassifiers ),
+                                                    cleanList( excludeClassifiers ) ) );
             filter.addFilter( new GroupIdFilter( cleanList( includeGroupIds ), cleanList( excludeGroupIds ) ) );
-            filter.addFilter( new ArtifactIdFilter( cleanList( includeArtifactIds ), cleanList( excludeArtifactIds ) ) );
+            filter.addFilter( new ArtifactIdFilter( cleanList( includeArtifactIds ),
+                                                    cleanList( excludeArtifactIds ) ) );
 
             try
             {
