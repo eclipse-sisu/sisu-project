@@ -6,10 +6,10 @@
     <property name='p2.compressed' value='false'/>
   </properties>
   <mappings size='4'>
-    <rule filter='(&amp; (id=com.google.guava))' output='http://repo.maven.apache.org/maven2/com/google/guava/guava/16.0/guava-16.0.jar'/>
-    <rule filter='(&amp; (id=com.google.inject))' output='http://repo.maven.apache.org/maven2/com/google/inject/guice/4.0-beta5/guice-4.0-beta5.jar'/>
-    <rule filter='(&amp; (id=com.google.inject.servlet))' output='http://repo.maven.apache.org/maven2/com/google/inject/extensions/guice-servlet/4.0-beta5/guice-servlet-4.0-beta5.jar'/>
-    <rule filter='(&amp; (id=org.testng))' output='http://repo.maven.apache.org/maven2/org/testng/testng/6.7/testng-6.7.jar'/>
+    <rule filter='(&amp; (id=com.google.guava))' output='https://repo.maven.apache.org/maven2/com/google/guava/guava/16.0/guava-16.0.jar'/>
+    <rule filter='(&amp; (id=com.google.inject))' output='https://repo.maven.apache.org/maven2/com/google/inject/guice/4.0-beta5/guice-4.0-beta5.jar'/>
+    <rule filter='(&amp; (id=com.google.inject.servlet))' output='https://repo.maven.apache.org/maven2/com/google/inject/extensions/guice-servlet/4.0-beta5/guice-servlet-4.0-beta5.jar'/>
+    <rule filter='(&amp; (id=org.testng))' output='https://repo.maven.apache.org/maven2/org/testng/testng/6.7/testng-6.7.jar'/>
   </mappings>
   <artifacts size='4'>
     <artifact classifier='osgi.bundle' id='com.google.guava' version='16.0.0'>
