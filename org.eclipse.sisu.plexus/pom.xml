@@ -34,6 +34,14 @@
       <scope>provided</scope>
     </dependency>
     <!--
+     | @PostConstruct and @PreDestroy help with Plexus->JSR330 migration
+    -->
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+      <version>1.2</version>
+    </dependency>
+    <!--
      | CDI's @Typed helps with Plexus->JSR330 migration
     -->
     <dependency>
@@ -50,14 +58,6 @@
           <artifactId>javax.interceptor-api</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>
-    <!--
-     | @PostConstruct and @PreDestroy help with Plexus->JSR330 migration
-    -->
-    <dependency>
-      <groupId>javax.annotation</groupId>
-      <artifactId>javax.annotation-api</artifactId>
-      <version>1.2</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.sisu</groupId>
