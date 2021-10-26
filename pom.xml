@@ -87,7 +87,7 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
     <tycho.scmUrl>scm:git:http://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.plexus.git</tycho.scmUrl>
-    <tycho-version>1.0.0</tycho-version>
+    <tycho-version>2.5.0</tycho-version>
   </properties>
 
   <build>
@@ -189,13 +189,6 @@
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-p2-repository-plugin</artifactId>
           <version>${tycho-version}</version>
-          <dependencies>
-            <dependency>
-              <groupId>org.codehaus.plexus</groupId>
-              <artifactId>plexus-archiver</artifactId>
-              <version>3.0.3</version>
-            </dependency>
-          </dependencies>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
@@ -215,11 +208,6 @@
               <artifactId>tycho-sourceref-jgit</artifactId>
               <version>${tycho-version}</version>
             </dependency>
-            <dependency>
-              <groupId>org.codehaus.plexus</groupId>
-              <artifactId>plexus-archiver</artifactId>
-              <version>3.0.3</version>
-            </dependency>
           </dependencies>
         </plugin>
         <plugin>
@@ -234,13 +222,6 @@
               </goals>
             </execution>
           </executions>
-          <dependencies>
-            <dependency>
-              <groupId>org.codehaus.plexus</groupId>
-              <artifactId>plexus-archiver</artifactId>
-              <version>3.0.3</version>
-            </dependency>
-          </dependencies>
         </plugin>
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
