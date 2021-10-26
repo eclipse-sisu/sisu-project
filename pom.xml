@@ -411,14 +411,5 @@
         </plugins>
       </build>
     </profile>
-    <profile>
-      <id>jdk7</id>
-      <activation>
-        <jdk>1.7</jdk>
-      </activation>
-      <properties>
-        <tycho-version>0.24.0</tycho-version>
-      </properties>
-    </profile>
   </profiles>
 </project>
