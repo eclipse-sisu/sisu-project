@@ -101,8 +101,12 @@ public class ComponentAnnotationTest
 
         assertEquals( orig.hashCode(), clone.hashCode() );
 
-        assertEquals( new HashSet<String>( Arrays.asList( orig.toString().split( "[(, )]" ) ) ),
-                      new HashSet<String>( Arrays.asList( clone.toString().split( "[(, )]" ) ) ) );
+        String origToString = orig.toString().replace( "\"", "" ).replace( ".class", "" );
+        String cloneToString = clone.toString().replace( '[', '{' ).replace( ']', '}' );
+        cloneToString = cloneToString.replace( "class ", "" ).replace( "interface ", "" );
+
+        assertEquals( new HashSet<String>( Arrays.asList( origToString.split( "[(, )]" ) ) ),
+                      new HashSet<String>( Arrays.asList( cloneToString.split( "[(, )]" ) ) ) );
 
         assertEquals( orig.annotationType(), clone.annotationType() );
     }
