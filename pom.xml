@@ -66,17 +66,17 @@
   </modules>
 
   <scm>
-    <connection>scm:git:git://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.plexus.git</connection>
-    <developerConnection>scm:git:ssh://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.plexus.git</developerConnection>
-    <url>http://git.eclipse.org/c/sisu/org.eclipse.sisu.plexus.git/tree/</url>
+    <connection>scm:git:git://github.com/eclipse/sisu.plexus.git</connection>
+    <developerConnection>scm:git:git@github.com:eclipse/sisu.plexus.git</developerConnection>
+    <url>https://github.com/eclipse/sisu.plexus</url>
   </scm>
   <issueManagement>
-    <system>bugzilla</system>
-    <url>https://bugs.eclipse.org/bugs/enter_bug.cgi?product=Sisu&amp;component=Plexus&amp;format=guided</url>
+    <system>GitHub</system>
+    <url>https://github.com/eclipse/sisu.plexus/issues</url>
   </issueManagement>
   <ciManagement>
     <system>Jenkins</system>
-    <url>https://ci.eclipse.org/sisu/job/sisu-plexus-nightly/</url>
+    <url>https://ci.eclipse.org/sisu/job/sisu.plexus/</url>
   </ciManagement>
 
   <properties>
