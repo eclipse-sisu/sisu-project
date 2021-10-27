@@ -58,10 +58,6 @@
     </mailingList>
   </mailingLists>
 
-  <prerequisites>
-    <maven>3.6.3</maven>
-  </prerequisites>
-
   <modules>
     <module>org.eclipse.sisu.inject</module>
     <module>org.eclipse.sisu.inject.extender</module>
