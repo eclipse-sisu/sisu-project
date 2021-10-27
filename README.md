@@ -2,6 +2,8 @@ Sisu is a modular [JSR330](https://javax-inject.github.io/javax-inject/)-based c
 
 Sisu uses [Google-Guice](https://github.com/google/guice) to perform dependency injection and provide the core JSR330 support, but removes the need to write explicit bindings in Guice modules. Integration with other containers via the Eclipse Extension Registry and the OSGi Service Registry is a goal of this project.
 
+[javadoc](https://www.eclipse.org/sisu/docs/api/org.eclipse.sisu.inject)
+
 ## Maven
 
 ```xml
