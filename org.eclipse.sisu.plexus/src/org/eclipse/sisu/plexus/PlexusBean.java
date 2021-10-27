@@ -13,7 +13,7 @@ package org.eclipse.sisu.plexus;
 import java.util.Map.Entry;
 
 /**
- * Plexus bean mapping; from hint->instance.
+ * Plexus bean mapping; from hint to instance.
  */
 public interface PlexusBean<T>
     extends Entry<String, T>

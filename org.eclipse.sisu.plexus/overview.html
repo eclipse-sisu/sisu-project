@@ -2,9 +2,9 @@
 <body>
 <h1>Overview</h1>
 Implements Plexus semantics on top of Sisu and Google-Guice.
-<p><p>
+<p>
 Legacy applications can use the Plexus container API as usual:
-<p><pre>
+<pre>
 ContainerConfiguration config = new DefaultContainerConfiguration();
 // ... configure ...
 PlexusContainer container = null;
@@ -16,8 +16,9 @@ try {
     container.dispose();
   }
 }</pre>
+<p>
 Sisu applications that want to re-use Plexus components can use the {@link org.eclipse.sisu.plexus.PlexusSpaceModule} wrapper:
-<p><pre>
+<pre>
 binder.install( new PlexusSpaceModule( space ) );</pre>
 <h2>Packages</h2>
 </body>
