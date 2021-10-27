@@ -276,32 +276,7 @@
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>3.3.1</version>
           <configuration>
-            <docletArtifact>
-              <groupId>com.google.doclava</groupId>
-              <artifactId>doclava</artifactId>
-              <version>1.0.6</version>
-            </docletArtifact>
-            <doclet>com.google.doclava.Doclava</doclet>
-            <!--
-             | bootclasspath required by Sun's JVM, plus @Nullable placeholder to workaround javadoc bug
-            -->
-            <bootclasspath>${sun.boot.class.path}:${basedir}/../doclava/api/nullable.zip</bootclasspath>
             <excludePackageNames>*.internal,org.codehaus.*</excludePackageNames>
-            <additionalparam>
-              -quiet
-              -federate JDK http://docs.oracle.com/javase/7/docs/api/index.html?
-              -federationxml JDK http://doclava.googlecode.com/svn/static/api/openjdk-6.xml
-              -federate Guice http://google-guice.googlecode.com/git-history/3.0/javadoc
-              -hdf project.name "${project.name}"
-              -overview ${basedir}/overview.html
-              -templatedir ${basedir}/../doclava
-              -d ${project.build.directory}/apidocs
-            </additionalparam>
-            <useStandardDocletOptions>false</useStandardDocletOptions>
-            <!--
-             | Apple's JVM sometimes requires more memory
-            -->
-            <additionalJOption>-J-Xmx1024m</additionalJOption>
           </configuration>
         </plugin>
         <plugin>
