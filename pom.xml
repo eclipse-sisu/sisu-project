@@ -347,10 +347,6 @@
             </configuration>
           </plugin>
           <plugin>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.10.1</version>
-          </plugin>
-          <plugin>
             <extensions>true</extensions>
             <groupId>org.sonatype.plugins</groupId>
             <artifactId>nexus-staging-maven-plugin</artifactId>
