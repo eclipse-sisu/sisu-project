@@ -66,23 +66,23 @@
   </modules>
 
   <scm>
-    <connection>scm:git:git://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.inject.git</connection>
-    <developerConnection>scm:git:ssh://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.inject.git</developerConnection>
-    <url>http://git.eclipse.org/c/sisu/org.eclipse.sisu.inject.git/tree/</url>
+    <connection>scm:git:git://github.com/eclipse/sisu.inject.git</connection>
+    <developerConnection>scm:git:git@github.com:eclipse/sisu.inject.git</developerConnection>
+    <url>https://github.com/eclipse/sisu.inject</url>
   </scm>
   <issueManagement>
-    <system>bugzilla</system>
-    <url>https://bugs.eclipse.org/bugs/enter_bug.cgi?product=Sisu&amp;component=Inject&amp;format=guided</url>
+    <system>GitHub</system>
+    <url>https://github.com/eclipse/sisu.inject/issues</url>
   </issueManagement>
   <ciManagement>
     <system>Jenkins</system>
-    <url>https://ci.eclipse.org/sisu/job/sisu-inject-nightly/</url>
+    <url>https://ci.eclipse.org/sisu/job/sisu.inject/</url>
   </ciManagement>
 
   <properties>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
-    <tycho.scmUrl>scm:git:http://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.inject.git</tycho.scmUrl>
+    <tycho.scmUrl>scm:git:https://github.com/eclipse/sisu.inject.git</tycho.scmUrl>
     <tycho-version>2.5.0</tycho-version>
   </properties>
 
