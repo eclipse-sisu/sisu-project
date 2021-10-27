@@ -63,17 +63,17 @@
   </prerequisites>
 
   <scm>
-    <connection>scm:git:git://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.mojos.git</connection>
-    <developerConnection>scm:git:ssh://git.eclipse.org/gitroot/sisu/org.eclipse.sisu.mojos.git</developerConnection>
-    <url>http://git.eclipse.org/c/sisu/org.eclipse.sisu.mojos.git/tree/</url>
+    <connection>scm:git:git://github.com/eclipse/sisu.mojos.git</connection>
+    <developerConnection>scm:git:git@github.com:eclipse/sisu.mojos.git</developerConnection>
+    <url>https://github.com/eclipse/sisu.mojos</url>
   </scm>
   <issueManagement>
-    <system>bugzilla</system>
-    <url>https://bugs.eclipse.org/bugs/enter_bug.cgi?product=Sisu&amp;component=Mojos&amp;format=guided</url>
+    <system>GitHub</system>
+    <url>https://github.com/eclipse/sisu.mojos/issues</url>
   </issueManagement>
   <ciManagement>
     <system>Jenkins</system>
-    <url>https://ci.eclipse.org/sisu/job/sisu-mojos-nightly/</url>
+    <url>https://ci.eclipse.org/sisu/job/sisu.mojos/</url>
   </ciManagement>
 
   <properties>
