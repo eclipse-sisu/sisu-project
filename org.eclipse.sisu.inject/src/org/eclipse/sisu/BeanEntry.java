@@ -17,7 +17,7 @@ import javax.inject.Provider;
 import javax.inject.Qualifier;
 
 /**
- * Describes {@link Q}ualified bean implementations of {@link T}:<br>
+ * Describes <b>Q</b>ualified bean implementations of <b>T</b>:<br>
  * <br>
  * 
  * <pre>

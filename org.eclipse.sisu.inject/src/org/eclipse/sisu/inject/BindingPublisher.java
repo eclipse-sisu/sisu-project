@@ -41,7 +41,7 @@ public interface BindingPublisher
     /**
      * Attempts to adapt this publisher to the given type.
      * 
-     * @param The target type
+     * @param type The target type
      * @return Adapted instance; {@code null} if it couldn't be adapted
      */
     <T> T adapt( Class<T> type );

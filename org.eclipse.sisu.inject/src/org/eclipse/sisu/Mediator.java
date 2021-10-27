@@ -13,7 +13,7 @@ package org.eclipse.sisu;
 import java.lang.annotation.Annotation;
 
 /**
- * {@link W}atches for {@link Q}ualified bean implementations of {@link T}:<br>
+ * <b>W</b>atches for <b>Q</b>ualified bean implementations of <b>T</b>:<br>
  * <br>
  * 
  * <pre>
@@ -38,10 +38,8 @@ import java.lang.annotation.Annotation;
  * Mediator implementations must have a public no-arg constructor; they are neither injected nor injectable, acting
  * instead as stateless translators.
  * <p>
- * <p>
  * IMPORTANT: mediation occurs when bindings change and there is at least <b>one</b> live watcher. If no-one requests or
  * injects an instance of the watcher type then the mediator will <b>not</b> be called.
- * <p>
  * <p>
  * In the following example as soon as MyTabbedPane is injected, Sisu will use the SwingTabMediator to deliver all known
  * JPanels annotated with @Tab to the watching MyTabbedPane. Sisu will continue to send updates, which add or remove

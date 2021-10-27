@@ -91,8 +91,8 @@ public final class ServiceBindings
     // ----------------------------------------------------------------------
 
     /**
+     * Configured by {@code org.eclipse.sisu.osgi.ServiceBindings.allow} system property.
      * @return Globbed pattern of types to allow
-     * @see {@code org.eclipse.sisu.osgi.ServiceBindings.allow} system property
      */
     public static String defaultAllow()
     {
@@ -100,8 +100,8 @@ public final class ServiceBindings
     }
 
     /**
+     * Configured by {@code org.eclipse.sisu.osgi.ServiceBindings.ignore} system property.
      * @return Globbed pattern of types to ignore
-     * @see {@code org.eclipse.sisu.osgi.ServiceBindings.ignore} system property
      */
     public static String defaultIgnore()
     {

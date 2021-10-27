@@ -9,8 +9,8 @@
  *   Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
 /**
- * Customizable injection of bean properties, based on <a href="http://code.google.com/p/google-guice/wiki/CustomInjections">http://code.google.com/p/google-guice/wiki/CustomInjections</a>.
- * <p><p>
+ * Customizable injection of bean properties, based on <a href="https://github.com/google/guice/wiki/CustomInjections">https://github.com/google/guice/wiki/CustomInjections</a>.
+ * <p>
  * For example:
  * 
  * <pre>
@@ -20,9 +20,9 @@
  *   }
  * }</pre>
  * {@code MyBeanBinder} will be asked to supply a {@link org.eclipse.sisu.bean.PropertyBinder} for each bean type, say Foo.
- * <p><p>
+ * <p>
  * That {@code PropertyBinder} will be asked to supply a {@link org.eclipse.sisu.bean.PropertyBinding} for each property (field or setter) in Foo.
- * <p><p>
+ * <p>
  * Those {@code PropertyBinding}s are then used to automatically configure any injected instances of Foo.
  */
 package org.eclipse.sisu.bean;

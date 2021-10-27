@@ -10,20 +10,20 @@
  *******************************************************************************/
 /**
  * Customizable wiring of unresolved dependencies. Use this to share components across injectors, apply configuration, and form on-demand collections.
- * <p><p>
+ * <p>
  * The {@link org.eclipse.sisu.wire.WireModule} should enclose all modules in your application:
  * 
  * <pre>
  * Guice.createInjector( new WireModule( bootModule, configModule, mainModule ) );</pre>
  * 
  * Use the {@link org.eclipse.sisu.wire.ChildWireModule} when you want to wire child injectors:
- * <p><p>
+ * 
  * <pre>
  * injector.createChildInjector( new ChildWireModule( serviceModule, subModule ) );</pre>
  * <hr>
  * The default wiring strategy is to use {@link org.eclipse.sisu.wire.LocatorWiring} which can supply the following bindings via the {@link org.eclipse.sisu.inject.BeanLocator}:
  * 
- * <h4>Instances</h4>
+ * <p><strong>Instances</strong></p>
  * <pre>
  * &#064;Inject MyType bean
  * 
@@ -33,7 +33,7 @@
  * 
  * &#064;Inject Provider&lt;MyType&gt; beanProvider</pre>
  * 
- * <h4>Configuration</h4>
+ * <p><strong>Configuration</strong></p>
  * <pre>
  * &#064;Inject &#064;Named("${my.property.name}") File file                      // supports basic type conversion
  * 
@@ -42,15 +42,16 @@
  * &#064;Inject &#064;Named("${my.property.name:-development}") MyType bean       // can be used to pick specific &#064;Named beans
  * 
  * &#064;Inject &#064;Named("my.property.name") int port                          // shorthand syntax</pre>
- * <p><p>
+ * <p>
  * You can bind your configuration at runtime as follows:
  * <pre>
  * bind( {@link org.eclipse.sisu.wire.ParameterKeys#PROPERTIES ParameterKeys.PROPERTIES} ).toInstance( myConfiguration );      // multiple bindings are merged into one view</pre>
  * 
- * <h4>Collections</h4>
+ * <p><strong>Collections</strong></p>
  * The following collections are both dynamic and thread-safe, elements may come and go as injectors are added or removed from the {@link org.eclipse.sisu.inject.BeanLocator}.
- * <p>They are also <b>lazy</b>, meaning instances are created as you access elements of the collection; the elements are then re-used for the same collection.
- * <p></p>
+ * <p>
+ * They are also <b>lazy</b>, meaning instances are created as you access elements of the collection; the elements are then re-used for the same collection.
+ * 
  * <pre>
  * &#064;Inject List&lt;MyType&gt; list
  * 

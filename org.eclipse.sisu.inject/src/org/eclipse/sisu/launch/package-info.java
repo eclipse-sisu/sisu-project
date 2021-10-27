@@ -10,7 +10,7 @@
  *******************************************************************************/
 /**
  * Utilities to test, launch, and extend Sisu applications. 
- * <p><p>
+ * <p>
  * For example test classes that scan, bind, and auto-wire the test classpath:
  * <pre>
  * &#064;Test
@@ -23,12 +23,12 @@
  * }</pre>
  * 
  * A {@link org.eclipse.sisu.launch.Main} class that launches Sisu applications from the command-line:
- * <p><p>
+ * 
  * <pre>
  * java -classpath myapp.jar:javax.inject.jar:aopalliance.jar:guice-3.0.jar:org.eclipse.sisu.inject.jar org.eclipse.sisu.launch.Main</pre> 
  * 
  * An OSGi {@link org.eclipse.sisu.launch.SisuExtender extender} that assembles Sisu applications from OSGi bundles containing JSR330 components.
- * <p><p>
+ * <p>
  * And a helper class that discovers Sisu {@link org.eclipse.sisu.launch.SisuExtensions extensions} registered under {@code META-INF/services}.
  */
 package org.eclipse.sisu.launch;

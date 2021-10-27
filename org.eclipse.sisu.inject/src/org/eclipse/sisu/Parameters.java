@@ -32,10 +32,10 @@ import javax.inject.Qualifier;
  * Map&lt;?, ?&gt; properties;
  * </pre>
  * 
+ * <p>
  * This qualifier marks collections of values that act as overall application parameters, like the {@code String[]}
  * argument array passed into the main method or the {@code Map} of system properties. External parameters can be
  * supplied to Sisu by using the appropriate type along with the {@link Parameters} binding annotation.
- * <p>
  * 
  * <pre>
  * // add @Named for automatic installation

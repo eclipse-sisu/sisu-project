@@ -277,7 +277,11 @@
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>3.3.1</version>
           <configuration>
+            <overview>${basedir}/overview.html</overview>
             <excludePackageNames>*.internal,*.asm</excludePackageNames>
+            <additionalJOption>-Xdoclint:all,-missing</additionalJOption>
+            <detectOfflineLinks>false</detectOfflineLinks>
+            <quiet>true</quiet>
           </configuration>
         </plugin>
         <plugin>
@@ -295,10 +299,6 @@
 
   <reporting>
     <plugins>
-      <plugin>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.3.1</version>
-      </plugin>
       <plugin>
         <artifactId>maven-project-info-reports-plugin</artifactId>
         <version>3.1.2</version>

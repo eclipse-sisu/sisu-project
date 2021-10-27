@@ -10,13 +10,13 @@
  *******************************************************************************/
 /**
  * Dynamic bean lookup across multiple injectors.
- * <p><p>
+ * <p>
  * The {@link org.eclipse.sisu.inject.BeanLocator} lets you lookup and keep watch for bean implementations;
  * it does this by processing binding information from one or more {@code BindingPublisher}s, such as injectors.
- * <p><p>
+ * <p>
  * You can add or remove {@link org.eclipse.sisu.inject.BindingPublisher}s using the {@link org.eclipse.sisu.inject.MutableBeanLocator}
  * view; any existing watchers or returned collections are updated to reflect the latest binding information.
- * <p><p>
+ * <p>
  * {@link org.eclipse.sisu.inject.DefaultBeanLocator} will automatically add any injectors it's bound in by virtue
  * of an injected setter. This makes it easy to share across multiple injectors with a simple instance binding: 
  * 
@@ -34,7 +34,7 @@
  * 
  * If you want to use a {@code DefaultBeanLocator} in a given injector, but don't want that injector
  * added automatically, wrap the locator inside a provider to hide the injected setter from Guice:
- * <p><p>
+ * 
  * <pre>
  * bind( DefaultBeanLocator.class ).toProvider( Providers.of( locator ) );</pre>
  * 
@@ -42,7 +42,7 @@
  * and ranked according to their sequence number. This is so bindings from multiple injectors can be
  * interleaved to keep default components prioritized before non-default, while still maintaining an
  * overall ordering between injectors. To override the default bind your own {@link org.eclipse.sisu.inject.RankingFunction}:
- * <p><p>
+ * 
  * <pre>
  * bind( RankingFunction.class ).to( MyRankingFunction.class );</pre>
  */
