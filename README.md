@@ -1,18 +1,28 @@
-Homepage
-========
-<http://www.eclipse.org/sisu/>
+Sisu is a modular [JSR330](https://javax-inject.github.io/javax-inject/)-based container that supports classpath scanning, auto-binding, and dynamic auto-wiring.
 
-Contribution
-============
-As required by the Eclipse IP process, all contributions need to be submitted in form of patches attached to a
-[Bugzilla entry](https://bugs.eclipse.org/bugs/enter_bug.cgi?product=Sisu), thereby being subject to the
-[Eclipse Terms of Use](http://www.eclipse.org/legal/termsofuse.php). For clarity, patches should be provided as
-standalone files attached to the issue, not as text embedded in the issue description or a comment.
+Sisu uses [Google-Guice](https://github.com/google/guice) to perform dependency injection and provide the core JSR330 support, but removes the need to write explicit bindings in Guice modules. Integration with other containers via the Eclipse Extension Registry and the OSGi Service Registry is a goal of this project.
 
-When submitting patches, please follow the existing code style. The corresponding formatter settings for some IDEs can
-be taken from the [Maven Code Style](http://maven.apache.org/developers/committer-environment.html#Maven_Code_Style)
-page.
+## Maven
 
-License
-=======
+```xml
+<dependency>
+  <groupId>org.eclipse.sisu</groupId>
+  <artifactId>org.eclipse.sisu.inject</artifactId>
+  <version>0.3.5</version>
+</dependency>
+```
+
+## How to Contribute
+
+We accept contributions via GitHub pull requests. Please see [How To Contribute](CONTRIBUTING.md) to get started.
+
+## License
+
 - [Eclipse Public License, v1.0](http://www.eclipse.org/legal/epl-v10.html)
+
+## Additional information
+
+* Project Website: http://www.eclipse.org/sisu
+* Mailing Lists: https://dev.eclipse.org/mailman/listinfo/sisu-dev
+* Eclipse PMI: https://projects.eclipse.org/projects/technology.sisu
+
