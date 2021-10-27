@@ -18,11 +18,11 @@ We accept contributions via GitHub pull requests. Please see [How To Contribute]
 
 ## License
 
-- [Eclipse Public License, v1.0](http://www.eclipse.org/legal/epl-v10.html)
+- [Eclipse Public License, v1.0](https://www.eclipse.org/legal/epl-v10.html)
 
 ## Additional information
 
-* Project Website: http://www.eclipse.org/sisu
+* Project Website: https://www.eclipse.org/sisu
 * Mailing Lists: https://dev.eclipse.org/mailman/listinfo/sisu-dev
 * Eclipse PMI: https://projects.eclipse.org/projects/technology.sisu
 
