@@ -22,7 +22,7 @@ Maven plugin that generates annotation indexes for [Sisu](https://github.com/ecl
 
 ## Documentation
 
-[Usage](https://www.eclipse.org/sisu/docs/api/org.eclipse.sisu.mojos)
+[Usage](https://eclipse.github.io/sisu.mojos/)
 
 ## How to Contribute
 
