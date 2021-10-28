@@ -27,12 +27,12 @@ Contact us
 Build
 -----
 
-The Eclipse/Sisu build requires Java 11 and Maven 3.6.3, while the resulting jars work with Java 1.7 and above.
+The Sisu build requires Java 11 and Maven 3.6.3, while the resulting jars work with Java 1.7 and above.
 
 Coding Style
 ------------
 
-Eclipse/Sisu follows the same [code style and code conventions][style-guide] as Maven.
+Sisu follows the same [code style and code conventions][style-guide] as Maven.
 
 Avoid changing whitespace on lines that are unrelated to your pull request. This helps preserve the accuracy of the git blame view, and makes code reviews easier.
 
@@ -64,7 +64,7 @@ Submit your pull request when ready. Two checks will be kicked off automatically
 
 One of the committers will take a look and provide feedback or merge your contribution.
 
-That's it, thanks for contributing to Eclipse/Sisu!
+That's it, thanks for contributing to Sisu!
 
 [ECA]:             https://www.eclipse.org/legal/ECA.php
 [issue-tracker]:   https://github.com/eclipse/sisu.inject/issues
