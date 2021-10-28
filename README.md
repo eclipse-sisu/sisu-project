@@ -1,4 +1,15 @@
-Implements [Plexus](https://codehaus-plexus.github.io/#Plexus_History) semantics on top of [Sisu](https://github.com/eclipse/sisu.inject) and [Google-Guice](https://github.com/google/guice).
+```
++-----------+---+-----------+---+---+
+|           |   |           |   |   |
+|   O-------+   |   O-------+   |   |
+|           |   |           |   |   |
++-------O   |   +-------O   |   O   |
+|           |   |           |       |
++-----------+---+-----------+-------+
+```
+
+Implements [Plexus](https://codehaus-plexus.github.io/#Plexus_History) container API and injection semantics
+on top of [Sisu](https://github.com/eclipse/sisu.inject) and [Google-Guice](https://github.com/google/guice).
 
 ## Maven
 
