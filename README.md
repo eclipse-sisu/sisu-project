@@ -1,3 +1,13 @@
+```
++-----------+---+-----------+---+---+
+|           |   |           |   |   |
+|   O-------+   |   O-------+   |   |
+|           |   |           |   |   |
++-------O   |   +-------O   |   O   |
+|           |   |           |       |
++-----------+---+-----------+-------+
+```
+
 Maven plugin that generates annotation indexes for [Sisu](https://github.com/eclipse/sisu.inject) to avoid classpath scanning at runtime.
 
 ## Maven
