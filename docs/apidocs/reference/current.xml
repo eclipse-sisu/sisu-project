@@ -1,0 +1,1744 @@
+<api>
+<package name="org.eclipse.sisu.plexus"
+>
+<class name="ClassRealmManager"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="org.codehaus.plexus.classworlds.ClassWorldListener">
+</implements>
+<constructor name="ClassRealmManager"
+ type="org.eclipse.sisu.plexus.ClassRealmManager"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="plexusContainer" type="org.codehaus.plexus.MutablePlexusContainer">
+</parameter>
+<parameter name="beanLocator" type="org.eclipse.sisu.inject.MutableBeanLocator">
+</parameter>
+</constructor>
+<method name="contextRealm"
+ return="org.codehaus.plexus.classworlds.realm.ClassRealm"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isManaged"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="realm" type="org.codehaus.plexus.classworlds.realm.ClassRealm">
+</parameter>
+</method>
+<method name="manage"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="realm" type="org.codehaus.plexus.classworlds.realm.ClassRealm">
+</parameter>
+<parameter name="injector" type="com.google.inject.Injector">
+</parameter>
+</method>
+<method name="realmCreated"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="realm" type="org.codehaus.plexus.classworlds.realm.ClassRealm">
+</parameter>
+</method>
+<method name="realmDisposed"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="realm" type="org.codehaus.plexus.classworlds.realm.ClassRealm">
+</parameter>
+</method>
+<method name="visibleRealmNames"
+ return="java.util.Set&lt;java.lang.String&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="contextRealm" type="org.codehaus.plexus.classworlds.realm.ClassRealm">
+</parameter>
+</method>
+</class>
+<class name="ComponentDescriptorBeanModule"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="org.eclipse.sisu.plexus.PlexusBeanModule">
+</implements>
+<constructor name="ComponentDescriptorBeanModule"
+ type="org.eclipse.sisu.plexus.ComponentDescriptorBeanModule"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="space" type="org.eclipse.sisu.space.ClassSpace">
+</parameter>
+<parameter name="descriptors" type="java.util.List&lt;org.codehaus.plexus.component.repository.ComponentDescriptor&lt;?&gt;&gt;">
+</parameter>
+</constructor>
+<method name="configure"
+ return="org.eclipse.sisu.plexus.PlexusBeanSource"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="binder" type="com.google.inject.Binder">
+</parameter>
+</method>
+</class>
+<class name="ComponentImpl"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="org.codehaus.plexus.component.annotations.Component">
+</implements>
+<constructor name="ComponentImpl"
+ type="org.eclipse.sisu.plexus.ComponentImpl"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="role" type="java.lang.Class&lt;?&gt;">
+</parameter>
+<parameter name="hint" type="java.lang.String">
+</parameter>
+<parameter name="instantiationStrategy" type="java.lang.String">
+</parameter>
+<parameter name="description" type="java.lang.String">
+</parameter>
+</constructor>
+<method name="alias"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="annotationType"
+ return="java.lang.Class&lt;? extends java.lang.annotation.Annotation&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="composer"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="configurator"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="description"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="factory"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="hint"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="instantiationStrategy"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isolatedRealm"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="lifecycleHandler"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="profile"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="role"
+ return="java.lang.Class&lt;?&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="type"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="version"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</class>
+<class name="CompositeBeanHelper"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="CompositeBeanHelper"
+ type="org.eclipse.sisu.plexus.CompositeBeanHelper"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="lookup" type="org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup">
+</parameter>
+<parameter name="loader" type="java.lang.ClassLoader">
+</parameter>
+<parameter name="evaluator" type="org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator">
+</parameter>
+<parameter name="listener" type="org.codehaus.plexus.component.configurator.ConfigurationListener">
+</parameter>
+</constructor>
+<method name="setDefault"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="bean" type="java.lang.Object">
+</parameter>
+<parameter name="defaultValue" type="java.lang.Object">
+</parameter>
+<parameter name="configuration" type="org.codehaus.plexus.configuration.PlexusConfiguration">
+</parameter>
+<exception name="ComponentConfigurationException" type="org.codehaus.plexus.component.configurator.ComponentConfigurationException">
+</exception>
+</method>
+<method name="setProperty"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="bean" type="java.lang.Object">
+</parameter>
+<parameter name="propertyName" type="java.lang.String">
+</parameter>
+<parameter name="valueType" type="java.lang.Class&lt;?&gt;">
+</parameter>
+<parameter name="configuration" type="org.codehaus.plexus.configuration.PlexusConfiguration">
+</parameter>
+<exception name="ComponentConfigurationException" type="org.codehaus.plexus.component.configurator.ComponentConfigurationException">
+</exception>
+</method>
+</class>
+<class name="ConfigurationImpl"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="org.codehaus.plexus.component.annotations.Configuration">
+</implements>
+<constructor name="ConfigurationImpl"
+ type="org.eclipse.sisu.plexus.ConfigurationImpl"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="name" type="java.lang.String">
+</parameter>
+<parameter name="value" type="java.lang.String">
+</parameter>
+</constructor>
+<method name="annotationType"
+ return="java.lang.Class&lt;? extends java.lang.annotation.Annotation&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="name"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="value"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</class>
+<class name="DefaultPlexusBeanLocator"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="org.eclipse.sisu.plexus.PlexusBeanLocator">
+</implements>
+<constructor name="DefaultPlexusBeanLocator"
+ type="org.eclipse.sisu.plexus.DefaultPlexusBeanLocator"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="beanLocator" type="org.eclipse.sisu.inject.BeanLocator">
+</parameter>
+</constructor>
+<constructor name="DefaultPlexusBeanLocator"
+ type="org.eclipse.sisu.plexus.DefaultPlexusBeanLocator"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="beanLocator" type="org.eclipse.sisu.inject.BeanLocator">
+</parameter>
+<parameter name="visibility" type="java.lang.String">
+</parameter>
+</constructor>
+<method name="locate"
+ return="java.lang.Iterable&lt;org.eclipse.sisu.plexus.PlexusBean&lt;T&gt;&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="role" type="com.google.inject.TypeLiteral&lt;T&gt;">
+</parameter>
+<parameter name="hints" type="java.lang.String...">
+</parameter>
+</method>
+</class>
+<class name="Hints"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="canonicalHint"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="hint" type="java.lang.String">
+</parameter>
+</method>
+<method name="canonicalHints"
+ return="java.lang.String[]"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="hints" type="java.lang.String...">
+</parameter>
+</method>
+<method name="canonicalHints"
+ return="java.util.List&lt;java.lang.String&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="hints" type="java.util.List&lt;java.lang.String&gt;">
+</parameter>
+</method>
+<method name="canonicalHints"
+ return="java.lang.String[]"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="requirement" type="org.codehaus.plexus.component.annotations.Requirement">
+</parameter>
+</method>
+<method name="isDefaultHint"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="hint" type="java.lang.String">
+</parameter>
+</method>
+<field name="DEFAULT_HINT"
+ type="java.lang.String"
+ transient="false"
+ volatile="false"
+ value="&quot;default&quot;"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="NO_HINTS"
+ type="java.lang.String[]"
+ transient="false"
+ volatile="false"
+ value="null"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="PlexusAnnotatedBeanModule"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="org.eclipse.sisu.plexus.PlexusBeanModule">
+</implements>
+<constructor name="PlexusAnnotatedBeanModule"
+ type="org.eclipse.sisu.plexus.PlexusAnnotatedBeanModule"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="space" type="org.eclipse.sisu.space.ClassSpace">
+</parameter>
+<parameter name="variables" type="java.util.Map&lt;?, ?&gt;">
+</parameter>
+</constructor>
+<constructor name="PlexusAnnotatedBeanModule"
+ type="org.eclipse.sisu.plexus.PlexusAnnotatedBeanModule"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="space" type="org.eclipse.sisu.space.ClassSpace">
+</parameter>
+<parameter name="variables" type="java.util.Map&lt;?, ?&gt;">
+</parameter>
+<parameter name="scanning" type="org.eclipse.sisu.space.BeanScanning">
+</parameter>
+</constructor>
+<method name="configure"
+ return="org.eclipse.sisu.plexus.PlexusBeanSource"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="binder" type="com.google.inject.Binder">
+</parameter>
+</method>
+<method name="with"
+ return="org.eclipse.sisu.plexus.PlexusBeanModule"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="_strategy" type="org.eclipse.sisu.space.SpaceModule.Strategy">
+</parameter>
+</method>
+</class>
+<class name="PlexusAnnotatedMetadata"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="org.eclipse.sisu.plexus.PlexusBeanMetadata">
+</implements>
+<constructor name="PlexusAnnotatedMetadata"
+ type="org.eclipse.sisu.plexus.PlexusAnnotatedMetadata"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="variables" type="java.util.Map&lt;?, ?&gt;">
+</parameter>
+</constructor>
+<method name="getConfiguration"
+ return="org.codehaus.plexus.component.annotations.Configuration"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="property" type="org.eclipse.sisu.bean.BeanProperty&lt;?&gt;">
+</parameter>
+</method>
+<method name="getRequirement"
+ return="org.codehaus.plexus.component.annotations.Requirement"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="property" type="org.eclipse.sisu.bean.BeanProperty&lt;?&gt;">
+</parameter>
+</method>
+<method name="isEmpty"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</class>
+<interface name="PlexusBean"
+ abstract="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="java.util.Map.Entry">
+</implements>
+<method name="getDescription"
+ return="java.lang.String"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getImplementationClass"
+ return="java.lang.Class&lt;T&gt;"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</interface>
+<interface name="PlexusBeanConverter"
+ abstract="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="convert"
+ return="T"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="role" type="com.google.inject.TypeLiteral&lt;T&gt;">
+</parameter>
+<parameter name="value" type="java.lang.String">
+</parameter>
+</method>
+</interface>
+<interface name="PlexusBeanLocator"
+ abstract="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="locate"
+ return="java.lang.Iterable&lt;org.eclipse.sisu.plexus.PlexusBean&lt;T&gt;&gt;"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="role" type="com.google.inject.TypeLiteral&lt;T&gt;">
+</parameter>
+<parameter name="hints" type="java.lang.String...">
+</parameter>
+</method>
+</interface>
+<interface name="PlexusBeanMetadata"
+ abstract="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="getConfiguration"
+ return="org.codehaus.plexus.component.annotations.Configuration"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="property" type="org.eclipse.sisu.bean.BeanProperty&lt;?&gt;">
+</parameter>
+</method>
+<method name="getRequirement"
+ return="org.codehaus.plexus.component.annotations.Requirement"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="property" type="org.eclipse.sisu.bean.BeanProperty&lt;?&gt;">
+</parameter>
+</method>
+<method name="isEmpty"
+ return="boolean"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</interface>
+<interface name="PlexusBeanModule"
+ abstract="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="configure"
+ return="org.eclipse.sisu.plexus.PlexusBeanSource"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="binder" type="com.google.inject.Binder">
+</parameter>
+</method>
+</interface>
+<interface name="PlexusBeanSource"
+ abstract="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="getBeanMetadata"
+ return="org.eclipse.sisu.plexus.PlexusBeanMetadata"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="implementation" type="java.lang.Class&lt;?&gt;">
+</parameter>
+</method>
+</interface>
+<class name="PlexusBindingModule"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="com.google.inject.Module">
+</implements>
+<constructor name="PlexusBindingModule"
+ type="org.eclipse.sisu.plexus.PlexusBindingModule"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="manager" type="org.eclipse.sisu.bean.BeanManager">
+</parameter>
+<parameter name="modules" type="org.eclipse.sisu.plexus.PlexusBeanModule...">
+</parameter>
+</constructor>
+<constructor name="PlexusBindingModule"
+ type="org.eclipse.sisu.plexus.PlexusBindingModule"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="manager" type="org.eclipse.sisu.bean.BeanManager">
+</parameter>
+<parameter name="modules" type="java.util.Collection&lt;? extends org.eclipse.sisu.plexus.PlexusBeanModule&gt;">
+</parameter>
+</constructor>
+<method name="configure"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="binder" type="com.google.inject.Binder">
+</parameter>
+</method>
+</class>
+<class name="PlexusBundlePlan"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="PlexusBundlePlan"
+ type="org.eclipse.sisu.plexus.PlexusBundlePlan"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="locator" type="org.eclipse.sisu.inject.MutableBeanLocator">
+</parameter>
+</constructor>
+<method name="hasPlexusAnnotations"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+<parameter name="bundle" type="org.osgi.framework.Bundle">
+</parameter>
+</method>
+<method name="hasPlexusXml"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+<parameter name="bundle" type="org.osgi.framework.Bundle">
+</parameter>
+</method>
+<method name="prepare"
+ return="org.eclipse.sisu.inject.BindingPublisher"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="bundle" type="org.osgi.framework.Bundle">
+</parameter>
+</method>
+<field name="locator"
+ type="org.eclipse.sisu.inject.MutableBeanLocator"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
+</class>
+<class name="PlexusDateTypeConverter"
+ extends="com.google.inject.matcher.AbstractMatcher"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="com.google.inject.Module">
+</implements>
+<implements name="com.google.inject.spi.TypeConverter">
+</implements>
+<constructor name="PlexusDateTypeConverter"
+ type="org.eclipse.sisu.plexus.PlexusDateTypeConverter"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="configure"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="binder" type="com.google.inject.Binder">
+</parameter>
+</method>
+<method name="convert"
+ return="java.lang.Object"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="value" type="java.lang.String">
+</parameter>
+<parameter name="toType" type="com.google.inject.TypeLiteral&lt;?&gt;">
+</parameter>
+</method>
+<method name="matches"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="type" type="com.google.inject.TypeLiteral&lt;?&gt;">
+</parameter>
+</method>
+</class>
+<class name="PlexusLifecycleManager"
+ extends="org.eclipse.sisu.bean.BeanScheduler"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="org.eclipse.sisu.bean.BeanManager">
+</implements>
+<implements name="com.google.inject.Module">
+</implements>
+<constructor name="PlexusLifecycleManager"
+ type="org.eclipse.sisu.plexus.PlexusLifecycleManager"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="plexusContextProvider" type="javax.inject.Provider&lt;org.codehaus.plexus.context.Context&gt;">
+</parameter>
+<parameter name="plexusLoggerManagerProvider" type="javax.inject.Provider&lt;org.codehaus.plexus.logging.LoggerManager&gt;">
+</parameter>
+<parameter name="slf4jLoggerFactoryProvider" type="javax.inject.Provider&lt;?&gt;">
+</parameter>
+<parameter name="delegate" type="org.eclipse.sisu.bean.BeanManager">
+</parameter>
+</constructor>
+<method name="activate"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+<parameter name="bean" type="java.lang.Object">
+</parameter>
+</method>
+<method name="configure"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="binder" type="com.google.inject.Binder">
+</parameter>
+</method>
+<method name="manage"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="clazz" type="java.lang.Class&lt;?&gt;">
+</parameter>
+</method>
+<method name="manage"
+ return="org.eclipse.sisu.bean.PropertyBinding"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="property" type="org.eclipse.sisu.bean.BeanProperty">
+</parameter>
+</method>
+<method name="manage"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="bean" type="java.lang.Object">
+</parameter>
+</method>
+<method name="unmanage"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="bean" type="java.lang.Object">
+</parameter>
+</method>
+<method name="unmanage"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</class>
+<class name="PlexusSpaceModule"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="com.google.inject.Module">
+</implements>
+<constructor name="PlexusSpaceModule"
+ type="org.eclipse.sisu.plexus.PlexusSpaceModule"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="space" type="org.eclipse.sisu.space.ClassSpace">
+</parameter>
+</constructor>
+<constructor name="PlexusSpaceModule"
+ type="org.eclipse.sisu.plexus.PlexusSpaceModule"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="space" type="org.eclipse.sisu.space.ClassSpace">
+</parameter>
+<parameter name="scanning" type="org.eclipse.sisu.space.BeanScanning">
+</parameter>
+</constructor>
+<method name="configure"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="binder" type="com.google.inject.Binder">
+</parameter>
+</method>
+<method name="with"
+ return="org.eclipse.sisu.plexus.PlexusSpaceModule"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="manager" type="org.eclipse.sisu.bean.BeanManager">
+</parameter>
+</method>
+</class>
+<class name="PlexusTypeBinder"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="org.eclipse.sisu.plexus.PlexusTypeListener">
+</implements>
+<constructor name="PlexusTypeBinder"
+ type="org.eclipse.sisu.plexus.PlexusTypeBinder"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="binder" type="com.google.inject.Binder">
+</parameter>
+</constructor>
+<method name="hear"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="qualifiedType" type="java.lang.Class&lt;?&gt;">
+</parameter>
+<parameter name="source" type="java.lang.Object">
+</parameter>
+</method>
+<method name="hear"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="component" type="org.codehaus.plexus.component.annotations.Component">
+</parameter>
+<parameter name="clazz" type="org.eclipse.sisu.inject.DeferredClass&lt;?&gt;">
+</parameter>
+<parameter name="source" type="java.lang.Object">
+</parameter>
+</method>
+</class>
+<interface name="PlexusTypeListener"
+ abstract="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="hear"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="component" type="org.codehaus.plexus.component.annotations.Component">
+</parameter>
+<parameter name="implementation" type="org.eclipse.sisu.inject.DeferredClass&lt;?&gt;">
+</parameter>
+<parameter name="source" type="java.lang.Object">
+</parameter>
+</method>
+</interface>
+<class name="PlexusTypeVisitor"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="org.eclipse.sisu.space.ClassVisitor">
+</implements>
+<implements name="org.eclipse.sisu.space.SpaceVisitor">
+</implements>
+<constructor name="PlexusTypeVisitor"
+ type="org.eclipse.sisu.plexus.PlexusTypeVisitor"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="listener" type="org.eclipse.sisu.plexus.PlexusTypeListener">
+</parameter>
+</constructor>
+<method name="enterClass"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="modifiers" type="int">
+</parameter>
+<parameter name="name" type="java.lang.String">
+</parameter>
+<parameter name="_extends" type="java.lang.String">
+</parameter>
+<parameter name="_implements" type="java.lang.String[]">
+</parameter>
+</method>
+<method name="enterSpace"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="_space" type="org.eclipse.sisu.space.ClassSpace">
+</parameter>
+</method>
+<method name="leaveClass"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="leaveSpace"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="visitAnnotation"
+ return="org.eclipse.sisu.space.AnnotationVisitor"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="desc" type="java.lang.String">
+</parameter>
+</method>
+<method name="visitClass"
+ return="org.eclipse.sisu.space.ClassVisitor"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="url" type="java.net.URL">
+</parameter>
+</method>
+</class>
+<class name="PlexusXmlBeanConverter"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="org.eclipse.sisu.plexus.PlexusBeanConverter">
+</implements>
+<method name="convert"
+ return="java.lang.Object"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="role" type="com.google.inject.TypeLiteral">
+</parameter>
+<parameter name="value" type="java.lang.String">
+</parameter>
+</method>
+</class>
+<class name="PlexusXmlBeanModule"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="org.eclipse.sisu.plexus.PlexusBeanModule">
+</implements>
+<constructor name="PlexusXmlBeanModule"
+ type="org.eclipse.sisu.plexus.PlexusXmlBeanModule"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="space" type="org.eclipse.sisu.space.ClassSpace">
+</parameter>
+<parameter name="variables" type="java.util.Map&lt;?, ?&gt;">
+</parameter>
+<parameter name="plexusXml" type="java.net.URL">
+</parameter>
+</constructor>
+<constructor name="PlexusXmlBeanModule"
+ type="org.eclipse.sisu.plexus.PlexusXmlBeanModule"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="space" type="org.eclipse.sisu.space.ClassSpace">
+</parameter>
+<parameter name="variables" type="java.util.Map&lt;?, ?&gt;">
+</parameter>
+</constructor>
+<method name="configure"
+ return="org.eclipse.sisu.plexus.PlexusBeanSource"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="binder" type="com.google.inject.Binder">
+</parameter>
+</method>
+</class>
+<class name="RequirementImpl"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="org.codehaus.plexus.component.annotations.Requirement">
+</implements>
+<constructor name="RequirementImpl"
+ type="org.eclipse.sisu.plexus.RequirementImpl"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="role" type="org.eclipse.sisu.inject.DeferredClass&lt;?&gt;">
+</parameter>
+<parameter name="optional" type="boolean">
+</parameter>
+<parameter name="hints" type="java.util.List&lt;java.lang.String&gt;">
+</parameter>
+</constructor>
+<constructor name="RequirementImpl"
+ type="org.eclipse.sisu.plexus.RequirementImpl"
+ static="false"
+ final="false"
+ deprecated="deprecated"
+ visibility="public"
+>
+<parameter name="role" type="java.lang.Class&lt;?&gt;">
+</parameter>
+<parameter name="optional" type="boolean">
+</parameter>
+<parameter name="hints" type="java.lang.String...">
+</parameter>
+</constructor>
+<method name="annotationType"
+ return="java.lang.Class&lt;? extends java.lang.annotation.Annotation&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="hint"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="hints"
+ return="java.lang.String[]"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="optional"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="role"
+ return="java.lang.Class&lt;?&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</class>
+<class name="Roles"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="camelizeName"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="name" type="java.lang.String">
+</parameter>
+</method>
+<method name="canonicalRoleHint"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="role" type="java.lang.String">
+</parameter>
+<parameter name="hint" type="java.lang.String">
+</parameter>
+</method>
+<method name="canonicalRoleHint"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="component" type="org.codehaus.plexus.component.annotations.Component">
+</parameter>
+</method>
+<method name="componentKey"
+ return="com.google.inject.Key&lt;?&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="component" type="org.codehaus.plexus.component.annotations.Component">
+</parameter>
+</method>
+<method name="componentKey"
+ return="com.google.inject.Key&lt;T&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="role" type="java.lang.Class&lt;T&gt;">
+</parameter>
+<parameter name="hint" type="java.lang.String">
+</parameter>
+</method>
+<method name="componentKey"
+ return="com.google.inject.Key&lt;T&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="role" type="com.google.inject.TypeLiteral&lt;T&gt;">
+</parameter>
+<parameter name="hint" type="java.lang.String">
+</parameter>
+</method>
+<method name="roleType"
+ return="com.google.inject.TypeLiteral&lt;?&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="requirement" type="org.codehaus.plexus.component.annotations.Requirement">
+</parameter>
+<parameter name="asType" type="com.google.inject.TypeLiteral&lt;?&gt;">
+</parameter>
+</method>
+<method name="throwMissingComponentException"
+ return="T"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="role" type="com.google.inject.TypeLiteral&lt;T&gt;">
+</parameter>
+<parameter name="hint" type="java.lang.String">
+</parameter>
+</method>
+</class>
+<interface name="Strategies"
+ abstract="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<field name="LOAD_ON_START"
+ type="java.lang.String"
+ transient="false"
+ volatile="false"
+ value="&quot;load-on-start&quot;"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="PER_LOOKUP"
+ type="java.lang.String"
+ transient="false"
+ volatile="false"
+ value="&quot;per-lookup&quot;"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="SINGLETON"
+ type="java.lang.String"
+ transient="false"
+ volatile="false"
+ value="&quot;singleton&quot;"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</interface>
+</package>
+</api>
