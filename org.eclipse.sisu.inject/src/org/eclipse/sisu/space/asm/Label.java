@@ -35,7 +35,7 @@ package org.eclipse.sisu.space.asm;
  *
  * @author Eric Bruneton
  */
-public class Label {
+public final class Label {
 
   /**
    * A flag indicating that a label is only used for debug attributes. Such a label is not the start
