@@ -25,7 +25,7 @@
 // CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 // THE POSSIBILITY OF SUCH DAMAGE.
-package org.objectweb.asm;
+package org.eclipse.sisu.space.asm;
 
 /**
  * Exception thrown when the constant pool of a class produced by a {@link ClassWriter} is too
@@ -33,7 +33,7 @@ package org.objectweb.asm;
  *
  * @author Jason Zaugg
  */
-public final class ClassTooLargeException extends IndexOutOfBoundsException {
+final class ClassTooLargeException extends IndexOutOfBoundsException {
   private static final long serialVersionUID = 160715609518896765L;
 
   private final String className;
