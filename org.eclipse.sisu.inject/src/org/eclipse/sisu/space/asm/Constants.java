@@ -25,7 +25,7 @@
 // CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 // THE POSSIBILITY OF SUCH DAMAGE.
-package org.objectweb.asm;
+package org.eclipse.sisu.space.asm;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -191,15 +191,15 @@ final class Constants {
   }
 
   static boolean isWhitelisted(final String internalName) {
-    if (!internalName.startsWith("org/objectweb/asm/")) {
+    if (!internalName.startsWith("org/eclipse/sisu/space/asm/")) {
       return false;
     }
     String member = "(Annotation|Class|Field|Method|Module|RecordComponent|Signature)";
     return internalName.contains("Test$")
         || Pattern.matches(
-            "org/objectweb/asm/util/Trace" + member + "Visitor(\\$.*)?", internalName)
+            "org/eclipse/sisu/space/asm/util/Trace" + member + "Visitor(\\$.*)?", internalName)
         || Pattern.matches(
-            "org/objectweb/asm/util/Check" + member + "Adapter(\\$.*)?", internalName);
+            "org/eclipse/sisu/space/asm/util/Check" + member + "Adapter(\\$.*)?", internalName);
   }
 
   static void checkIsPreview(final InputStream classInputStream) {
