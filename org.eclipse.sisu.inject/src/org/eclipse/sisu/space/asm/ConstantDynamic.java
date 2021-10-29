@@ -34,7 +34,7 @@ import java.util.Arrays;
  *
  * @author Remi Forax
  */
-public final class ConstantDynamic {
+final class ConstantDynamic {
 
   /** The constant name (can be arbitrary). */
   private final String name;
