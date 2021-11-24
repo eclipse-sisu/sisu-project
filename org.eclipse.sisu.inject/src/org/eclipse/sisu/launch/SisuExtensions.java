@@ -224,11 +224,11 @@ public final class SisuExtensions
             catch ( final Exception e )
             {
                 final Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
-                Logs.trace( "Problem creating: {}", impl, cause );
+                Logs.debug( "Problem creating: {}", impl, cause );
             }
             catch ( final LinkageError e )
             {
-                Logs.trace( "Problem creating: {}", impl, e );
+                Logs.debug( "Problem creating: {}", impl, e );
             }
         }
         return extensions;
@@ -252,11 +252,11 @@ public final class SisuExtensions
             }
             catch ( final Exception e )
             {
-                Logs.trace( "Problem loading: {}", name, e );
+                Logs.debug( "Problem loading: {}", name, e );
             }
             catch ( final LinkageError e )
             {
-                Logs.trace( "Problem loading: {}", name, e );
+                Logs.debug( "Problem loading: {}", name, e );
             }
         }
         return extensionTypes;

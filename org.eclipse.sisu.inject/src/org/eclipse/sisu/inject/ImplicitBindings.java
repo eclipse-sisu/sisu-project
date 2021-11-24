@@ -82,11 +82,11 @@ final class ImplicitBindings
                 }
                 catch ( final RuntimeException e )
                 {
-                    Logs.trace( "Problem with just-in-time binding: {}", justInTimeKey, e );
+                    Logs.debug( "Problem with just-in-time binding: {}", justInTimeKey, e );
                 }
                 catch ( final LinkageError e )
                 {
-                    Logs.trace( "Problem with just-in-time binding: {}", justInTimeKey, e );
+                    Logs.debug( "Problem with just-in-time binding: {}", justInTimeKey, e );
                 }
             }
         }

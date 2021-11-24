@@ -231,7 +231,7 @@ final class DependencyAnalyzer
                 {
                     if ( reportErrors )
                     {
-                        Logs.trace( "Potential problem: {}", type, e );
+                        Logs.debug( "Potential problem: {}", type, e );
                     }
                     applyBinding = Boolean.FALSE;
                 }
@@ -239,7 +239,7 @@ final class DependencyAnalyzer
                 {
                     if ( reportErrors )
                     {
-                        Logs.trace( "Potential problem: {}", type, e );
+                        Logs.debug( "Potential problem: {}", type, e );
                     }
                     applyBinding = Boolean.FALSE;
                 }
