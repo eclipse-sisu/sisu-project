@@ -112,7 +112,7 @@ public final class SpaceScanner
         }
         catch ( final Exception e )
         {
-            Logs.trace( "Problem scanning: {}", url, e );
+            Logs.debug( "Problem scanning: {}", url, e );
         }
     }
 

@@ -99,11 +99,11 @@ public final class InjectorBindings
                 catch ( final Exception e )
                 {
                     final Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
-                    Logs.trace( "Problem creating: {}", impl, cause );
+                    Logs.debug( "Problem creating: {}", impl, cause );
                 }
                 catch ( final LinkageError e )
                 {
-                    Logs.trace( "Problem creating: {}", impl, e );
+                    Logs.debug( "Problem creating: {}", impl, e );
                 }
             }
         }

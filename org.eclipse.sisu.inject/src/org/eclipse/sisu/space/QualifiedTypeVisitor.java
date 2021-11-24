@@ -72,7 +72,7 @@ public final class QualifiedTypeVisitor
             {
                 if ( expectedClazz.isAnnotation() )
                 {
-                    Logs.trace( "Potential problem: {} is not visible from: {}", expectedClazz, space );
+                    Logs.debug( "Potential problem: {} is not visible from: {}", expectedClazz, space );
                 }
             }
         }
