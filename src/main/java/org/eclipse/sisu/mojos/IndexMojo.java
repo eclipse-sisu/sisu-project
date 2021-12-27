@@ -182,6 +182,10 @@ public class IndexMojo
         {
             appendToClassPath( classPath, ( (Artifact) artifact ).getFile() );
         }
+        if ( getLog().isDebugEnabled() )
+        {
+            dumpList( "classPath", classPath );
+        }
         return URLClassLoader.newInstance( classPath.toArray( new URL[classPath.size()] ) );
     }
 
@@ -214,7 +218,21 @@ public class IndexMojo
                 getLog().warn( e.getLocalizedMessage() );
             }
         }
+        if ( getLog().isDebugEnabled() )
+        {
+            dumpList( "indexPath", indexPath );
+        }
         return indexPath.toArray( new URL[indexPath.size()] );
+    }
+
+    private void dumpList( final String name, final List<URL> urls )
+    {
+        getLog().debug( "Dump of " + name );
+        for ( int i = 1; i <= urls.size(); i++ )
+        {
+            getLog().debug( i + ". " + urls.get( i - 1 ) );
+        }
+        getLog().debug( "TOTAL OF " + urls.size() );
     }
 
     private void appendToClassPath( final List<URL> urls, final File file )
