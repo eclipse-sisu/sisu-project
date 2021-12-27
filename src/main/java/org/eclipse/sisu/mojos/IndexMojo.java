@@ -184,7 +184,7 @@ public class IndexMojo
         }
         if ( getLog().isDebugEnabled() )
         {
-            dumpList( "classPath", classPath );
+            dumpEntries( "classPath", classPath );
         }
         return URLClassLoader.newInstance( classPath.toArray( new URL[classPath.size()] ) );
     }
@@ -220,19 +220,18 @@ public class IndexMojo
         }
         if ( getLog().isDebugEnabled() )
         {
-            dumpList( "indexPath", indexPath );
+            dumpEntries( "indexPath", indexPath );
         }
         return indexPath.toArray( new URL[indexPath.size()] );
     }
 
-    private void dumpList( final String name, final List<URL> urls )
+    private void dumpEntries( final String name, final List<URL> urls )
     {
-        getLog().debug( "Dump of " + name );
+        getLog().debug( name + " entries: (" + urls.size() + ")" );
         for ( int i = 1; i <= urls.size(); i++ )
         {
             getLog().debug( i + ". " + urls.get( i - 1 ) );
         }
-        getLog().debug( "TOTAL OF " + urls.size() );
     }
 
     private void appendToClassPath( final List<URL> urls, final File file )
