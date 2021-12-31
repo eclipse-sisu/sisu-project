@@ -29,7 +29,7 @@ public final class WireModule
     // Constants
     // ----------------------------------------------------------------------
 
-    static final Module[] CONVERTERS = { new FileTypeConverter(), new URLTypeConverter() };
+    static final Module[] CONVERTERS = { new FileTypeConverter(), new PathTypeConverter(), new URLTypeConverter() };
 
     // ----------------------------------------------------------------------
     // Implementation fields
