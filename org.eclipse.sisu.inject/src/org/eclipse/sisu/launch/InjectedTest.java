@@ -27,6 +27,8 @@ import org.eclipse.sisu.wire.ParameterKeys;
 import org.eclipse.sisu.wire.WireModule;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
@@ -58,6 +60,7 @@ public abstract class InjectedTest
 
     @Before
     @BeforeMethod
+    @BeforeEach
     public void setUp()
         throws Exception
     {
@@ -66,6 +69,7 @@ public abstract class InjectedTest
 
     @After
     @AfterMethod
+    @AfterEach
     public void tearDown()
         throws Exception
     {
