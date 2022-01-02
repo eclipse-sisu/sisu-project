@@ -30,6 +30,7 @@ Import-Package: javax.inject,
  com.google.inject.servlet;resolution:=optional,
  junit.framework;resolution:=optional,
  org.junit;resolution:=optional,
+ org.junit.jupiter.api;resolution:=optional,
  org.testng.annotations;resolution:=optional
 Export-Package: org.eclipse.sisu;uses:="javax.inject",
  org.eclipse.sisu.bean;

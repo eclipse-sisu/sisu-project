@@ -30,6 +30,7 @@ public final class Custom2Test
     Foo bean;
 
     @org.junit.Test
+    // @org.junit.jupiter.api.Test
     // @org.testng.annotations.Test
     public void testPerTestCaseCustomization()
     {

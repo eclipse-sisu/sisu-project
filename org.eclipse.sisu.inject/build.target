@@ -98,6 +98,12 @@
 			<version>4.11</version>
 			<type>jar</type>
 		</location>
+		<location type="Maven" includeSource="true" missingManifest="generate">
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.3.2</version>
+			<type>jar</type>
+		</location>
 		<location type="Maven" includeSource="true">
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
