@@ -40,9 +40,7 @@ import com.google.inject.spi.Element;
 import com.google.inject.spi.ElementVisitor;
 import com.google.inject.spi.Elements;
 import com.google.inject.spi.InjectionRequest;
-import com.google.inject.spi.InstanceBinding;
 import com.google.inject.spi.PrivateElements;
-import com.google.inject.spi.ProviderInstanceBinding;
 import com.google.inject.spi.ProviderLookup;
 import com.google.inject.spi.RequireExplicitBindingsOption;
 import com.google.inject.spi.StaticInjectionRequest;
@@ -284,15 +282,7 @@ final class ElementAnalyzer
 
     private void mergeParameters( final Binding<?> binding )
     {
-        Object parameters = null;
-        if ( binding instanceof InstanceBinding<?> )
-        {
-            parameters = ( (InstanceBinding<?>) binding ).getInstance();
-        }
-        else if ( binding instanceof ProviderInstanceBinding<?> )
-        {
-            parameters = Guice4.getProviderInstance( (ProviderInstanceBinding<?>) binding ).get();
-        }
+        Object parameters = Guice4.invokeStaticBinding( binding );
         if ( parameters instanceof Map )
         {
             properties.add( (Map<?, ?>) parameters );
