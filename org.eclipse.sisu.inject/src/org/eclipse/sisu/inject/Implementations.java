@@ -25,6 +25,7 @@ import com.google.inject.spi.ExposedBinding;
 import com.google.inject.spi.InstanceBinding;
 import com.google.inject.spi.LinkedKeyBinding;
 import com.google.inject.spi.ProviderInstanceBinding;
+import com.google.inject.spi.ProviderKeyBinding;
 import com.google.inject.spi.UntargettedBinding;
 
 /**
@@ -104,23 +105,24 @@ final class Implementations
     {
         final boolean isPriority = Priority.class.equals( annotationType );
 
-        // peek behind servlet/filter extension bindings when checking priority, so we can order them by rank
-        final Class<?> implementation =
-            binding.acceptTargetVisitor( HAS_GUICE_SERVLET && isPriority ? ServletFinder.THIS : ClassFinder.THIS );
+        final Class<?> annotationSource =
+            // when looking for @Priority also consider annotations on providers (and servlets/filters if available)
+            binding.acceptTargetVisitor( isPriority ? ( HAS_GUICE_SERVLET ? ServletFinder.THIS : ProviderFinder.THIS )
+                                                    : ClassFinder.THIS );
 
         T annotation = null;
-        if ( null != implementation )
+        if ( null != annotationSource )
         {
-            annotation = implementation.getAnnotation( annotationType );
+            annotation = annotationSource.getAnnotation( annotationType );
             if ( null == annotation )
             {
                 if ( HAS_JSR250_PRIORITY && isPriority )
                 {
-                    annotation = adaptJsr250( binding, implementation );
+                    annotation = adaptJsr250( binding, annotationSource );
                 }
                 else if ( Description.class.equals( annotationType ) )
                 {
-                    annotation = adaptLegacy( binding, implementation );
+                    annotation = adaptLegacy( binding, annotationSource );
                 }
             }
         }
@@ -193,7 +195,17 @@ final class Implementations
         @Override
         public Class<?> visit( final ProviderInstanceBinding<?> binding )
         {
-            final Provider<?> provider = Guice4.getProviderInstance( binding );
+            return peekBehind( Guice4.getProviderInstance( binding ) );
+        }
+
+        @Override
+        public Class<?> visit( final ExposedBinding<?> binding )
+        {
+            return binding.getPrivateElements().getInjector().getBinding( binding.getKey() ).acceptTargetVisitor( this );
+        }
+
+        final Class<?> peekBehind( final Provider<?> provider )
+        {
             if ( provider instanceof DeferredProvider<?> )
             {
                 try
@@ -208,19 +220,45 @@ final class Implementations
             }
             return null;
         }
+    }
+
+    /**
+     * {@link ClassFinder} that also returns {@link Provider} implementations.
+     */
+    static class ProviderFinder
+        extends ClassFinder
+    {
+        // ----------------------------------------------------------------------
+        // Constants
+        // ----------------------------------------------------------------------
+
+        @SuppressWarnings( "hiding" )
+        static final BindingTargetVisitor<Object, Class<?>> THIS = new ProviderFinder();
+
+        // ----------------------------------------------------------------------
+        // Public methods
+        // ----------------------------------------------------------------------
 
         @Override
-        public Class<?> visit( final ExposedBinding<?> binding )
+        public Class<?> visit( final ProviderInstanceBinding<?> binding )
         {
-            return binding.getPrivateElements().getInjector().getBinding( binding.getKey() ).acceptTargetVisitor( this );
+            final Provider<?> provider = Guice4.getProviderInstance( binding );
+            final Class<?> providedClass = peekBehind( provider );
+            return null != providedClass ? providedClass : provider.getClass();
+        }
+
+        @Override
+        public Class<?> visit( final ProviderKeyBinding<?> binding )
+        {
+            return binding.getProviderKey().getTypeLiteral().getRawType();
         }
     }
 
     /**
-     * {@link ClassFinder} that can also peek behind servlet/filter bindings.
+     * {@link ProviderFinder} that also returns servlet/filter implementations.
      */
     static final class ServletFinder
-        extends ClassFinder
+        extends ProviderFinder
         implements com.google.inject.servlet.ServletModuleTargetVisitor<Object, Class<?>>
     {
         // ----------------------------------------------------------------------
