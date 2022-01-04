@@ -19,7 +19,9 @@ import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.inject.DeferredProvider;
 
 import junit.framework.TestCase;
+import org.junit.experimental.categories.Category;
 
+@Category( org.eclipse.sisu.BaseTests.class )
 public class DeferredClassTest
     extends TestCase
 {

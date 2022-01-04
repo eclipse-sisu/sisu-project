@@ -31,7 +31,9 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.util.Types;
 
 import junit.framework.TestCase;
+import org.junit.experimental.categories.Category;
 
+@Category( org.eclipse.sisu.BaseTests.class )
 @SuppressWarnings( "unused" )
 public class BeanPropertiesTest
     extends TestCase

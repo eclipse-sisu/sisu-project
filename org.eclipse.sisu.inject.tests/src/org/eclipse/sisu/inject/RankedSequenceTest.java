@@ -19,7 +19,9 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import junit.framework.TestCase;
+import org.junit.experimental.categories.Category;
 
+@Category( org.eclipse.sisu.BaseTests.class )
 public class RankedSequenceTest
     extends TestCase
 {

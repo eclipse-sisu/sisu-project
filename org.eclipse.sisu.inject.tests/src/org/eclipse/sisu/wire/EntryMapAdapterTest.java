@@ -14,7 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.TestCase;
+import org.junit.experimental.categories.Category;
 
+@Category( org.eclipse.sisu.BaseTests.class )
 public class EntryMapAdapterTest
     extends TestCase
 {

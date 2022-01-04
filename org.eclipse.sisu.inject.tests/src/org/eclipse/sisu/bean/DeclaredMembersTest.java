@@ -17,7 +17,9 @@ import java.util.NoSuchElementException;
 import org.junit.Ignore;
 
 import junit.framework.TestCase;
+import org.junit.experimental.categories.Category;
 
+@Category( org.eclipse.sisu.BaseTests.class )
 public class DeclaredMembersTest
     extends TestCase
 {

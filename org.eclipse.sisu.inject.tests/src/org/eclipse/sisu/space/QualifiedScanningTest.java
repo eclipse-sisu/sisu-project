@@ -36,7 +36,9 @@ import org.eclipse.sisu.space.oops.Handler;
 import org.junit.Ignore;
 
 import junit.framework.TestCase;
+import org.junit.experimental.categories.Category;
 
+@Category( org.eclipse.sisu.BaseTests.class )
 public class QualifiedScanningTest
     extends TestCase
 {
