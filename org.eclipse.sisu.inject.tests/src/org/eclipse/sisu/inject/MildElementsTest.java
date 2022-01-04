@@ -19,7 +19,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import junit.framework.TestCase;
+import org.junit.experimental.categories.Category;
 
+@Category( org.eclipse.sisu.BaseTests.class )
 public class MildElementsTest
     extends TestCase
 {

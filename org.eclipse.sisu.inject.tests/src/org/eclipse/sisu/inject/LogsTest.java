@@ -19,7 +19,9 @@ import org.eclipse.sisu.space.URLClassSpace;
 import org.slf4j.LoggerFactory;
 
 import junit.framework.TestCase;
+import org.junit.experimental.categories.Category;
 
+@Category( org.eclipse.sisu.BaseTests.class )
 public class LogsTest
     extends TestCase
 {

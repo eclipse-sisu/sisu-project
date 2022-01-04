@@ -19,7 +19,9 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import junit.framework.TestCase;
+import org.junit.experimental.categories.Category;
 
+@Category( org.eclipse.sisu.BaseTests.class )
 public class MildKeysTest
     extends TestCase
 {

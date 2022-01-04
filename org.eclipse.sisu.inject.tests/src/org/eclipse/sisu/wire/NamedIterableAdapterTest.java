@@ -19,7 +19,9 @@ import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 
 import junit.framework.TestCase;
+import org.junit.experimental.categories.Category;
 
+@Category( org.eclipse.sisu.BaseTests.class )
 public class NamedIterableAdapterTest
     extends TestCase
 {

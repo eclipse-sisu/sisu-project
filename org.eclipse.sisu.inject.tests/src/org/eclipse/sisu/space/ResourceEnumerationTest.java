@@ -20,7 +20,9 @@ import java.util.NoSuchElementException;
 import org.junit.Ignore;
 
 import junit.framework.TestCase;
+import org.junit.experimental.categories.Category;
 
+@Category( org.eclipse.sisu.BaseTests.class )
 @Ignore( "Need to replace some test archives" )
 public class ResourceEnumerationTest
     extends TestCase

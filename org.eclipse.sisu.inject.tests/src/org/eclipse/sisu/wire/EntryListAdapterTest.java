@@ -22,7 +22,9 @@ import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 
 import junit.framework.TestCase;
+import org.junit.experimental.categories.Category;
 
+@Category( org.eclipse.sisu.BaseTests.class )
 public class EntryListAdapterTest
     extends TestCase
 {
