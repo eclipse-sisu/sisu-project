@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -88,6 +89,30 @@ public final class TypeArguments
             throw new ArrayIndexOutOfBoundsException( index );
         }
         return OBJECT_TYPE;
+    }
+
+    /**
+     * Get the erased raw {@link Class} for a generic type, for example {@code Map} from {@code Map<Foo,Bar>}.
+     *
+     * @param type The generic type
+     * @return Erased raw type
+     */
+    public static Class<?> getRawType( final Type type )
+    {
+        if ( type instanceof Class<?> )
+        {
+            return (Class<?>) type;
+        }
+        if ( type instanceof ParameterizedType )
+        {
+            return (Class<?>) ( (ParameterizedType) type ).getRawType();
+        }
+        if ( type instanceof GenericArrayType )
+        {
+            Class<?> rawComponentType = getRawType( ( (GenericArrayType) type ).getGenericComponentType() );
+            return Array.newInstance( rawComponentType, 0 ).getClass();
+        }
+        return Object.class;
     }
 
     // ----------------------------------------------------------------------

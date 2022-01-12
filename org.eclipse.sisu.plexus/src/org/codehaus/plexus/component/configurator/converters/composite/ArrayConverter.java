@@ -13,28 +13,40 @@
 package org.codehaus.plexus.component.configurator.converters.composite;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ConfigurationListener;
+import org.codehaus.plexus.component.configurator.converters.ParameterizedConfigurationConverter;
 import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
 public class ArrayConverter
     extends AbstractCollectionConverter
+    implements ParameterizedConfigurationConverter
 {
     public boolean canConvert( final Class<?> type )
     {
         return type.isArray();
     }
 
-    @SuppressWarnings( "unchecked" )
     public Object fromConfiguration( final ConverterLookup lookup, final PlexusConfiguration configuration,
                                      final Class<?> type, final Class<?> enclosingType, final ClassLoader loader,
                                      final ExpressionEvaluator evaluator, final ConfigurationListener listener )
+        throws ComponentConfigurationException
+    {
+        return fromConfiguration( lookup, configuration, type, null, enclosingType, loader, evaluator, listener );
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Object fromConfiguration( final ConverterLookup lookup, final PlexusConfiguration configuration,
+                                     final Class<?> type, final Type[] typeArguments, final Class<?> enclosingType,
+                                     final ClassLoader loader, final ExpressionEvaluator evaluator,
+                                     final ConfigurationListener listener )
         throws ComponentConfigurationException
     {
         final Object value = fromExpression( configuration, evaluator );
@@ -45,7 +57,7 @@ public class ArrayConverter
         try
         {
             final Collection<Object> elements;
-            final Class<?> elementType = type.getComponentType();
+            final Type elementType = findElementType( type, typeArguments );
             if ( null == value )
             {
                 elements = fromChildren( lookup, configuration, type, enclosingType, loader, evaluator, listener,
@@ -65,7 +77,7 @@ public class ArrayConverter
                 failIfNotTypeCompatible( value, type, configuration );
                 elements = Collections.emptyList(); // unreachable
             }
-            return elements.toArray( (Object[]) Array.newInstance( elementType, elements.size() ) );
+            return elements.toArray( (Object[]) Array.newInstance( type.getComponentType(), elements.size() ) );
         }
         catch ( final ComponentConfigurationException e )
         {
@@ -86,5 +98,14 @@ public class ArrayConverter
                                                               final Class<?> type, final ClassLoader loader )
     {
         return new ArrayList<Object>( configuration.getChildCount() );
+    }
+
+    private static Type findElementType( final Class<?> rawArrayType, final Type[] typeArguments )
+    {
+        if ( null != typeArguments && typeArguments.length > 0 )
+        {
+            return typeArguments[0];
+        }
+        return rawArrayType.getComponentType();
     }
 }

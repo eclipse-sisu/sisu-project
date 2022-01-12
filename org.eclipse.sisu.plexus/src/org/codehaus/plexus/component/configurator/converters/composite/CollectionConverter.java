@@ -61,7 +61,7 @@ public class CollectionConverter
         try
         {
             final Collection<Object> elements;
-            final Class<?> elementType = findElementType( typeArguments );
+            final Type elementType = findElementType( typeArguments );
             if ( null == value )
             {
                 elements = fromChildren( lookup, configuration, type, enclosingType, loader, evaluator, listener,
@@ -123,11 +123,11 @@ public class CollectionConverter
         return (Collection<Object>) impl;
     }
 
-    private static Class<?> findElementType( final Type[] typeArguments )
+    private static Type findElementType( final Type[] typeArguments )
     {
-        if ( null != typeArguments && typeArguments.length > 0 && typeArguments[0] instanceof Class<?> )
+        if ( null != typeArguments && typeArguments.length > 0 )
         {
-            return (Class<?>) typeArguments[0];
+            return typeArguments[0];
         }
         return Object.class;
     }

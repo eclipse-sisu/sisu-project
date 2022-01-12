@@ -12,16 +12,19 @@
  *******************************************************************************/
 package org.codehaus.plexus.component.configurator.converters.composite;
 
+import java.lang.reflect.Type;
 import java.util.Collection;
 
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ConfigurationListener;
 import org.codehaus.plexus.component.configurator.converters.AbstractConfigurationConverter;
 import org.codehaus.plexus.component.configurator.converters.ConfigurationConverter;
+import org.codehaus.plexus.component.configurator.converters.ParameterizedConfigurationConverter;
 import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
+import org.eclipse.sisu.plexus.TypeArguments;
 
 public abstract class AbstractCollectionConverter
     extends AbstractConfigurationConverter
@@ -38,6 +41,7 @@ public abstract class AbstractCollectionConverter
     // Shared methods
     // ----------------------------------------------------------------------
 
+    // Maintain binary compatibility with old method signature
     protected final Collection<Object> fromChildren( final ConverterLookup lookup,
                                                      final PlexusConfiguration configuration, final Class<?> type,
                                                      final Class<?> enclosingType, final ClassLoader loader,
@@ -45,24 +49,54 @@ public abstract class AbstractCollectionConverter
                                                      final ConfigurationListener listener, final Class<?> elementType )
         throws ComponentConfigurationException
     {
+        return fromChildren( lookup, configuration, type, enclosingType, //
+                             loader, evaluator, listener, (Type) elementType );
+    }
+
+    protected final Collection<Object> fromChildren( final ConverterLookup lookup,
+                                                     final PlexusConfiguration configuration, final Class<?> type,
+                                                     final Class<?> enclosingType, final ClassLoader loader,
+                                                     final ExpressionEvaluator evaluator,
+                                                     final ConfigurationListener listener, final Type elementType )
+        throws ComponentConfigurationException
+    {
         final Collection<Object> elements = instantiateCollection( configuration, type, loader );
         for ( int i = 0, size = configuration.getChildCount(); i < size; i++ )
         {
             final PlexusConfiguration xml = configuration.getChild( i );
-            final Class<?> childType = getChildType( xml, enclosingType, loader, elementType );
-            final ConfigurationConverter converter = lookup.lookupConverterForType( childType );
-            elements.add( converter.fromConfiguration( lookup, xml, childType, enclosingType, //
-                                                       loader, evaluator, listener ) );
+            final Type childType = getChildType( xml, enclosingType, loader, elementType );
+            final Class<?> rawChildType = TypeArguments.getRawType( childType );
+            final ConfigurationConverter c = lookup.lookupConverterForType( rawChildType );
+            if ( rawChildType != childType && c instanceof ParameterizedConfigurationConverter )
+            {
+                final ParameterizedConfigurationConverter pc = (ParameterizedConfigurationConverter) c;
+                elements.add( pc.fromConfiguration( lookup, xml, rawChildType, //
+                                                    TypeArguments.get( childType ), enclosingType, //
+                                                    loader, evaluator, listener ) );
+            }
+            else
+            {
+                elements.add( c.fromConfiguration( lookup, xml, rawChildType, enclosingType, //
+                                                   loader, evaluator, listener ) );
+            }
         }
         return elements;
     }
 
+    // Maintain binary compatibility with old method signature
     protected final Class<?> getChildType( final PlexusConfiguration childConfiguration, final Class<?> enclosingType,
                                            final ClassLoader loader, final Class<?> elementType )
         throws ComponentConfigurationException
     {
+        return (Class<?>) getChildType( childConfiguration, enclosingType, loader, (Type) elementType );
+    }
+
+    protected final Type getChildType( final PlexusConfiguration childConfiguration, final Class<?> enclosingType,
+                                       final ClassLoader loader, final Type elementType )
+        throws ComponentConfigurationException
+    {
         final String childName = fromXML( childConfiguration.getName() );
-        Class<?> childType = getClassForImplementationHint( null, childConfiguration, loader );
+        Type childType = getClassForImplementationHint( null, childConfiguration, loader );
         Throwable cause = null;
 
         if ( null == childType && childName.indexOf( '.' ) > 0 )

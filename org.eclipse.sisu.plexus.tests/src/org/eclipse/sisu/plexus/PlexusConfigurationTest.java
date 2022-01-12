@@ -10,6 +10,12 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import org.codehaus.plexus.component.annotations.Component;
@@ -25,6 +31,9 @@ import com.google.inject.Injector;
 import com.google.inject.ProvisionException;
 
 import junit.framework.TestCase;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonMap;
 
 public class PlexusConfigurationTest
     extends TestCase
@@ -106,6 +115,12 @@ public class PlexusConfigurationTest
         @Configuration( "5" )
         double e;
 
+        @Configuration( "<map>" + //
+            "<key1><a><x><elem1>true</elem1><elem2>false</elem2></x></a></key1>" + //
+            "<key2><b><y><elem1>false</elem1><elem2>true</elem2></y></b></key2>" + //
+            "</map>" )
+        Map<String, Map<String, Map<String, List<Boolean>>>> map;
+
         @Configuration( "<container><xml><element/></xml></container>" )
         XmlContainerComponent xmlContainer;
     }
@@ -140,6 +155,11 @@ public class PlexusConfigurationTest
         assertEquals( 3, component.c );
         assertEquals( Double.valueOf( 4.0 ), component.d );
         assertEquals( 5.0, component.e, 0 );
+
+        Map<String, Map<String, Map<String, List<Boolean>>>> expectedMap = new HashMap<>();
+        expectedMap.put( "key1", singletonMap( "a", singletonMap( "x", asList( true, false ) ) ) );
+        expectedMap.put( "key2", singletonMap( "b", singletonMap( "y", asList( false, true ) ) ) );
+        assertEquals( expectedMap, component.map );
 
         assertNotNull( component.xmlContainer );
         assertNotNull( component.xmlContainer.xml );

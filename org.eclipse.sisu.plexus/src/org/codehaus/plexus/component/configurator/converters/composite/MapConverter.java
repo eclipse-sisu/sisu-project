@@ -27,6 +27,7 @@ import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLoo
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.eclipse.sisu.inject.Logs;
+import org.eclipse.sisu.plexus.TypeArguments;
 
 public class MapConverter
     extends AbstractConfigurationConverter
@@ -59,7 +60,7 @@ public class MapConverter
         try
         {
             final Map<Object, Object> map = instantiateMap( configuration, type, loader );
-            final Class<?> elementType = findElementType( typeArguments );
+            final Type elementType = findElementType( typeArguments );
             if ( Object.class == elementType || String.class == elementType )
             {
                 for ( int i = 0, size = configuration.getChildCount(); i < size; i++ )
@@ -70,15 +71,27 @@ public class MapConverter
                 return map;
             }
             // handle maps with complex element types...
-            final ConfigurationConverter converter = lookup.lookupConverterForType( elementType );
+            final Class<?> rawElementType = TypeArguments.getRawType( elementType );
+            final ConfigurationConverter c = lookup.lookupConverterForType( rawElementType );
+            final ParameterizedConfigurationConverter pc = rawElementType != elementType
+                && c instanceof ParameterizedConfigurationConverter ? (ParameterizedConfigurationConverter) c : null;
             for ( int i = 0, size = configuration.getChildCount(); i < size; i++ )
             {
                 Object elementValue;
                 final PlexusConfiguration element = configuration.getChild( i );
                 try
                 {
-                    elementValue = converter.fromConfiguration( lookup, element, elementType, enclosingType, //
-                                                                loader, evaluator, listener );
+                    if ( null != pc )
+                    {
+                        elementValue = pc.fromConfiguration( lookup, element, rawElementType, //
+                                                             TypeArguments.get( elementType ), enclosingType, //
+                                                             loader, evaluator, listener );
+                    }
+                    else
+                    {
+                        elementValue = c.fromConfiguration( lookup, element, rawElementType, enclosingType, //
+                                                            loader, evaluator, listener );
+                    }
                 }
                 // TEMP: remove when http://jira.codehaus.org/browse/MSHADE-168 is fixed
                 catch ( final ComponentConfigurationException e )
@@ -119,11 +132,11 @@ public class MapConverter
         return (Map<Object, Object>) impl;
     }
 
-    private static Class<?> findElementType( final Type[] typeArguments )
+    private static Type findElementType( final Type[] typeArguments )
     {
-        if ( null != typeArguments && typeArguments.length > 1 && typeArguments[1] instanceof Class<?> )
+        if ( null != typeArguments && typeArguments.length > 1 )
         {
-            return (Class<?>) typeArguments[1];
+            return typeArguments[1];
         }
         return Object.class;
     }
