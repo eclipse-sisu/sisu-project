@@ -83,7 +83,7 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
     <tycho.scmUrl>scm:git:https://github.com/eclipse/sisu.plexus.git</tycho.scmUrl>
-    <tycho-version>2.5.0</tycho-version>
+    <tycho-version>2.6.0</tycho-version>
   </properties>
 
   <build>
