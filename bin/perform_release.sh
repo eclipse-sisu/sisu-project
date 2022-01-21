@@ -51,7 +51,7 @@ git checkout master ; git merge staging-${VERSION}
 MINOR_MICRO=${VERSION#*.}
 NEW_VERSION=${VERSION%%.*}.$((${MINOR_MICRO%%.*}+1)).0-SNAPSHOT
 
-mvn org.eclipse.tycho:tycho-versions-plugin:2.5.0:set-version -DnewVersion=${NEW_VERSION}
+mvn org.eclipse.tycho:tycho-versions-plugin:2.6.0:set-version -DnewVersion=${NEW_VERSION}
 
 git add . ; git commit -m "Prepare for next round of development"
 
