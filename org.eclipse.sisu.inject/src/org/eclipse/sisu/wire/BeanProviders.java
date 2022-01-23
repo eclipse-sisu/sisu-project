@@ -167,7 +167,7 @@ final class BeanProviders
      */
     public <V> Provider<V> placeholderOf( final Key<V> key )
     {
-        return new PlaceholderBeanProvider<V>( locator, key );
+        return new PlaceholderBeanProvider<V>( this, key );
     }
 
     /**

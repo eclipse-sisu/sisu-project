@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.sisu.wire;
 
+import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.inject.Inject;
 
 import org.eclipse.sisu.Parameters;
-import org.eclipse.sisu.inject.BeanLocator;
 
 import com.google.inject.Key;
 import com.google.inject.Provider;
@@ -49,17 +50,19 @@ final class PlaceholderBeanProvider<V>
     @Inject
     private TypeConverterCache converterCache;
 
-    private final Provider<BeanLocator> locator;
+    private final BeanProviders beans;
 
     private final Key<V> placeholderKey;
+
+    private volatile Entry<Key<?>, Provider<?>> cachedLookup;
 
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
-    PlaceholderBeanProvider( final Provider<BeanLocator> locator, final Key<V> key )
+    PlaceholderBeanProvider( final BeanProviders beans, final Key<V> key )
     {
-        this.locator = locator;
+        this.beans = beans;
         placeholderKey = key;
     }
 
@@ -117,9 +120,16 @@ final class PlaceholderBeanProvider<V>
     // Implementation methods
     // ----------------------------------------------------------------------
 
+    @SuppressWarnings( { "unchecked", "rawtypes" } )
     private <T> T lookup( final Key<T> key )
     {
-        return BeanProviders.firstOf( locator.get().locate( key ) );
+        Entry<Key<?>, Provider<?>> lookup = cachedLookup;
+        if ( null == lookup || !key.equals( lookup.getKey() ) )
+        {
+            lookup = new SimpleImmutableEntry( key, beans.firstOf( key ) );
+            cachedLookup = lookup;
+        }
+        return (T) lookup.getValue().get();
     }
 
     private static String nullify( final String value )
