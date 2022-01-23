@@ -155,9 +155,16 @@ final class BeanProviders
         final Provider<Iterable<? extends BeanEntry<Annotation, V>>> beanEntries = beanEntriesOf( key );
         return new Provider<V>()
         {
+            private volatile Iterable<? extends BeanEntry<?, V>> cachedLookup;
+
             public V get()
             {
-                return firstOf( beanEntries.get() );
+                if ( null == cachedLookup )
+                {
+                    cachedLookup = beanEntries.get();
+                }
+                final Iterator<? extends BeanEntry<?, V>> itr = cachedLookup.iterator();
+                return itr.hasNext() ? itr.next().getProvider().get() : null;
             }
         };
     }
@@ -168,14 +175,5 @@ final class BeanProviders
     public <V> Provider<V> placeholderOf( final Key<V> key )
     {
         return new PlaceholderBeanProvider<V>( this, key );
-    }
-
-    /**
-     * Selects first bean from the sequence; or null if none is available.
-     */
-    public static <V> V firstOf( final Iterable<? extends Entry<?, V>> entries )
-    {
-        final Iterator<? extends Entry<?, V>> itr = entries.iterator();
-        return itr.hasNext() ? itr.next().getValue() : null;
     }
 }
