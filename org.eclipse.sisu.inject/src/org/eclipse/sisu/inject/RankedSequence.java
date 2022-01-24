@@ -37,7 +37,7 @@ final class RankedSequence<T>
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private volatile Content content;
+    volatile Content content;
 
     // ----------------------------------------------------------------------
     // Constructors
