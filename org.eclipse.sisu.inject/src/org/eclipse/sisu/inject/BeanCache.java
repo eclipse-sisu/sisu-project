@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 import org.eclipse.sisu.BeanEntry;
 
@@ -28,7 +28,6 @@ import com.google.inject.Binding;
  */
 @SuppressWarnings( { "rawtypes", "unchecked" } )
 final class BeanCache<Q extends Annotation, T>
-    extends AtomicReference<Object>
 {
     // ----------------------------------------------------------------------
     // Constants
@@ -36,9 +35,14 @@ final class BeanCache<Q extends Annotation, T>
 
     private static final long serialVersionUID = 1L;
 
+    private static final AtomicReferenceFieldUpdater<BeanCache, Object> MAPPING_UPDATER =
+        AtomicReferenceFieldUpdater.newUpdater( BeanCache.class, Object.class, "mapping" );
+
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
+
+    private volatile Object mapping;
 
     private Map<Binding<T>, BeanEntry<Q, T>> readCache;
 
@@ -67,7 +71,7 @@ final class BeanCache<Q extends Annotation, T>
          */
         do
         {
-            o = get();
+            o = mapping;
             if ( null == o )
             {
                 // most common case: adding the one (and-only) entry
@@ -96,7 +100,7 @@ final class BeanCache<Q extends Annotation, T>
                 }
             }
         }
-        while ( !compareAndSet( o, n ) );
+        while ( !MAPPING_UPDATER.compareAndSet( this, o, n ) );
 
         if ( n instanceof IdentityHashMap )
         {
@@ -117,7 +121,7 @@ final class BeanCache<Q extends Annotation, T>
             {
                 if ( mutated )
                 {
-                    readCache = (Map) ( (IdentityHashMap) get() ).clone();
+                    readCache = (Map) ( (IdentityHashMap) mapping ).clone();
                     mutated = false;
                 }
             }
@@ -132,7 +136,7 @@ final class BeanCache<Q extends Annotation, T>
      */
     public Iterable<Binding<T>> bindings()
     {
-        final Object o = get();
+        final Object o = mapping;
         if ( null == o )
         {
             return Collections.EMPTY_SET;
@@ -164,7 +168,7 @@ final class BeanCache<Q extends Annotation, T>
          */
         do
         {
-            o = get();
+            o = mapping;
             if ( null == o )
             {
                 return null;
@@ -191,7 +195,7 @@ final class BeanCache<Q extends Annotation, T>
                 }
             }
         }
-        while ( !compareAndSet( o, n ) );
+        while ( !MAPPING_UPDATER.compareAndSet( this, o, n ) );
 
         return oldBean;
     }

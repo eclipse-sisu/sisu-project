@@ -15,13 +15,12 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * Ordered {@link List} that arranges elements by descending rank; supports concurrent iteration and modification.
  */
 final class RankedSequence<T>
-    extends AtomicReference<RankedSequence.Content>
     implements Iterable<T>
 {
     // ----------------------------------------------------------------------
@@ -29,6 +28,16 @@ final class RankedSequence<T>
     // ----------------------------------------------------------------------
 
     private static final long serialVersionUID = 1L;
+
+    @SuppressWarnings( "rawtypes" )
+    private static final AtomicReferenceFieldUpdater<RankedSequence, Content> CONTENT_UPDATER =
+        AtomicReferenceFieldUpdater.newUpdater( RankedSequence.class, Content.class, "content" );
+
+    // ----------------------------------------------------------------------
+    // Implementation fields
+    // ----------------------------------------------------------------------
+
+    volatile Content content;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -43,7 +52,7 @@ final class RankedSequence<T>
     {
         if ( null != sequence )
         {
-            set( sequence.get() );
+            content = sequence.content;
         }
     }
 
@@ -64,28 +73,28 @@ final class RankedSequence<T>
         Content o, n;
         do
         {
-            n = null != ( o = get() ) ? o.insert( element, rank ) : new Content( element, rank );
+            n = null != ( o = content ) ? o.insert( element, rank ) : new Content( element, rank );
         }
-        while ( !compareAndSet( o, n ) );
+        while ( !CONTENT_UPDATER.compareAndSet( this, o, n ) );
     }
 
     @SuppressWarnings( "unchecked" )
     public T peek()
     {
-        final Content content = get();
-        return null != content ? (T) content.objs[0] : null;
+        final Content snapshot = content;
+        return null != snapshot ? (T) snapshot.objs[0] : null;
     }
 
     public boolean contains( final Object element )
     {
-        final Content content = get();
-        return null != content && content.indexOf( element ) >= 0;
+        final Content snapshot = content;
+        return null != snapshot && snapshot.indexOf( element ) >= 0;
     }
 
     public boolean containsThis( final Object element )
     {
-        final Content content = get();
-        return null != content && content.indexOfThis( element ) >= 0;
+        final Content snapshot = content;
+        return null != snapshot && snapshot.indexOfThis( element ) >= 0;
     }
 
     @SuppressWarnings( "unchecked" )
@@ -95,13 +104,13 @@ final class RankedSequence<T>
         int index;
         do
         {
-            if ( null == ( o = get() ) || ( index = o.indexOf( element ) ) < 0 )
+            if ( null == ( o = content ) || ( index = o.indexOf( element ) ) < 0 )
             {
                 return null;
             }
             n = o.remove( index );
         }
-        while ( !compareAndSet( o, n ) );
+        while ( !CONTENT_UPDATER.compareAndSet( this, o, n ) );
 
         return (T) o.objs[index];
     }
@@ -112,13 +121,13 @@ final class RankedSequence<T>
         do
         {
             final int index;
-            if ( null == ( o = get() ) || ( index = o.indexOfThis( element ) ) < 0 )
+            if ( null == ( o = content ) || ( index = o.indexOfThis( element ) ) < 0 )
             {
                 return false;
             }
             n = o.remove( index );
         }
-        while ( !compareAndSet( o, n ) );
+        while ( !CONTENT_UPDATER.compareAndSet( this, o, n ) );
 
         return true;
     }
@@ -126,24 +135,24 @@ final class RankedSequence<T>
     @SuppressWarnings( { "rawtypes", "unchecked" } )
     public Iterable<T> snapshot()
     {
-        final Content content = get();
-        return null != content ? (List) Arrays.asList( content.objs ) : Collections.EMPTY_SET;
+        final Content snapshot = content;
+        return null != snapshot ? (List) Arrays.asList( snapshot.objs ) : Collections.EMPTY_SET;
     }
 
     public void clear()
     {
-        set( null );
+        content = null;
     }
 
     public boolean isEmpty()
     {
-        return null == get();
+        return null == content;
     }
 
     public int size()
     {
-        final Content content = get();
-        return null != content ? content.objs.length : 0;
+        final Content snapshot = content;
+        return null != snapshot ? snapshot.objs.length : 0;
     }
 
     public Itr iterator()
@@ -349,7 +358,7 @@ final class RankedSequence<T>
         // Implementation fields
         // ----------------------------------------------------------------------
 
-        private Content content;
+        private Content snapshot;
 
         private T nextObj;
 
@@ -368,16 +377,16 @@ final class RankedSequence<T>
             {
                 return true;
             }
-            final Content newContent = get();
-            if ( content != newContent )
+            final Content newSnapshot = content;
+            if ( snapshot != newSnapshot )
             {
-                index = null != newContent ? safeBinarySearch( newContent.uids, nextUID ) : -1;
-                content = newContent;
+                index = null != newSnapshot ? safeBinarySearch( newSnapshot.uids, nextUID ) : -1;
+                snapshot = newSnapshot;
             }
-            if ( index >= 0 && index < content.objs.length )
+            if ( index >= 0 && index < snapshot.objs.length )
             {
-                nextObj = (T) content.objs[index];
-                nextUID = content.uids[index];
+                nextObj = (T) snapshot.objs[index];
+                nextUID = snapshot.uids[index];
                 return true;
             }
             return false;
@@ -392,15 +401,15 @@ final class RankedSequence<T>
             {
                 return uid2rank( nextUID ) >= rank;
             }
-            final Content newContent = get();
-            if ( content != newContent )
+            final Content newSnapshot = content;
+            if ( snapshot != newSnapshot )
             {
-                index = null != newContent ? safeBinarySearch( newContent.uids, nextUID ) : -1;
-                content = newContent;
+                index = null != newSnapshot ? safeBinarySearch( newSnapshot.uids, nextUID ) : -1;
+                snapshot = newSnapshot;
             }
-            if ( index >= 0 && index < content.uids.length )
+            if ( index >= 0 && index < snapshot.uids.length )
             {
-                return uid2rank( content.uids[index] ) >= rank;
+                return uid2rank( snapshot.uids[index] ) >= rank;
             }
             return false;
         }
