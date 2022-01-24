@@ -72,20 +72,20 @@ final class RankedSequence<T>
     @SuppressWarnings( "unchecked" )
     public T peek()
     {
-        final Content content = get();
-        return null != content ? (T) content.objs[0] : null;
+        final Content snapshot = get();
+        return null != snapshot ? (T) snapshot.objs[0] : null;
     }
 
     public boolean contains( final Object element )
     {
-        final Content content = get();
-        return null != content && content.indexOf( element ) >= 0;
+        final Content snapshot = get();
+        return null != snapshot && snapshot.indexOf( element ) >= 0;
     }
 
     public boolean containsThis( final Object element )
     {
-        final Content content = get();
-        return null != content && content.indexOfThis( element ) >= 0;
+        final Content snapshot = get();
+        return null != snapshot && snapshot.indexOfThis( element ) >= 0;
     }
 
     @SuppressWarnings( "unchecked" )
@@ -126,8 +126,8 @@ final class RankedSequence<T>
     @SuppressWarnings( { "rawtypes", "unchecked" } )
     public Iterable<T> snapshot()
     {
-        final Content content = get();
-        return null != content ? (List) Arrays.asList( content.objs ) : Collections.EMPTY_SET;
+        final Content snapshot = get();
+        return null != snapshot ? (List) Arrays.asList( snapshot.objs ) : Collections.EMPTY_SET;
     }
 
     public void clear()
@@ -142,8 +142,8 @@ final class RankedSequence<T>
 
     public int size()
     {
-        final Content content = get();
-        return null != content ? content.objs.length : 0;
+        final Content snapshot = get();
+        return null != snapshot ? snapshot.objs.length : 0;
     }
 
     public Itr iterator()
@@ -349,7 +349,7 @@ final class RankedSequence<T>
         // Implementation fields
         // ----------------------------------------------------------------------
 
-        private Content content;
+        private Content snapshot;
 
         private T nextObj;
 
@@ -368,16 +368,16 @@ final class RankedSequence<T>
             {
                 return true;
             }
-            final Content newContent = get();
-            if ( content != newContent )
+            final Content newSnapshot = get();
+            if ( snapshot != newSnapshot )
             {
-                index = null != newContent ? safeBinarySearch( newContent.uids, nextUID ) : -1;
-                content = newContent;
+                index = null != newSnapshot ? safeBinarySearch( newSnapshot.uids, nextUID ) : -1;
+                snapshot = newSnapshot;
             }
-            if ( index >= 0 && index < content.objs.length )
+            if ( index >= 0 && index < snapshot.objs.length )
             {
-                nextObj = (T) content.objs[index];
-                nextUID = content.uids[index];
+                nextObj = (T) snapshot.objs[index];
+                nextUID = snapshot.uids[index];
                 return true;
             }
             return false;
@@ -392,15 +392,15 @@ final class RankedSequence<T>
             {
                 return uid2rank( nextUID ) >= rank;
             }
-            final Content newContent = get();
-            if ( content != newContent )
+            final Content newSnapshot = get();
+            if ( snapshot != newSnapshot )
             {
-                index = null != newContent ? safeBinarySearch( newContent.uids, nextUID ) : -1;
-                content = newContent;
+                index = null != newSnapshot ? safeBinarySearch( newSnapshot.uids, nextUID ) : -1;
+                snapshot = newSnapshot;
             }
-            if ( index >= 0 && index < content.uids.length )
+            if ( index >= 0 && index < snapshot.uids.length )
             {
-                return uid2rank( content.uids[index] ) >= rank;
+                return uid2rank( snapshot.uids[index] ) >= rank;
             }
             return false;
         }
