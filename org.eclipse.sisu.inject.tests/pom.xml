@@ -215,17 +215,17 @@
                 <artifactItem>
                   <groupId>com.google.inject</groupId>
                   <artifactId>guice</artifactId>
-                  <version>5.0.1</version>
+                  <version>5.1.0</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>com.google.inject.extensions</groupId>
                   <artifactId>guice-assistedinject</artifactId>
-                  <version>5.0.1</version>
+                  <version>5.1.0</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>com.google.inject.extensions</groupId>
                   <artifactId>guice-servlet</artifactId>
-                  <version>5.0.1</version>
+                  <version>5.1.0</version>
                 </artifactItem>
               </artifactItems>
               <outputDirectory>${project.build.directory}/guice5</outputDirectory>
