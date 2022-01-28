@@ -14,6 +14,7 @@ Sisu uses [Google-Guice](https://github.com/google/guice) to perform dependency 
 
 
 [![CI](https://github.com/eclipse/sisu.inject/actions/workflows/ci.yml/badge.svg?event=push)](https://github.com/eclipse/sisu.inject/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/License-EPL_1.0-blue.svg)](https://www.eclipse.org/legal/epl-v10.html)
 
 ## Maven
 
