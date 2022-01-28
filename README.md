@@ -10,6 +10,7 @@
 
 [![build](https://github.com/eclipse/sisu.inject/actions/workflows/build.yml/badge.svg?event=push)](https://github.com/eclipse/sisu.inject/actions/workflows/build.yml)
 [![license](https://img.shields.io/badge/license-EPL_1.0-blue.svg)](https://www.eclipse.org/legal/epl-v10.html)
+[![used by](https://img.shields.io/librariesio/dependent-repos/maven/org.eclipse.sisu:org.eclipse.sisu.inject?color=yellow&label=used%20by)](https://libraries.io/maven/org.eclipse.sisu:org.eclipse.sisu.inject)
 
 Sisu is a modular [JSR330](https://javax-inject.github.io/javax-inject/)-based container that supports classpath scanning, auto-binding, and dynamic auto-wiring.
 
