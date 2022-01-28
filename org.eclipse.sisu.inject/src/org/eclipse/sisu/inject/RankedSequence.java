@@ -383,7 +383,7 @@ final class RankedSequence<T>
                 index = null != newSnapshot ? safeBinarySearch( newSnapshot.uids, nextUID ) : -1;
                 snapshot = newSnapshot;
             }
-            if ( index >= 0 && index < snapshot.objs.length )
+            if ( index >= 0 && index < snapshot.objs.length ) // NOSONAR
             {
                 nextObj = (T) snapshot.objs[index];
                 nextUID = snapshot.uids[index];
@@ -407,7 +407,7 @@ final class RankedSequence<T>
                 index = null != newSnapshot ? safeBinarySearch( newSnapshot.uids, nextUID ) : -1;
                 snapshot = newSnapshot;
             }
-            if ( index >= 0 && index < snapshot.uids.length )
+            if ( index >= 0 && index < snapshot.uids.length ) // NOSONAR
             {
                 return uid2rank( snapshot.uids[index] ) >= rank;
             }
