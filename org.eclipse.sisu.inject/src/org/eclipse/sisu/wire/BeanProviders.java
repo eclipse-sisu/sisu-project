@@ -155,7 +155,7 @@ final class BeanProviders
         final Provider<Iterable<? extends BeanEntry<Annotation, V>>> beanEntries = beanEntriesOf( key );
         return new Provider<V>()
         {
-            private volatile Iterable<? extends BeanEntry<?, V>> cachedLookup;
+            private volatile Iterable<? extends BeanEntry<?, V>> cachedLookup; // NOSONAR
 
             public V get()
             {

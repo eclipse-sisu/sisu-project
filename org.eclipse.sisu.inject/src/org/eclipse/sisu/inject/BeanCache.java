@@ -42,7 +42,7 @@ final class BeanCache<Q extends Annotation, T>
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private volatile Object mapping;
+    private volatile Object mapping; // NOSONAR
 
     private Map<Binding<T>, BeanEntry<Q, T>> readCache;
 

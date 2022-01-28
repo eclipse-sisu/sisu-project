@@ -37,7 +37,7 @@ final class RankedSequence<T>
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    volatile Content content;
+    volatile Content content; // NOSONAR
 
     // ----------------------------------------------------------------------
     // Constructors

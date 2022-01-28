@@ -54,7 +54,7 @@ final class PlaceholderBeanProvider<V>
 
     private final Key<V> placeholderKey;
 
-    private volatile Entry<Key<?>, Provider<?>> cachedLookup;
+    private volatile Entry<Key<?>, Provider<?>> cachedLookup; // NOSONAR
 
     // ----------------------------------------------------------------------
     // Constructors
