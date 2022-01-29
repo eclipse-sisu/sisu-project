@@ -153,10 +153,6 @@ public class PlexusRequirementTest
         }
     }
 
-    static class MissingClass
-    {
-    }
-
     @Component( role = Component1.class, instantiationStrategy = Strategies.PER_LOOKUP )
     static class Component1
     {
