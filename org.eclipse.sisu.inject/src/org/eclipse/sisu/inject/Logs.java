@@ -209,7 +209,7 @@ public final class Logs
     public static String toString( final Injector injector )
     {
         final StringBuilder buf = new StringBuilder( identityToString( injector ) );
-        if ( null != injector.getParent() )
+        if ( null != injector.getParent() ) // NOSONAR
         {
             buf.append( " parent: " ).append( identityToString( injector.getParent() ) );
         }
