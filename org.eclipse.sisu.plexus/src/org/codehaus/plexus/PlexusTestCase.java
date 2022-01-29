@@ -94,7 +94,7 @@ public abstract class PlexusTestCase
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private volatile PlexusContainer container;
+    private volatile PlexusContainer container; // NOSONAR
 
     // ----------------------------------------------------------------------
     // Public methods
