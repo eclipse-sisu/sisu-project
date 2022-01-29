@@ -220,7 +220,7 @@ public final class Guice4
         final Provider<T> provider = binding.getProvider();
         return new Provider<T>()
         {
-            private volatile Object value = NIL;
+            private volatile Object value = NIL; // NOSONAR
 
             public T get()
             {

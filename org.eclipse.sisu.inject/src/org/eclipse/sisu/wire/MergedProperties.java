@@ -28,7 +28,7 @@ final class MergedProperties
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private transient volatile Set<Entry<Object, Object>> entrySet;
+    private transient volatile Set<Entry<Object, Object>> entrySet; // NOSONAR
 
     final Map<?, ?>[] properties;
 
