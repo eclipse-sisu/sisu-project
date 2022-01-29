@@ -265,7 +265,7 @@ final class DependencyAnalyzer
         for ( final Dependency<?> d : dependencies )
         {
             final Key<?> key = d.getKey();
-            if ( key.hasAttributes() && "Assisted".equals( key.getAnnotationType().getSimpleName() ) )
+            if ( key.hasAttributes() && "Assisted".equals( key.getAnnotationType().getSimpleName() ) ) // NOSONAR
             {
                 applyBinding = false; // avoid directly binding AssistedInject based components
             }
