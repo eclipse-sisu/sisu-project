@@ -66,7 +66,7 @@ final class ZipEntryIterator
         return index < entryNames.length;
     }
 
-    public String next()
+    public String next() // NOSONAR
     {
         return entryNames[index++];
     }

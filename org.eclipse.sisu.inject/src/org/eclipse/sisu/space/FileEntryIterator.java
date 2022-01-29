@@ -59,7 +59,7 @@ final class FileEntryIterator
         return entryNames.size() > 0;
     }
 
-    public String next()
+    public String next() // NOSONAR
     {
         final String name = entryNames.removeFirst();
         if ( recurse && name.endsWith( "/" ) )
