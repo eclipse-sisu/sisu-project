@@ -110,7 +110,7 @@ final class RankedBindings<T>
         /*
          * Lock just to prevent subscription race condition.
          */
-        synchronized ( publisher )
+        synchronized ( publisher ) // NOSONAR
         {
             if ( !pendingPublishers.removeThis( publisher ) )
             {
