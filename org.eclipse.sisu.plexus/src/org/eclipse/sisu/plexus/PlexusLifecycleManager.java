@@ -107,7 +107,7 @@ public final class PlexusLifecycleManager
     public PropertyBinding manage( final BeanProperty property )
     {
         final Class clazz = property.getType().getRawType();
-        if ( "org.slf4j.Logger".equals( clazz.getName() ) )
+        if ( "org.slf4j.Logger".equals( clazz.getName() ) ) // NOSONAR
         {
             return new PropertyBinding()
             {
