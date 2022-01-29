@@ -65,7 +65,7 @@ public final class PlexusAnnotatedMetadata
             // support runtime interpolation of @Configuration values
             final String uninterpolatedValue = configuration.value();
             final String value = interpolate( uninterpolatedValue );
-            if ( !value.equals( uninterpolatedValue ) )
+            if ( null != value && !value.equals( uninterpolatedValue ) )
             {
                 return new ConfigurationImpl( configuration.name(), value );
             }
