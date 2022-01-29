@@ -252,7 +252,7 @@ public final class PlexusLifecycleManager
 
     private static <T> void synchronizedPush( final Deque<T> deque, final T element )
     {
-        synchronized ( deque )
+        synchronized ( deque ) // NOSONAR
         {
             deque.addLast( element );
         }
@@ -260,7 +260,7 @@ public final class PlexusLifecycleManager
 
     private static boolean synchronizedRemove( final Deque<?> deque, final Object element )
     {
-        synchronized ( deque )
+        synchronized ( deque ) // NOSONAR
         {
             return deque.remove( element );
         }
@@ -268,7 +268,7 @@ public final class PlexusLifecycleManager
 
     private static <T> T synchronizedPop( final Deque<T> deque )
     {
-        synchronized ( deque )
+        synchronized ( deque ) // NOSONAR
         {
             return deque.pollLast();
         }
