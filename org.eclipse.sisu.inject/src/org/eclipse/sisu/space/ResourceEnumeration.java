@@ -277,7 +277,7 @@ final class ResourceEnumeration
             throws IOException
         {
             final URL containingURL = new URL( "jar", null, -1, url.getFile() );
-            final ZipInputStream is = new ZipInputStream( Streams.open( containingURL ) );
+            final ZipInputStream is = new ZipInputStream( Streams.open( containingURL ) ); // NOSONAR
             final String entryName = url.getRef();
 
             for ( ZipEntry entry = is.getNextEntry(); entry != null; entry = is.getNextEntry() )
