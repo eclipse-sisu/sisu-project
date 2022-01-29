@@ -54,7 +54,7 @@ public final class InjectorBindings
 
     private final RankingFunction function;
 
-    private volatile Binding<?>[] wildcards;
+    private volatile Binding<?>[] wildcards; // NOSONAR
 
     // ----------------------------------------------------------------------
     // Constructors
