@@ -9,7 +9,6 @@
 ```
 
 [![build](https://github.com/eclipse/sisu.mojos/actions/workflows/build.yml/badge.svg?event=push)](https://github.com/eclipse/sisu.mojos/actions/workflows/build.yml)
-[![maintainability](https://sonarcloud.io/api/project_badges/measure?project=org.eclipse.sisu%3Asisu-mojos&metric=sqale_rating)](https://sonarcloud.io/summary/overall?id=org.eclipse.sisu%3Asisu-mojos)
 [![license](https://img.shields.io/badge/license-EPL_1.0-blue.svg)](https://www.eclipse.org/legal/epl-v10.html)
 
 Maven plugin that generates annotation indexes for [Sisu](https://github.com/eclipse/sisu.inject) to avoid classpath scanning at runtime.
