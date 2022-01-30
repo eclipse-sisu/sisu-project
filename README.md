@@ -8,7 +8,7 @@
 +-----------+---+-----------+-------+
 ```
 
-[![maintainability](https://sonarcloud.io/api/project_badges/measure?project=org.eclipse.sisu%3Asisu-plexus&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=org.eclipse.sisu%3Asisu-plexus)
+[![maintainability](https://sonarcloud.io/api/project_badges/measure?project=org.eclipse.sisu%3Asisu-plexus&metric=sqale_rating)](https://sonarcloud.io/summary/overall?id=org.eclipse.sisu%3Asisu-plexus)
 [![license](https://img.shields.io/badge/license-EPL_1.0-blue.svg)](https://www.eclipse.org/legal/epl-v10.html)
 
 Implements [Plexus](https://codehaus-plexus.github.io/#Plexus_History) container API and injection semantics
