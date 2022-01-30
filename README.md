@@ -8,6 +8,7 @@
 +-----------+---+-----------+-------+
 ```
 
+[![build](https://github.com/eclipse/sisu.plexus/actions/workflows/build.yml/badge.svg?event=push)](https://github.com/eclipse/sisu.plexus/actions/workflows/build.yml)
 [![maintainability](https://sonarcloud.io/api/project_badges/measure?project=org.eclipse.sisu%3Asisu-plexus&metric=sqale_rating)](https://sonarcloud.io/summary/overall?id=org.eclipse.sisu%3Asisu-plexus)
 [![license](https://img.shields.io/badge/license-EPL_1.0-blue.svg)](https://www.eclipse.org/legal/epl-v10.html)
 
