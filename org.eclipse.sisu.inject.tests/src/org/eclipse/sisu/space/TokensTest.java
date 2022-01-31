@@ -11,6 +11,7 @@
 package org.eclipse.sisu.space;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import junit.framework.TestCase;
 import org.junit.experimental.categories.Category;
@@ -63,10 +64,29 @@ public class TokensTest
         assertEquals( "baz", itr.next() );
         assertEquals( "foo", itr.next() );
         assertFalse( itr.hasNext() );
+        try
+        {
+            itr.next();
+            fail( "Expected NoSuchElementException" );
+        }
+        catch ( NoSuchElementException e )
+        {
+            // expected
+        }
     }
 
     private void assertNoTokens( final String text )
     {
-        assertFalse( Tokens.splitByComma( text ).iterator().hasNext() );
+        Iterator<String> itr = Tokens.splitByComma( text ).iterator();
+        assertFalse( itr.hasNext() );
+        try
+        {
+            itr.next();
+            fail( "Expected NoSuchElementException" );
+        }
+        catch ( NoSuchElementException e )
+        {
+            // expected
+        }
     }
 }

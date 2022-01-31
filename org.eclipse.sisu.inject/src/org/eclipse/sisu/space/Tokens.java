@@ -11,6 +11,7 @@
 package org.eclipse.sisu.space;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import static java.lang.Character.isWhitespace;
 
@@ -91,10 +92,14 @@ public final class Tokens
         @Override
         public String next()
         {
-            final int separatorIndex = nextSeparator( tokenIndex + 1 );
-            final String token = text.substring( tokenIndex, trimBack( separatorIndex - 1 ) + 1 );
-            tokenIndex = nextToken( separatorIndex + 1 );
-            return token;
+            if ( hasNext() )
+            {
+                final int separatorIndex = nextSeparator( tokenIndex + 1 );
+                final String token = text.substring( tokenIndex, trimBack( separatorIndex - 1 ) + 1 );
+                tokenIndex = nextToken( separatorIndex + 1 );
+                return token;
+            }
+            throw new NoSuchElementException();
         }
 
         @Override
