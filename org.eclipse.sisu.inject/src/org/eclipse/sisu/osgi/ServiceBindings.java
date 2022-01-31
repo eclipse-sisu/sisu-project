@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 import org.eclipse.sisu.inject.BindingPublisher;
 import org.eclipse.sisu.inject.BindingSubscriber;
 import org.eclipse.sisu.inject.Logs;
+import org.eclipse.sisu.space.Tokens;
 import org.osgi.framework.BundleContext;
 
 import com.google.inject.Binding;
@@ -175,7 +176,7 @@ public final class ServiceBindings
     private static Pattern[] parseGlobs( final String globs )
     {
         final List<Pattern> patterns = new ArrayList<Pattern>();
-        for ( final String glob : globs.split( "\\s*,\\s*" ) )
+        for ( final String glob : Tokens.splitByComma( globs ) )
         {
             if ( GLOB_SYNTAX.matcher( glob ).matches() )
             {

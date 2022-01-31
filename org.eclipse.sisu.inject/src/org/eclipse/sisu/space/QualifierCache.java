@@ -102,7 +102,7 @@ final class QualifierCache
             if ( qualifiers != null && qualifiers.length() > 0 )
             {
                 final StringBuilder buf = new StringBuilder( "L" );
-                for ( final String q : qualifiers.trim().split( "\\s*,\\s*" ) )
+                for ( final String q : Tokens.splitByComma( qualifiers ) )
                 {
                     buf.append( q.replace( '.', '/' ) ).append( ';' );
                     results.put( buf.toString(), Boolean.TRUE );
