@@ -19,8 +19,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.eclipse.sisu.inject.Logs;
 
@@ -30,12 +28,6 @@ import org.eclipse.sisu.inject.Logs;
 public final class IndexedClassFinder
     implements ClassFinder
 {
-    // ----------------------------------------------------------------------
-    // Constants
-    // ----------------------------------------------------------------------
-
-    private static final Pattern LINE_PATTERN = Pattern.compile( "\\s*([^#\\s]+).*" );
-
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -93,10 +85,15 @@ public final class IndexedClassFinder
                     // each index contains a list of class names, one per line with optional comment
                     for ( String line = reader.readLine(); line != null; line = reader.readLine() )
                     {
-                        final Matcher m = LINE_PATTERN.matcher( line );
-                        if ( m.matches() )
+                        final int i = line.indexOf( '#' );
+                        if ( i == 0 )
                         {
-                            names.add( m.group( 1 ) );
+                            continue; // entire line is a comment, ignore it
+                        }
+                        final String name = ( i < 0 ? line : line.substring( 0, i ) ).trim();
+                        if ( !name.isEmpty() )
+                        {
+                            names.add( name );
                         }
                     }
                 }

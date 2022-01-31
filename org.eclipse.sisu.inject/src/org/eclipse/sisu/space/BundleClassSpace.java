@@ -164,7 +164,7 @@ public final class BundleClassSpace
 
                 visited.add( "." );
 
-                for ( final String entry : path.trim().split( "\\s*,\\s*" ) )
+                for ( final String entry : Tokens.splitByComma( path ) )
                 {
                     if ( visited.add( entry ) )
                     {

@@ -139,7 +139,10 @@ public final class SisuIndexAPT6
         if ( qualifiers != null && qualifiers.length() > 0 )
         {
             final Set<String> annotationTypes = new HashSet<String>();
-            Collections.addAll( annotationTypes, qualifiers.trim().split( "\\s*,\\s*" ) );
+            for ( String type : Tokens.splitByComma( qualifiers ) )
+            {
+                annotationTypes.add( type );
+            }
             return annotationTypes;
         }
         return Collections.singleton( NAMED );
