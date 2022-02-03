@@ -67,10 +67,24 @@ public final class Main
         return boot( System.getProperties(), args ).getInstance( type );
     }
 
+    public static <T> T boot( final Class<T> type, final String[] args, final Module... bindings )
+    {
+        return boot( System.getProperties(), args, bindings ).getInstance( type );
+    }
+
     public static Injector boot( final Map<?, ?> properties, final String... args )
     {
+        return boot( properties, args, new Module[0] );
+    }
+
+    public static Injector boot( final Map<?, ?> properties, final String[] args, final Module... bindings )
+    {
+        final Module[] modules = new Module[bindings.length + 1];
+        System.arraycopy( bindings, 0, modules, 1, bindings.length );
+        modules[0] = new Main( properties, args );
+
         final BeanScanning scanning = BeanScanning.select( properties );
-        final Module app = wire( scanning, new Main( properties, args ) );
+        final Module app = wire( scanning, modules );
         final Injector injector = Guice.createInjector( app );
 
         return injector;
