@@ -11,9 +11,14 @@
 package org.eclipse.sisu.mojos;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -154,6 +159,18 @@ public class IndexMojo
         {
             new SisuIndex( outputDirectory )
             {
+                @Override
+                protected Writer getWriter( String path ) throws IOException
+                {
+                    Path p = outputDirectory.toPath().resolve( path );
+                    Path d = p.getParent();
+                    if ( !Files.isDirectory( d ) )
+                    {
+                        Files.createDirectories( d );
+                    }
+                    return new CachingWriter( p, StandardCharsets.UTF_8 );
+                }
+
                 @Override
                 protected void info( final String message )
                 {
