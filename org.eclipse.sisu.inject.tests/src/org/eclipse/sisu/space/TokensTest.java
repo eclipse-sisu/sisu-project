@@ -24,45 +24,58 @@ public class TokensTest
 {
     public void testTokenSplittingByComma()
     {
-        assertNoTokens( "" );
-        assertNoTokens( " " );
-        assertNoTokens( "," );
-        assertNoTokens( "  " );
-        assertNoTokens( " ," );
-        assertNoTokens( ", " );
-        assertNoTokens( ",," );
-        assertNoTokens( "   " );
-        assertNoTokens( "  ," );
-        assertNoTokens( " , " );
-        assertNoTokens( " ,," );
-        assertNoTokens( ",  " );
-        assertNoTokens( ", ," );
-        assertNoTokens( ",, " );
-        assertNoTokens( ",,," );
+        assertNoTokens( Tokens.splitByComma( "" ) );
+        assertNoTokens( Tokens.splitByComma( " " ) );
+        assertNoTokens( Tokens.splitByComma( "," ) );
+        assertNoTokens( Tokens.splitByComma( "  " ) );
+        assertNoTokens( Tokens.splitByComma( " ," ) );
+        assertNoTokens( Tokens.splitByComma( ", " ) );
+        assertNoTokens( Tokens.splitByComma( ",," ) );
+        assertNoTokens( Tokens.splitByComma( "   " ) );
+        assertNoTokens( Tokens.splitByComma( "  ," ) );
+        assertNoTokens( Tokens.splitByComma( " , " ) );
+        assertNoTokens( Tokens.splitByComma( " ,," ) );
+        assertNoTokens( Tokens.splitByComma( ",  " ) );
+        assertNoTokens( Tokens.splitByComma( ", ," ) );
+        assertNoTokens( Tokens.splitByComma( ",, " ) );
+        assertNoTokens( Tokens.splitByComma( ",,," ) );
 
-        Iterator<String> itr;
+        assertTokens( Tokens.splitByComma( "foo" ), "foo" );
+        assertTokens( Tokens.splitByComma( " foo " ), "foo" );
+        assertTokens( Tokens.splitByComma( ",foo," ), "foo" );
+        assertTokens( Tokens.splitByComma( " ,  ,,   ,,,  foo ,  ,,   ,,," ), "foo" );
+        assertTokens( Tokens.splitByComma( " ,  foo ,,   ,,,  bar,  ,,baz   ,,,foo," ), "foo", "bar", "baz", "foo" );
+    }
 
-        itr = Tokens.splitByComma( "foo" ).iterator();
-        assertEquals( "foo", itr.next() );
-        assertFalse( itr.hasNext() );
+    public void testTokenSplittingByStar()
+    {
+        assertNoTokens( Tokens.splitByStar( "" ) );
+        assertTokens( Tokens.splitByStar( " " ), " " );
+        assertNoTokens( Tokens.splitByStar( "*" ) );
+        assertTokens( Tokens.splitByStar( "  " ), "  " );
+        assertTokens( Tokens.splitByStar( " *" ), " " );
+        assertTokens( Tokens.splitByStar( "* " ), " " );
+        assertNoTokens( Tokens.splitByStar( "**" ) );
+        assertTokens( Tokens.splitByStar( "   " ), "   " );
+        assertTokens( Tokens.splitByStar( "  *" ), "  " );
+        assertTokens( Tokens.splitByStar( " * " ), " ", " " );
+        assertTokens( Tokens.splitByStar( " **" ), " " );
+        assertTokens( Tokens.splitByStar( "*  " ), "  " );
+        assertTokens( Tokens.splitByStar( "* *" ), " " );
+        assertTokens( Tokens.splitByStar( "** " ), " " );
+        assertNoTokens( Tokens.splitByStar( "***" ) );
 
-        itr = Tokens.splitByComma( " foo " ).iterator();
-        assertEquals( "foo", itr.next() );
-        assertFalse( itr.hasNext() );
+        assertTokens( Tokens.splitByStar( "foo" ), "foo" );
+        assertTokens( Tokens.splitByStar( " foo " ), " foo " );
+        assertTokens( Tokens.splitByStar( "*foo*" ), "foo" );
+        assertTokens( Tokens.splitByStar( " *  **   ***  foo *  **   ***" ), " ", "  ", "   ", "  foo ", "  ", "   " );
+        assertTokens( Tokens.splitByStar( " *  foo **   ***  bar*  **baz   ***foo*" ), " ", "  foo ", "   ", "  bar",
+                      "  ", "baz   ", "foo" );
+    }
 
-        itr = Tokens.splitByComma( ",foo," ).iterator();
-        assertEquals( "foo", itr.next() );
-        assertFalse( itr.hasNext() );
-
-        itr = Tokens.splitByComma( " ,  ,,   ,,,  foo ,  ,,   ,,," ).iterator();
-        assertEquals( "foo", itr.next() );
-        assertFalse( itr.hasNext() );
-
-        itr = Tokens.splitByComma( " ,  foo ,,   ,,,  bar,  ,,baz   ,,,foo," ).iterator();
-        assertEquals( "foo", itr.next() );
-        assertEquals( "bar", itr.next() );
-        assertEquals( "baz", itr.next() );
-        assertEquals( "foo", itr.next() );
+    private void assertNoTokens( final Iterable<String> tokens )
+    {
+        Iterator<String> itr = tokens.iterator();
         assertFalse( itr.hasNext() );
         try
         {
@@ -75,9 +88,14 @@ public class TokensTest
         }
     }
 
-    private void assertNoTokens( final String text )
+    private void assertTokens( final Iterable<String> tokens, final String... expected )
     {
-        Iterator<String> itr = Tokens.splitByComma( text ).iterator();
+        Iterator<String> itr = tokens.iterator();
+        assertTrue( itr.hasNext() );
+        for ( int i = 0; i < expected.length; i++ )
+        {
+            assertEquals( expected[i], itr.next() );
+        }
         assertFalse( itr.hasNext() );
         try
         {

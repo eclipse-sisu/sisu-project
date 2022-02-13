@@ -46,7 +46,25 @@ public final class Tokens
             @Override
             public Iterator<String> iterator()
             {
-                return new CommaSeparatedTokenIterator( text );
+                return new TokenIterator( text, ',', true );
+            }
+        };
+    }
+
+    /**
+     * Lazily splits the given string into non-trimmed tokens, using star as the token separator.
+     *
+     * @param text The text to split into tokens
+     * @return Sequence of star-separated tokens
+     */
+    public static Iterable<String> splitByStar( final String text )
+    {
+        return new Iterable<String>()
+        {
+            @Override
+            public Iterator<String> iterator()
+            {
+                return new TokenIterator( text, '*', false );
             }
         };
     }
@@ -56,9 +74,9 @@ public final class Tokens
     // ----------------------------------------------------------------------
 
     /**
-     * {@link Iterator} that lazily splits a string into whitespace-trimmed tokens around commas.
+     * {@link Iterator} that lazily splits a string into tokens.
      */
-    static final class CommaSeparatedTokenIterator
+    static final class TokenIterator
         implements Iterator<String>
     {
         // ----------------------------------------------------------------------
@@ -67,15 +85,21 @@ public final class Tokens
 
         private final String text;
 
+        private final char separator;
+
+        private final boolean trimming;
+
         private int tokenIndex;
 
         // ----------------------------------------------------------------------
         // Constructors
         // ----------------------------------------------------------------------
 
-        CommaSeparatedTokenIterator( final String text )
+        TokenIterator( final String text, final char separator, final boolean trimming )
         {
             this.text = text;
+            this.separator = separator;
+            this.trimming = trimming;
             this.tokenIndex = nextToken( 0 );
         }
 
@@ -95,7 +119,8 @@ public final class Tokens
             if ( hasNext() )
             {
                 final int separatorIndex = nextSeparator( tokenIndex + 1 );
-                final String token = text.substring( tokenIndex, trimBack( separatorIndex - 1 ) + 1 );
+                final int tokenEnd = trimming ? trimBack( separatorIndex - 1 ) + 1 : separatorIndex;
+                final String token = text.substring( tokenIndex, tokenEnd );
                 tokenIndex = nextToken( separatorIndex + 1 );
                 return token;
             }
@@ -113,7 +138,7 @@ public final class Tokens
         // ----------------------------------------------------------------------
 
         /**
-         * Finds the start of the next token, i.e. not the separator or whitespace.
+         * Finds the start of the next token, i.e. not the separator or whitespace when trimming.
          */
         private int nextToken( final int from )
         {
@@ -121,7 +146,7 @@ public final class Tokens
             for ( int i = from; i < max; i++ )
             {
                 final char c = text.charAt( i );
-                if ( !isWhitespace( c ) && ',' != c )
+                if ( c != separator && false == ( trimming && isWhitespace( c ) ) )
                 {
                     return i;
                 }
@@ -134,15 +159,8 @@ public final class Tokens
          */
         private int nextSeparator( final int from )
         {
-            final int max = text.length();
-            for ( int i = from; i < max; i++ )
-            {
-                if ( ',' == text.charAt( i ) )
-                {
-                    return i;
-                }
-            }
-            return max; // return end-of-string if no more separators
+            final int i = text.indexOf( separator, from );
+            return i >= 0 ? i : text.length();
         }
 
         /**
