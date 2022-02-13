@@ -46,7 +46,7 @@ final class ResourceEnumeration
 
     private final GlobberStrategy globber;
 
-    private final Object globPattern;
+    private final String globPattern;
 
     private final boolean recurse;
 
