@@ -25,13 +25,10 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.junit.Ignore;
-
 import junit.framework.TestCase;
 import org.junit.experimental.categories.Category;
 
 @Category( org.eclipse.sisu.BaseTests.class )
-@Ignore( "Need to replace some test archives" )
 public class FileEntryIteratorTest
     extends TestCase
 {

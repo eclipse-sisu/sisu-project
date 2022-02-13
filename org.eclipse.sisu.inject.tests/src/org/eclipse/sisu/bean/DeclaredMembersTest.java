@@ -14,8 +14,6 @@ import java.lang.reflect.Member;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.junit.Ignore;
-
 import junit.framework.TestCase;
 import org.junit.experimental.categories.Category;
 
@@ -144,8 +142,7 @@ public class DeclaredMembersTest
         assertEquals( 6, i );
     }
 
-    @Ignore( "Need to replace some test archives" )
-    public void /* test */ ignoreResumableIteration()
+    public void testResumableIteration()
         throws ClassNotFoundException
     {
         final Iterator<Member> itr = new DeclaredMembers( Class.forName( "Incomplete" ) ).iterator();

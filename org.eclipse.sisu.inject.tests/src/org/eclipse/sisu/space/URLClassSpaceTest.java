@@ -22,13 +22,11 @@ import java.util.jar.Manifest;
 
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.space.oops.Handler;
-import org.junit.Ignore;
 
 import junit.framework.TestCase;
 import org.junit.experimental.categories.Category;
 
 @Category( org.eclipse.sisu.BaseTests.class )
-@Ignore( "Need to replace some test archives" )
 public class URLClassSpaceTest
     extends TestCase
 {

@@ -14,15 +14,12 @@ import java.net.URL;
 
 import javax.inject.Named;
 
-import org.junit.Ignore;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.PrivateModule;
 
 import junit.framework.TestCase;
 
-@Ignore( "Fails on grid" )
 public class CachingModuleTest
     extends TestCase
 {

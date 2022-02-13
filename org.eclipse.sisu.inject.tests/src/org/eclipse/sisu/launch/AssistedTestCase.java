@@ -16,14 +16,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.eclipse.sisu.inject.BeanLocator;
-import org.junit.Ignore;
 
 import com.google.inject.Binder;
 import com.google.inject.Key;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
-@Ignore( "Need to fix test properties" )
 public final class AssistedTestCase
     extends InjectedTestCase
 {

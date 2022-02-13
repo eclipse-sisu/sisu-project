@@ -15,13 +15,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 
-import org.junit.Ignore;
-
 import junit.framework.TestCase;
 import org.junit.experimental.categories.Category;
 
 @Category( org.eclipse.sisu.BaseTests.class )
-@Ignore( "Need to replace some test archives" )
 public class ZipEntryIteratorTest
     extends TestCase
 {
