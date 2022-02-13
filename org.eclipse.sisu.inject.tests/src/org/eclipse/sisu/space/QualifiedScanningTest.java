@@ -33,7 +33,6 @@ import javax.inject.Singleton;
 
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.space.oops.Handler;
-import org.junit.Ignore;
 
 import junit.framework.TestCase;
 import org.junit.experimental.categories.Category;
@@ -165,8 +164,7 @@ public class QualifiedScanningTest
         assertTrue( listener.clazzes.contains( D.class ) );
     }
 
-    @Ignore( "Need to replace some test archives" )
-    public void /* test */ ignoreIndexedScanning()
+    public void testIndexedScanning()
     {
         final TestListener listener = new TestListener();
         final ClassSpace space =
