@@ -14,14 +14,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.net.URLStreamHandler;
-import java.net.URLStreamHandlerFactory;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.jar.Manifest;
 
 import org.eclipse.sisu.inject.DeferredClass;
-import org.eclipse.sisu.space.oops.Handler;
 
 import junit.framework.TestCase;
 import org.junit.experimental.categories.Category;
@@ -41,6 +38,33 @@ public class URLClassSpaceTest
     private static final URL BROKEN_JAR = URLClassSpaceTest.class.getResource( "broken.jar" );
 
     private static final URL NESTED_WAR = URLClassSpaceTest.class.getResource( "nested.war" );
+
+    private String handlerPkgs;
+
+    protected void setUp()
+    {
+        handlerPkgs = System.getProperty( "java.protocol.handler.pkgs" );
+        if ( null != handlerPkgs )
+        {
+            System.setProperty( "java.protocol.handler.pkgs", handlerPkgs + "|" + getClass().getPackage().getName() );
+        }
+        else
+        {
+            System.setProperty( "java.protocol.handler.pkgs", getClass().getPackage().getName() );
+        }
+    }
+
+    protected void tearDown()
+    {
+        if ( null != handlerPkgs )
+        {
+            System.setProperty( "java.protocol.handler.pkgs", handlerPkgs );
+        }
+        else
+        {
+            System.clearProperty( "java.protocol.handler.pkgs" );
+        }
+    }
 
     public void testHashCodeAndEquals()
     {
@@ -119,19 +143,6 @@ public class URLClassSpaceTest
     public void testClassPathExpansion()
         throws IOException
     {
-        // System.setProperty( "java.protocol.handler.pkgs", getClass().getPackage().getName() );
-        URL.setURLStreamHandlerFactory( new URLStreamHandlerFactory()
-        {
-            public URLStreamHandler createURLStreamHandler( final String protocol )
-            {
-                if ( "oops".equals( protocol ) )
-                {
-                    return new Handler();
-                }
-                return null;
-            }
-        } );
-
         final URLClassSpace space = new URLClassSpace( URLClassLoader.newInstance( new URL[] { SIMPLE_JAR,
             CLASS_PATH_JAR, null, new URL( "oops:bad/" ), CLASS_PATH_JAR, CORRUPT_MANIFEST } ) );
 

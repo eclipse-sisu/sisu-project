@@ -16,8 +16,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.net.URLStreamHandler;
-import java.net.URLStreamHandlerFactory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -32,7 +30,6 @@ import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
 import org.eclipse.sisu.inject.DeferredClass;
-import org.eclipse.sisu.space.oops.Handler;
 
 import junit.framework.TestCase;
 import org.junit.experimental.categories.Category;
@@ -95,6 +92,33 @@ public class QualifiedScanningTest
         {
             clazzes.add( clazz );
             sources.add( source );
+        }
+    }
+
+    private String handlerPkgs;
+
+    protected void setUp()
+    {
+        handlerPkgs = System.getProperty( "java.protocol.handler.pkgs" );
+        if ( null != handlerPkgs )
+        {
+            System.setProperty( "java.protocol.handler.pkgs", handlerPkgs + "|" + getClass().getPackage().getName() );
+        }
+        else
+        {
+            System.setProperty( "java.protocol.handler.pkgs", getClass().getPackage().getName() );
+        }
+    }
+
+    protected void tearDown()
+    {
+        if ( null != handlerPkgs )
+        {
+            System.setProperty( "java.protocol.handler.pkgs", handlerPkgs );
+        }
+        else
+        {
+            System.clearProperty( "java.protocol.handler.pkgs" );
         }
     }
 
@@ -183,19 +207,6 @@ public class QualifiedScanningTest
     public void testBrokenScanning()
         throws IOException
     {
-        // System.setProperty( "java.protocol.handler.pkgs", getClass().getPackage().getName() );
-        URL.setURLStreamHandlerFactory( new URLStreamHandlerFactory()
-        {
-            public URLStreamHandler createURLStreamHandler( final String protocol )
-            {
-                if ( "oops".equals( protocol ) )
-                {
-                    return new Handler();
-                }
-                return null;
-            }
-        } );
-
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );
 
