@@ -104,7 +104,7 @@ public class URLClassSpaceTest
         } ) );
 
         assertEquals( systemLoader.hashCode(), space.hashCode() );
-        assertEquals( systemLoader.toString(), space.toString() );
+        assertEquals( systemLoader + "(null)", space.toString() );
     }
 
     public void testClassSpaceResources()
