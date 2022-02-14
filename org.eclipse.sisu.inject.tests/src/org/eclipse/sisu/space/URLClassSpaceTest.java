@@ -144,7 +144,7 @@ public class URLClassSpaceTest
         throws IOException
     {
         final URLClassSpace space = new URLClassSpace( URLClassLoader.newInstance( new URL[] { SIMPLE_JAR,
-            CLASS_PATH_JAR, null, new URL( "oops:bad/" ), CLASS_PATH_JAR, CORRUPT_MANIFEST } ) );
+            CLASS_PATH_JAR, new URL( "oops:bad/" ), CLASS_PATH_JAR, CORRUPT_MANIFEST } ) );
 
         final Enumeration<URL> e = space.findEntries( "META-INF", "*.MF", false );
 
