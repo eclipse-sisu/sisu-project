@@ -364,6 +364,9 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <configuration>
           <propertyName>jacoco.argLine</propertyName>
+          <excludes>
+            <exclude>Incomplete*</exclude>
+          </excludes>
         </configuration>
         <executions>
           <execution>
