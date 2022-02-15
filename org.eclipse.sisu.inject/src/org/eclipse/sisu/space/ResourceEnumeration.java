@@ -235,7 +235,7 @@ final class ResourceEnumeration
         {
             return false; // inside a sub-directory
         }
-        return globber.matches( globPattern, entryName );
+        return globber.basenameMatches( globPattern, entryName );
     }
 
     // ----------------------------------------------------------------------
