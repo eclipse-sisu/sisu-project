@@ -11,9 +11,9 @@
 package org.eclipse.sisu.space;
 
 /**
- * Enumerates various optimized filename globbing strategies.
+ * Enumerates various optimized globbing strategies.
  */
-enum GlobberStrategy
+public enum GlobberStrategy
 {
     // ----------------------------------------------------------------------
     // Enumerated values
@@ -22,13 +22,13 @@ enum GlobberStrategy
     ANYTHING
     {
         @Override
-        final String compile( final String glob )
+        public final String compile( final String glob )
         {
             return null;
         }
 
         @Override
-        final boolean matches( final String globPattern, final String filename )
+        public final boolean matches( final String globPattern, final String name )
         {
             return true;
         }
@@ -36,64 +36,51 @@ enum GlobberStrategy
     SUFFIX
     {
         @Override
-        final String compile( final String glob )
+        public final String compile( final String glob )
         {
             return glob.substring( 1 ); // remove leading star
         }
 
         @Override
-        final boolean matches( final String globPattern, final String filename )
+        public final boolean matches( final String globPattern, final String name )
         {
-            return filename.endsWith( globPattern ); // no need for basename(...)
+            return name.endsWith( globPattern );
         }
     },
     PREFIX
     {
         @Override
-        final String compile( final String glob )
+        public final String compile( final String glob )
         {
             return glob.substring( 0, glob.length() - 1 ); // remove trailing star
         }
 
         @Override
-        final boolean matches( final String globPattern, final String filename )
+        public final boolean matches( final String globPattern, final String name )
         {
-            return basename( filename ).startsWith( globPattern );
+            return name.startsWith( globPattern );
         }
     },
     EXACT
     {
         @Override
-        final String compile( final String glob )
+        public final boolean matches( final String globPattern, final String name )
         {
-            return glob;
-        }
-
-        @Override
-        final boolean matches( final String globPattern, final String filename )
-        {
-            return globPattern.equals( basename( filename ) );
+            return globPattern.equals( name );
         }
     },
     PATTERN
     {
         @Override
-        final String compile( final String glob )
+        public final boolean matches( final String globPattern, final String name )
         {
-            return glob;
-        }
-
-        @Override
-        final boolean matches( final String globPattern, final String filename )
-        {
-            final String basename = basename( filename );
             int checkIndex = 0;
             for ( final String token : Tokens.splitByStar( globPattern ) )
             {
                 if ( checkIndex == 0 && globPattern.charAt( 0 ) != '*' )
                 {
                     // initial match is stricter when pattern doesn't have a leading star
-                    if ( !basename.startsWith( token ) )
+                    if ( !name.startsWith( token ) )
                     {
                         return false;
                     }
@@ -102,7 +89,7 @@ enum GlobberStrategy
                 else
                 {
                     // subsequent tokens must appear somewhere after the previous match
-                    final int matchIndex = basename.indexOf( token, checkIndex );
+                    final int matchIndex = name.indexOf( token, checkIndex );
                     if ( matchIndex < 0 )
                     {
                         return false;
@@ -110,8 +97,8 @@ enum GlobberStrategy
                     checkIndex = matchIndex + token.length();
                 }
             }
-            // pattern matches if we've checked the entire basename or there was a trailing star
-            return checkIndex == basename.length() || globPattern.charAt( globPattern.length() - 1 ) == '*';
+            // pattern matches if we've checked the entire name or there was a trailing star
+            return checkIndex == name.length() || globPattern.charAt( globPattern.length() - 1 ) == '*';
         }
     };
 
@@ -125,7 +112,7 @@ enum GlobberStrategy
      * @param glob The plain-text glob
      * @return Optimal globber strategy
      */
-    static final GlobberStrategy selectFor( final String glob )
+    public static final GlobberStrategy selectFor( final String glob )
     {
         if ( null == glob || "*".equals( glob ) )
         {
@@ -157,29 +144,36 @@ enum GlobberStrategy
      * @param glob The plain-text glob
      * @return Compiled glob pattern
      */
-    abstract String compile( final String glob );
+    public String compile( final String glob )
+    {
+        return glob;
+    }
 
     /**
-     * Attempts to match the given compiled glob pattern against a filename.
+     * Attempts to match the given compiled glob pattern against a name.
      * 
      * @param globPattern The compiled glob pattern
-     * @param filename The candidate filename
+     * @param name The candidate name
      * @return {@code true} if the pattern matches; otherwise {@code false}
      */
-    abstract boolean matches( final String globPattern, final String filename );
-
-    // ----------------------------------------------------------------------
-    // Implementation methods
-    // ----------------------------------------------------------------------
+    public abstract boolean matches( final String globPattern, final String name );
 
     /**
-     * Extracts the basename segment from the given filename.
-     * 
-     * @param filename The filename
-     * @return Basename segment
+     * Attempts to match the given compiled glob pattern against the basename of a path.
+     *
+     * @param globPattern The compiled glob pattern
+     * @param path The candidate path
+     * @return {@code true} if the pattern matches; otherwise {@code false}
      */
-    static final String basename( final String filename )
+    public final boolean basenameMatches( final String globPattern, final String path )
     {
-        return filename.substring( 1 + filename.lastIndexOf( '/' ) );
+        if ( this == ANYTHING || this == SUFFIX )
+        {
+            return matches( globPattern, path ); // no need to extract basename
+        }
+        else
+        {
+            return matches( globPattern, path.substring( 1 + path.lastIndexOf( '/' ) ) );
+        }
     }
 }
