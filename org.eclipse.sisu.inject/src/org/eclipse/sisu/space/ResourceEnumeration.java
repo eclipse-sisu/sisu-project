@@ -280,7 +280,7 @@ final class ResourceEnumeration
             final ZipInputStream is = new ZipInputStream( Streams.open( containingURL ) ); // NOSONAR
             final String entryName = url.getRef();
 
-            for ( ZipEntry entry = is.getNextEntry(); entry != null; entry = is.getNextEntry() )
+            for ( ZipEntry entry = is.getNextEntry(); entry != null; entry = is.getNextEntry() ) // NOSONAR
             {
                 if ( entryName.equals( entry.getName() ) )
                 {
