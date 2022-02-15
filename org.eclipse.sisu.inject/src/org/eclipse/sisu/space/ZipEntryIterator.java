@@ -92,7 +92,7 @@ final class ZipEntryIterator
         try
         {
             final String names[] = new String[zipFile.size()];
-            final Enumeration<? extends ZipEntry> e = zipFile.entries();
+            final Enumeration<? extends ZipEntry> e = zipFile.entries(); // NOSONAR
             for ( int i = 0; i < names.length; i++ )
             {
                 names[i] = e.nextElement().getName();
@@ -117,7 +117,7 @@ final class ZipEntryIterator
         try
         {
             final List<String> names = new ArrayList<String>( 64 );
-            for ( ZipEntry e = zipStream.getNextEntry(); e != null; e = zipStream.getNextEntry() )
+            for ( ZipEntry e = zipStream.getNextEntry(); e != null; e = zipStream.getNextEntry() ) // NOSONAR
             {
                 names.add( e.getName() );
             }
