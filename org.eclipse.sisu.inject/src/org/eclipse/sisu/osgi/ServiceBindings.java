@@ -14,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.regex.Pattern;
 
 import org.eclipse.sisu.inject.BindingPublisher;
 import org.eclipse.sisu.inject.BindingSubscriber;
 import org.eclipse.sisu.inject.Logs;
+import org.eclipse.sisu.space.GlobberStrategy;
 import org.eclipse.sisu.space.Tokens;
 import org.osgi.framework.BundleContext;
 
@@ -31,12 +31,6 @@ public final class ServiceBindings
     implements BindingPublisher
 {
     // ----------------------------------------------------------------------
-    // Constants
-    // ----------------------------------------------------------------------
-
-    private static final Pattern GLOB_SYNTAX = Pattern.compile( "(?:\\w+|\\*)(?:\\.?(?:\\w+|\\*))*" );
-
-    // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
@@ -45,9 +39,9 @@ public final class ServiceBindings
 
     private final BundleContext context;
 
-    private final Pattern[] allowed;
+    private final String[] allowed;
 
-    private final Pattern[] ignored;
+    private final String[] ignored;
 
     private final int maxRank;
 
@@ -156,13 +150,13 @@ public final class ServiceBindings
 
     private boolean shouldTrack( final String clazzName )
     {
-        for ( final Pattern allow : allowed )
+        for ( final String allow : allowed )
         {
-            if ( allow.matcher( clazzName ).matches() )
+            if ( GlobberStrategy.PATTERN.matches( allow, clazzName ) )
             {
-                for ( final Pattern ignore : ignored )
+                for ( final String ignore : ignored )
                 {
-                    if ( ignore.matcher( clazzName ).matches() )
+                    if ( GlobberStrategy.PATTERN.matches( ignore, clazzName ) )
                     {
                         return false;
                     }
@@ -173,20 +167,13 @@ public final class ServiceBindings
         return false;
     }
 
-    private static Pattern[] parseGlobs( final String globs )
+    private static String[] parseGlobs( final String globs )
     {
-        final List<Pattern> patterns = new ArrayList<Pattern>();
+        final List<String> patterns = new ArrayList<String>();
         for ( final String glob : Tokens.splitByComma( globs ) )
         {
-            if ( GLOB_SYNTAX.matcher( glob ).matches() )
-            {
-                patterns.add( Pattern.compile( glob.replace( ".", "\\." ).replace( "*", ".*" ) ) );
-            }
-            else if ( glob.length() > 0 )
-            {
-                Logs.warn( "Ignoring malformed glob pattern: {}", glob, null );
-            }
+            patterns.add( GlobberStrategy.PATTERN.compile( glob ) );
         }
-        return patterns.toArray( new Pattern[patterns.size()] );
+        return patterns.toArray( new String[patterns.size()] );
     }
 }
