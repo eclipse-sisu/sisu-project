@@ -39,7 +39,7 @@ git clone -l --branch staging-${VERSION} . target/checkout
 
 GPG_KEYNAME=${GPG_KEYNAME:-${USER}}
 
-mvn deploy -Psonatype-oss-release -Dgpg.keyname=${GPG_KEYNAME} -f target/checkout/pom.xml \
+./mvnw deploy -Psonatype-oss-release -Dgpg.keyname=${GPG_KEYNAME} -f target/checkout/pom.xml \
   -Ddescription="${PWD##*/}/${VERSION} : ${MESSAGE}"
 
 git tag -u ${GPG_KEYNAME} releases/${VERSION} staging-${VERSION} -m "${MESSAGE}"
@@ -51,7 +51,7 @@ git checkout master ; git merge staging-${VERSION}
 MINOR_MICRO=${VERSION#*.}
 NEW_VERSION=${VERSION%%.*}.$((${MINOR_MICRO%%.*}+1)).0-SNAPSHOT
 
-mvn org.eclipse.tycho:tycho-versions-plugin:2.6.0:set-version -DnewVersion=${NEW_VERSION}
+./mvnw org.eclipse.tycho:tycho-versions-plugin:2.6.0:set-version -DnewVersion=${NEW_VERSION}
 
 git add . ; git commit -m "Prepare for next round of development"
 

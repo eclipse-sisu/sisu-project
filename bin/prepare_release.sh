@@ -34,7 +34,7 @@ fi
 
 git checkout --no-track -b staging-${VERSION} master
 
-mvn org.eclipse.tycho:tycho-versions-plugin:2.6.0:set-version -DnewVersion=${VERSION}
+./mvnw org.eclipse.tycho:tycho-versions-plugin:2.6.0:set-version -DnewVersion=${VERSION}
 
 git add . ; git commit -m "Release ${VERSION}"
 
