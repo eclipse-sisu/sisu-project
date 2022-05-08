@@ -21,7 +21,7 @@
   </parent>
 
   <artifactId>org.eclipse.sisu.plexus</artifactId>
-  <packaging>${sisu.packaging}</packaging>
+  <packaging>eclipse-plugin</packaging>
 
   <dependencies>
     <!--
@@ -140,7 +140,6 @@
   Disable Tycho extensions so artifact can be consumed by Java 8 builds.
   -->
   <properties>
-    <sisu.packaging>jar</sisu.packaging>
     <tycho.extensions>false</tycho.extensions>
   </properties>
   <profiles>
@@ -148,14 +147,13 @@
       <!--
       Enable Tycho extensions when building the project artifact.
       -->
-      <id>sisu.packaging</id>
+      <id>tycho.extensions</id>
       <activation>
         <file>
           <exists>src</exists>
         </file>
       </activation>
       <properties>
-        <sisu.packaging>eclipse-plugin</sisu.packaging>
         <tycho.extensions>true</tycho.extensions>
       </properties>
     </profile>
