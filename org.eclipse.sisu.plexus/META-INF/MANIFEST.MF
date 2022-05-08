@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.eclipse.sisu.plexus;singleton:=true
-Bundle-Version: 0.9.0.M1
+Bundle-Version: 0.9.0.qualifier
 Bundle-Name: Sisu-Plexus (Incubation)
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: Eclipse Sisu
