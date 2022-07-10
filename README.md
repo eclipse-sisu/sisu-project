@@ -32,6 +32,14 @@ Sisu uses [Google-Guice](https://github.com/google/guice) to perform dependency 
 
 [Javadoc](https://eclipse.github.io/sisu.inject/apidocs/)
 
+## Related projects
+
+https://github.com/eclipse/sisu.mojos/
+ * a Maven plugin that generates annotation indexes for Sisu to avoid classpath scanning at runtime
+
+https://github.com/eclipse/sisu.plexus/
+ * an extension that implements [Plexus](https://codehaus-plexus.github.io/#Plexus_History) container API and injection semantics on top of Sisu
+
 ## How to Contribute
 
 We accept contributions via GitHub pull requests. Please see [How To Contribute](CONTRIBUTING.md) to get started.
