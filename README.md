@@ -35,7 +35,7 @@ Sisu uses [Google-Guice](https://github.com/google/guice) to perform dependency 
 ## Related projects
 
 https://github.com/eclipse/sisu.mojos/
- * a Maven plugin that generates annotation indexes for Sisu to avoid classpath scanning at runtime
+ * a [Maven](https://maven.apache.org/) plugin that generates annotation indexes for Sisu to avoid classpath scanning at runtime
 
 https://github.com/eclipse/sisu.plexus/
  * an extension that implements [Plexus](https://codehaus-plexus.github.io/#Plexus_History) container API and injection semantics on top of Sisu
