@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
@@ -36,9 +37,11 @@ import org.apache.maven.shared.artifact.filter.collection.GroupIdFilter;
 import org.apache.maven.shared.artifact.filter.collection.ProjectTransitivityFilter;
 import org.apache.maven.shared.artifact.filter.collection.ScopeFilter;
 import org.apache.maven.shared.artifact.filter.collection.TypeFilter;
+import org.codehaus.plexus.util.Scanner;
 import org.codehaus.plexus.util.StringUtils;
 import org.eclipse.sisu.space.SisuIndex;
 import org.eclipse.sisu.space.URLClassSpace;
+import org.sonatype.plexus.build.incremental.BuildContext;
 
 /**
  * Generates a qualified class index for the current project and its dependencies.
@@ -47,6 +50,8 @@ import org.eclipse.sisu.space.URLClassSpace;
 public class IndexMojo
     extends AbstractMojo
 {
+    static final String INDEX_FOLDER = "META-INF/sisu/"; // copied from AbstractSisuIndex as not public
+
     // ----------------------------------------------------------------------
     // Configurable parameters
     // ----------------------------------------------------------------------
@@ -139,6 +144,23 @@ public class IndexMojo
     @Parameter( property = "project", required = true, readonly = true )
     private MavenProject project;
 
+    /**
+     * For m2e incremental build support
+     */
+    @Component
+    protected BuildContext buildContext;
+
+    public IndexMojo()
+    {
+        super();
+    }
+
+    public IndexMojo( final BuildContext buildContext )
+    {
+        super();
+        this.buildContext = buildContext;
+    }
+
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
@@ -183,6 +205,7 @@ public class IndexMojo
                     getLog().warn( message );
                 }
             }.index( new URLClassSpace( getProjectClassLoader(), getIndexPath() ) );
+            buildContext.refresh( new File( outputDirectory, INDEX_FOLDER ) );
         }
     }
 
@@ -193,11 +216,10 @@ public class IndexMojo
     private ClassLoader getProjectClassLoader()
     {
         final List<URL> classPath = new ArrayList<URL>();
-        appendToClassPath( classPath, outputDirectory );
-        appendToClassPath( classPath, new File( project.getBuild().getOutputDirectory() ) );
+        appendDirectoryToClassPath( classPath, outputDirectory );
         for ( final Object artifact : project.getArtifacts() )
         {
-            appendToClassPath( classPath, ( (Artifact) artifact ).getFile() );
+            appendFileToClassPath( classPath, ( (Artifact) artifact ).getFile() );
         }
         if ( getLog().isDebugEnabled() )
         {
@@ -209,8 +231,8 @@ public class IndexMojo
     private URL[] getIndexPath()
     {
         final List<URL> indexPath = new ArrayList<URL>();
-        appendToClassPath( indexPath, outputDirectory );
-        if ( includeDependencies )
+        appendDirectoryToClassPath( indexPath, outputDirectory );
+        if ( includeDependencies && !buildContext.isIncremental() )
         {
             final FilterArtifacts filter = new FilterArtifacts();
 
@@ -227,7 +249,7 @@ public class IndexMojo
             {
                 for ( final Object artifact : filter.filter( project.getArtifacts() ) )
                 {
-                    appendToClassPath( indexPath, ( (Artifact) artifact ).getFile() );
+                    appendFileToClassPath( indexPath, ( (Artifact) artifact ).getFile() );
                 }
             }
             catch ( final ArtifactFilterException e )
@@ -251,7 +273,36 @@ public class IndexMojo
         }
     }
 
-    private void appendToClassPath( final List<URL> urls, final File file )
+    private void appendDirectoryToClassPath( final List<URL> urls, File directory )
+    {
+        if ( directory.isDirectory() )
+        {
+            Scanner scanner = buildContext.newScanner( directory );
+            scanner.setIncludes( new String[] {"**/*.class"} );
+            scanner.scan();
+            String[] includedFiles = scanner.getIncludedFiles();
+            if ( includedFiles != null && includedFiles.length > 0 )
+            {
+                getLog().debug("Found at least one class file in " + directory );
+                appendFileToClassPath( urls, directory );
+            }
+            else
+            {
+                getLog().debug("No class files found in " + directory );
+            }
+        }
+        else
+        {
+            getLog().debug("Path " + directory + " does not exist or is no directory" );
+        }
+    }
+
+    /**
+     * 
+     * @param urls the list to which to append the URL
+     * @param file must either be a directory or a JAR file
+     */
+    private void appendFileToClassPath( final List<URL> urls, final File file )
     {
         if ( null != file )
         {

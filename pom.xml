@@ -134,6 +134,13 @@
       <artifactId>plexus-utils</artifactId>
       <version>3.3.0</version>
     </dependency>
+    <!-- incremental build support (http://www.eclipse.org/m2e/documentation/m2e-making-maven-plugins-compat.html) -->
+    <dependency>
+      <groupId>org.sonatype.plexus</groupId>
+      <artifactId>plexus-build-api</artifactId>
+      <version>0.0.7</version>
+      <scope>compile</scope>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
