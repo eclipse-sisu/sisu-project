@@ -286,7 +286,6 @@
                   <maxJdkVersion>1.7</maxJdkVersion>
                   <excludes>
                     <exclude>p2.eclipse-plugin:wrapped.org.junit.jupiter.junit-jupiter-api</exclude>
-                    <exclude>org.apache.felix:org.apache.felix.framework</exclude>
                   </excludes>
                 </enforceBytecodeVersion>
                 <requireJavaVersion>
