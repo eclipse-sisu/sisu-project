@@ -41,7 +41,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.2.0</version>
         <executions>
           <execution>
             <id>attach-build-target</id>
@@ -60,10 +59,6 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>animal-sniffer-maven-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
