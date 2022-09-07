@@ -36,6 +36,13 @@
       <groupId>org.eclipse.sisu</groupId>
       <artifactId>org.eclipse.sisu.inject</artifactId>
       <version>${project.version}</version>
+      <exclusions>
+        <exclusion>
+          <!-- Conflicts with Felix used in UTs -->
+          <groupId>org.osgi</groupId>
+          <artifactId>org.eclipse.osgi</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>javax.annotation</groupId>
@@ -60,12 +67,12 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.6.4</version>
+      <version>1.7.36</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.1</version>
+      <version>4.13.2</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -80,7 +87,7 @@
     <dependency>
       <groupId>org.apache.felix</groupId>
       <artifactId>org.apache.felix.framework</artifactId>
-      <version>4.2.1</version>
+      <version>7.0.5</version>
     </dependency>
   </dependencies>
 
@@ -223,7 +230,7 @@
           <testSourceDirectory>${project.build.sourceDirectory}</testSourceDirectory>
           <testClassesDirectory>${project.build.outputDirectory}</testClassesDirectory>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
-          <argLine>-Xmx64m @{jacoco.argLine}</argLine>
+          <argLine>-Xmx64m --add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/java.security=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.util.concurrent=ALL-UNNAMED @{jacoco.argLine}</argLine>
           <classpathDependencyExcludes>
             <classpathDependencyExclude>com.google.guava:guava</classpathDependencyExclude>
             <classpathDependencyExclude>com.google.inject:guice</classpathDependencyExclude>
@@ -268,6 +275,9 @@
                 <additionalClasspathElement>${project.build.directory}/guice3/guice-assistedinject.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice3/guice-servlet.jar</additionalClasspathElement>
               </additionalClasspathElements>
+              <systemPropertyVariables>
+                <guiceVersion>guice3</guiceVersion>
+              </systemPropertyVariables>
             </configuration>
           </execution>
           <execution>
@@ -285,6 +295,9 @@
                 <additionalClasspathElement>${project.build.directory}/guice4/guice-assistedinject.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice4/guice-servlet.jar</additionalClasspathElement>
               </additionalClasspathElements>
+              <systemPropertyVariables>
+                <guiceVersion>guice4</guiceVersion>
+              </systemPropertyVariables>
             </configuration>
           </execution>
           <execution>
@@ -302,6 +315,9 @@
                 <additionalClasspathElement>${project.build.directory}/guice5/guice-assistedinject.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice5/guice-servlet.jar</additionalClasspathElement>
               </additionalClasspathElements>
+              <systemPropertyVariables>
+                <guiceVersion>guice5</guiceVersion>
+              </systemPropertyVariables>
             </configuration>
           </execution>
         </executions>
