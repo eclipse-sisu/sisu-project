@@ -86,7 +86,7 @@
     <maven.compiler.target>1.${maven.compiler.release}</maven.compiler.target>
 
     <tycho.scmUrl>scm:git:https://github.com/eclipse/sisu.inject.git</tycho.scmUrl>
-    <tycho-version>2.6.0</tycho-version>
+    <tycho-version>2.7.5</tycho-version>
   </properties>
 
   <build>
@@ -205,17 +205,30 @@
           <version>3.10.1</version>
         </plugin>
         <plugin>
-          <groupId>org.jacoco</groupId>
-          <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.8.8</version>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>3.3.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>3.0.0-M7</version>
+          <dependencies>
+            <dependency>
+              <groupId>org.apache.maven.surefire</groupId>
+              <artifactId>surefire-junit47</artifactId>
+              <version>3.0.0-M7</version>
+            </dependency>
+          </dependencies>
         </plugin>
         <plugin>
           <artifactId>maven-failsafe-plugin</artifactId>
           <version>3.0.0-M7</version>
+          <dependencies>
+            <dependency>
+              <groupId>org.apache.maven.surefire</groupId>
+              <artifactId>surefire-junit47</artifactId>
+              <version>3.0.0-M7</version>
+            </dependency>
+          </dependencies>
         </plugin>
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
@@ -228,6 +241,11 @@
         <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
           <version>3.0.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>0.8.8</version>
         </plugin>
         <plugin>
           <groupId>org.sonatype.plugins</groupId>
@@ -285,7 +303,9 @@
                 <enforceBytecodeVersion>
                   <maxJdkVersion>1.7</maxJdkVersion>
                   <excludes>
-                    <exclude>p2.eclipse-plugin:wrapped.org.junit.jupiter.junit-jupiter-api</exclude>
+                    <!-- Used in tests only -->
+                    <exclude>p2.eclipse.plugin:wrapped.org.junit.jupiter.junit-jupiter-api</exclude>
+                    <exclude>org.apache.felix:org.apache.felix.framework:jar:7.0.5</exclude>
                   </excludes>
                 </enforceBytecodeVersion>
                 <requireJavaVersion>
