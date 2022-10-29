@@ -119,6 +119,8 @@
                 <maxJdkVersion>1.7</maxJdkVersion>
                 <excludes>
                   <exclude>p2.eclipse-plugin:wrapped.org.junit.jupiter.junit-jupiter-api</exclude>
+                  <exclude>p2.eclipse-plugin:org.objectweb.asm</exclude>
+                  <exclude>org.ow2.asm:asm</exclude>
                 </excludes>
               </enforceBytecodeVersion>
             </rules>

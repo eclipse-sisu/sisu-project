@@ -15,9 +15,9 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 
 import org.eclipse.sisu.inject.DeferredClass;
-import org.eclipse.sisu.space.asm.ClassWriter;
-import org.eclipse.sisu.space.asm.MethodVisitor;
-import org.eclipse.sisu.space.asm.Opcodes;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 /**
  * {@link ClassSpace} that can create multiple (deferred) copies of the same implementation type.

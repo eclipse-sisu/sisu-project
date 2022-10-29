@@ -110,5 +110,11 @@
 			<version>6.7</version>
 			<type>jar</type>
 		</location>
+		<location type="Maven" includeSource="true">
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm</artifactId>
+			<version>9.4</version>
+			<type>jar</type>
+		</location>
 	</locations>
 </target>
