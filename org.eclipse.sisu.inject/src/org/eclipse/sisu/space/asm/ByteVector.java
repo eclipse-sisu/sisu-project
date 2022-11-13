@@ -33,7 +33,7 @@ package org.eclipse.sisu.space.asm;
  *
  * @author Eric Bruneton
  */
-final class ByteVector {
+public class ByteVector {
 
   /** The content of this vector. Only the first {@link #length} bytes contain real data. */
   byte[] data;

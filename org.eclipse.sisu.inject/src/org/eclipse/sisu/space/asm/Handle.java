@@ -34,7 +34,7 @@ package org.eclipse.sisu.space.asm;
  * @author Remi Forax
  * @author Eric Bruneton
  */
-final class Handle {
+public final class Handle {
 
   /**
    * The kind of field or method designated by this Handle. Should be {@link Opcodes#H_GETFIELD},

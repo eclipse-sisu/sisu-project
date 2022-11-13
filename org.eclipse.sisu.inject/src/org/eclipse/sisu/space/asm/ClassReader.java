@@ -41,7 +41,7 @@ import java.io.InputStream;
  * @author Eric Bruneton
  * @author Eugene Kuleshov
  */
-public final class ClassReader {
+public class ClassReader {
 
   /**
    * A flag to skip the Code attributes. If this flag is set the Code attributes are neither parsed

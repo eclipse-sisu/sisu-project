@@ -36,7 +36,7 @@ package org.eclipse.sisu.space.asm;
  *
  * @author Eric Bruneton
  */
-final class TypeReference {
+public class TypeReference {
 
   /**
    * The sort of type references that target a type parameter of a generic class. See {@link

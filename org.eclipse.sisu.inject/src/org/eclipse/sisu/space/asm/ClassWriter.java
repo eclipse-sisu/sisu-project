@@ -36,7 +36,7 @@ package org.eclipse.sisu.space.asm;
  * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html">JVMS 4</a>
  * @author Eric Bruneton
  */
-public final class ClassWriter extends ClassVisitor {
+public class ClassWriter extends ClassVisitor {
 
   /**
    * A flag to automatically compute the maximum stack size and the maximum number of local

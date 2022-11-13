@@ -33,7 +33,7 @@ package org.eclipse.sisu.space.asm;
  *
  * @author Jason Zaugg
  */
-final class ClassTooLargeException extends IndexOutOfBoundsException {
+public final class ClassTooLargeException extends IndexOutOfBoundsException {
   private static final long serialVersionUID = 160715609518896765L;
 
   private final String className;
