@@ -33,7 +33,7 @@ package org.eclipse.sisu.space.asm;
  *
  * @author Eric Bruneton
  */
-final class ByteVector {
+public class ByteVector {
 
   /** The content of this vector. Only the first {@link #length} bytes contain real data. */
   byte[] data;
@@ -63,6 +63,15 @@ final class ByteVector {
   ByteVector(final byte[] data) {
     this.data = data;
     this.length = data.length;
+  }
+
+  /**
+   * Returns the actual number of bytes in this vector.
+   *
+   * @return the actual number of bytes in this vector.
+   */
+  public int size() {
+    return length;
   }
 
   /**
@@ -352,6 +361,9 @@ final class ByteVector {
    * @param size number of additional bytes that this byte vector should be able to receive.
    */
   private void enlarge(final int size) {
+    if (length > data.length) {
+      throw new AssertionError("Internal error");
+    }
     int doubleCapacity = 2 * data.length;
     int minimalCapacity = length + size;
     byte[] newData = new byte[doubleCapacity > minimalCapacity ? doubleCapacity : minimalCapacity];

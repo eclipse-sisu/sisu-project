@@ -33,7 +33,7 @@ package org.eclipse.sisu.space.asm;
  *
  * @author Jason Zaugg
  */
-final class ClassTooLargeException extends IndexOutOfBoundsException {
+public final class ClassTooLargeException extends IndexOutOfBoundsException {
   private static final long serialVersionUID = 160715609518896765L;
 
   private final String className;
@@ -42,7 +42,8 @@ final class ClassTooLargeException extends IndexOutOfBoundsException {
   /**
    * Constructs a new {@link ClassTooLargeException}.
    *
-   * @param className the internal name of the class.
+   * @param className the internal name of the class (see {@link
+   *     org.eclipse.sisu.space.asm.Type#getInternalName()}).
    * @param constantPoolCount the number of constant pool items of the class.
    */
   public ClassTooLargeException(final String className, final int constantPoolCount) {
@@ -52,7 +53,7 @@ final class ClassTooLargeException extends IndexOutOfBoundsException {
   }
 
   /**
-   * Returns the internal name of the class.
+   * Returns the internal name of the class (see {@link org.eclipse.sisu.space.asm.Type#getInternalName()}).
    *
    * @return the internal name of the class.
    */
