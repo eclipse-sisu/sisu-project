@@ -14,3 +14,6 @@ Import-Package: org.slf4j;resolution:=optional,\
  org.junit.jupiter.api;resolution:=optional,\
  org.testng.annotations;resolution:=optional,\
  *
+# embed ASM library
+Conditional-Package:\
+  org.objectweb.asm
