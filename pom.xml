@@ -190,6 +190,36 @@
           </configuration>
         </plugin>
         <plugin>
+            <groupId>biz.aQute.bnd</groupId>
+            <artifactId>bnd-maven-plugin</artifactId>
+            <version>6.4.0</version>
+            <executions>
+                <execution>
+                    <id>bnd-process</id>
+                    <goals>
+                        <goal>bnd-process</goal>
+                    </goals>
+                    <configuration>
+                                <bnd><![CDATA[
+# a lot of bundle header are generated from pom elements by default: https://github.com/bndtools/bnd/tree/master/maven/bnd-maven-plugin#default-bundle-headers
+# export all versioned packages except for conditional ones (https://github.com/bndtools/bnd/issues/3721#issuecomment-579026778)
+-exportcontents: ${removeall;${packages;VERSIONED};${packages;CONDITIONAL}}
+# see https://issues.apache.org/jira/browse/SLING-8980
+-snapshot: SNAPSHOT
+# reproducible builds (https://github.com/bndtools/bnd/issues/3521)
+-noextraheaders: true
+# we cannot let bnd-maven-plugin generate it automatically, as Maven applies some inheritance logic which is incorrect for Sling (https://issues.apache.org/jira/browse/SLING-8537)
+Bundle-DocURL: http://www.eclipse.org/sisu/
+# generate error (instead of warning) when exported package uses private (non-exported) reference
+-fixupmessages:"Export *,  has \\d+,  private references"; \
+    restrict:=warning; \
+    is:=error
+                                ]]></bnd>
+                             </configuration>
+                </execution>
+            </executions>
+        </plugin>
+        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
           <version>3.12.1</version>

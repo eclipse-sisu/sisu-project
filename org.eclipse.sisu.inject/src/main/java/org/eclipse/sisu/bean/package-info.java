@@ -25,4 +25,7 @@
  * <p>
  * Those {@code PropertyBinding}s are then used to automatically configure any injected instances of Foo.
  */
+@Version("1.0.0")
 package org.eclipse.sisu.bean;
+
+import org.osgi.annotation.versioning.Version;

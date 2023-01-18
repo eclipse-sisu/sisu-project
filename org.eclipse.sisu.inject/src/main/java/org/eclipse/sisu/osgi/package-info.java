@@ -8,10 +8,7 @@
  * Contributors:
  *   Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  *******************************************************************************/
-/**
- * Injectable API for Sisu components (a.k.a beans).
- */
 @Version("1.0.0")
-package org.eclipse.sisu;
+package org.eclipse.sisu.osgi;
 
 import org.osgi.annotation.versioning.Version;

@@ -17,14 +17,17 @@ import org.eclipse.sisu.inject.DefaultBeanLocator;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.inject.Weak;
 import org.eclipse.sisu.osgi.ServiceBindings;
+import org.osgi.annotation.bundle.Header;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
 
 /**
  * OSGi extender that uses Sisu and Guice to wire up applications from one or more component bundles.<br>
- * To enable it install {@code org.eclipse.sisu.inject.extender}, or adapt the class for your own extender.
+ * To enable it set the OSGi framework property or system property {@code sisu.extender.enabled} to {@code true}.
  */
+@Header(name = Constants.BUNDLE_ACTIVATOR, value = "${@class}")
 public class SisuExtender
     implements BundleActivator
 {
@@ -32,6 +35,8 @@ public class SisuExtender
     // Implementation fields
     // ----------------------------------------------------------------------
 
+    private static final String PROPERTY_KEY_ENABLED = "sisu.extender.enabled";
+    
     // track locators (per-extender-bundle) so they can be re-used when possible
     private static final Map<Long, MutableBeanLocator> locators =
         Collections.synchronizedMap( Weak.<Long, MutableBeanLocator> values() );
@@ -39,7 +44,7 @@ public class SisuExtender
     /**
      * Tracker of component bundles.
      */
-    protected SisuTracker tracker;
+    protected SisuTracker tracker = null;
 
     // ----------------------------------------------------------------------
     // Public methods
@@ -47,14 +52,18 @@ public class SisuExtender
 
     public void start( final BundleContext context )
     {
-        tracker = createTracker( context );
-        tracker.open();
+        if (Boolean.parseBoolean(context.getProperty(PROPERTY_KEY_ENABLED))) {
+            tracker = createTracker( context );
+            tracker.open();
+        }
     }
 
     public void stop( final BundleContext context )
     {
-        tracker.close();
-        tracker = null;
+        if (tracker != null) {
+            tracker.close();
+            tracker = null;
+        }
     }
 
     // ----------------------------------------------------------------------

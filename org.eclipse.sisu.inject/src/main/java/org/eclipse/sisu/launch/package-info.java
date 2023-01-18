@@ -31,4 +31,7 @@
  * <p>
  * And a helper class that discovers Sisu {@link org.eclipse.sisu.launch.SisuExtensions extensions} registered under {@code META-INF/services}.
  */
+@Version("1.0.0")
 package org.eclipse.sisu.launch;
+
+import org.osgi.annotation.versioning.Version;

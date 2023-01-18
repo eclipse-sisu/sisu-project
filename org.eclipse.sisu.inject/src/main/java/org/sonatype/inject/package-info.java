@@ -11,4 +11,7 @@
 /**
  * Deprecated; new applications should use {@link org.eclipse.sisu}.
  */
+@Version("1.0.0")
 package org.sonatype.inject;
+
+import org.osgi.annotation.versioning.Version;

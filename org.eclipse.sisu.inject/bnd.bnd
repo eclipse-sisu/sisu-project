@@ -1,0 +1,16 @@
+Bundle-Copyright: Copyright (c) 2010-present Sonatype, Inc. and others
+Import-Package: org.slf4j;resolution:=optional,\
+ javax.annotation;resolution:=optional,\
+ javax.annotation.processing;resolution:=optional,\
+ javax.enterprise.inject;resolution:=optional,\
+ javax.lang.model;resolution:=optional,\
+ javax.lang.model.element;resolution:=optional,\
+ javax.lang.model.util;resolution:=optional,\
+ javax.servlet;resolution:=optional,\
+ javax.tools;resolution:=optional,\
+ com.google.inject.servlet;resolution:=optional,\
+ junit.framework;resolution:=optional,\
+ org.junit;resolution:=optional,\
+ org.junit.jupiter.api;resolution:=optional,\
+ org.testng.annotations;resolution:=optional,\
+ *

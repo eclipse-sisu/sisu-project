@@ -26,10 +26,33 @@
   <dependencies>
     <dependency>
       <groupId>org.osgi</groupId>
-      <artifactId>org.eclipse.osgi</artifactId>
-      <version>3.10.100.v20150529-1857</version>
+      <artifactId>org.osgi.framework</artifactId>
+      <!-- part of Core R6 -->
+      <version>1.8.0</version>
       <scope>provided</scope>
-      <optional>true</optional>
+    </dependency>
+    <!-- OSGi annotations (OSGi R6) -->
+    <!-- https://docs.osgi.org/javadoc/r6/annotation/ -->
+    <dependency>
+        <groupId>org.osgi</groupId>
+        <artifactId>org.osgi.annotation.versioning</artifactId>
+        <version>1.0.0</version>
+        <scope>provided</scope>
+    </dependency>
+    <!-- Only introduced with R7, but no runtime dependency
+    https://osgi.org/javadoc/osgi.annotation/7.0.0/org/osgi/annotation/bundle/package-frame.html -->
+    <dependency>
+        <groupId>org.osgi</groupId>
+        <artifactId>org.osgi.annotation.bundle</artifactId>
+        <version>1.0.0</version>
+        <scope>provided</scope>
+    </dependency>
+    <!-- Tracker 1.5.1, Core R6 (https://docs.osgi.org/javadoc/r6/core/org/osgi/util/tracker/package-summary.html) -->
+    <dependency>
+        <groupId>org.osgi</groupId>
+        <artifactId>org.osgi.util.tracker</artifactId>
+        <version>1.5.1</version>
+        <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -149,13 +172,11 @@
   </dependencies>
 
   <build>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
     <plugins>
+      <plugin>
+        <groupId>biz.aQute.bnd</groupId>
+        <artifactId>bnd-maven-plugin</artifactId>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>

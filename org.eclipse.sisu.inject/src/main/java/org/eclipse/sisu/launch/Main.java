@@ -10,11 +10,16 @@
  *******************************************************************************/
 package org.eclipse.sisu.launch;
 
+import javax.inject.Inject;
+
 import java.util.Collections;
 import java.util.Map;
 
-import javax.inject.Inject;
-
+import com.google.inject.Binder;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Module;
+import com.google.inject.Provides;
 import org.eclipse.sisu.Parameters;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.space.BeanScanning;
@@ -22,16 +27,12 @@ import org.eclipse.sisu.space.SpaceModule;
 import org.eclipse.sisu.space.URLClassSpace;
 import org.eclipse.sisu.wire.ParameterKeys;
 import org.eclipse.sisu.wire.WireModule;
-
-import com.google.inject.Binder;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Module;
-import com.google.inject.Provides;
+import org.osgi.annotation.bundle.Header;
 
 /**
  * Bootstrap class that creates a static {@link Injector} by scanning the current class-path for beans.
  */
+@Header(name = "Main-Class", value = "${@class}")
 public final class Main
     implements Module
 {

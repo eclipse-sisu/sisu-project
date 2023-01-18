@@ -46,4 +46,7 @@
  * <pre>
  * bind( RankingFunction.class ).to( MyRankingFunction.class );</pre>
  */
+@Version("1.0.0")
 package org.eclipse.sisu.inject;
+
+import org.osgi.annotation.versioning.Version;

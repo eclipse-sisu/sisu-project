@@ -68,4 +68,7 @@
  * 
  * &#064;Inject Map&lt;String, Provider&lt;MyType&gt;&gt; providerMap</pre>
  */
+@Version("1.0.0")
 package org.eclipse.sisu.wire;
+
+import org.osgi.annotation.versioning.Version;
