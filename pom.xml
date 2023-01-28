@@ -81,7 +81,7 @@
 
   <properties>
     <maven.compiler.release>7</maven.compiler.release>
-    <!-- These two below are NOT used as release above is set, but are linked to it's value to keep things sane -->
+    <!-- Set to same version as release target for consistency -->
     <maven.compiler.source>1.${maven.compiler.release}</maven.compiler.source>
     <maven.compiler.target>1.${maven.compiler.release}</maven.compiler.target>
 
