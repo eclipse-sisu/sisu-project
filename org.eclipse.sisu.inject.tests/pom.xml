@@ -230,7 +230,7 @@
           <testSourceDirectory>${project.build.sourceDirectory}</testSourceDirectory>
           <testClassesDirectory>${project.build.outputDirectory}</testClassesDirectory>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
-          <argLine>-Xmx64m --add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/java.security=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.util.concurrent=ALL-UNNAMED @{jacoco.argLine}</argLine>
+          <argLine>-Xmx64m @{jacoco.argLine}</argLine>
           <classpathDependencyExcludes>
             <classpathDependencyExclude>com.google.guava:guava</classpathDependencyExclude>
             <classpathDependencyExclude>com.google.inject:guice</classpathDependencyExclude>
