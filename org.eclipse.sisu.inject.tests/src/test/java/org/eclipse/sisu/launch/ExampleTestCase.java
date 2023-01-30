@@ -26,7 +26,7 @@ public final class ExampleTestCase
     String basedir;
 
     @Inject
-    @Named( "${basedir}/target/classes/org/eclipse/sisu/launch/inject.properties" )
+    @Named( "${basedir}/target/test-classes/org/eclipse/sisu/launch/inject.properties" )
     File propertiesFile;
 
     public void testBasedir()

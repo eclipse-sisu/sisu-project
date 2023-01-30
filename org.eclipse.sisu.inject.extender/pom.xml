@@ -24,7 +24,6 @@
   <packaging>jar</packaging>
 
   <build>
-    <sourceDirectory>src</sourceDirectory>
     <resources>
       <resource>
         <directory>.</directory>

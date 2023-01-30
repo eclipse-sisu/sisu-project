@@ -85,30 +85,7 @@
   </dependencies>
 
   <build>
-    <sourceDirectory>src</sourceDirectory>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy-test-resources</id>
-            <phase>test</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>test-resources</directory>
-                  <filtering>false</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
@@ -223,8 +200,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <testSourceDirectory>${project.build.sourceDirectory}</testSourceDirectory>
-          <testClassesDirectory>${project.build.outputDirectory}</testClassesDirectory>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
           <argLine>-Xmx64m @{jacoco.argLine}</argLine>
           <classpathDependencyExcludes>
@@ -232,10 +207,6 @@
             <classpathDependencyExclude>com.google.inject:guice</classpathDependencyExclude>
             <classpathDependencyExclude>com.google.inject.extensions:guice-assistedinject</classpathDependencyExclude>
             <classpathDependencyExclude>com.google.inject.extensions:guice-servlet</classpathDependencyExclude>
-            <classpathDependencyExclude>p2.eclipse-plugin:com.google.guava</classpathDependencyExclude>
-            <classpathDependencyExclude>p2.eclipse-plugin:com.google.inject</classpathDependencyExclude>
-            <classpathDependencyExclude>p2.eclipse-plugin:com.google.inject.assistedinject</classpathDependencyExclude>
-            <classpathDependencyExclude>p2.eclipse-plugin:com.google.inject.servlet</classpathDependencyExclude>
           </classpathDependencyExcludes>
         </configuration>
         <executions>
