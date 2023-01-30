@@ -57,8 +57,8 @@ public final class ExampleTestCase
 
     public void testContainerLookup()
     {
-        if( "17".equals( System.getProperty( "java.specification.version", "undefined" ) )
-                && "guice4".equals( System.getProperty("guiceVersion", "undefined") ) )
+        if ( "17".equals( System.getProperty( "java.specification.version", "undefined" ) )
+            && "guice4".equals( System.getProperty( "guiceVersion", "undefined" ) ) )
         {
             return; // skip test on Java17 + guice4, is not working
         }
