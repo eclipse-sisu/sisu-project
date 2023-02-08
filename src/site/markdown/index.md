@@ -1,20 +1,22 @@
-  ---
-  Sisu Plugin for Maven
-  ---
-  Stuart McCulloch
-  ---
-  2011-03-10
-  ---
-  
-Introduction
+title: Sisu Plugin for Maven
+author: Stuart McCulloch
+date: 2011-03-10
 
-  The Sisu Plugin for Maven provides mojos to generate <<<META-INF/sisu/javax.inject.Named>>> index files for the {{{http://eclipse.org/sisu/}Sisu container}}.
+## Introduction
 
-Usage
 
-* Indexing individual projects
+ The Sisu Plugin for Maven provides mojos to generate `META-INF/sisu/javax.inject.Named` index files for the [Sisu container](http://eclipse.org/sisu/).
 
-+---+
+
+
+## Usage
+
+
+### Indexing individual projects
+
+
+
+```
 <project>
   [...]
   <build>
@@ -36,11 +38,14 @@ Usage
   </build>
   [...]
 </project>
-+---+
+```
 
-* Indexing assembled applications
 
-+---+
+### Indexing assembled applications
+
+
+
+```
 <project>
   [...]
   <build>
@@ -65,5 +70,6 @@ Usage
   </build>
   [...]
 </project>
-+---+
+```
+
 
