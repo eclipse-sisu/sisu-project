@@ -20,7 +20,7 @@ then
 fi
 
 SRC=asm-${TAG}/asm/src/main/java/org/objectweb/asm
-DST=org.eclipse.sisu.inject/src/org/eclipse/sisu/space/asm/
+DST=org.eclipse.sisu.inject/src/main/java/org/eclipse/sisu/space/asm/
 
 rm ${DST}/*.java
 curl -s https://gitlab.ow2.org/asm/asm/-/archive/${TAG}/asm-${TAG}.zip | jar x ${SRC}
