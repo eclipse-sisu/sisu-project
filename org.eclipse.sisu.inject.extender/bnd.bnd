@@ -1,0 +1,3 @@
+Bundle-Name: Sisu-Inject Extender (Incubation)
+Bundle-SymbolicName: org.eclipse.sisu.inject.extender;singleton:=true
+Bundle-Activator: org.eclipse.sisu.launch.SisuExtender

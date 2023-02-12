@@ -36,17 +36,13 @@
     </resources>
     <plugins>
       <plugin>
+        <groupId>biz.aQute.bnd</groupId>
+        <artifactId>bnd-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <executions>
-          <execution>
-            <id>default-jar</id>
-            <configuration>
-              <archive>
-                <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-              </archive>
-            </configuration>
-          </execution>
           <execution>
             <id>empty-javadoc</id>
             <phase>package</phase>
