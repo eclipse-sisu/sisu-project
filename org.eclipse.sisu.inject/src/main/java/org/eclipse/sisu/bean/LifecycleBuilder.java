@@ -10,19 +10,37 @@
  *******************************************************************************/
 package org.eclipse.sisu.bean;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
+import org.eclipse.sisu.PostConstruct;
+import org.eclipse.sisu.PreDestroy;
 
 /**
  * Builds {@link BeanLifecycle}s by searching class hierarchies for JSR250 annotations.
  */
 final class LifecycleBuilder
 {
+    static
+    {
+        boolean hasJsr250Lifecycle;
+        try
+        {
+            hasJsr250Lifecycle = javax.annotation.PostConstruct.class.isAnnotation()
+                    && javax.annotation.PreDestroy.class.isAnnotation();
+        }
+        catch ( final LinkageError e )
+        {
+            hasJsr250Lifecycle = false;
+        }
+        HAS_JSR250_LIFECYCLE = hasJsr250Lifecycle;
+    }
+
+    private static final boolean HAS_JSR250_LIFECYCLE;
+
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -83,7 +101,7 @@ final class LifecycleBuilder
         {
             if ( isCandidateMethod( m ) )
             {
-                if ( m.isAnnotationPresent( PostConstruct.class ) )
+                if ( isAnnotationPresent( m, PostConstruct.class ) )
                 {
                     foundStartMethod = true;
                     if ( !isOverridden( m ) )
@@ -91,7 +109,7 @@ final class LifecycleBuilder
                         startMethods.add( m );
                     }
                 }
-                else if ( m.isAnnotationPresent( PreDestroy.class ) )
+                else if ( isAnnotationPresent( m, PreDestroy.class ) )
                 {
                     foundStopMethod = true;
                     if ( !isOverridden( m ) )
@@ -106,6 +124,23 @@ final class LifecycleBuilder
             }
         }
         hierarchy.add( clazz );
+    }
+
+    private boolean isAnnotationPresent( final Method method, final Class<? extends Annotation> annotationClass )
+    {
+        boolean result = method.isAnnotationPresent( annotationClass );
+        if ( !result && HAS_JSR250_LIFECYCLE )
+        {
+            if ( PostConstruct.class.equals( annotationClass ) )
+            {
+                result = method.isAnnotationPresent( javax.annotation.PostConstruct.class );
+            }
+            else if ( PreDestroy.class.equals( annotationClass ) )
+            {
+                result = method.isAnnotationPresent( javax.annotation.PreDestroy.class );
+            }
+        }
+        return result;
     }
 
     /**

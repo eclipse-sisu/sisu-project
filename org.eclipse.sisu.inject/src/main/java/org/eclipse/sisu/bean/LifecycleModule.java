@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.sisu.bean;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.TypeLiteral;
@@ -23,8 +20,8 @@ import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 
 /**
- * Guice {@link Module} that provides JSR250 lifecycle management by following {@link PostConstruct} and
- * {@link PreDestroy} annotations. The lifecycle can be controlled with the associated {@link BeanManager}.
+ * Guice {@link Module} that provides JSR250 lifecycle management by following {@link javax.annotation.PostConstruct} and
+ * {@link javax.annotation.PreDestroy} annotations. The lifecycle can be controlled with the associated {@link BeanManager}.
  */
 public final class LifecycleModule
     implements Module
