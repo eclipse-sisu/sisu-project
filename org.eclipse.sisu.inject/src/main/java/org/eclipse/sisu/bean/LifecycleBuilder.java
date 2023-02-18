@@ -26,20 +26,20 @@ final class LifecycleBuilder
 {
     static
     {
-        boolean hasJsr250Lifecycle;
+        boolean hasJsr250Annotations;
         try
         {
-            hasJsr250Lifecycle = javax.annotation.PostConstruct.class.isAnnotation()
+            hasJsr250Annotations = javax.annotation.PostConstruct.class.isAnnotation()
                     && javax.annotation.PreDestroy.class.isAnnotation();
         }
         catch ( final LinkageError e )
         {
-            hasJsr250Lifecycle = false;
+            hasJsr250Annotations = false;
         }
-        HAS_JSR250_LIFECYCLE = hasJsr250Lifecycle;
+        HAS_JSR250_ANNOTATIONS = hasJsr250Annotations;
     }
 
-    private static final boolean HAS_JSR250_LIFECYCLE;
+    private static final boolean HAS_JSR250_ANNOTATIONS;
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -129,7 +129,7 @@ final class LifecycleBuilder
     private boolean isAnnotationPresent( final Method method, final Class<? extends Annotation> annotationClass )
     {
         boolean result = method.isAnnotationPresent( annotationClass );
-        if ( !result && HAS_JSR250_LIFECYCLE )
+        if ( !result && HAS_JSR250_ANNOTATIONS )
         {
             if ( PostConstruct.class.equals( annotationClass ) )
             {
