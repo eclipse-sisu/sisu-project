@@ -78,7 +78,7 @@
   </ciManagement>
 
   <properties>
-    <maven.compiler.release>7</maven.compiler.release>
+    <maven.compiler.release>8</maven.compiler.release>
     <!-- Set to same version as release target for consistency -->
     <maven.compiler.source>1.${maven.compiler.release}</maven.compiler.source>
     <maven.compiler.target>1.${maven.compiler.release}</maven.compiler.target>
@@ -247,7 +247,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
             <configuration>
               <rules>
                 <enforceBytecodeVersion>
-                  <maxJdkVersion>1.7</maxJdkVersion>
+                  <maxJdkVersion>${maven.compiler.target}</maxJdkVersion>
                   <excludes>
                     <!-- Used in tests only -->
                     <exclude>org.junit.jupiter:junit-jupiter-api</exclude>
