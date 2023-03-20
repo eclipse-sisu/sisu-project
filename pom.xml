@@ -82,6 +82,9 @@
     <!-- Set to same version as release target for consistency -->
     <maven.compiler.source>1.${maven.compiler.release}</maven.compiler.source>
     <maven.compiler.target>1.${maven.compiler.release}</maven.compiler.target>
+
+    <mavenBuildVersion>3.6.3</mavenBuildVersion>
+    <javaBuildVersion>11</javaBuildVersion>
   </properties>
 
   <build>
@@ -255,12 +258,12 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
                     <exclude>org.apache.felix:org.apache.felix.framework:jar:7.0.5</exclude>
                   </excludes>
                 </enforceBytecodeVersion>
-                <requireJavaVersion>
-                  <version>11</version>
-                </requireJavaVersion>
                 <requireMavenVersion>
-                  <version>3.8.4</version>
+                  <version>${mavenBuildVersion}</version>
                 </requireMavenVersion>
+                <requireJavaVersion>
+                  <version>${javaBuildVersion}</version>
+                </requireJavaVersion>
               </rules>
             </configuration>
           </execution>
