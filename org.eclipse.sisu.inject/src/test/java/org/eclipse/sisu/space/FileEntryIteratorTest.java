@@ -187,6 +187,10 @@ public class FileEntryIteratorTest
             {
                 final ZipEntry entry = e.nextElement();
                 final File path = new File( dir, entry.getName() );
+                if ( !path.toPath().normalize().startsWith( dir.toPath().normalize() ) )
+                {
+                    throw new IOException("Bad zip entry");
+                }
                 if ( entry.isDirectory() )
                 {
                     path.mkdirs();
