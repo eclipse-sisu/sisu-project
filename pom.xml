@@ -61,7 +61,6 @@
   <modules>
     <module>org.eclipse.sisu.plexus</module>
     <module>org.eclipse.sisu.plexus.extender</module>
-    <module>org.eclipse.sisu.plexus.tests</module>
   </modules>
 
   <scm>
