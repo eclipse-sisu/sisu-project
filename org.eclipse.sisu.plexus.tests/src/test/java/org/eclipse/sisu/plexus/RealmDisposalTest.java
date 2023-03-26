@@ -46,7 +46,7 @@ public class RealmDisposalTest
         final DefaultPlexusContainer plexus = new DefaultPlexusContainer();
 
         ClassRealm realm = plexus.createChildRealm( realmId );
-        realm.addURL( new File( "resources/component-jar/component-jar-0.1.jar" ).getCanonicalFile().toURI().toURL() );
+        realm.addURL( new File( "target/test-classes/component-jar/component-jar-0.1.jar" ).getCanonicalFile().toURI().toURL() );
         Thread.currentThread().setContextClassLoader( realm );
         plexus.discoverComponents( realm );
         assertNotNull( plexus.lookup( "org.eclipse.sisu.plexus.tests.SomeComponent" ) );
@@ -54,7 +54,7 @@ public class RealmDisposalTest
         realm.getWorld().disposeRealm( realm.getId() );
 
         realm = plexus.createChildRealm( realmId );
-        realm.addURL( new File( "resources/component-jar/component-jar-0.1.jar" ).getCanonicalFile().toURI().toURL() );
+        realm.addURL( new File( "target/test-classes/component-jar/component-jar-0.1.jar" ).getCanonicalFile().toURI().toURL() );
         Thread.currentThread().setContextClassLoader( realm );
         plexus.discoverComponents( realm );
         assertNotNull( plexus.lookup( "org.eclipse.sisu.plexus.tests.SomeComponent" ) );
@@ -72,7 +72,7 @@ public class RealmDisposalTest
         final DefaultPlexusContainer plexus = new DefaultPlexusContainer();
 
         ClassRealm realm = plexus.createChildRealm( realmId );
-        realm.addURL( new File( "resources/component-jar/component-jar-0.1.jar" ).getCanonicalFile().toURI().toURL() );
+        realm.addURL( new File( "target/test-classes/component-jar/component-jar-0.1.jar" ).getCanonicalFile().toURI().toURL() );
         Thread.currentThread().setContextClassLoader( realm );
         plexus.discoverComponents( realm );
 
@@ -82,7 +82,7 @@ public class RealmDisposalTest
             realm.getWorld().disposeRealm( realm.getId() );
 
             realm = plexus.createChildRealm( realmId );
-            realm.addURL( new File( "resources/component-jar/component-jar-0.1.jar" ).getCanonicalFile().toURI().toURL() );
+            realm.addURL( new File( "target/test-classes/component-jar/component-jar-0.1.jar" ).getCanonicalFile().toURI().toURL() );
             Thread.currentThread().setContextClassLoader( realm );
             plexus.discoverComponents( realm );
 

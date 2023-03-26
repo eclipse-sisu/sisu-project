@@ -55,7 +55,6 @@
   </dependencies>
 
   <build>
-    <sourceDirectory>src</sourceDirectory>
     <resources>
       <resource>
         <directory>${basedir}/META-INF/plexus</directory>
@@ -186,15 +185,11 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <testSourceDirectory>${project.build.sourceDirectory}</testSourceDirectory>
-          <testClassesDirectory>${project.build.outputDirectory}</testClassesDirectory>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
           <argLine>-Xmx64m @{jacoco.argLine}</argLine>
           <classpathDependencyExcludes>
             <classpathDependencyExclude>com.google.guava:guava</classpathDependencyExclude>
             <classpathDependencyExclude>com.google.inject:guice</classpathDependencyExclude>
-            <classpathDependencyExclude>p2.eclipse-plugin:com.google.guava</classpathDependencyExclude>
-            <classpathDependencyExclude>p2.eclipse-plugin:com.google.inject</classpathDependencyExclude>
           </classpathDependencyExcludes>
         </configuration>
         <executions>
@@ -282,7 +277,7 @@
         <executions>
           <execution>
             <id>remove-missing-class</id>
-            <phase>process-classes</phase>
+            <phase>process-test-classes</phase>
             <goals>
               <goal>clean</goal>
             </goals>
@@ -290,7 +285,7 @@
               <excludeDefaultDirectories>true</excludeDefaultDirectories>
               <filesets>
                 <fileset>
-                  <directory>${project.build.outputDirectory}</directory>
+                  <directory>${project.build.testOutputDirectory}</directory>
                   <includes>
                     <include>**/*MissingClass.class</include>
                   </includes>

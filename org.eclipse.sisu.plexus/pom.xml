@@ -103,7 +103,6 @@
   </dependencies>
 
   <build>
-    <sourceDirectory>src</sourceDirectory>
     <resources>
       <resource>
         <directory>.</directory>
@@ -111,7 +110,6 @@
           <include>META-INF/**</include>
           <include>about.html</include>
           <include>overview.html</include>
-          <include>plugin.xml</include>
         </includes>
       </resource>
     </resources>
