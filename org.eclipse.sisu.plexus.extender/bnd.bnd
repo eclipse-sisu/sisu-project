@@ -1,0 +1,3 @@
+Bundle-Name: Sisu-Plexus Extender (Incubation)
+Bundle-SymbolicName: org.eclipse.sisu.plexus.extender;singleton:=true
+Fragment-Host: org.eclipse.sisu.inject.extender
