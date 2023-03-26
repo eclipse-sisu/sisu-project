@@ -285,6 +285,9 @@
                 <additionalClasspathElement>${project.build.directory}/guice3/guava.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice3/guice.jar</additionalClasspathElement>
               </additionalClasspathElements>
+              <systemPropertyVariables>
+                <guiceVersion>guice3</guiceVersion>
+              </systemPropertyVariables>
             </configuration>
           </execution>
           <execution>
@@ -299,6 +302,9 @@
                 <additionalClasspathElement>${project.build.directory}/guice4/guava.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice4/guice.jar</additionalClasspathElement>
               </additionalClasspathElements>
+              <systemPropertyVariables>
+                <guiceVersion>guice4</guiceVersion>
+              </systemPropertyVariables>
             </configuration>
           </execution>
           <execution>
@@ -314,6 +320,9 @@
                 <additionalClasspathElement>${project.build.directory}/guice423/guava.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice423/guice.jar</additionalClasspathElement>
               </additionalClasspathElements>
+              <systemPropertyVariables>
+                <guiceVersion>guice423</guiceVersion>
+              </systemPropertyVariables>
             </configuration>
           </execution>
           <execution>
@@ -329,6 +338,9 @@
                 <additionalClasspathElement>${project.build.directory}/guice5/guava.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice5/guice.jar</additionalClasspathElement>
               </additionalClasspathElements>
+              <systemPropertyVariables>
+                <guiceVersion>guice5</guiceVersion>
+              </systemPropertyVariables>
             </configuration>
           </execution>
         </executions>
