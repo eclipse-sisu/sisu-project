@@ -21,7 +21,7 @@
   </parent>
 
   <artifactId>org.eclipse.sisu.plexus</artifactId>
-  <packaging>eclipse-plugin</packaging>
+  <packaging>jar</packaging>
 
   <dependencies>
     <!--
@@ -83,6 +83,18 @@
       <version>3.3.0</version>
     </dependency>
     <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.36</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>osgi.core</artifactId>
+      <version>5.0.0</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.13.2</version>
@@ -92,66 +104,28 @@
 
   <build>
     <sourceDirectory>src</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>.</directory>
+        <includes>
+          <include>META-INF/**</include>
+          <include>about.html</include>
+          <include>overview.html</include>
+          <include>plugin.xml</include>
+        </includes>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-build-target</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>attach-artifact</goal>
-            </goals>
-            <configuration>
-              <artifacts>
-                <artifact>
-                  <file>build.target</file>
-                  <classifier>build</classifier>
-                  <type>target</type>
-                </artifact>
-              </artifacts>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>target-platform-configuration</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-maven-plugin</artifactId>
-        <extensions>${tycho.extensions}</extensions>
-      </plugin>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-source-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+          </archive>
+        </configuration>
       </plugin>
     </plugins>
   </build>
-
-  <!--
-  Disable Tycho extensions so artifact can be consumed by Java 8 builds.
-  -->
-  <properties>
-    <tycho.extensions>false</tycho.extensions>
-  </properties>
-  <profiles>
-    <profile>
-      <!--
-      Enable Tycho extensions when building the project artifact.
-      -->
-      <id>tycho.extensions</id>
-      <activation>
-        <file>
-          <exists>src</exists>
-        </file>
-      </activation>
-      <properties>
-        <tycho.extensions>true</tycho.extensions>
-      </properties>
-    </profile>
-  </profiles>
 
 </project>
