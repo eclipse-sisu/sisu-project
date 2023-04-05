@@ -57,10 +57,11 @@ public final class ExampleTestCase
 
     public void testContainerLookup()
     {
-        if ( "17".equals( System.getProperty( "java.specification.version", "undefined" ) )
-            && "guice4".equals( System.getProperty( "guiceVersion", "undefined" ) ) )
+        String javaVersion = System.getProperty( "java.specification.version", "undefined");
+        if ( ( "17".equals( javaVersion ) || "20".equals( javaVersion ) || "21".equals( javaVersion ) )
+            && ( "guice3".equals( System.getProperty("guiceVersion", "undefined" ) ) ) )
         {
-            return; // skip test on Java17 + guice4, is not working
+            return; // skip test on Java 17+ and guice3, is not working
         }
 
         assertTrue( lookup( Foo.class ) instanceof DefaultFoo );
