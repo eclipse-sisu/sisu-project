@@ -594,12 +594,6 @@ public class PlexusRequirementTest
     public void testPlexus121Compatibility()
         throws Exception
     {
-        if ( "17".equals( System.getProperty( "java.specification.version", "undefined" ) )
-            && !"guice5".equals( System.getProperty( "guiceVersion", "undefined" ) ) )
-        {
-            return; // skip test on Java17 + guice3/4, is not working
-        }
-
         final List<URL> urls = new ArrayList<URL>();
         urls.add( new File( "target/dependency/plexus-component-annotations-1.2.1.jar" ).toURI().toURL() );
         Collections.addAll( urls, new URLClassSpace( getClass().getClassLoader() ).getURLs() );

@@ -142,6 +142,7 @@
                 <artifactItem>
                   <groupId>com.google.inject</groupId>
                   <artifactId>guice</artifactId>
+                  <classifier>no_aop</classifier>
                   <version>3.0</version>
                 </artifactItem>
               </artifactItems>
@@ -164,6 +165,7 @@
                 <artifactItem>
                   <groupId>com.google.inject</groupId>
                   <artifactId>guice</artifactId>
+                  <classifier>no_aop</classifier>
                   <version>4.0</version>
                 </artifactItem>
               </artifactItems>
@@ -191,6 +193,7 @@
                 <artifactItem>
                   <groupId>com.google.inject</groupId>
                   <artifactId>guice</artifactId>
+                  <classifier>no_aop</classifier>
                   <version>4.2.3</version>
                 </artifactItem>
               </artifactItems>
@@ -216,8 +219,14 @@
                   <version>30.1-jre</version>
                 </artifactItem>
                 <artifactItem>
+                  <groupId>org.ow2.asm</groupId>
+                  <artifactId>asm</artifactId>
+                  <version>9.5</version>
+                </artifactItem>
+                <artifactItem>
                   <groupId>com.google.inject</groupId>
                   <artifactId>guice</artifactId>
+                  <classifier>classes</classifier>
                   <version>5.1.0</version>
                 </artifactItem>
               </artifactItems>
@@ -269,7 +278,7 @@
             <configuration>
               <groups>org.eclipse.sisu.BaseTests</groups>
               <additionalClasspathElements>
-                <additionalClasspathElement>${project.build.directory}/guice3/guice.jar</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice3/guice-no_aop.jar</additionalClasspathElement>
               </additionalClasspathElements>
             </configuration>
           </execution>
@@ -283,7 +292,7 @@
               <excludedGroups>org.eclipse.sisu.BaseTests</excludedGroups>
               <additionalClasspathElements>
                 <additionalClasspathElement>${project.build.directory}/guice3/guava.jar</additionalClasspathElement>
-                <additionalClasspathElement>${project.build.directory}/guice3/guice.jar</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice3/guice-no_aop.jar</additionalClasspathElement>
               </additionalClasspathElements>
               <systemPropertyVariables>
                 <guiceVersion>guice3</guiceVersion>
@@ -300,7 +309,7 @@
               <excludedGroups>org.eclipse.sisu.BaseTests</excludedGroups>
               <additionalClasspathElements>
                 <additionalClasspathElement>${project.build.directory}/guice4/guava.jar</additionalClasspathElement>
-                <additionalClasspathElement>${project.build.directory}/guice4/guice.jar</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice4/guice-no_aop.jar</additionalClasspathElement>
               </additionalClasspathElements>
               <systemPropertyVariables>
                 <guiceVersion>guice4</guiceVersion>
@@ -318,7 +327,7 @@
               <additionalClasspathElements>
                 <additionalClasspathElement>${project.build.directory}/guice423/failureaccess.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice423/guava.jar</additionalClasspathElement>
-                <additionalClasspathElement>${project.build.directory}/guice423/guice.jar</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice423/guice-no_aop.jar</additionalClasspathElement>
               </additionalClasspathElements>
               <systemPropertyVariables>
                 <guiceVersion>guice423</guiceVersion>
@@ -336,7 +345,8 @@
               <additionalClasspathElements>
                 <additionalClasspathElement>${project.build.directory}/guice5/failureaccess.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice5/guava.jar</additionalClasspathElement>
-                <additionalClasspathElement>${project.build.directory}/guice5/guice.jar</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice5/asm.jar</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice5/guice-classes.jar</additionalClasspathElement>
               </additionalClasspathElements>
               <systemPropertyVariables>
                 <guiceVersion>guice5</guiceVersion>

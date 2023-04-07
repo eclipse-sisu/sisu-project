@@ -104,6 +104,7 @@ public class ComponentAnnotationTest
         String origToString = orig.toString().replace( "\"", "" ).replace( ".class", "" );
         String cloneToString = clone.toString().replace( '[', '{' ).replace( ']', '}' );
         cloneToString = cloneToString.replace( "class ", "" ).replace( "interface ", "" );
+        cloneToString = cloneToString.replace( "ComponentAnnotationTest$A", "ComponentAnnotationTest.A" );
 
         assertEquals( new HashSet<String>( Arrays.asList( origToString.split( "[(, )]" ) ) ),
                       new HashSet<String>( Arrays.asList( cloneToString.split( "[(, )]" ) ) ) );
