@@ -102,9 +102,9 @@ public class ComponentAnnotationTest
         assertEquals( orig.hashCode(), clone.hashCode() );
 
         String origToString = orig.toString().replace( "\"", "" ).replace( ".class", "" );
+        origToString = origToString.replace( "ComponentAnnotationTest.A", "ComponentAnnotationTest$A" );
         String cloneToString = clone.toString().replace( '[', '{' ).replace( ']', '}' );
         cloneToString = cloneToString.replace( "class ", "" ).replace( "interface ", "" );
-        cloneToString = cloneToString.replace( "ComponentAnnotationTest$A", "ComponentAnnotationTest.A" );
 
         assertEquals( new HashSet<String>( Arrays.asList( origToString.split( "[(, )]" ) ) ),
                       new HashSet<String>( Arrays.asList( cloneToString.split( "[(, )]" ) ) ) );
