@@ -190,8 +190,19 @@
                   <version>27.1-jre</version>
                 </artifactItem>
                 <artifactItem>
+                  <groupId>org.ow2.asm</groupId>
+                  <artifactId>asm</artifactId>
+                  <version>9.5</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>cglib</groupId>
+                  <artifactId>cglib</artifactId>
+                  <version>3.3.0</version>
+                </artifactItem>
+                <artifactItem>
                   <groupId>com.google.inject</groupId>
                   <artifactId>guice</artifactId>
+                  <classifier>classes</classifier>
                   <version>4.2.3</version>
                 </artifactItem>
                 <artifactItem>
@@ -227,8 +238,14 @@
                   <version>30.1-jre</version>
                 </artifactItem>
                 <artifactItem>
+                  <groupId>org.ow2.asm</groupId>
+                  <artifactId>asm</artifactId>
+                  <version>9.5</version>
+                </artifactItem>
+                <artifactItem>
                   <groupId>com.google.inject</groupId>
                   <artifactId>guice</artifactId>
+                  <classifier>classes</classifier>
                   <version>5.1.0</version>
                 </artifactItem>
                 <artifactItem>
@@ -310,7 +327,9 @@
               <additionalClasspathElements>
                 <additionalClasspathElement>${project.build.directory}/guice4/failureaccess.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice4/guava.jar</additionalClasspathElement>
-                <additionalClasspathElement>${project.build.directory}/guice4/guice.jar</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice4/asm.jar</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice4/cglib.jar</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice4/guice-classes.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice4/guice-assistedinject.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice4/guice-servlet.jar</additionalClasspathElement>
               </additionalClasspathElements>
@@ -330,7 +349,8 @@
               <additionalClasspathElements>
                 <additionalClasspathElement>${project.build.directory}/guice5/failureaccess.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice5/guava.jar</additionalClasspathElement>
-                <additionalClasspathElement>${project.build.directory}/guice5/guice.jar</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice5/asm.jar</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice5/guice-classes.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice5/guice-assistedinject.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice5/guice-servlet.jar</additionalClasspathElement>
               </additionalClasspathElements>
