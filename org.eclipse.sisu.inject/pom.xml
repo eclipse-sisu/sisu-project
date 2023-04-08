@@ -429,6 +429,13 @@
                       <shadedPattern>org.objectweb.asm</shadedPattern>
                     </relocation>
                   </relocations>
+                  <transformers>
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                      <manifestEntries>
+                        <DynamicImport-Package>org.objectweb.asm</DynamicImport-Package>
+                      </manifestEntries>
+                    </transformer>
+                  </transformers>
                 </configuration>
               </execution>
             </executions>
