@@ -395,4 +395,46 @@
     </plugins>
   </build>
 
+  <profiles>
+    <profile>
+      <id>sonatype-oss-release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>shade</goal>
+                </goals>
+                <configuration>
+                  <!--
+                   | Create 'no_asm' jar which doesn't embed ASM and refers to the original org.objectweb.asm package.
+                  -->
+                  <shadedArtifactAttached>true</shadedArtifactAttached>
+                  <shadedClassifierName>no_asm</shadedClassifierName>
+                  <filters>
+                    <filter>
+                      <artifact>org.eclipse.sisu:org.eclipse.sisu.inject</artifact>
+                      <excludes>
+                        <exclude>org/eclipse/sisu/space/asm/**</exclude>
+                      </excludes>
+                    </filter>
+                  </filters>
+                  <relocations>
+                    <relocation>
+                      <pattern>org.eclipse.sisu.space.asm</pattern>
+                      <shadedPattern>org.objectweb.asm</shadedPattern>
+                    </relocation>
+                  </relocations>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
