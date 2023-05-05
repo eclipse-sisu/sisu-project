@@ -61,7 +61,6 @@
     <connection>scm:git:git://github.com/eclipse/sisu.plexus.git</connection>
     <developerConnection>scm:git:git@github.com:eclipse/sisu.plexus.git</developerConnection>
     <url>https://github.com/eclipse/sisu.plexus</url>
-    <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>GitHub</system>
