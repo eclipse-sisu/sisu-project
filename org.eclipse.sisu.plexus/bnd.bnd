@@ -1,8 +1,7 @@
 Bundle-Name: Sisu-Plexus (Incubation)
 Bundle-SymbolicName: org.eclipse.sisu.plexus;singleton:=true
 Main-Class: org.eclipse.sisu.launch.Main
-Export-Package: !org.codehaus.plexus.(classworlds|util).*,\
- org.eclipse.sisu.plexus.*,\
+-exportcontents: org.eclipse.sisu.plexus.*,\
  org.codehaus.plexus.*
 Import-Package: javax.inject,\
  org.eclipse.sisu.*,\
