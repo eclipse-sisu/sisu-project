@@ -60,7 +60,6 @@
     <connection>scm:git:git://github.com/eclipse/sisu.mojos.git</connection>
     <developerConnection>scm:git:git@github.com:eclipse/sisu.mojos.git</developerConnection>
     <url>https://github.com/eclipse/sisu.mojos</url>
-    <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>GitHub</system>
