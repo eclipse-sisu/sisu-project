@@ -61,7 +61,6 @@
     <connection>scm:git:git://github.com/eclipse/sisu.inject.git</connection>
     <developerConnection>scm:git:git@github.com:eclipse/sisu.inject.git</developerConnection>
     <url>https://github.com/eclipse/sisu.inject</url>
-    <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>GitHub</system>
