@@ -262,6 +262,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
             <mavenExecutorId>forked-path</mavenExecutorId>
             <useReleaseProfile>false</useReleaseProfile>
             <arguments>-Psonatype-oss-release</arguments>
+            <localCheckout>true</localCheckout>
             <pushChanges>false</pushChanges>
             <scmCommentPrefix>|</scmCommentPrefix>
             <signTag>true</signTag>
