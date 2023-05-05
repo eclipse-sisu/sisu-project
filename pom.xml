@@ -16,7 +16,7 @@
 
   <groupId>org.eclipse.sisu</groupId>
   <artifactId>sisu-plexus</artifactId>
-  <version>0.9.0.M2</version>
+  <version>0.9.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Sisu Plexus</name>
@@ -76,7 +76,7 @@
     <connection>scm:git:git://github.com/eclipse/sisu.plexus.git</connection>
     <developerConnection>scm:git:git@github.com:eclipse/sisu.plexus.git</developerConnection>
     <url>https://github.com/eclipse/sisu.plexus</url>
-    <tag>milestones/0.9.0.M2</tag>
+    <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>GitHub</system>

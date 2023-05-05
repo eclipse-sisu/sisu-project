@@ -17,7 +17,7 @@
   <parent>
     <groupId>org.eclipse.sisu</groupId>
     <artifactId>sisu-plexus</artifactId>
-    <version>0.9.0.M2</version>
+    <version>0.9.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.eclipse.sisu.plexus</artifactId>
@@ -62,7 +62,7 @@
     <dependency>
       <groupId>org.eclipse.sisu</groupId>
       <artifactId>org.eclipse.sisu.inject</artifactId>
-      <version>0.9.0.M2</version>
+      <version>0.9.0-SNAPSHOT</version>
     </dependency>
     <!--
      | Plexus classloading/utilities
