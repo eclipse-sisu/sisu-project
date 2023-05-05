@@ -57,6 +57,18 @@
     <module>org.eclipse.sisu.plexus.extender</module>
   </modules>
 
+  <developers>
+    <developer>
+      <name>Stuart McCulloch</name>
+    </developer>
+    <developer>
+      <name>Tamas Cservenak</name>
+    </developer>
+    <developer>
+      <name>Konrad Windszus</name>
+    </developer>
+  </developers>
+
   <scm>
     <connection>scm:git:git://github.com/eclipse/sisu.plexus.git</connection>
     <developerConnection>scm:git:git@github.com:eclipse/sisu.plexus.git</developerConnection>
