@@ -61,6 +61,7 @@
     <connection>scm:git:git://github.com/eclipse/sisu.plexus.git</connection>
     <developerConnection>scm:git:git@github.com:eclipse/sisu.plexus.git</developerConnection>
     <url>https://github.com/eclipse/sisu.plexus</url>
+    <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>GitHub</system>
@@ -254,10 +255,13 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
           <artifactId>maven-release-plugin</artifactId>
           <version>3.0.0</version>
           <configuration>
-            <dryRun>true</dryRun> <!-- releases are made using the prepare/perform_milestone.sh scripts -->
             <mavenExecutorId>forked-path</mavenExecutorId>
             <useReleaseProfile>false</useReleaseProfile>
             <arguments>-Psonatype-oss-release</arguments>
+            <pushChanges>false</pushChanges>
+            <scmCommentPrefix>|</scmCommentPrefix>
+            <signTag>true</signTag>
+            <tagNameFormat>milestones/@{project.version}</tagNameFormat>
           </configuration>
         </plugin>
         <plugin>
