@@ -58,12 +58,15 @@
 
   <developers>
     <developer>
+      <id>mcculls</id>
       <name>Stuart McCulloch</name>
     </developer>
     <developer>
+      <id>cstamas</id>
       <name>Tamas Cservenak</name>
     </developer>
     <developer>
+      <id>kwin</id>
       <name>Konrad Windszus</name>
     </developer>
   </developers>
