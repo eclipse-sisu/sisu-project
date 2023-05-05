@@ -1,7 +1,7 @@
 Bundle-Name: Sisu-Inject (Incubation)
 Bundle-SymbolicName: org.eclipse.sisu.inject;singleton:=true
 Main-Class: org.eclipse.sisu.launch.Main
-Export-Package: !*.asm.*,\
+-exportcontents: !*.asm.*,\
  org.eclipse.sisu.*,\
  org.sonatype.inject;x-internal:=true
 Import-Package: javax.inject,\
