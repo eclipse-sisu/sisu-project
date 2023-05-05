@@ -56,6 +56,18 @@
     <maven>${mavenRuntimeVersion}</maven>
   </prerequisites>
 
+  <developers>
+    <developer>
+      <name>Stuart McCulloch</name>
+    </developer>
+    <developer>
+      <name>Tamas Cservenak</name>
+    </developer>
+    <developer>
+      <name>Konrad Windszus</name>
+    </developer>
+  </developers>
+
   <scm>
     <connection>scm:git:git://github.com/eclipse/sisu.mojos.git</connection>
     <developerConnection>scm:git:git@github.com:eclipse/sisu.mojos.git</developerConnection>
