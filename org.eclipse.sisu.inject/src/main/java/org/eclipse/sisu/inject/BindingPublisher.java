@@ -43,6 +43,7 @@ public interface BindingPublisher
      * 
      * @param type The target type
      * @return Adapted instance; {@code null} if it couldn't be adapted
+     * @since 0.9.0.M1
      */
     <T> T adapt( Class<T> type );
 }
