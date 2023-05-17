@@ -39,6 +39,7 @@ import org.apache.maven.shared.artifact.filter.collection.ScopeFilter;
 import org.apache.maven.shared.artifact.filter.collection.TypeFilter;
 import org.codehaus.plexus.util.Scanner;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.io.CachingWriter;
 import org.eclipse.sisu.space.SisuIndex;
 import org.eclipse.sisu.space.URLClassSpace;
 import org.sonatype.plexus.build.incremental.BuildContext;
