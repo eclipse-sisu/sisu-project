@@ -40,7 +40,7 @@ public final class PlexusAnnotatedMetadata
 
     /**
      * Provides runtime Plexus metadata based on simple property annotations.
-     * 
+     *
      * @param variables The filter variables
      */
     public PlexusAnnotatedMetadata( final Map<?, ?> variables )
@@ -89,18 +89,10 @@ public final class PlexusAnnotatedMetadata
             return text;
         }
         // use same interpolation method as XML for sake of consistency
-        final Reader r = new InterpolationFilterReader( new StringReader( text ), variables );
-        try
-        {
-            return IOUtil.toString( r );
-        }
-        catch ( final IOException e )
-        {
+        try ( Reader r = new InterpolationFilterReader( new StringReader( text ), variables ) ) {
+            return IOUtil.toString(r);
+        } catch ( IOException e ) {
             return text; // should never actually happen, as no actual I/O involved
-        }
-        finally
-        {
-            IOUtil.close( r );
         }
     }
 }
