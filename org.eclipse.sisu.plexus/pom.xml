@@ -234,6 +234,39 @@
             </configuration>
           </execution>
           <execution>
+            <id>guice6</id>
+            <phase>test</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>com.google.guava</groupId>
+                  <artifactId>failureaccess</artifactId>
+                  <version>1.0.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.google.guava</groupId>
+                  <artifactId>guava</artifactId>
+                  <version>31.0.1-jre</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>jakarta.inject</groupId>
+                  <artifactId>jakarta.inject-api</artifactId>
+                  <version>2.0.1</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.google.inject</groupId>
+                  <artifactId>guice</artifactId>
+                  <classifier>classes</classifier>
+                  <version>6.0.0</version>
+                </artifactItem>
+              </artifactItems>
+              <outputDirectory>${project.build.directory}/guice6</outputDirectory>
+            </configuration>
+          </execution>
+          <execution>
             <id>copy-old-annotations</id>
             <phase>process-resources</phase>
             <goals>
@@ -350,6 +383,26 @@
               </additionalClasspathElements>
               <systemPropertyVariables>
                 <guiceVersion>guice5</guiceVersion>
+              </systemPropertyVariables>
+            </configuration>
+          </execution>
+          <execution>
+            <id>guice6</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <reportNameSuffix>guice6</reportNameSuffix>
+              <excludedGroups>org.eclipse.sisu.BaseTests</excludedGroups>
+              <additionalClasspathElements>
+                <additionalClasspathElement>${project.build.directory}/guice6/failureaccess.jar</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice6/guava.jar</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice6/asm.jar</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice6/jakarta.inject-api.jar</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice6/guice-classes.jar</additionalClasspathElement>
+              </additionalClasspathElements>
+              <systemPropertyVariables>
+                <guiceVersion>guice6</guiceVersion>
               </systemPropertyVariables>
             </configuration>
           </execution>
