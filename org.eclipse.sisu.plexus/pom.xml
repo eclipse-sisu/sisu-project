@@ -242,6 +242,11 @@
             <configuration>
               <artifactItems>
                 <artifactItem>
+                  <groupId>jakarta.inject</groupId>
+                  <artifactId>jakarta.inject-api</artifactId>
+                  <version>2.0.1</version>
+                </artifactItem>
+                <artifactItem>
                   <groupId>com.google.guava</groupId>
                   <artifactId>failureaccess</artifactId>
                   <version>1.0.1</version>
@@ -252,9 +257,9 @@
                   <version>31.0.1-jre</version>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>jakarta.inject</groupId>
-                  <artifactId>jakarta.inject-api</artifactId>
-                  <version>2.0.1</version>
+                  <groupId>org.ow2.asm</groupId>
+                  <artifactId>asm</artifactId>
+                  <version>9.5</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>com.google.inject</groupId>
@@ -395,10 +400,10 @@
               <reportNameSuffix>guice6</reportNameSuffix>
               <excludedGroups>org.eclipse.sisu.BaseTests</excludedGroups>
               <additionalClasspathElements>
+                <additionalClasspathElement>${project.build.directory}/guice6/jakarta.inject-api.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice6/failureaccess.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice6/guava.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice6/asm.jar</additionalClasspathElement>
-                <additionalClasspathElement>${project.build.directory}/guice6/jakarta.inject-api.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice6/guice-classes.jar</additionalClasspathElement>
               </additionalClasspathElements>
               <systemPropertyVariables>
