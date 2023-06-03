@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.sisu.wire;
 
+import java.io.File;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import com.google.inject.Module;
 import com.google.inject.TypeLiteral;
@@ -25,6 +25,6 @@ final class PathTypeConverter
 {
     public Object convert( final String value, final TypeLiteral<?> toType )
     {
-        return Paths.get( value );
+        return new File( value ).toPath();
     }
 }
