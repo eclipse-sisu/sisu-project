@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.codehaus.plexus.component.configurator.converters.composite;
 
+import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Map;
@@ -51,14 +52,31 @@ public class ObjectWithFieldsConverter
             {
                 return null; // nothing to process
             }
-            final Object bean = instantiateObject( implType );
-            if ( null == value )
+            Object bean = null;
+            // first try empty constructor with calling set/add methods or injecting fields
+            try
             {
-                processConfiguration( lookup, bean, loader, configuration, evaluator, listener );
+                bean = instantiateObject( implType );
+                if ( null == value )
+                {
+                    processConfiguration( lookup, bean, loader, configuration, evaluator, listener );
+                }
+                else
+                {
+                    new CompositeBeanHelper( lookup, loader, evaluator, listener ).setDefault( bean, value, configuration );
+                }
             }
-            else
+            catch( ComponentConfigurationException e )
             {
-                new CompositeBeanHelper( lookup, loader, evaluator, listener ).setDefault( bean, value, configuration );
+                // fallback: try with constructor taking single string
+                if ( configuration.getChildCount() == 0 && value instanceof String )
+                {
+                    bean = fromConstructorTakingString( type, (String) value, e );
+                }
+                else
+                {
+                    throw e;
+                }
             }
             return bean;
         }
@@ -69,6 +87,39 @@ public class ObjectWithFieldsConverter
                 e.setFailedConfiguration( configuration );
             }
             throw e;
+        }
+    }
+
+    private Object fromConstructorTakingString( final Class<?> type, String value, ComponentConfigurationException precedingException ) throws ComponentConfigurationException
+    {
+        try
+        {
+            try
+            {
+                Constructor<?> constructor = type.getConstructor( String.class );
+                return constructor.newInstance( value );
+            }
+            catch ( NoSuchMethodException e )
+            {
+                // suppress emitting this exception if there is a preceding exception
+                if ( precedingException != null )
+                {
+                    throw precedingException;
+                }
+                else
+                {
+                    throw e;
+                }
+            }
+        }
+        catch ( ReflectiveOperationException e )
+        {
+            ComponentConfigurationException cce = new ComponentConfigurationException( "Cannot create instance of " + type + " with public constructor having a single String argument", e );
+            if ( precedingException != null )
+            {
+                cce.addSuppressed( precedingException );
+            }
+            throw cce;
         }
     }
 
