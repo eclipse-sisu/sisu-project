@@ -33,6 +33,7 @@ import org.codehaus.plexus.component.configurator.converters.basic.ShortConverte
 import org.codehaus.plexus.component.configurator.converters.basic.StringBufferConverter;
 import org.codehaus.plexus.component.configurator.converters.basic.StringBuilderConverter;
 import org.codehaus.plexus.component.configurator.converters.basic.StringConverter;
+import org.codehaus.plexus.component.configurator.converters.basic.TemporalConverter;
 import org.codehaus.plexus.component.configurator.converters.basic.UriConverter;
 import org.codehaus.plexus.component.configurator.converters.basic.UrlConverter;
 import org.codehaus.plexus.component.configurator.converters.composite.ArrayConverter;
@@ -73,6 +74,7 @@ public final class DefaultConverterLookup
         new ClassRealmConverter(), //
         new StringBufferConverter(), //
         new StringBuilderConverter(), //
+        new TemporalConverter(), //
         new ObjectWithFieldsConverter() };
 
     private final Map<Class<?>, ConfigurationConverter> lookupCache = //

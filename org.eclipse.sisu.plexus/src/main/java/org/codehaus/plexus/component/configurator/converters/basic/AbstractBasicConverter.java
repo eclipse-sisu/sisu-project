@@ -40,7 +40,7 @@ public abstract class AbstractBasicConverter
         {
             try
             {
-                result = fromString( (String) result );
+                result = fromString( (String) result, type );
             }
             catch ( final ComponentConfigurationException e )
             {
@@ -58,15 +58,24 @@ public abstract class AbstractBasicConverter
     // Customizable methods
     // ----------------------------------------------------------------------
 
-    protected abstract Object fromString( final String str )
-        throws ComponentConfigurationException;
+    protected Object fromString( final String str, final Class<?> type )
+            throws ComponentConfigurationException
+    {
+        return fromString( str );
+    }
+
+    protected Object fromString( final String str )
+        throws ComponentConfigurationException 
+    {
+        throw new UnsupportedOperationException("The class " + this.getClass().getName() + " must implement one of the fromString(...) methods, but it doesn't");
+    }
 
     // ----------------------------------------------------------------------
     // Shared methods
     // ----------------------------------------------------------------------
 
     @Override
-    protected final Object fromExpression( final PlexusConfiguration configuration, final ExpressionEvaluator evaluator,
+    protected Object fromExpression( final PlexusConfiguration configuration, final ExpressionEvaluator evaluator,
                                            final Class<?> type )
         throws ComponentConfigurationException
     {
