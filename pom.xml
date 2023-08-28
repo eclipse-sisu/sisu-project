@@ -304,7 +304,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
           <version>3.5.0</version>
           <configuration>
             <overview>${basedir}/overview.html</overview>
-            <excludePackageNames>*.internal,org.codehaus.*</excludePackageNames>
+            <excludePackageNames>*.internal</excludePackageNames>
             <additionalJOption>-Xdoclint:all,-missing</additionalJOption>
             <detectOfflineLinks>false</detectOfflineLinks>
             <quiet>true</quiet>
