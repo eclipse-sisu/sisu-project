@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!--
+Cut-down patched version of Bootstrap's doc style:
+http://github.com/twitter/bootstrap/blob/gh-pages/
+under http://creativecommons.org/licenses/by/3.0/
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Sisu · Javadoc</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="assets/css/docs.css" rel="stylesheet">
+    <link href="assets/css/prettify.min.css" rel="stylesheet">
+
+    <style type="text/css"><!--
+      @media (min-width: 768px) {
+        #outerFrame {
+          width: 100%;
+        }
+      }
+      @media (max-width: 767px) {
+        #outerFrame {
+          margin-left: -20px;
+          margin-right: -20px;
+        }
+      }
+    --></style>
+
+  </head>
+
+  <body data-spy="scroll" data-target=".sisu-docs-sidebar" style="overflow:hidden;background-color:#191919">
+
+    <!-- Navbar
+    ================================================== -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="./index.html"></a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li>
+                <a href="./index.html">Tutorials</a>
+              </li>
+              <li class="active">
+                <a href="./javadoc.html">Javadoc</a>
+              </li>
+              <li class="">
+                <a href="http://eclipse.org/sisu/" target="_blank">Sisu@Eclipse</a>
+              </li>
+              <li class="">
+                <a href="https://github.com/eclipse/sisu.plexus/" target="_blank">GitHub</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+<!-- Subhead
+================================================== -->
+<header class="jumbotron" style="padding:0px">
+</header>
+
+
+
+  <div id="outerFrame" class="container">
+    <!-- Javadoc
+    ================================================== -->
+    <iframe src="apidocs/reference/packages.html" width="100%" height="800px"
+      border="0" frameborder="0" scrolling="yes" id="docFrame" style="overflow:auto">
+      <a href="apidocs/reference/packages.html">org.eclipse.sisu.plexus</a>
+    </iframe>
+  </div>
+
+
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/prettify.min.js"></script>
+    <script src="assets/js/docframe.min.js"></script>
+    <script src="assets/js/docs.js"></script>
+
+  </body>
+</html>

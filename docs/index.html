@@ -5,9 +5,9 @@ http://github.com/twitter/bootstrap/blob/gh-pages/
 under http://creativecommons.org/licenses/by/3.0/
 -->
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
-    <title>Sisu · Javadoc</title>
+    <title>Sisu · Tutorials</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -17,77 +17,787 @@ under http://creativecommons.org/licenses/by/3.0/
     <link href="assets/css/docs.css" rel="stylesheet">
     <link href="assets/css/prettify.min.css" rel="stylesheet">
 
-    <style type="text/css"><!--
-      @media (min-width: 768px) {
-        #outerFrame {
-          width: 100%;
-        }
-      }
-      @media (max-width: 767px) {
-        #outerFrame {
-          margin-left: -20px;
-          margin-right: -20px;
-        }
-      }
-    --></style>
+</head>
 
-  </head>
+<body data-spy="scroll" data-target=".sisu-docs-sidebar">
 
-  <body data-spy="scroll" data-target=".sisu-docs-sidebar" style="overflow:hidden;background-color:#191919">
-
-    <!-- Navbar
-    ================================================== -->
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
+<!-- Navbar
+================================================== -->
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
         <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="brand" href="./index.html"></a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li class="active">
-                <a href="./index.html">Javadoc</a>
-              </li>
-              <li class="">
-                <a href="http://eclipse.org/sisu/" target="_blank">Sisu@Eclipse</a>
-              </li>
-              <li class="">
-                <a href="https://github.com/eclipse/sisu.plexus/" target="_blank">GitHub</a>
-              </li>
-            </ul>
-          </div>
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="./index.html"></a>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li class="active">
+                        <a href="./index.html">Tutorials</a>
+                    </li>
+                    <li class="">
+                        <a href="./javadoc.html">Javadoc</a>
+                    </li>
+                    <li class="">
+                        <a href="http://eclipse.org/sisu/" target="_blank">Sisu@Eclipse</a>
+                    </li>
+                    <li class="">
+                        <a href="https://github.com/eclipse/sisu.plexus/" target="_blank">GitHub</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </div>
     </div>
-
+</div>
 
 
 <!-- Subhead
 ================================================== -->
-<header class="jumbotron" style="padding:0px">
+<header class="jumbotron subhead" id="subhead">
+    <div class="container">
+        <h1>Plexus to JSR330</h1>
+        <p class="lead">Sisu at its best.</p>
+    </div>
 </header>
 
 
+<div class="container">
 
-  <div id="outerFrame" class="container">
-    <!-- Javadoc
+    <!-- Tutorial steps
     ================================================== -->
-    <iframe src="apidocs/reference/packages.html" width="100%" height="800px"
-      border="0" frameborder="0" scrolling="yes" id="docFrame" style="overflow:auto">
-      <a href="apidocs/reference/packages.html">org.eclipse.sisu.plexus</a>
-    </iframe>
-  </div>
+    <div class="row">
+
+        <div class="span3 sisu-docs-sidebar">
+            <ul class="nav nav-list sisu-docs-sidenav">
+                <li><a href="#overview" ><i class="icon-chevron-right"></i> Overview</a></li>
+                <li><a href="#annotations" ><i class="icon-chevron-right"></i> Annotations</a></li>
+                <li><a href="#examples">
+                    <i class="icon-chevron-right"></i>Examples</a>
+                    <ul class="nav nav-list sisu-docs-sidebar">
+                        <li><a href="#component"><i class="icon-chevron-right"></i>&nbsp&nbsp @Component</a></li>
+                        <li><a href="#requirement"><i class="icon-chevron-right"></i>&nbsp&nbsp @Requirement</a></li>
+                        <li><a href="#configuration"><i class="icon-chevron-right"></i>&nbsp&nbsp @Configuration</a></li>
+                        <li><a href="#lifecycle"><i class="icon-chevron-right"></i>&nbsp&nbsp Lifecycle Support</a></li>
+                        <li><a href="#custombinding"><i class="icon-chevron-right"></i>&nbsp&nbsp Custom Binding</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="span9">
+
+            <section id="overview">
+                <div class="page-header">
+                    <h1>Overview</h1>
+                </div>
+                <p class="lead">
+                    This document provides some details on how to convert legacy Plexus components into modern JSR-330 components.
+                </p>
+            </section>
+
+            <section id="annotations">
+                <div class="page-header">
+                    <h1>Annotations</h1>
+                </div>
+                <p class="lead">
+                    For brevity of examples imports are omitted.  The following table defines the meanings and fully-qualified-class-names of the annotations references in the following examples.
+                </p>
+
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col">Annotation</th>
+                        <th scope="col">Class</th>
+                        <th scope="col">Description</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">@Component</th>
+                        <td>org.codehaus.plexus.component.annotations.Component</td>
+                        <td>Legacy Plexus component annotation</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Requirement</th>
+                        <td>org.codehaus.plexus.component.annotations.Requirement</td>
+                        <td>Legacy Plexus injection annotation</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Configuration</th>
+                        <td>org.codehaus.plexus.component.annotations.Configuration</td>
+                        <td>Legacy Plexus configuration annotation</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Named</th>
+                        <td>javax.inject.Named</td>
+                        <td>Standard JSR-330 annotation to provide component name</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Singleton</th>
+                        <td>javax.inject.Singleton</td>
+                        <td>Standard JSR-330 annotation to mark component as singleton</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Typed</th>
+                        <td>javax.enterprise.inject.Typed</td>
+                        <td>JavaEE annotation to mark component type</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Description</th>
+                        <td>org.eclipse.sisu.Description</td>
+                        <td>Sisu-specific annotation to provide a description for a component</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Parameters</th>
+                        <td>org.eclipse.sisu.Parameters</td>
+                        <td>Sisu-specific annotation to mark `Map<String,String>` injection as container context parameters.</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Inject</th>
+                        <td>javax.inject.Inject</td>
+                        <td>Standard JSR-330 annotation to mark field, parameter, method for injection</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Nullable</th>
+                        <td>javax.annotation.Nullable</td>
+                        <td>Standard JSR-305 annotation to mark field, parameter, result value as potentially returning null value</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="alert alert-danger" role="alert">
+                    <p><strong>`javax.inject` vs. `com.google.inject`</strong></p>
+                    <p>There are `com.google.inject` flavors of @Inject, @Named and @Singleton which should NOT be used.</p>
+                    <p>Prefer the standard `javax.inject` versions.</p>
+                </div>
+
+                <h4>References</h4>
+                <p>
+                    http://www.jcp.org/en/jsr/detail?id=330
+                </p>
+                <p>
+                    http://www.jcp.org/en/jsr/detail?id=305
+                </p>
+            </section>
+
+            <section id="examples">
+                <div class="page-header">
+                    <h1>Code Examples</h1>
+                </div>
+
+                <div class="page-header" id="component">
+                    <h2>@Component</h2>
+                </div>
+                <p>Plexus @Component annotations are replaced by standard @Named, @Singleton, etc annotations.</p>
+
+                <div >
+                    <h3>Singletons</h3>
+                </div>
+                <p>For example this Plexus component:</p>
+
+                <pre class="prettyprint">
+@Component(role=Component.class, hint="my")
+public class MyComponent
+    implements Component
+{
+}</pre>
+
+                <p>can be converted to:</p>
+
+                <pre class="prettyprint">
+@Named("my")
+@Singleton
+public class MyComponent
+    implements Component
+{
+}</pre>
+
+                <div class="alert alert-info" role="alert">
+                    <p><strong>Naming Variants</strong></p>
+                    <p>Components which are not directly looked up by names, or otherwise used in a context where the name is important you can omit the value for @Named and the full-qualified-class-name of the component will be used as the name instead.</p>
+                    <pre class="prettyprint">
+package components;
+@Named
+@Singleton
+public class MyComponent
+    implements Component
+{
+}</pre>
+                    <p>Results in a component with implicit name of "components.MyComponent"</p>
+                    <p>Additionally the Sisu Plexus integration has special handling for Plexus default components. Many Plexus applications define objects like:</p>
+                    <pre class="prettyprint">
+@Component(role=Component.class)
+public class DefaultComponent
+    implements Component
+{
+}</pre>
+
+                    <p>The `Default` prefix on the component implementation class causes the binding to be translated to `@Named("default")`, so the conversion would look like:</p>
+                    <pre class="prettyprint">
+package components;
+@Named
+@Singleton
+public class DefaultComponent
+    implements Component
+{
+}</pre>
+
+                    <p>BUT the name bound for this component would be "default".</p>
+                </div>
+
+
+                <div >
+                    <h3>Instance</h3>
+                </div>
+                <p>By default in Plexus, components are singletons, but this is not the case for every component.  This Plexus component is not a singleton:</p>
+
+
+                <pre class="prettyprint">
+@Component(role=Component.class, hint="my", instantiationStrategy="per-lookup")
+public class MyComponent
+    implements Component
+{
+}
+</pre>
+
+                <p>and is converted to:</p>
+
+                <pre class="prettyprint">
+@Named("my")
+public class MyComponent
+    implements Component
+{
+}</pre>
+
+                <p>Notice this is the same as the example above, except with-out the @Singleton annotation.</p>
+
+                <div class="alert alert-info">
+                    <p>Only per-lookup and singleton instantiation strategies have reasonable mappings into Sisu. The keep-alive and poolable strategies are not supported.</p>
+                    <p>Additionally other Plexus-specific component configuration such as lifecycle-handlers, factories, composer, configurator, alias, version, profile, isolatedRealm are NOT supported.</p>
+                </div>
+
+                <div >
+                    <h3>Type Override</h3>
+                </div>
+                <p>By default the type of the component is determined automatically, though in some rare cases an explicit type is required.  To specify the explicit binding type use the @Typed annotation:</p>
+
+                <pre class="prettyprint">
+@Named("my")
+@Typed(Component.class)
+public class MyComponent
+    extends SomeSupportClassHardToGuessTypeFrom
+{
+}</pre>
+
+                <div >
+                    <h3>Descriptions</h3>
+                </div>
+                <p>In some cases component descriptions are required.  There is no standard annotation to provide this, however Sisu provides a custom annotation for this.</p>
+
+                <pre class="prettyprint">
+@Component(role=Component.class, hint="my", description="My custom component")
+public class MyComponent
+    implements Component
+{
+}</pre>
+
+                <p>becomes:</p>
+
+                <pre class="prettyprint">
+@Named("my")
+@Singleton
+@Description("My custom component")
+public class MyComponent
+    implements Component
+{
+}</pre>
+
+
+                <div class="page-header" id="requirement">
+                    <h2>@Requirement</h2>
+                </div>
+
+                <div >
+                    <h3>Basics</h3>
+                </div>
+                <p>@Requirement defines injection points for legacy Plexus components.  These more-or-less line-up directly with replacement with @Inject, though there are more options available as @Inject is support for fields, constructors and methods, where @Requirement only worked with fields.  The recommended option is to replace legacy Plexus injection with constructor injection where possible.</p>
 
 
 
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/prettify.min.js"></script>
-    <script src="assets/js/docframe.min.js"></script>
-    <script src="assets/js/docs.js"></script>
+                <pre class="prettyprint">
+@Component(role=Component.class, hint="my")
+public class MyComponent
+    implements Component
+{
+    @Requirement
+    private AnotherComponent another;
+}</pre>
 
-  </body>
+
+                <p>becomes:</p>
+
+                <pre class="prettyprint">
+@Named("my")
+@Singleton
+public class MyComponent
+    implements Component
+{
+    private final AnotherComponent another;
+
+    @Inject
+    public MyComponent(final AnotherComponent another) {
+    this.another = another;
+}
+}</pre>
+
+
+                <p>Use of constructor injection in this fashion has some impact on replacing legacy Plexus lifecycle Initializable and Contextualizable  interfaces, which often only exist to perform setup once injection is performed.</p>
+
+                <div >
+                    <h3>Alternatives</h3>
+                </div>
+
+                <p>Other options for conversions using field injection:</p>
+
+                <pre class="prettyprint">
+@Named("my")
+@Singleton
+public class MyComponent
+    implements Component
+{
+    @Inject
+    private AnotherComponent another;
+}</pre>
+
+                <div class="alert alert-info">
+                    This is not recommended, as it makes it difficult to UNIT test the code w/o a full container to provide injection, which in itself can be problematic for UNIT testing. We highly recommend this form of injection NOT BE USED.
+                </div>
+
+                <p>or method injection:</p>
+
+                <pre class="prettyprint">
+@Named("my")
+@Singleton
+public class MyComponent
+implements Component
+{
+    private AnotherComponent another;
+
+    @Inject
+    public setAnotherComponent(final AnotherComponent another) {
+        this.another = another;
+    }
+}
+</pre>
+
+                <div >
+                    <h3>Optional</h3>
+                </div>
+                <p>Optional components are configured to be @Nullable</p>
+
+                <pre class="prettyprint">
+@Component(role=Component.class, hint="my")
+public class MyComponent
+    implements Component
+{
+    @Requirement(optional=true)
+    private AnotherComponent another;
+}
+</pre>
+
+                <p>becomes:</p>
+
+                <pre class="prettyprint">
+@Named("my")
+@Singleton
+public class MyComponent
+    implements Component
+{
+    private final AnotherComponent another;
+
+    @Inject
+    public MyComponent(final @Nullable AnotherComponent another) {
+        this.another = another;
+    }
+}
+</pre>
+                <div >
+                    <h3>Names and Hints</h3>
+                </div>
+
+                <p>Legacy Plexus component hints become @Named:</p>
+
+                <pre class="prettyprint">
+@Component(role=Component.class, hint="my")
+public class MyComponent
+    implements Component
+{
+    @Requirement(hint="foo")
+    private AnotherComponent another;
+}
+                </pre>
+
+                <p>becomes:</p>
+
+                <pre class="prettyprint">
+@Named("my")
+@Singleton
+public class MyComponent
+    implements Component
+{
+    private final AnotherComponent another;
+
+    @Inject
+    public MyComponent(final @Named("foo") AnotherComponent another) {
+        this.another = another;
+    }
+}</pre>
+
+                <div >
+                    <h3>Types</h3>
+                </div>
+                <p>Legacy Plexus component roles, which are normally only used for collection types are generally not needed:</p>
+
+                <pre class="prettyprint">
+@Component(role=Component.class, hint="my")
+public class MyComponent
+    implements Component
+{
+    @Requirement(role=AnotherComponent.class)
+    private List<AnotherComponent> components;
+}
+</pre>
+
+                <p>becomes:</p>
+
+                <pre class="prettyprint">
+@Named("my")
+@Singleton
+public class MyComponent
+implements Component
+{
+    private final List<AnotherComponent> components;
+
+    @Inject
+    public MyComponent(final List<AnotherComponent> components) {
+        this.components = components;
+    }
+}</pre>
+                <div class="page-header" id="configuration">
+                    <h2>@Configuration</h2>
+                </div>
+                <p>Plexus configuration injection is handled by `@Inject @Named("${expression}")` injection.</p>
+
+                <div >
+                    <h3>Basics</h3>
+                </div>
+
+                <pre class="prettyprint">
+@Component(role=Component.class, hint="my")
+public class MyComponent
+    implements Component
+{
+    @Configuration(name="configDir")
+    private File configDir;
+}
+</pre>
+
+                <p>becomes:</p>
+
+                <pre class="prettyprint">
+@Named("my")
+@Singleton
+public class MyComponent
+    implements Component
+{
+    private final File configDir;
+
+    @Inject
+    public MyComponent(final @Named("${configDir}") configDir) {
+        this.configDir = configDir;
+    }
+}
+</pre>
+
+                <div>
+                    <h3>Defaults</h3>
+                </div>
+                <p>Default values are provided by expression syntax.</p>
+
+                <pre class="prettyprint">
+@Component(role=Component.class, hint="my")
+public class MyComponent
+    implements Component
+{
+    @Configuration(name="configDir", value="defaultDir")
+    private File configDir;
+}
+</pre>
+
+                <p>becomes:</p>
+
+                <pre class="prettyprint">
+@Named("my")
+@Singleton
+public class MyComponent
+    implements Component
+{
+    private final File configDir;
+
+    @Inject
+    public MyComponent(final @Named("${configDir:-defaultDir}") configDir) {
+        this.configDir = configDir;
+    }
+}
+</pre>
+
+                <div class="page-header" id="lifecycle">
+                    <h2>Lifecycle Support</h2>
+                </div>
+
+                <p>This section is specific to how to adapt legacy Plexus component lifecycle interfaces.  There is no hard-fast way to adapt these, but there are some guidelines to follow.</p>
+
+
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col">Interface</th>
+                        <th scope="col">Class</th>
+                        <th scope="col">Description</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">Initializable</th>
+                        <td>org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable</td>
+                        <td>Hook was used to inform a component once its injection has been performed.</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Contextualizable</th>
+                        <td>org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable</td>
+                        <td>Similar to Initializable but passes in the container context.</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Startable</th>
+                        <td>org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable</td>
+                        <td>Allows components to be started and stopped.</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Disposable</th>
+                        <td>org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable</td>
+                        <td>Hook used to inform a component that it is no longer available in the container.</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+                <div>
+                    <h3>Initializable</h3>
+                </div>
+                <p>By and far this can be replaced by using constructor-inject, and performing the initialize() at the end of the constructor.</p>
+
+                <pre class="prettyprint">
+@Component(role=Component.class, hint="my")
+public class MyComponent
+    implements Component, Initializable
+{
+    @Requirement
+    private AnotherComponent another;
+
+    public initialize() throws InitializationException {
+        another.init();
+    }
+}
+</pre>
+
+                <p>becomes:</p>
+
+                <pre class="prettyprint">
+@Named("my")
+@Singleton
+public class MyComponent
+    implements Component
+{
+    private final AnotherComponent another;
+
+    @Inject
+    public MyComponent(final AnotherComponent another) {
+    this.another = another;
+        another.init();
+    }
+}
+</pre>
+
+                <div>
+                    <h3>Contextualizable</h3>
+                </div>
+                <p>Similar to Initializable, though if the context is needed you can inject the container context parameters with:</p>
+
+                <pre class="prettyprint">
+@Named("my")
+@Singleton
+public class MyComponent
+    implements Component
+{
+    @Inject
+    public MyComponent(final @Parameters Map<String,String> params) {
+        // do something with _context_ params
+    }
+}
+</pre>
+
+                <div>
+                    <h3>Startable</h3>
+                </div>
+                <p>Support for JSR250 lifecycle annotations is available when enabled for the Plexus wrapper ([Maven 3.5+](https://issues.apache.org/jira/browse/MNG-6084) enables JSR250 support). If JSR250 support is not enabled then applications can use other techniques to handle start/stop behavior. The examples below show the solution used in Sonatype Nexus, which relies on a modified implementation of the Google-Guava EventBus to manage lifecycle events.</p>
+
+                <pre class="prettyprint">
+@Component(role=Component.class, hint="my")
+public class MyComponent
+    implements Component, Startable
+{
+    public start() throws StartingException {
+        // do something to "start"
+    }
+
+    public stop() throws StoppingException {
+        // do something to "stop"
+    }
+}
+</pre>
+
+                <p>becomes:</p>
+
+                <pre class="prettyprint">
+import org.sonatype.sisu.goodies.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
+
+@Named("my")
+@Singleton
+public class MyComponent
+    implements Component
+{
+    private final EventBus eventBus;
+
+    @Inject
+    public MyComponent(final EventBus eventBus) {
+        this.eventBus = eventBus;
+        eventBus.register(this);
+    }
+
+    @Subscribe
+    public on(final NexusStartedEvent event) throws Exception {
+        // do something to "start"
+    }
+
+    @Subscribe
+    public on(final NexusStoppedEvent event) throws Exception {
+        // do something to "stop"
+
+        eventBus.unregister(this);
+    }
+}
+</pre>
+
+                <div>
+                    <h3>Disposable</h3>
+                </div>
+                <p>Similar to Startable use of events are used to handle replacement for Disposable components.</p>
+
+                <pre class="prettyprint">
+@Component(role=Component.class, hint="my")
+public class MyComponent
+    implements Component, Disposable
+{
+    public dispose() {
+        // do something to "dispose"
+    }
+}
+</pre>
+
+                <p>becomes:</p>
+
+                <pre class="prettyprint">
+import org.sonatype.sisu.goodies.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
+
+@Named("my")
+@Singleton
+public class MyComponent
+    implements Component
+{
+    private final EventBus eventBus;
+
+    @Inject
+    public MyComponent(final EventBus eventBus) {
+        this.eventBus = eventBus;
+        eventBus.register(this);
+    }
+
+    @Subscribe
+    public on(final NexusStoppedEvent event) throws Exception {
+        // do something to "dispose"
+
+        eventBus.unregister(this);
+    }
+}
+</pre>
+                <div class="page-header" id="custombinding">
+                    <h2>Custom Bindings</h2>
+                </div>
+                <p>Plugins which require additional custom bindings can provide a @Named Guice module to configure components bindings further.</p>
+
+                <p>Sisu will automatically load modules which are @Named and apply them to the injectors bindings.  These modules are really no different than normal Guice modules, except that they need to have the @Named annotation on them so that Sisu can locate them when initializing.</p>
+
+                <pre class="prettyprint">
+@Named
+public class MyPluginModule
+    extends com.google.inject.AbstractModule
+{
+    public void configure() {
+        bind(Component.class).to(MyComponent.class);
+    }
+}
+</pre>
+                <div class="alert alert-info">
+                    <p>Maven Class Loading mechanism does not expose the Guice API to build plugins, but only to core extensions.</p>
+                    <p>So you can only define custom bindings in core extensions. </p>
+                    <p>Note that extensions does not have access to the API by default, you need to expose it yourself using the `extension.xml` config file. See the example [here](https://maven.apache.org/ref/3.9.0/maven-core/core-extensions.html) for more details.</p>
+                </div>
+
+                <div class="alert alert-danger">
+                    <p>Even if you define custom Guice modules in your build plugins by adding the classes in your Classpath, they will not be picked up by maven due to the separation of Classpaths.</p>
+                    <p>If you want to read more about maven class loader, see documentation [here](https://maven.apache.org/guides/mini/guide-maven-classloading.html#Core_Classloader)</p>
+                </div>
+
+            </section>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+<!-- Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <p>Document style adapted from <a href="http://github.com/twitter/bootstrap/blob/gh-pages/">Bootstrap</a> under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+        <p><a href="http://glyphicons.com">Glyphicons Free</a> licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+        <ul class="footer-links">
+        </ul>
+    </div>
+</footer>
+
+
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/prettify.min.js"></script>
+<script src="assets/js/docs.js"></script>
+
+</body>
 </html>
