@@ -27,6 +27,8 @@ on top of [Sisu](https://github.com/eclipse/sisu.inject) and [Google-Guice](http
 
 ## Documentation
 
+[Plexus to JSR330](https://eclipse.github.io/sisu.plexus/)
+
 [Javadoc](https://eclipse.github.io/sisu.plexus/apidocs/)
 
 ## How to Contribute
