@@ -92,7 +92,7 @@ public class SisuIndex
     {
         try
         {
-            new SpaceScanner( _space ).accept( this );
+            new SpaceScanner( _space, true ).accept( this );
         }
         finally
         {
