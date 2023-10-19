@@ -21,11 +21,15 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.AbstractMatcher;
 import com.google.inject.name.Names;
 import com.google.inject.spi.TypeEncounter;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
-public class PropertyListenerTest
-    extends TestCase
+class PropertyListenerTest
 {
     static class Base
     {
@@ -131,8 +135,8 @@ public class PropertyListenerTest
 
     Injector injector;
 
-    @Override
-    public void setUp()
+    @BeforeEach
+    void setUp()
     {
         injector = Guice.createInjector( new AbstractModule()
         {
@@ -164,20 +168,23 @@ public class PropertyListenerTest
         assertNull( base.a );
     }
 
-    public void testNoBindings()
+    @Test
+    void testNoBindings()
     {
         final Bean0 bean0 = injector.getInstance( Bean0.class );
         assertNull( bean0.a );
     }
 
-    public void testPropertyBindings()
+    @Test
+    void testPropertyBindings()
     {
         final Bean1 bean1 = injector.getInstance( Bean1.class );
         assertEquals( "bValue", bean1.b );
         assertEquals( "aValue", bean1.a );
     }
 
-    public void testSpecialProperties()
+    @Test
+    void testSpecialProperties()
     {
         final Bean2 bean2 = injector.getInstance( Bean2.class );
         assertEquals( "dValue", bean2.d );
@@ -197,7 +204,8 @@ public class PropertyListenerTest
         }
     }
 
-    public void testBrokenBinding()
+    @Test
+    void testBrokenBinding()
     {
         try
         {
@@ -210,7 +218,8 @@ public class PropertyListenerTest
         }
     }
 
-    public void testInjectionOrder()
+    @Test
+    void testInjectionOrder()
     {
         assertEquals( "correct order", injector.getInstance( Bean4.class ).a );
     }

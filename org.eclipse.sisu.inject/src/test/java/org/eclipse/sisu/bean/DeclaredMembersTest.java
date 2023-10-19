@@ -14,12 +14,16 @@ import java.lang.reflect.Member;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import junit.framework.TestCase;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-@Category( org.eclipse.sisu.BaseTests.class )
-public class DeclaredMembersTest
-    extends TestCase
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+@Tag( "basetests" )
+class DeclaredMembersTest
 {
     interface A
     {
@@ -65,7 +69,8 @@ public class DeclaredMembersTest
         }
     }
 
-    public void testNullClass()
+    @Test
+    void testNullClass()
     {
         final Iterator<Member> i = new DeclaredMembers( null ).iterator();
 
@@ -81,7 +86,8 @@ public class DeclaredMembersTest
         }
     }
 
-    public void testJavaClass()
+    @Test
+    void testJavaClass()
     {
         final Iterator<Member> i = new DeclaredMembers( Object.class ).iterator();
 
@@ -97,7 +103,8 @@ public class DeclaredMembersTest
         }
     }
 
-    public void testReadOnlyIterator()
+    @Test
+    void testReadOnlyIterator()
     {
         final Iterator<Member> i = new DeclaredMembers( D.class ).iterator();
 
@@ -111,7 +118,8 @@ public class DeclaredMembersTest
         }
     }
 
-    public void testInterfaceHierarchy()
+    @Test
+    void testInterfaceHierarchy()
         throws NoSuchMethodException, NoSuchFieldException
     {
         final Member[] elements = { C.class.getDeclaredMethod( "c" ), C.class.getDeclaredField( "c" ) };
@@ -124,7 +132,8 @@ public class DeclaredMembersTest
         assertEquals( 2, i );
     }
 
-    public void testClassHierarchy()
+    @Test
+    void testClassHierarchy()
         throws NoSuchMethodException, NoSuchFieldException
     {
         final Member[] elements =
@@ -142,7 +151,8 @@ public class DeclaredMembersTest
         assertEquals( 6, i );
     }
 
-    public void testResumableIteration()
+    @Test
+    void testResumableIteration()
         throws ClassNotFoundException
     {
         final Iterator<Member> itr = new DeclaredMembers( Class.forName( "Incomplete" ) ).iterator();

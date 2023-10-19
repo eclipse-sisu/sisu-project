@@ -18,12 +18,16 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import junit.framework.TestCase;
-import org.junit.experimental.categories.Category;
+import org.eclipse.sisu.BaseTests;
+import org.junit.jupiter.api.Test;
 
-@Category( org.eclipse.sisu.BaseTests.class )
-public class RankedSequenceTest
-    extends TestCase
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+@BaseTests
+class RankedSequenceTest
 {
     static final AtomicBoolean active = new AtomicBoolean( true );
 
@@ -35,7 +39,8 @@ public class RankedSequenceTest
 
     static final RankedSequence<Integer> rankedList = new RankedSequence<Integer>();
 
-    public void testOrdering()
+    @Test
+    void testOrdering()
     {
         final RankedSequence<String> list = new RankedSequence<String>();
 
@@ -117,7 +122,8 @@ public class RankedSequenceTest
         assertEquals( "G2", itr.next() );
     }
 
-    public void testEmptyList()
+    @Test
+    void testEmptyList()
     {
         final Iterator<Object> itr = new RankedSequence<Object>().iterator();
 
@@ -144,7 +150,8 @@ public class RankedSequenceTest
         }
     }
 
-    public void testConcurrentIteration()
+    @Test
+    void testConcurrentIteration()
     {
         final Thread[] threads = new Thread[3 * CONCURRENCY];
 
@@ -256,7 +263,7 @@ public class RankedSequenceTest
                         Thread.yield();
                         final int rank = itr.next().intValue();
                         Thread.yield();
-                        assertTrue( "Rank should descend during iteration", lastRank >= rank );
+                        assertTrue( lastRank >= rank, "Rank should descend during iteration" );
                         lastRank = rank;
                     }
                     Thread.yield();

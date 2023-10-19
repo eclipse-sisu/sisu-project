@@ -15,23 +15,22 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.sisu.BaseTests;
 import org.eclipse.sisu.space.URLClassSpace;
+import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 
-import junit.framework.TestCase;
-import org.junit.experimental.categories.Category;
-
-@Category( org.eclipse.sisu.BaseTests.class )
-public class LogsTest
-    extends TestCase
+@BaseTests
+class LogsTest
 {
-    public void testLogging()
+    @Test
+    void testLogging()
     {
         new LoggingExample();
     }
 
-    public void testProductionLogging()
-        throws Exception
+    @Test
+    void testProductionLogging() throws Exception
     {
         try
         {
@@ -59,8 +58,8 @@ public class LogsTest
         }
     }
 
-    public void testFallBackToJDKLogging()
-        throws Exception
+    @Test
+    void testFallBackToJDKLogging() throws Exception
     {
         final Logger rootLogger = Logger.getLogger( "" );
 
@@ -102,8 +101,8 @@ public class LogsTest
         }
     }
 
-    public void testConsoleLogging()
-        throws Exception
+    @Test
+    void testConsoleLogging() throws Exception
     {
         System.setProperty( "org.eclipse.sisu.log", "console" );
         try

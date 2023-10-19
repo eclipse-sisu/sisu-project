@@ -10,11 +10,15 @@
  *******************************************************************************/
 package org.eclipse.sisu.launch;
 
-import java.util.Properties;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import java.util.Properties;
+
+/**
+ * Still JUnit3 based test
+ * Execute with JUnit3 runner.
+ */
 public final class Custom3TestCase
     extends InjectedTestCase
 {

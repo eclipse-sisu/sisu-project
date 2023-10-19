@@ -10,18 +10,21 @@
  *******************************************************************************/
 package org.eclipse.sisu.launch;
 
-import java.util.Properties;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.eclipse.sisu.inject.BeanLocator;
+import java.util.Properties;
 
 import com.google.inject.Binder;
 import com.google.inject.Key;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import org.eclipse.sisu.inject.BeanLocator;
 
+/**
+ * Still JUnit3 based test
+ * Execute with JUnit3 runner.
+ */
 public final class AssistedTestCase
     extends InjectedTestCase
 {

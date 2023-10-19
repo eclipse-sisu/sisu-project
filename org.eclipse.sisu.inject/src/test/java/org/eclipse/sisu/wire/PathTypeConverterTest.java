@@ -12,19 +12,19 @@ package org.eclipse.sisu.wire;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PathTypeConverterTest
-    extends TestCase
+class PathTypeConverterTest
 {
-    public void testPathConversion()
+    @Test
+    void testPathConversion()
     {
         final Path path = Guice.createInjector( new PathTypeConverter(), new AbstractModule()
         {

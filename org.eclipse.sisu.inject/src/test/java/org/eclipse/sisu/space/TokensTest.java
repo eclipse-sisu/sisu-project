@@ -13,16 +13,19 @@ package org.eclipse.sisu.space;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import junit.framework.TestCase;
-import org.junit.experimental.categories.Category;
+import org.eclipse.sisu.BaseTests;
+import org.junit.jupiter.api.Test;
 
-import static java.util.Arrays.asList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Category( org.eclipse.sisu.BaseTests.class )
-public class TokensTest
-    extends TestCase
+@BaseTests
+class TokensTest
 {
-    public void testTokenSplittingByComma()
+    @Test
+    void testTokenSplittingByComma()
     {
         assertNoTokens( Tokens.splitByComma( "" ) );
         assertNoTokens( Tokens.splitByComma( " " ) );
@@ -47,7 +50,8 @@ public class TokensTest
         assertTokens( Tokens.splitByComma( " ,  foo ,,   ,,,  bar,  ,,baz   ,,,foo," ), "foo", "bar", "baz", "foo" );
     }
 
-    public void testTokenSplittingByStar()
+    @Test
+    void testTokenSplittingByStar()
     {
         assertNoTokens( Tokens.splitByStar( "" ) );
         assertTokens( Tokens.splitByStar( " " ), " " );
@@ -77,15 +81,7 @@ public class TokensTest
     {
         Iterator<String> itr = tokens.iterator();
         assertFalse( itr.hasNext() );
-        try
-        {
-            itr.next();
-            fail( "Expected NoSuchElementException" );
-        }
-        catch ( NoSuchElementException e )
-        {
-            // expected
-        }
+        assertThrows( NoSuchElementException.class, () -> itr.next() );
     }
 
     private void assertTokens( final Iterable<String> tokens, final String... expected )
@@ -97,14 +93,6 @@ public class TokensTest
             assertEquals( expected[i], itr.next() );
         }
         assertFalse( itr.hasNext() );
-        try
-        {
-            itr.next();
-            fail( "Expected NoSuchElementException" );
-        }
-        catch ( NoSuchElementException e )
-        {
-            // expected
-        }
+        assertThrows( NoSuchElementException.class, () -> itr.next() );
     }
 }

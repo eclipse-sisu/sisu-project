@@ -18,24 +18,30 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import junit.framework.TestCase;
-import org.junit.experimental.categories.Category;
+import org.eclipse.sisu.BaseTests;
+import org.junit.jupiter.api.Test;
 
-@Category( org.eclipse.sisu.BaseTests.class )
-public class MildElementsTest
-    extends TestCase
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+@BaseTests
+class MildElementsTest
 {
-    public void testSoftElements()
+    @Test
+    void testSoftElements()
     {
         testElements( true );
     }
 
-    public void testWeakElements()
+    @Test
+    void testWeakElements()
     {
         testElements( false );
     }
 
-    private static void testElements( final boolean soft )
+    private static void testElements(final boolean soft)
     {
         final Collection<String> names = new MildElements<String>( new ArrayList<Reference<String>>(), soft );
 

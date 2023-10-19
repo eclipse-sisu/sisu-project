@@ -18,6 +18,8 @@ import org.eclipse.sisu.inject.RankedBindingsTest.Bean;
 import org.eclipse.sisu.inject.RankedBindingsTest.BeanImpl;
 import org.eclipse.sisu.inject.RankedBindingsTest.BeanImpl2;
 import org.eclipse.sisu.inject.RankedBindingsTest.InternalBeanImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -26,10 +28,13 @@ import com.google.inject.Key;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-public class DefaultBeanLocatorTest
-    extends TestCase
+class DefaultBeanLocatorTest
 {
     Injector parent;
 
@@ -41,9 +46,8 @@ public class DefaultBeanLocatorTest
 
     Injector child4;
 
-    @Override
-    public void setUp()
-        throws Exception
+    @BeforeEach
+    public void setUp() throws Exception
     {
         parent = Guice.createInjector( new AbstractModule()
         {
@@ -98,7 +102,8 @@ public class DefaultBeanLocatorTest
         } );
     }
 
-    public void testDefaultLocator()
+    @Test
+    void testDefaultLocator()
     {
         final BeanLocator locator = parent.getInstance( BeanLocator.class );
         assertSame( locator, parent.getInstance( MutableBeanLocator.class ) );
@@ -142,7 +147,8 @@ public class DefaultBeanLocatorTest
         }
     }
 
-    public void testInjectorPublisherEquality()
+    @Test
+    void testInjectorPublisherEquality()
     {
         final RankingFunction function1 = new DefaultRankingFunction( 1 );
         final RankingFunction function2 = new DefaultRankingFunction( 2 );
@@ -210,7 +216,8 @@ public class DefaultBeanLocatorTest
                                                                                            function2 ).hashCode() );
     }
 
-    public void testInjectorOrdering()
+    @Test
+    void testInjectorOrdering()
     {
         final MutableBeanLocator locator = new DefaultBeanLocator();
 
@@ -340,7 +347,8 @@ public class DefaultBeanLocatorTest
         assertFalse( i.hasNext() );
     }
 
-    public void testExistingInjectors()
+    @Test
+    void testExistingInjectors()
     {
         final MutableBeanLocator locator = new DefaultBeanLocator();
 

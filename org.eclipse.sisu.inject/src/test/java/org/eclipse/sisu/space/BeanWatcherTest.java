@@ -25,15 +25,20 @@ import org.eclipse.sisu.EagerSingleton;
 import org.eclipse.sisu.Mediator;
 import org.eclipse.sisu.inject.InjectorBindings;
 import org.eclipse.sisu.inject.MutableBeanLocator;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BeanWatcherTest
-    extends TestCase
 {
     @Qualifier
     @Retention( RetentionPolicy.RUNTIME )
@@ -169,9 +174,9 @@ public class BeanWatcherTest
     @Inject
     private Injector injector;
 
-    @Override
-    protected void setUp()
-        throws Exception
+    @BeforeEach
+    public void setUp()
+throws Exception
     {
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );
@@ -186,6 +191,7 @@ public class BeanWatcherTest
         } ).injectMembers( this );
     }
 
+    @Test
     public void testWatchers()
     {
         assertTrue( CItem.initialized );

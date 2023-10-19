@@ -10,25 +10,29 @@
  *******************************************************************************/
 package org.eclipse.sisu.space;
 
-import static org.eclipse.sisu.space.FileEntryIteratorTest.expand;
-
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
-import junit.framework.TestCase;
-import org.junit.experimental.categories.Category;
+import org.eclipse.sisu.BaseTests;
+import org.junit.jupiter.api.Test;
 
-@Category( org.eclipse.sisu.BaseTests.class )
-public class ResourceEnumerationTest
-    extends TestCase
+import static org.eclipse.sisu.space.FileEntryIteratorTest.expand;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+@BaseTests
+class ResourceEnumerationTest
 {
     private static final URL COMMONS_LOGGING_JAR =
         ZipEntryIteratorTest.class.getResource( "commons-logging-1.1.1.jar" );
 
-    public void testResourceEnumeration()
-        throws Exception
+    @Test
+    void testResourceEnumeration() throws Exception
     {
         final Enumeration<URL> e =
             new ResourceEnumeration( null, null, true,
@@ -52,7 +56,8 @@ public class ResourceEnumerationTest
         }
     }
 
-    public void testFixedEnumeration()
+    @Test
+    void testFixedEnumeration()
     {
         final Enumeration<URL> e1 = new ResourceEnumeration( "org/apache/commons/logging", "LogFactory.clazz", false,
                                                              new URL[] { COMMONS_LOGGING_JAR } );
@@ -67,7 +72,8 @@ public class ResourceEnumerationTest
         assertFalse( e2.hasMoreElements() );
     }
 
-    public void testRecursiveEnumeration()
+    @Test
+    void testRecursiveEnumeration()
     {
         final Enumeration<URL> e =
             new ResourceEnumeration( "/", "LogFactory.class", true, new URL[] { COMMONS_LOGGING_JAR } );
@@ -77,7 +83,8 @@ public class ResourceEnumerationTest
         assertFalse( e.hasMoreElements() );
     }
 
-    public void testGlobbedEnumeration()
+    @Test
+    void testGlobbedEnumeration()
     {
         int n = 0;
         final Enumeration<URL> e = new ResourceEnumeration( "/", "*", true, new URL[] { COMMONS_LOGGING_JAR } );
@@ -89,7 +96,8 @@ public class ResourceEnumerationTest
         assertEquals( 33, n );
     }
 
-    public void testGlobbedEnumerationStart()
+    @Test
+    void testGlobbedEnumerationStart()
     {
         final Enumeration<URL> e =
             new ResourceEnumeration( null, "*$2.class", true, new URL[] { COMMONS_LOGGING_JAR } );
@@ -100,7 +108,8 @@ public class ResourceEnumerationTest
         assertFalse( e.hasMoreElements() );
     }
 
-    public void testGlobbedEnumerationEnd()
+    @Test
+    void testGlobbedEnumerationEnd()
     {
         final Enumeration<URL> e =
             new ResourceEnumeration( null, "SimpleLog.*", true, new URL[] { COMMONS_LOGGING_JAR } );
@@ -110,7 +119,8 @@ public class ResourceEnumerationTest
         assertFalse( e.hasMoreElements() );
     }
 
-    public void testGlobbedEnumerationMiddle()
+    @Test
+    void testGlobbedEnumerationMiddle()
     {
         final Enumeration<URL> e =
             new ResourceEnumeration( null, "LogFactory*.class", true, new URL[] { COMMONS_LOGGING_JAR } );
@@ -130,7 +140,8 @@ public class ResourceEnumerationTest
         assertFalse( e.hasMoreElements() );
     }
 
-    public void testMultiGlobbedEnumeration()
+    @Test
+    void testMultiGlobbedEnumeration()
     {
         final Enumeration<URL> e = new ResourceEnumeration( null, "*Fact*$*", true, new URL[] { COMMONS_LOGGING_JAR } );
 
@@ -147,7 +158,8 @@ public class ResourceEnumerationTest
         assertFalse( e.hasMoreElements() );
     }
 
-    public void testSubPathEnumeration()
+    @Test
+    void testSubPathEnumeration()
     {
         final Enumeration<URL> e = new ResourceEnumeration( "/org/apache/commons/logging/impl", "*Fact*$*", true,
                                                             new URL[] { COMMONS_LOGGING_JAR } );
@@ -159,7 +171,8 @@ public class ResourceEnumerationTest
         assertFalse( e.hasMoreElements() );
     }
 
-    public void testNonRecursiveSubPathEnumeration()
+    @Test
+    void testNonRecursiveSubPathEnumeration()
     {
         final Enumeration<URL> e = new ResourceEnumeration( "/org/apache/commons/logging/", "*Fact*$*", false,
                                                             new URL[] { COMMONS_LOGGING_JAR } );
@@ -174,8 +187,8 @@ public class ResourceEnumerationTest
         assertFalse( e.hasMoreElements() );
     }
 
-    public void testBrokenUrlEnumeration()
-        throws Exception
+    @Test
+    void testBrokenUrlEnumeration() throws Exception
     {
         final Enumeration<URL> e =
             new ResourceEnumeration( null, null, true, new URL[] { expand( COMMONS_LOGGING_JAR ) } );
@@ -187,13 +200,6 @@ public class ResourceEnumerationTest
         nextEntryName.setAccessible( true );
         nextEntryName.set( e, "foo:" );
 
-        try
-        {
-            e.nextElement();
-            fail( "Expected IllegalStateException" );
-        }
-        catch ( final IllegalStateException ise )
-        {
-        }
+        assertThrows( IllegalStateException.class, () -> { e.nextElement(); } );
     }
 }

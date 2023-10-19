@@ -16,9 +16,14 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.google.inject.Binder;
+
 import com.google.inject.PrivateModule;
 import com.google.inject.name.Names;
 
+/**
+ * Still JUnit3 based test
+ * Execute with JUnit3 runner.
+ */
 public final class PrivateModuleTestCase
     extends InjectedTestCase
 {

@@ -14,16 +14,18 @@ import javax.inject.Inject;
 
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.inject.DeferredProvider;
+import org.junit.jupiter.api.Test;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Provider;
 import com.google.inject.ProvisionException;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-public class DeferredProviderTest
-    extends TestCase
+class DeferredProviderTest
 {
     interface A
     {
@@ -56,7 +58,8 @@ public class DeferredProviderTest
         B b;
     }
 
-    public void testRootDeferredProvider()
+    @Test
+    void testRootDeferredProvider()
     {
         Guice.createInjector( new AbstractModule()
         {
@@ -70,7 +73,8 @@ public class DeferredProviderTest
         } ).getInstance( C.class );
     }
 
-    public void testChildDeferredProvider()
+    @Test
+    void testChildDeferredProvider()
     {
         Guice.createInjector( new AbstractModule()
         {
@@ -96,7 +100,8 @@ public class DeferredProviderTest
         } ).getInstance( C.class );
     }
 
-    public void testBrokenDeferredProvider()
+    @Test
+    void testBrokenDeferredProvider()
     {
         try
         {
@@ -196,7 +201,8 @@ public class DeferredProviderTest
         }
     }
 
-    public void testDeferredImplementationClass()
+    @Test
+    void testDeferredImplementationClass()
     {
         final ClassSpace space = new URLClassSpace( C.class.getClassLoader(), null );
 

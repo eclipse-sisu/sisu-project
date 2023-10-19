@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.sisu.bean;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -24,19 +27,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
-
 import com.google.inject.TypeLiteral;
 import com.google.inject.util.Types;
+import org.eclipse.sisu.BaseTests;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-import org.junit.experimental.categories.Category;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-@Category( org.eclipse.sisu.BaseTests.class )
-@SuppressWarnings( "unused" )
-public class BeanPropertiesTest
-    extends TestCase
+@BaseTests
+class BeanPropertiesTest
 {
     @Retention( RetentionPolicy.RUNTIME )
     @interface Metadata
@@ -261,7 +263,8 @@ public class BeanPropertiesTest
         }
     }
 
-    public void testInterface()
+    @Test
+    void testInterface()
     {
         for ( final BeanProperty<?> bp : new BeanProperties( A.class ) )
         {
@@ -269,7 +272,8 @@ public class BeanPropertiesTest
         }
     }
 
-    public void testEmptyClass()
+    @Test
+    void testEmptyClass()
     {
         for ( final BeanProperty<?> bp : new BeanProperties( B.class ) )
         {
@@ -277,21 +281,24 @@ public class BeanPropertiesTest
         }
     }
 
-    public void testPropertyField()
+    @Test
+    void testPropertyField()
     {
         final Iterator<BeanProperty<Object>> i = new BeanProperties( C.class ).iterator();
         assertEquals( "name", i.next().getName() );
         assertFalse( i.hasNext() );
     }
 
-    public void testPropertySetter()
+    @Test
+    void testPropertySetter()
     {
         final Iterator<BeanProperty<Object>> i = new BeanProperties( D.class ).iterator();
         assertEquals( "name", i.next().getName() );
         assertFalse( i.hasNext() );
     }
 
-    public void testHashCodeAndEquals()
+    @Test
+    void testHashCodeAndEquals()
         throws Exception
     {
         final BeanProperty<Object> propertyField = new BeanProperties( C.class ).iterator().next();
@@ -319,7 +326,8 @@ public class BeanPropertiesTest
         assertEquals( setter.toString(), propertySetter.toString() );
     }
 
-    public void testSkipInvalidSetters()
+    @Test
+    void testSkipInvalidSetters()
     {
         for ( final BeanProperty<?> bp : new BeanProperties( E.class ) )
         {
@@ -327,7 +335,8 @@ public class BeanPropertiesTest
         }
     }
 
-    public void testPropertyCombination()
+    @Test
+    void testPropertyCombination()
     {
         final Iterator<BeanProperty<Object>> i = new BeanProperties( F.class ).iterator();
         BeanProperty<Object> bp;
@@ -359,7 +368,8 @@ public class BeanPropertiesTest
         }
     }
 
-    public void testConstructor()
+    @Test
+    void testConstructor()
         throws NoSuchMethodException
     {
         final Iterable<Member> members = Collections.singleton( (Member) String.class.getConstructor() );
@@ -367,14 +377,16 @@ public class BeanPropertiesTest
         assertFalse( i.hasNext() );
     }
 
-    public void testPropertyType()
+    @Test
+    void testPropertyType()
     {
         final Iterator<BeanProperty<Object>> i = new BeanProperties( G.class ).iterator();
         assertEquals( TypeLiteral.get( Types.mapOf( BigDecimal.class, Float.class ) ), i.next().getType() );
         assertEquals( TypeLiteral.get( Types.listOf( String.class ) ), i.next().getType() );
     }
 
-    public void testPropertyUpdate()
+    @Test
+    void testPropertyUpdate()
     {
         final Iterator<BeanProperty<Object>> i = new BeanProperties( H.class ).iterator();
         final BeanProperty<Object> a = i.next();
@@ -394,7 +406,8 @@ public class BeanPropertiesTest
         assertEquals( "abc@xyz", component.toString() );
     }
 
-    public void testIllegalAccess()
+    @Test
+    void testIllegalAccess()
     {
         try
         {
@@ -428,7 +441,8 @@ public class BeanPropertiesTest
         }
     }
 
-    public void testPropertyAnnotations()
+    @Test
+    void testPropertyAnnotations()
     {
         final Iterator<BeanProperty<Object>> i = new BeanProperties( I.class ).iterator();
         assertEquals( "foo", i.next().getAnnotation( Named.class ).value() );
@@ -436,7 +450,8 @@ public class BeanPropertiesTest
         assertFalse( i.hasNext() );
     }
 
-    public void testPropertyIteration()
+    @Test
+    void testPropertyIteration()
     {
         final Iterator<BeanProperty<Object>> i = new BeanProperties( J.class ).iterator();
         assertTrue( i.hasNext() );
@@ -452,7 +467,8 @@ public class BeanPropertiesTest
         assertFalse( i.hasNext() );
     }
 
-    public void testBadPropertySetter()
+    @Test
+    void testBadPropertySetter()
     {
         try
         {
@@ -466,13 +482,15 @@ public class BeanPropertiesTest
         }
     }
 
-    public void testSetterNames()
+    @Test
+    void testSetterNames()
     {
         assertFalse( new BeanProperties( L.class ).iterator().hasNext() );
         assertFalse( new BeanProperties( M.class ).iterator().hasNext() );
     }
 
-    public void testIgnoreSetters()
+    @Test
+    void testIgnoreSetters()
     {
         final Iterator<BeanProperty<Object>> i = new BeanProperties( O3.class ).iterator();
 

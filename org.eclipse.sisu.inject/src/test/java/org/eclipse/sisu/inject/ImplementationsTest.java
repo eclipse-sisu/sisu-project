@@ -15,6 +15,8 @@ import java.util.Iterator;
 import org.eclipse.sisu.inject.RankedBindingsTest.Bean;
 import org.eclipse.sisu.inject.RankedBindingsTest.BeanImpl;
 import org.eclipse.sisu.space.LoadedClass;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Binder;
@@ -32,16 +34,16 @@ import com.google.inject.spi.ElementVisitor;
 import com.google.inject.spi.UntargettedBinding;
 import com.google.inject.util.Providers;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class ImplementationsTest
-    extends TestCase
+class ImplementationsTest
 {
     Injector injector;
 
-    @Override
-    public void setUp()
-        throws Exception
+    @BeforeEach
+    void setUp() throws Exception
     {
         injector = Guice.createInjector( new AbstractModule()
         {
@@ -91,7 +93,8 @@ public class ImplementationsTest
         } );
     }
 
-    public void testImplementationVisitor()
+    @Test
+    void testImplementationVisitor()
     {
         assertEquals( BeanImpl.class, Implementations.find( new UntargettedBinding<BeanImpl>()
         {

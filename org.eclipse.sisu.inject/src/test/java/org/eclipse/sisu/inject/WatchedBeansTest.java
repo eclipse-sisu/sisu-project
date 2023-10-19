@@ -19,6 +19,8 @@ import org.eclipse.sisu.Mediator;
 import org.eclipse.sisu.inject.LocatedBeansTest.Marked;
 import org.eclipse.sisu.inject.RankedBindingsTest.Bean;
 import org.eclipse.sisu.inject.RankedBindingsTest.BeanImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -26,10 +28,13 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class WatchedBeansTest
-    extends TestCase
+class WatchedBeansTest
 {
     Injector parent;
 
@@ -39,9 +44,8 @@ public class WatchedBeansTest
 
     Injector child3;
 
-    @Override
-    public void setUp()
-        throws Exception
+    @BeforeEach
+    void setUp() throws Exception
     {
         parent = Guice.createInjector( new AbstractModule()
         {
@@ -97,8 +101,9 @@ public class WatchedBeansTest
         }
     }
 
-    @SuppressWarnings( { "rawtypes", "unchecked" } )
-    public void testWatchedBeans()
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Test
+    void testWatchedBeans()
     {
         final MutableBeanLocator locator = new DefaultBeanLocator();
         RankedSequence<String> names = new RankedSequence<String>();
@@ -200,8 +205,9 @@ public class WatchedBeansTest
         }
     }
 
-    @SuppressWarnings( { "rawtypes", "unchecked" } )
-    public void testBrokenWatcher()
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Test
+    void testBrokenWatcher()
     {
         final MutableBeanLocator locator = new DefaultBeanLocator();
 

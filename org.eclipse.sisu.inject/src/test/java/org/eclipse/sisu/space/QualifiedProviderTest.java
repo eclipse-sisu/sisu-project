@@ -20,10 +20,11 @@ import javax.inject.Provider;
 
 import com.google.inject.Guice;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class QualifiedProviderTest
-    extends TestCase
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class QualifiedProviderTest
 {
     @Named( "jsr330-counting" )
     static class JSR330CountingThreadProvider
@@ -80,7 +81,8 @@ public class QualifiedProviderTest
     @Named( "guice-counting" )
     Provider<Thread> guiceThreadProvider;
 
-    public void testQualifiedProvider()
+    @Test
+    void testQualifiedProvider()
     {
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );

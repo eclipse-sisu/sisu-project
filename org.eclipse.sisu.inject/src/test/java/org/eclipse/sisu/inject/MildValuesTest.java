@@ -18,24 +18,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import junit.framework.TestCase;
-import org.junit.experimental.categories.Category;
+import org.eclipse.sisu.BaseTests;
+import org.junit.jupiter.api.Test;
 
-@Category( org.eclipse.sisu.BaseTests.class )
-public class MildValuesTest
-    extends TestCase
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+@BaseTests
+class MildValuesTest
 {
-    public void testSoftValues()
+    @Test
+    void testSoftValues()
     {
         testValues( true );
     }
 
-    public void testWeakValues()
+    @Test
+    void testWeakValues()
     {
         testValues( false );
     }
 
-    private static void testValues( final boolean soft )
+    private static void testValues(final boolean soft)
     {
         final Map<String, String> names =
             new MildValues<String, String>( new LinkedHashMap<String, Reference<String>>(), soft );

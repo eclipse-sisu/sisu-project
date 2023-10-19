@@ -15,21 +15,25 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import org.eclipse.sisu.BaseTests;
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.inject.DeferredProvider;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-import org.junit.experimental.categories.Category;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-@Category( org.eclipse.sisu.BaseTests.class )
-public class DeferredClassTest
-    extends TestCase
+@BaseTests
+class DeferredClassTest
 {
     URLClassLoader testLoader;
 
-    @Override
-    protected void setUp()
-        throws MalformedURLException
+    @BeforeEach
+    void setUp() throws MalformedURLException
     {
         testLoader =
             URLClassLoader.newInstance( new URL[] { new File( "target/test-classes" ).toURI().toURL() }, null );
@@ -39,7 +43,8 @@ public class DeferredClassTest
     {
     }
 
-    public void testStrongDeferredClass()
+    @Test
+    void testStrongDeferredClass()
     {
         final String clazzName = Dummy.class.getName();
         final ClassSpace space = new URLClassSpace( testLoader );
@@ -85,7 +90,8 @@ public class DeferredClassTest
         assertTrue( clazz.toString().contains( space.toString() ) );
     }
 
-    public void testLoadedClass()
+    @Test
+    void testLoadedClass()
     {
         final DeferredClass<?> dummyClazz = new LoadedClass<Dummy>( Dummy.class );
         final DeferredClass<?> stringClazz = new LoadedClass<String>( String.class );
@@ -105,7 +111,8 @@ public class DeferredClassTest
         assertEquals( "Loaded " + Dummy.class + " from " + Dummy.class.getClassLoader(), dummyClazz.toString() );
     }
 
-    public void testMissingStrongDeferredClass()
+    @Test
+    void testMissingStrongDeferredClass()
     {
         try
         {

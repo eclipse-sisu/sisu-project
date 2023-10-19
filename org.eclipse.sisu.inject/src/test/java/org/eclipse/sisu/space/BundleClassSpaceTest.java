@@ -22,17 +22,25 @@ import java.util.NoSuchElementException;
 import java.util.jar.Manifest;
 
 import org.apache.felix.framework.FrameworkFactory;
+import org.eclipse.sisu.BaseTests;
 import org.eclipse.sisu.inject.DeferredClass;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
 import org.osgi.framework.launch.Framework;
 
-import junit.framework.TestCase;
-import org.junit.experimental.categories.Category;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-@Category( org.eclipse.sisu.BaseTests.class )
-public class BundleClassSpaceTest
-    extends TestCase
+@BaseTests
+class BundleClassSpaceTest
 {
     private static final URL EMPTY_BUNDLE = ZipEntryIteratorTest.class.getResource( "empty.jar" );
 
@@ -42,11 +50,9 @@ public class BundleClassSpaceTest
 
     private Framework framework;
 
-    @Override
-    protected void setUp()
-        throws Exception
+    @BeforeEach
+    void setUp() throws Exception
     {
-        super.setUp();
 
         final Map<String, String> configuration = new HashMap<String, String>();
         configuration.put( Constants.FRAMEWORK_STORAGE_CLEAN, Constants.FRAMEWORK_STORAGE_CLEAN_ONFIRSTINIT );
@@ -57,18 +63,15 @@ public class BundleClassSpaceTest
         framework.start();
     }
 
-    @Override
-    protected void tearDown()
-        throws Exception
+    @AfterEach
+    void tearDown() throws Exception
     {
         framework.stop();
         framework.waitForStop( 0 );
-
-        super.tearDown();
     }
 
-    public void testHashCodeAndEquals()
-        throws Exception
+    @Test
+    void testHashCodeAndEquals() throws Exception
     {
         final Bundle testBundle = framework.getBundleContext().installBundle( LOGGING_BUNDLE.toString() );
         final ClassSpace space = new BundleClassSpace( testBundle );
@@ -109,8 +112,8 @@ public class BundleClassSpaceTest
         assertEquals( testBundle.toString(), space.toString() );
     }
 
-    public void testClassSpaceResources()
-        throws Exception
+    @Test
+    void testClassSpaceResources() throws Exception
     {
         final Bundle testBundle1 = framework.getBundleContext().installBundle( LOGGING_BUNDLE.toString() );
         final ClassSpace space1 = new BundleClassSpace( testBundle1 );
@@ -172,8 +175,8 @@ public class BundleClassSpaceTest
         new Manifest( manifestURL.openStream() );
     }
 
-    public void testDeferredClass()
-        throws Exception
+    @Test
+    void testDeferredClass() throws Exception
     {
         final Bundle testBundle = framework.getBundleContext().installBundle( LOGGING_BUNDLE.toString() );
         final ClassSpace space = new BundleClassSpace( testBundle );
@@ -195,7 +198,8 @@ public class BundleClassSpaceTest
         }
     }
 
-    public void testBrokenResources()
+    @Test
+    void testBrokenResources()
     {
         final InvocationHandler handler = new InvocationHandler()
         {

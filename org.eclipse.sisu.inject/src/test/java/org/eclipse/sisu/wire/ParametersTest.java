@@ -16,15 +16,16 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.eclipse.sisu.Parameters;
+import org.junit.jupiter.api.Test;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Provides;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ParametersTest
-    extends TestCase
+class ParametersTest
 {
     @Inject
     @Parameters
@@ -34,7 +35,8 @@ public class ParametersTest
     @Parameters
     Map<String, String> properties;
 
-    public void testDefaultParameters()
+    @Test
+    void testDefaultParameters()
     {
         Guice.createInjector( new WireModule( new AbstractModule()
         {
@@ -49,8 +51,9 @@ public class ParametersTest
         assertEquals( 0, arguments.length );
     }
 
-    @SuppressWarnings( { "unchecked", "rawtypes" } )
-    public void testCustomParameters()
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Test
+    void testCustomParameters()
     {
         Guice.createInjector( new WireModule( new AbstractModule()
         {

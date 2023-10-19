@@ -18,12 +18,15 @@ import com.google.inject.Guice;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class URLTypeConverterTest
-    extends TestCase
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+class URLTypeConverterTest
 {
-    public void testURLConversion()
+    @Test
+    void testURLConversion()
     {
         final URL url = Guice.createInjector( new URLTypeConverter(), new AbstractModule()
         {
@@ -37,7 +40,8 @@ public class URLTypeConverterTest
         assertEquals( "http://127.0.0.1/", url.toString() );
     }
 
-    public void testBrokenURLConversion()
+    @Test
+    void testBrokenURLConversion()
     {
         try
         {

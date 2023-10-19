@@ -29,13 +29,16 @@ import com.google.inject.ProvidedBy;
 import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
 import com.google.inject.util.Types;
+import org.eclipse.sisu.BaseTests;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-import org.junit.experimental.categories.Category;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-@Category( org.eclipse.sisu.BaseTests.class )
-public class TypeArgumentsTest
-    extends TestCase
+@BaseTests
+class TypeArgumentsTest
 {
     static TypeLiteral<Object> OBJECT_TYPE = TypeLiteral.get( Object.class );
 
@@ -70,7 +73,8 @@ public class TypeArgumentsTest
     {
     }
 
-    public void testTypeArguments()
+    @Test
+    void testTypeArguments()
     {
         TypeLiteral<?>[] types;
 
@@ -147,7 +151,8 @@ public class TypeArgumentsTest
 
     List<String[]> stringArrayList;
 
-    public void testComponentType()
+    @Test
+    void testComponentType()
     {
         TypeLiteral<?>[] types;
 
@@ -198,7 +203,8 @@ public class TypeArgumentsTest
         assertEquals( types[0], TypeArguments.get( TypeArguments.get( getFieldType( "stringArrayList" ), 0 ), 0 ) );
     }
 
-    public void testTypeArgumentRangeChecks()
+    @Test
+    void testTypeArgumentRangeChecks()
     {
         try
         {
@@ -266,8 +272,9 @@ public class TypeArgumentsTest
         }
     }
 
-    @SuppressWarnings( "rawtypes" )
-    public void testIsAssignableFrom()
+    @SuppressWarnings("rawtypes")
+    @Test
+    void testIsAssignableFrom()
     {
         // === simple types ===
 
@@ -426,7 +433,8 @@ public class TypeArgumentsTest
                                                      TypeLiteral.get( CallableNumberImpl.class ) ) );
     }
 
-    public void testIsConcrete()
+    @Test
+    void testIsConcrete()
     {
         assertFalse( TypeArguments.isConcrete( Map.class ) );
         assertFalse( TypeArguments.isConcrete( AbstractMap.class ) );
@@ -462,7 +470,8 @@ public class TypeArgumentsTest
     {
     }
 
-    public void testIsImplicit()
+    @Test
+    void testIsImplicit()
     {
         assertFalse( TypeArguments.isImplicit( Map.class ) );
         assertFalse( TypeArguments.isImplicit( AbstractMap.class ) );

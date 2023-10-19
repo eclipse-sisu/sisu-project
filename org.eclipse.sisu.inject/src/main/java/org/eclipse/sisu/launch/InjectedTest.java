@@ -39,7 +39,7 @@ import com.google.inject.Module;
 import com.google.inject.name.Names;
 
 /**
- * Abstract TestNG/JUnit4 test that automatically binds and injects itself.
+ * Abstract TestNG/JUnit4/5 test that automatically binds and injects itself.
  */
 @SuppressWarnings( "unused" )
 public abstract class InjectedTest
