@@ -18,10 +18,9 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.PrivateModule;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class CachingModuleTest
-    extends TestCase
+class CachingModuleTest
 {
     @Named
     static class CustomModule
@@ -45,7 +44,8 @@ public class CachingModuleTest
         }
     }
 
-    public void testQualifiedModule()
+    @Test
+    void testQualifiedModule()
     {
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );

@@ -12,11 +12,12 @@ package org.eclipse.sisu.launch;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
-
 import com.google.inject.Binder;
+import org.junit.jupiter.api.Test;
 
-public final class Custom2Test
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+final class Custom2Test
     extends InjectedTest
 {
     @Override
@@ -29,11 +30,11 @@ public final class Custom2Test
     @Inject
     Foo bean;
 
-    @org.junit.Test
+    @Test
     // @org.junit.jupiter.api.Test
     // @org.testng.annotations.Test
     public void testPerTestCaseCustomization()
     {
-        Assert.assertTrue( bean instanceof TaggedFoo );
+        assertTrue( bean instanceof TaggedFoo );
     }
 }

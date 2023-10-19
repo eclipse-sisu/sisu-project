@@ -15,15 +15,19 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 
-import junit.framework.TestCase;
-import org.junit.experimental.categories.Category;
+import org.eclipse.sisu.BaseTests;
+import org.junit.jupiter.api.Test;
 
-@Category( org.eclipse.sisu.BaseTests.class )
-public class ZipEntryIteratorTest
-    extends TestCase
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+@BaseTests
+class ZipEntryIteratorTest
 {
-    public void testNonJar()
-        throws IOException
+    @Test
+    void testNonJar() throws IOException
     {
         final Iterator<String> i = new ZipEntryIterator( new URL( "file:" ) );
         assertFalse( i.hasNext() );
@@ -37,7 +41,8 @@ public class ZipEntryIteratorTest
         }
     }
 
-    public void testBlankZip()
+    @Test
+    void testBlankZip()
     {
         final Iterator<String> i = new ZipEntryIterator( resource( "blank.zip" ) );
         assertFalse( i.hasNext() );
@@ -51,7 +56,8 @@ public class ZipEntryIteratorTest
         }
     }
 
-    public void testEmptyZip()
+    @Test
+    void testEmptyZip()
     {
         final Iterator<String> i = new ZipEntryIterator( resource( "empty.zip" ) );
         assertFalse( i.hasNext() );
@@ -65,7 +71,8 @@ public class ZipEntryIteratorTest
         }
     }
 
-    public void testEmptyJar()
+    @Test
+    void testEmptyJar()
     {
         final Iterator<String> i = new ZipEntryIterator( resource( "empty.jar" ) );
         assertTrue( i.hasNext() );
@@ -81,7 +88,8 @@ public class ZipEntryIteratorTest
         }
     }
 
-    public void testSimpleZip()
+    @Test
+    void testSimpleZip()
     {
         final Iterator<String> i = new ZipEntryIterator( resource( "simple.zip" ) );
         assertEquals( "0", i.next() );
@@ -102,7 +110,8 @@ public class ZipEntryIteratorTest
         }
     }
 
-    public void testSimpleJar()
+    @Test
+    void testSimpleJar()
     {
         final Iterator<String> i = new ZipEntryIterator( resource( "simple.jar" ) );
         assertEquals( "META-INF/", i.next() );
@@ -130,8 +139,8 @@ public class ZipEntryIteratorTest
         }
     }
 
-    public void testEmbeddedZip()
-        throws MalformedURLException
+    @Test
+    void testEmbeddedZip() throws MalformedURLException
     {
         final Iterator<String> i =
             new ZipEntryIterator( new URL( "jar:" + resource( "embedded.zip" ) + "!/simple.zip" ) );
@@ -155,7 +164,8 @@ public class ZipEntryIteratorTest
         }
     }
 
-    public void testBrokenJar()
+    @Test
+    void testBrokenJar()
     {
         final Iterator<String> i = new ZipEntryIterator( resource( "broken.jar" ) );
         try
@@ -168,8 +178,8 @@ public class ZipEntryIteratorTest
         }
     }
 
-    public void testRemoveNotSupported()
-        throws IOException
+    @Test
+    void testRemoveNotSupported() throws IOException
     {
         final Iterator<String> i = new ZipEntryIterator( new URL( "file:" ) );
         try

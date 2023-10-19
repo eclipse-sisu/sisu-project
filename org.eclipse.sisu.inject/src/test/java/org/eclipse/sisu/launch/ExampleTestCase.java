@@ -10,14 +10,18 @@
  *******************************************************************************/
 package org.eclipse.sisu.launch;
 
-import java.io.File;
-import java.util.Map;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import java.io.File;
+import java.util.Map;
+
 import com.google.inject.name.Names;
 
+/**
+ * Still JUnit3 based test
+ * Execute with JUnit3 runner.
+ */
 public final class ExampleTestCase
     extends InjectedTestCase
 {

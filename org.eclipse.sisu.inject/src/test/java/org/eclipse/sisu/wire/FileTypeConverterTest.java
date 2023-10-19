@@ -17,12 +17,14 @@ import com.google.inject.Guice;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class FileTypeConverterTest
-    extends TestCase
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class FileTypeConverterTest
 {
-    public void testFileConversion()
+    @Test
+    void testFileConversion()
     {
         final File file = Guice.createInjector( new FileTypeConverter(), new AbstractModule()
         {

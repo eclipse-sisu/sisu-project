@@ -18,14 +18,19 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.jar.Manifest;
 
+import org.eclipse.sisu.BaseTests;
 import org.eclipse.sisu.inject.DeferredClass;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-import org.junit.experimental.categories.Category;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Category( org.eclipse.sisu.BaseTests.class )
-public class URLClassSpaceTest
-    extends TestCase
+@BaseTests
+class URLClassSpaceTest
 {
     private static final URL SIMPLE_JAR = URLClassSpaceTest.class.getResource( "simple.jar" );
 
@@ -41,7 +46,8 @@ public class URLClassSpaceTest
 
     private String handlerPkgs;
 
-    protected void setUp()
+    @BeforeEach
+    void setUp()
     {
         handlerPkgs = System.getProperty( "java.protocol.handler.pkgs" );
         if ( null != handlerPkgs )
@@ -54,7 +60,8 @@ public class URLClassSpaceTest
         }
     }
 
-    protected void tearDown()
+    @AfterEach
+    void tearDown()
     {
         if ( null != handlerPkgs )
         {
@@ -66,7 +73,8 @@ public class URLClassSpaceTest
         }
     }
 
-    public void testHashCodeAndEquals()
+    @Test
+    void testHashCodeAndEquals()
     {
         final ClassLoader systemLoader = ClassLoader.getSystemClassLoader();
         final ClassSpace space = new URLClassSpace( systemLoader, null );
@@ -107,8 +115,8 @@ public class URLClassSpaceTest
         assertEquals( systemLoader + "(null)", space.toString() );
     }
 
-    public void testClassSpaceResources()
-        throws IOException
+    @Test
+    void testClassSpaceResources() throws IOException
     {
         final ClassSpace space = new URLClassSpace( URLClassLoader.newInstance( new URL[] { COMMONS_LOGGING_JAR } ) );
         Enumeration<URL> e;
@@ -140,8 +148,8 @@ public class URLClassSpaceTest
         new Manifest( manifestURL.openStream() );
     }
 
-    public void testClassPathExpansion()
-        throws IOException
+    @Test
+    void testClassPathExpansion() throws IOException
     {
         final URLClassSpace space = new URLClassSpace( URLClassLoader.newInstance( new URL[] { SIMPLE_JAR,
             CLASS_PATH_JAR, new URL( "oops:bad/" ), CLASS_PATH_JAR, CORRUPT_MANIFEST } ) );
@@ -161,7 +169,8 @@ public class URLClassSpaceTest
             BROKEN_JAR, COMMONS_LOGGING_JAR }, space.getURLs() ) );
     }
 
-    public void testNullSearchPath()
+    @Test
+    void testNullSearchPath()
     {
         final ClassSpace space = new URLClassSpace( getClass().getClassLoader(), null );
         final Enumeration<URL> e = space.findEntries( null, null, true );
@@ -170,7 +179,8 @@ public class URLClassSpaceTest
         assertFalse( e.hasMoreElements() );
     }
 
-    public void testEmptySearchPath()
+    @Test
+    void testEmptySearchPath()
     {
         final ClassSpace space = new URLClassSpace( getClass().getClassLoader(), new URL[0] );
         final Enumeration<URL> e = space.findEntries( null, null, true );
@@ -179,7 +189,8 @@ public class URLClassSpaceTest
         assertFalse( e.hasMoreElements() );
     }
 
-    public void testBrokenResources()
+    @Test
+    void testBrokenResources()
     {
         final ClassSpace space = new URLClassSpace( new ClassLoader()
         {
@@ -195,7 +206,8 @@ public class URLClassSpaceTest
         assertFalse( space.getResources( "error" ).hasMoreElements() );
     }
 
-    public void testClassPathDetection()
+    @Test
+    void testClassPathDetection()
     {
         final ClassLoader parent = URLClassLoader.newInstance( new URL[] { CLASS_PATH_JAR } );
         final ClassLoader child = URLClassLoader.newInstance( new URL[0], parent );
@@ -227,8 +239,8 @@ public class URLClassSpaceTest
         assertFalse( new URLClassSpace( orphan ).findEntries( "META-INF", "*.MF", false ).hasMoreElements() );
     }
 
-    public void testJarProtocol()
-        throws MalformedURLException
+    @Test
+    void testJarProtocol() throws MalformedURLException
     {
         final URLClassSpace space =
             new URLClassSpace( URLClassLoader.newInstance( new URL[] { new URL( "jar:" + CLASS_PATH_JAR + "!/" ) } ) );
@@ -245,8 +257,8 @@ public class URLClassSpaceTest
         assertFalse( e.hasMoreElements() );
     }
 
-    public void testNestedWar()
-        throws MalformedURLException
+    @Test
+    void testNestedWar() throws MalformedURLException
     {
         final URLClassSpace space = new URLClassSpace( URLClassLoader.newInstance( new URL[] {
             new URL( "jar:" + NESTED_WAR + "!/WEB-INF/classes/" ),

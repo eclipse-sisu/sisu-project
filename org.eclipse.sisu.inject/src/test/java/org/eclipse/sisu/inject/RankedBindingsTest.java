@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.eclipse.sisu.Hidden;
+import org.junit.jupiter.api.Test;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Binding;
@@ -23,10 +24,13 @@ import com.google.inject.Injector;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-public class RankedBindingsTest
-    extends TestCase
+class RankedBindingsTest
 {
     @ImplementedBy( BeanImpl2.class )
     static interface Bean
@@ -84,7 +88,8 @@ public class RankedBindingsTest
         }
     } );
 
-    public void testExistingPublishers()
+    @Test
+    void testExistingPublishers()
     {
         final RankedSequence<BindingPublisher> publishers = new RankedSequence<BindingPublisher>();
 
@@ -134,7 +139,8 @@ public class RankedBindingsTest
         assertFalse( itr.hasNext() );
     }
 
-    public void testPendingPublishers()
+    @Test
+    void testPendingPublishers()
     {
         final RankedBindings<Bean> bindings = new RankedBindings<Bean>( TypeLiteral.get( Bean.class ), null );
 
@@ -219,7 +225,8 @@ public class RankedBindingsTest
         assertFalse( itr.hasNext() );
     }
 
-    public void testPublisherRemoval()
+    @Test
+    void testPublisherRemoval()
     {
         final BindingPublisher publisher0 = new InjectorBindings( injector0, new DefaultRankingFunction( 0 ) );
         final BindingPublisher publisher1 = new InjectorBindings( injector1, new DefaultRankingFunction( 1 ) );

@@ -13,16 +13,17 @@ package org.eclipse.sisu.bean;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class LifecycleTest
-    extends TestCase
+class LifecycleTest
 {
     Injector injector;
 
-    @Override
-    public void setUp()
+    @BeforeEach
+    void setUp()
     {
         injector = Guice.createInjector( new AbstractModule()
         {
@@ -34,7 +35,8 @@ public class LifecycleTest
         } );
     }
 
-    public void testBaseLifecycle()
+    @Test
+    void testBaseLifecycle()
     {
         assertEquals( "a", injector.getInstance( org.eclipse.sisu.bean.alpha.Public.class ).results() );
         assertEquals( "ab", injector.getInstance( org.eclipse.sisu.bean.alpha.Protected.class ).results() );
@@ -49,7 +51,8 @@ public class LifecycleTest
         assertEquals( "abcdwxyz", injector.getInstance( org.eclipse.sisu.bean.alpha.Private.class ).results() );
     }
 
-    public void testOverriddenLifecycle()
+    @Test
+    void testOverriddenLifecycle()
     {
         assertEquals( "bcdA", injector.getInstance( org.eclipse.sisu.bean.alpha.OverriddenPublic.class ).results() );
         assertEquals( "cdAB", injector.getInstance( org.eclipse.sisu.bean.alpha.OverriddenProtected.class ).results() );
@@ -68,7 +71,8 @@ public class LifecycleTest
                       injector.getInstance( org.eclipse.sisu.bean.alpha.OverriddenPrivate.class ).results() );
     }
 
-    public void testHiddenLifecycle()
+    @Test
+    void testHiddenLifecycle()
     {
         assertEquals( "bcd", injector.getInstance( org.eclipse.sisu.bean.alpha.HiddenPublic.class ).results() );
         assertEquals( "cd", injector.getInstance( org.eclipse.sisu.bean.alpha.HiddenProtected.class ).results() );
@@ -83,7 +87,8 @@ public class LifecycleTest
         assertEquals( "dw", injector.getInstance( org.eclipse.sisu.bean.alpha.HiddenPrivate.class ).results() );
     }
 
-    public void testOverriddenLifecycleInDifferentPackage()
+    @Test
+    void testOverriddenLifecycleInDifferentPackage()
     {
         assertEquals( "bcdA", injector.getInstance( org.eclipse.sisu.bean.beta.OverriddenPublic.class ).results() );
         assertEquals( "cdAB", injector.getInstance( org.eclipse.sisu.bean.beta.OverriddenProtected.class ).results() );
@@ -101,7 +106,8 @@ public class LifecycleTest
                       injector.getInstance( org.eclipse.sisu.bean.beta.OverriddenPrivate.class ).results() );
     }
 
-    public void testHiddenLifecycleInDifferentPackage()
+    @Test
+    void testHiddenLifecycleInDifferentPackage()
     {
         assertEquals( "bcd", injector.getInstance( org.eclipse.sisu.bean.beta.HiddenPublic.class ).results() );
         assertEquals( "cd", injector.getInstance( org.eclipse.sisu.bean.beta.HiddenProtected.class ).results() );

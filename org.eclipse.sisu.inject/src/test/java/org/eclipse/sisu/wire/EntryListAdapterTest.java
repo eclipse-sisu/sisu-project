@@ -21,15 +21,20 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 
-import junit.framework.TestCase;
-import org.junit.experimental.categories.Category;
+import org.eclipse.sisu.BaseTests;
+import org.junit.jupiter.api.Test;
 
-@Category( org.eclipse.sisu.BaseTests.class )
-public class EntryListAdapterTest
-    extends TestCase
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+@BaseTests
+class EntryListAdapterTest
 {
-    @SuppressWarnings( "boxing" )
-    public void testListSize()
+    @SuppressWarnings("boxing")
+    @Test
+    void testListSize()
     {
         final Map<String, Integer> map = new HashMap<String, Integer>();
         final List<Integer> list = new EntryListAdapter<Integer>( map.entrySet() );
@@ -47,7 +52,8 @@ public class EntryListAdapterTest
         assertEquals( 2, list.size() );
     }
 
-    public void testEmptyList()
+    @Test
+    void testEmptyList()
     {
         final ListIterator<String> i =
             new EntryListAdapter<String>( Collections.<Entry<Integer, String>> emptyList() ).listIterator( 0 );
@@ -81,8 +87,9 @@ public class EntryListAdapterTest
         assertEquals( -1, i.previousIndex() );
     }
 
-    @SuppressWarnings( "boxing" )
-    public void testInvalidListIterator()
+    @SuppressWarnings("boxing")
+    @Test
+    void testInvalidListIterator()
     {
         final Map<Integer, String> map = new HashMap<Integer, String>();
 
@@ -109,8 +116,9 @@ public class EntryListAdapterTest
         }
     }
 
-    @SuppressWarnings( "boxing" )
-    public void testIterator()
+    @SuppressWarnings("boxing")
+    @Test
+    void testIterator()
     {
         final Map<Integer, String> map = new LinkedHashMap<Integer, String>();
 
@@ -150,8 +158,9 @@ public class EntryListAdapterTest
         }
     }
 
-    @SuppressWarnings( "boxing" )
-    public void testListIterator()
+    @SuppressWarnings("boxing")
+    @Test
+    void testListIterator()
     {
         final Map<Integer, String> map = new LinkedHashMap<Integer, String>();
 
@@ -248,8 +257,9 @@ public class EntryListAdapterTest
         assertEquals( 0, i.previousIndex() );
     }
 
-    @SuppressWarnings( "boxing" )
-    public void testVanishingList()
+    @SuppressWarnings("boxing")
+    @Test
+    void testVanishingList()
     {
         final Map<Integer, String> map = new LinkedHashMap<Integer, String>();
 
@@ -299,8 +309,9 @@ public class EntryListAdapterTest
         assertEquals( 0, i.previousIndex() );
     }
 
-    @SuppressWarnings( "boxing" )
-    public void testCachedList()
+    @SuppressWarnings("boxing")
+    @Test
+    void testCachedList()
     {
         final Map<Integer, String> map = new LinkedHashMap<Integer, String>();
 

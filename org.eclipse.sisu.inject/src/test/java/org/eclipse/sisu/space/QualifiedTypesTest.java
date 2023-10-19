@@ -28,6 +28,8 @@ import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.EagerSingleton;
 import org.eclipse.sisu.Mediator;
 import org.eclipse.sisu.inject.BeanLocator;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Binder;
@@ -38,10 +40,10 @@ import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class QualifiedTypesTest
-    extends TestCase
+class QualifiedTypesTest
 {
     @Named
     static class DefaultB01
@@ -226,9 +228,8 @@ public class QualifiedTypesTest
 
     private Injector injector;
 
-    @Override
-    protected void setUp()
-        throws Exception
+    @BeforeEach
+    void setUp() throws Exception
     {
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );
@@ -258,7 +259,8 @@ public class QualifiedTypesTest
         assertSame( imp, locator.locate( Key.get( api, Legacy.class ) ).iterator().next().getImplementationClass() );
     }
 
-    public void testQualifiedBindings()
+    @Test
+    void testQualifiedBindings()
     {
         checkDefaultBinding( DefaultB01.class, DefaultB01.class );
         checkDefaultBinding( DefaultB02.class, DefaultB02.class );
@@ -339,7 +341,8 @@ public class QualifiedTypesTest
         }
     }
 
-    public void testBadBindings()
+    @Test
+    void testBadBindings()
     {
         try
         {

@@ -22,10 +22,13 @@ import com.google.inject.binder.LinkedBindingBuilder;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class PriorityTest
-    extends TestCase
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class PriorityTest
 {
     static interface Bean
     {
@@ -124,7 +127,8 @@ public class PriorityTest
         }
     } );
 
-    public void testPriorityOverride()
+    @Test
+    void testPriorityOverride()
     {
         final BeanLocator locator = injector.getInstance( BeanLocator.class );
 

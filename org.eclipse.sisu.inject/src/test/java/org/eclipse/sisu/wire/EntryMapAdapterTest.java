@@ -13,15 +13,19 @@ package org.eclipse.sisu.wire;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
-import org.junit.experimental.categories.Category;
+import org.eclipse.sisu.BaseTests;
+import org.junit.jupiter.api.Test;
 
-@Category( org.eclipse.sisu.BaseTests.class )
-public class EntryMapAdapterTest
-    extends TestCase
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@BaseTests
+class EntryMapAdapterTest
 {
-    @SuppressWarnings( "boxing" )
-    public void testMapSize()
+    @SuppressWarnings("boxing")
+    @Test
+    void testMapSize()
     {
         final Map<String, Integer> original = new HashMap<String, Integer>();
         final Map<String, Integer> adapter = new EntryMapAdapter<String, Integer>( original.entrySet() );
@@ -39,8 +43,9 @@ public class EntryMapAdapterTest
         assertEquals( 2, adapter.size() );
     }
 
-    @SuppressWarnings( "boxing" )
-    public void testMapEquality()
+    @SuppressWarnings("boxing")
+    @Test
+    void testMapEquality()
     {
         final Map<Integer, String> original = new HashMap<Integer, String>();
         final Map<Integer, String> adapter = new EntryMapAdapter<Integer, String>( original.entrySet() );

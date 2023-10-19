@@ -17,15 +17,19 @@ import java.util.Map.Entry;
 
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
+import org.eclipse.sisu.BaseTests;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-import org.junit.experimental.categories.Category;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-@Category( org.eclipse.sisu.BaseTests.class )
-public class NamedIterableAdapterTest
-    extends TestCase
+@BaseTests
+class NamedIterableAdapterTest
 {
-    public void testNamedAdapter()
+    @Test
+    void testNamedAdapter()
     {
         final Map<Named, String> original = new LinkedHashMap<Named, String>();
 
@@ -40,12 +44,12 @@ public class NamedIterableAdapterTest
         original.put( Names.named( "2" ), "B" );
         assertEquals( original, adapter );
 
-        assertEquals( "{3=C, 1=A, 2=B}", adapter.toString() );
+        Assertions.assertEquals( "{3=C, 1=A, 2=B}", adapter.toString() );
 
         final Iterator<Entry<String, String>> i = adapter.entrySet().iterator();
-        assertEquals( "3=C", i.next().toString() );
-        assertEquals( "1=A", i.next().toString() );
-        assertEquals( "2=B", i.next().toString() );
+        Assertions.assertEquals( "3=C", i.next().toString() );
+        Assertions.assertEquals( "1=A", i.next().toString() );
+        Assertions.assertEquals( "2=B", i.next().toString() );
 
         original.clear();
 
@@ -61,13 +65,14 @@ public class NamedIterableAdapterTest
             assertTrue( j.hasNext() );
             final Entry<Named, String> lhs = i.next();
             final Entry<String, String> rhs = j.next();
-            assertEquals( lhs.getKey().value(), rhs.getKey() );
-            assertEquals( lhs.getValue(), rhs.getValue() );
+            Assertions.assertEquals( lhs.getKey().value(), rhs.getKey() );
+            Assertions.assertEquals( lhs.getValue(), rhs.getValue() );
         }
         assertFalse( j.hasNext() );
     }
 
-    public void testUnsupportedOperations()
+    @Test
+    void testUnsupportedOperations()
     {
         final Map<Named, String> original = new LinkedHashMap<Named, String>();
 

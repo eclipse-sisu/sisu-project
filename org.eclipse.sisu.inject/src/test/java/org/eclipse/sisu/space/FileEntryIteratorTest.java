@@ -25,15 +25,19 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import junit.framework.TestCase;
-import org.junit.experimental.categories.Category;
+import org.eclipse.sisu.BaseTests;
+import org.junit.jupiter.api.Test;
 
-@Category( org.eclipse.sisu.BaseTests.class )
-public class FileEntryIteratorTest
-    extends TestCase
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+@BaseTests
+class FileEntryIteratorTest
 {
-    public void testURLtoFile()
-        throws MalformedURLException
+    @Test
+    void testURLtoFile() throws MalformedURLException
     {
         assertEquals( "test", FileEntryIterator.toFile( new URL( "file:test" ) ).getPath() );
         assertEquals( "A B C", FileEntryIterator.toFile( new URL( "file:A B C" ) ).getPath() );
@@ -42,8 +46,8 @@ public class FileEntryIteratorTest
         assertEquals( "A+%+C", FileEntryIterator.toFile( new URL( "file:A+%+C" ) ).getPath() );
     }
 
-    public void testNoSuchFile()
-        throws Exception
+    @Test
+    void testNoSuchFile() throws Exception
     {
         final Iterator<String> i = new FileEntryIterator( new URL( "file:UNKNOWN" ), "", true );
         assertFalse( i.hasNext() );
@@ -57,8 +61,8 @@ public class FileEntryIteratorTest
         }
     }
 
-    public void testEmptyFolder()
-        throws Exception
+    @Test
+    void testEmptyFolder() throws Exception
     {
         final Iterator<String> i = new FileEntryIterator( expand( resource( "empty.zip" ) ), "", true );
         assertFalse( i.hasNext() );
@@ -72,8 +76,8 @@ public class FileEntryIteratorTest
         }
     }
 
-    public void testTrivialFolder()
-        throws Exception
+    @Test
+    void testTrivialFolder() throws Exception
     {
         final Iterator<String> i = new FileEntryIterator( expand( resource( "empty.jar" ) ), "", true );
         assertTrue( i.hasNext() );
@@ -91,8 +95,8 @@ public class FileEntryIteratorTest
         }
     }
 
-    public void testSimpleFolder()
-        throws Exception
+    @Test
+    void testSimpleFolder() throws Exception
     {
         final Iterator<String> i = new FileEntryIterator( expand( resource( "simple.jar" ) ), "", true );
 
@@ -121,8 +125,8 @@ public class FileEntryIteratorTest
         assertTrue( names.isEmpty() );
     }
 
-    public void testNoRecursion()
-        throws Exception
+    @Test
+    void testNoRecursion() throws Exception
     {
         final Iterator<String> i = new FileEntryIterator( expand( resource( "simple.jar" ) ), "", false );
 
@@ -142,8 +146,8 @@ public class FileEntryIteratorTest
         assertTrue( names.isEmpty() );
     }
 
-    public void testSubPath()
-        throws Exception
+    @Test
+    void testSubPath() throws Exception
     {
         final Iterator<String> i = new FileEntryIterator( expand( resource( "simple.jar" ) ), "a/b", true );
 
@@ -160,8 +164,8 @@ public class FileEntryIteratorTest
         assertTrue( names.isEmpty() );
     }
 
-    public void testRemoveNotSupported()
-        throws IOException
+    @Test
+    void testRemoveNotSupported() throws IOException
     {
         final Iterator<String> i = new FileEntryIterator( new URL( "file:" ), "", false );
         try
@@ -180,9 +184,8 @@ public class FileEntryIteratorTest
         final File jar = new File( url.toURI() );
         final File dir = new File( jar.getParentFile(), jar.getName() + "_expanded" );
 
-        try
+        try( final ZipFile zip = new ZipFile( jar ) )
         {
-            final ZipFile zip = new ZipFile( jar );
             for ( final Enumeration<? extends ZipEntry> e = zip.entries(); e.hasMoreElements(); )
             {
                 final ZipEntry entry = e.nextElement();
@@ -205,7 +208,6 @@ public class FileEntryIteratorTest
                     in.close();
                 }
             }
-            zip.close();
         }
         catch ( final IOException e )
         {

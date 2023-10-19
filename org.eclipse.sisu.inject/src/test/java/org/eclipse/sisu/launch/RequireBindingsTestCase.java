@@ -14,6 +14,10 @@ import javax.inject.Inject;
 
 import com.google.inject.Binder;
 
+/**
+ * Still JUnit3 based test
+ * Execute with JUnit3 runner.
+ */
 public final class RequireBindingsTestCase
     extends InjectedTestCase
 {

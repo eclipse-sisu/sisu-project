@@ -17,6 +17,7 @@ import org.eclipse.sisu.Description;
 import org.eclipse.sisu.inject.RankedBindingsTest.Bean;
 import org.eclipse.sisu.inject.RankedBindingsTest.BeanImpl;
 import org.eclipse.sisu.space.LoadedClass;
+import org.junit.jupiter.api.Test;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -29,10 +30,13 @@ import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 import com.google.inject.util.Providers;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-public class LazyBeanEntryTest
-    extends TestCase
+class LazyBeanEntryTest
 {
     @Description( "This is a test" )
     static class DescribedBean
@@ -40,7 +44,8 @@ public class LazyBeanEntryTest
     {
     }
 
-    public void testDetails()
+    @Test
+    void testDetails()
     {
         final Key<Bean> key1 = Key.get( Bean.class, Names.named( "1" ) );
         final Key<Bean> key2 = Key.get( Bean.class, Names.named( "2" ) );
@@ -104,7 +109,8 @@ public class LazyBeanEntryTest
         }
     }
 
-    public void testGetContention()
+    @Test
+    void testGetContention()
     {
         final Injector injector = Guice.createInjector( new AbstractModule()
         {
@@ -164,7 +170,8 @@ public class LazyBeanEntryTest
     {
     }
 
-    public void testJsrNamed()
+    @Test
+    void testJsrNamed()
     {
         final Named guiceNamed = Names.named( "TEST" );
 
@@ -219,7 +226,8 @@ public class LazyBeanEntryTest
         }
     }
 
-    public void testToString()
+    @Test
+    void testToString()
     {
         final Key<String> key1 = Key.get( String.class, Names.named( "CLS" ) );
         final Key<String> key2 = Key.get( String.class, Names.named( "PRO" ) );

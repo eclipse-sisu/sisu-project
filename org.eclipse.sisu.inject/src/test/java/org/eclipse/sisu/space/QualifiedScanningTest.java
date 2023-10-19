@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.sisu.space;
 
+import javax.inject.Named;
+import javax.inject.Qualifier;
+import javax.inject.Singleton;
+
 import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -25,18 +29,18 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.inject.Named;
-import javax.inject.Qualifier;
-import javax.inject.Singleton;
-
+import org.eclipse.sisu.BaseTests;
 import org.eclipse.sisu.inject.DeferredClass;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-import org.junit.experimental.categories.Category;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Category( org.eclipse.sisu.BaseTests.class )
-public class QualifiedScanningTest
-    extends TestCase
+@BaseTests
+class QualifiedScanningTest
 {
     @Named
     interface A
@@ -97,7 +101,8 @@ public class QualifiedScanningTest
 
     private String handlerPkgs;
 
-    protected void setUp()
+    @BeforeEach
+    void setUp()
     {
         handlerPkgs = System.getProperty( "java.protocol.handler.pkgs" );
         if ( null != handlerPkgs )
@@ -110,7 +115,8 @@ public class QualifiedScanningTest
         }
     }
 
-    protected void tearDown()
+    @AfterEach
+    void tearDown()
     {
         if ( null != handlerPkgs )
         {
@@ -122,7 +128,8 @@ public class QualifiedScanningTest
         }
     }
 
-    public void testQualifiedScanning()
+    @Test
+    void testQualifiedScanning()
     {
         final TestListener listener = new TestListener();
         final ClassSpace space =
@@ -135,7 +142,8 @@ public class QualifiedScanningTest
         assertTrue( listener.clazzes.contains( E.class ) );
     }
 
-    public void testAdaptedScanning()
+    @Test
+    void testAdaptedScanning()
     {
         final TestListener listener = new TestListener();
         final ClassSpace space =
@@ -169,7 +177,8 @@ public class QualifiedScanningTest
         assertTrue( listener.clazzes.contains( E.class ) );
     }
 
-    public void testFilteredScanning()
+    @Test
+    void testFilteredScanning()
     {
         final TestListener listener = new TestListener();
         final ClassSpace space =
@@ -188,7 +197,8 @@ public class QualifiedScanningTest
         assertTrue( listener.clazzes.contains( D.class ) );
     }
 
-    public void testIndexedScanning()
+    @Test
+    void testIndexedScanning()
     {
         final TestListener listener = new TestListener();
         final ClassSpace space =
@@ -204,8 +214,8 @@ public class QualifiedScanningTest
         assertTrue( listener.clazzes.contains( D.class ) );
     }
 
-    public void testBrokenScanning()
-        throws IOException
+    @Test
+    void testBrokenScanning() throws IOException
     {
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );
@@ -276,8 +286,8 @@ public class QualifiedScanningTest
         assertFalse( SpaceModule.LOCAL_INDEX.findClasses( brokenResourceSpace ).hasMoreElements() );
     }
 
-    public void testSourceDetection()
-        throws MalformedURLException
+    @Test
+    void testSourceDetection() throws MalformedURLException
     {
         final TestListener listener = new TestListener();
 
@@ -318,8 +328,8 @@ public class QualifiedScanningTest
         visitor.leaveSpace();
     }
 
-    public void testOptionalLogging()
-        throws Exception
+    @Test
+    void testOptionalLogging() throws Exception
     {
         final Level level = Logger.getLogger( "" ).getLevel();
         try
@@ -354,7 +364,8 @@ public class QualifiedScanningTest
         }
     }
 
-    public void testICU4J()
+    @Test
+    void testICU4J()
     {
         final ClassLoader loader = getClass().getClassLoader();
         final URL[] urls = { loader.getResource( "icu4j-2.6.1.jar" ) };

@@ -18,10 +18,11 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.name.Names;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class QualifiedModuleTest
-    extends TestCase
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class QualifiedModuleTest
 {
     @javax.inject.Named
     static class CustomModule
@@ -41,7 +42,8 @@ public class QualifiedModuleTest
     @Inject
     private ClassSpace surroundingSpace;
 
-    public void testQualifiedModule()
+    @Test
+    void testQualifiedModule()
     {
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );

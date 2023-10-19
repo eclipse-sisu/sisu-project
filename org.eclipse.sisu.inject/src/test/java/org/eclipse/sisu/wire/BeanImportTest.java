@@ -12,6 +12,14 @@ package org.eclipse.sisu.wire;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
@@ -37,6 +45,7 @@ import org.eclipse.sisu.inject.Sources;
 import org.eclipse.sisu.inject.TypeArguments;
 import org.eclipse.sisu.space.ClassSpace;
 import org.eclipse.sisu.space.URLClassSpace;
+import org.junit.jupiter.api.Test;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Binder;
@@ -53,10 +62,7 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
 
-import junit.framework.TestCase;
-
-public class BeanImportTest
-    extends TestCase
+class BeanImportTest
 {
     @Target( FIELD )
     @Retention( RUNTIME )
@@ -435,7 +441,8 @@ public class BeanImportTest
         }
     }
 
-    public void testUnrestrictedImport()
+    @Test
+    void testUnrestrictedImport()
     {
         final Injector injector = Guice.createInjector( new WireModule( new TestModule() ) );
 
@@ -484,7 +491,8 @@ public class BeanImportTest
         assertTrue( unrestrictedSet.set.contains( unrestrictedList.fuzzy ) );
     }
 
-    public void testNamedImports()
+    @Test
+    void testNamedImports()
     {
         final Injector injector = Guice.createInjector( new WireModule( new TestModule() ) );
 
@@ -504,7 +512,8 @@ public class BeanImportTest
         assertEquals( 2, hintMap.map.size() );
     }
 
-    public void testProviderImports()
+    @Test
+    void testProviderImports()
     {
         final Injector injector = Guice.createInjector( new WireModule( new TestModule() ) );
 
@@ -557,7 +566,8 @@ public class BeanImportTest
         assertEquals( 2, hintMap.namedProviderMap.size() );
     }
 
-    public void testBeanEntries()
+    @Test
+    void testBeanEntries()
     {
         final Injector injector = Guice.createInjector( new WireModule( new TestModule() ) );
 
@@ -580,7 +590,8 @@ public class BeanImportTest
         assertFalse( i.hasNext() );
     }
 
-    public void testPlaceholderImports()
+    @Test
+    void testPlaceholderImports()
     {
         final Injector injector = Guice.createInjector( new WireModule( new TestModule() ) );
 
@@ -683,18 +694,21 @@ public class BeanImportTest
                       ( (PlaceholderConfig) injector.getInstance( Key.get( X.class, Names.named( "PC" ) ) ) ).single );
     }
 
-    public void testDuplicatesAreIgnored()
+    @Test
+    void testDuplicatesAreIgnored()
     {
         Guice.createInjector( new WireModule( new TestModule(), new TestModule(), new TestModule() ) );
     }
 
-    public void testImportSource()
+    @Test
+    void testImportSource()
     {
         final Injector injector = Guice.createInjector( new WireModule( new TestModule() ) );
         assertEquals( LocatorWiring.class.getName(), injector.getBinding( Y.class ).getSource().toString() );
     }
 
-    public void testInvalidTypeArguments()
+    @Test
+    void testInvalidTypeArguments()
     {
         try
         {
@@ -793,7 +807,8 @@ public class BeanImportTest
         }
     }
 
-    public void testGenericInjection()
+    @Test
+    void testGenericInjection()
     {
         final Injector injector = Guice.createInjector( new WireModule( new TestModule() ) );
 
@@ -816,7 +831,8 @@ public class BeanImportTest
                                          0 ) );
     }
 
-    public void testChildWiring()
+    @Test
+    void testChildWiring()
     {
         final Y y = new YImpl();
 
@@ -846,7 +862,8 @@ public class BeanImportTest
                     ( (PlaceholderString) grandchild.getInstance( Key.get( X.class, Names.named( "PS" ) ) ) ).fuzzy );
     }
 
-    public void testParametersLookup()
+    @Test
+    void testParametersLookup()
     {
         final BeanLocator locator = Guice.createInjector( new WireModule( new AbstractModule()
         {
@@ -869,8 +886,9 @@ public class BeanImportTest
         assertFalse( itr.hasNext() );
     }
 
-    @SuppressWarnings( "boxing" )
-    public void testDynamicProxy()
+    @SuppressWarnings("boxing")
+    @Test
+    void testDynamicProxy()
     {
         final Injector injector = Guice.createInjector( new WireModule( new TestModule() ) );
 

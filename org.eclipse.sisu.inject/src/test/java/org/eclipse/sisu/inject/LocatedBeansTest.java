@@ -11,6 +11,10 @@
 package org.eclipse.sisu.inject;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
@@ -23,6 +27,8 @@ import javax.inject.Qualifier;
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.inject.RankedBindingsTest.Bean;
 import org.eclipse.sisu.inject.RankedBindingsTest.BeanImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Binding;
@@ -32,10 +38,7 @@ import com.google.inject.Key;
 import com.google.inject.name.Names;
 import com.google.inject.util.Providers;
 
-import junit.framework.TestCase;
-
-public class LocatedBeansTest
-    extends TestCase
+class LocatedBeansTest
 {
     @Qualifier
     @Retention( RUNTIME )
@@ -68,9 +71,8 @@ public class LocatedBeansTest
 
     Injector injector;
 
-    @Override
-    public void setUp()
-        throws Exception
+    @BeforeEach
+    void setUp() throws Exception
     {
         injector = Guice.createInjector( new AbstractModule()
         {
@@ -93,7 +95,8 @@ public class LocatedBeansTest
         } );
     }
 
-    public void testCacheConcurrency()
+    @Test
+    void testCacheConcurrency()
     {
         final LocatedBeans<Annotation, Bean> beans = locate( Key.get( Bean.class ) );
 
@@ -128,7 +131,8 @@ public class LocatedBeansTest
         assertSame( a, itr2.next().getValue() );
     }
 
-    public void testUnrestrictedSearch()
+    @Test
+    void testUnrestrictedSearch()
     {
         final LocatedBeans<Annotation, Bean> beans = locate( Key.get( Bean.class ) );
         final Iterator<BeanEntry<Annotation, Bean>> itr = beans.iterator();
@@ -152,7 +156,8 @@ public class LocatedBeansTest
         assertFalse( itr.hasNext() );
     }
 
-    public void testNamedSearch()
+    @Test
+    void testNamedSearch()
     {
         final LocatedBeans<Named, Bean> beans = locate( Key.get( Bean.class, Named.class ) );
         final Iterator<BeanEntry<Named, Bean>> itr = beans.iterator();
@@ -170,7 +175,8 @@ public class LocatedBeansTest
         assertFalse( itr.hasNext() );
     }
 
-    public void testNamedWithAttributesSearch()
+    @Test
+    void testNamedWithAttributesSearch()
     {
         final LocatedBeans<Named, Bean> beans = locate( Key.get( Bean.class, Names.named( "Named2" ) ) );
         final Iterator<BeanEntry<Named, Bean>> itr = beans.iterator();
@@ -180,7 +186,8 @@ public class LocatedBeansTest
         assertFalse( itr.hasNext() );
     }
 
-    public void testMarkedSearch()
+    @Test
+    void testMarkedSearch()
     {
         final LocatedBeans<Marked, Bean> beans = locate( Key.get( Bean.class, Marked.class ) );
         final Iterator<BeanEntry<Marked, Bean>> itr = beans.iterator();
@@ -194,7 +201,8 @@ public class LocatedBeansTest
         assertFalse( itr.hasNext() );
     }
 
-    public void testMarkedWithAttributesSearch()
+    @Test
+    void testMarkedWithAttributesSearch()
     {
         final LocatedBeans<Marked, Bean> beans =
             locate( Key.get( Bean.class, MarkedBeanImpl2.class.getAnnotation( Marked.class ) ) );

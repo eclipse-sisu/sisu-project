@@ -36,7 +36,9 @@ import junit.framework.TestCase;
 
 /**
  * Abstract JUnit3 {@link TestCase} that automatically binds and injects itself.
+ * @deprecated Switch to JUnit4 or 5 with {@link InjectedTest}
  */
+@Deprecated
 public abstract class InjectedTestCase
     extends TestCase
     implements Module
