@@ -20,6 +20,9 @@ import org.codehaus.plexus.component.configurator.converters.composite.MapConver
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
+import javax.inject.Named;
+
+@Named( "map-oriented" )
 public class MapOrientedComponentConfigurator
     extends AbstractComponentConfigurator
 {

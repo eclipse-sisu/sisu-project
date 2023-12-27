@@ -18,6 +18,9 @@ import org.codehaus.plexus.component.configurator.converters.special.ClassRealmC
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
+import javax.inject.Named;
+
+@Named( "basic" )
 public class BasicComponentConfigurator
     extends AbstractComponentConfigurator
 {

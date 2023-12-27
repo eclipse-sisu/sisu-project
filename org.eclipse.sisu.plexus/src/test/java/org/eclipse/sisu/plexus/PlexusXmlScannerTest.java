@@ -170,7 +170,7 @@ public class PlexusXmlScannerTest
 
         final Map<Component, DeferredClass<?>> componentMap = scanner.scan( space, true );
 
-        assertEquals( 6, componentMap.size() );
+        assertEquals( 4, componentMap.size() );
 
         final Component component1 =
             new ComponentImpl( DefaultBean.class, Hints.DEFAULT_HINT, Strategies.PER_LOOKUP, "" );
