@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 @BaseTests
 class EntryListAdapterTest
 {
-    @SuppressWarnings("boxing")
+    @SuppressWarnings( "boxing" )
     @Test
     void testListSize()
     {
@@ -87,7 +87,7 @@ class EntryListAdapterTest
         assertEquals( -1, i.previousIndex() );
     }
 
-    @SuppressWarnings("boxing")
+    @SuppressWarnings( "boxing" )
     @Test
     void testInvalidListIterator()
     {
@@ -116,7 +116,7 @@ class EntryListAdapterTest
         }
     }
 
-    @SuppressWarnings("boxing")
+    @SuppressWarnings( "boxing" )
     @Test
     void testIterator()
     {
@@ -158,7 +158,7 @@ class EntryListAdapterTest
         }
     }
 
-    @SuppressWarnings("boxing")
+    @SuppressWarnings( "boxing" )
     @Test
     void testListIterator()
     {
@@ -257,7 +257,7 @@ class EntryListAdapterTest
         assertEquals( 0, i.previousIndex() );
     }
 
-    @SuppressWarnings("boxing")
+    @SuppressWarnings( "boxing" )
     @Test
     void testVanishingList()
     {
@@ -309,7 +309,7 @@ class EntryListAdapterTest
         assertEquals( 0, i.previousIndex() );
     }
 
-    @SuppressWarnings("boxing")
+    @SuppressWarnings( "boxing" )
     @Test
     void testCachedList()
     {

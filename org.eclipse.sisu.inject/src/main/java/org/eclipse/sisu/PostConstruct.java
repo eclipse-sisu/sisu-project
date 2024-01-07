@@ -36,5 +36,6 @@ import java.lang.annotation.Target;
 @Target( value = { ElementType.METHOD } )
 @Retention( RetentionPolicy.RUNTIME )
 @Documented
-public @interface PostConstruct {
+public @interface PostConstruct
+{
 }

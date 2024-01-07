@@ -51,7 +51,7 @@ class ParametersTest
         assertEquals( 0, arguments.length );
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings( { "unchecked", "rawtypes" } )
     @Test
     void testCustomParameters()
     {

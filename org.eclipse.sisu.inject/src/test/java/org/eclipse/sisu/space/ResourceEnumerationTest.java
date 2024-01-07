@@ -32,7 +32,8 @@ class ResourceEnumerationTest
         ZipEntryIteratorTest.class.getResource( "commons-logging-1.1.1.jar" );
 
     @Test
-    void testResourceEnumeration() throws Exception
+    void testResourceEnumeration()
+        throws Exception
     {
         final Enumeration<URL> e =
             new ResourceEnumeration( null, null, true,
@@ -188,7 +189,8 @@ class ResourceEnumerationTest
     }
 
     @Test
-    void testBrokenUrlEnumeration() throws Exception
+    void testBrokenUrlEnumeration()
+        throws Exception
     {
         final Enumeration<URL> e =
             new ResourceEnumeration( null, null, true, new URL[] { expand( COMMONS_LOGGING_JAR ) } );
@@ -200,6 +202,8 @@ class ResourceEnumerationTest
         nextEntryName.setAccessible( true );
         nextEntryName.set( e, "foo:" );
 
-        assertThrows( IllegalStateException.class, () -> { e.nextElement(); } );
+        assertThrows( IllegalStateException.class, () -> {
+            e.nextElement();
+        } );
     }
 }

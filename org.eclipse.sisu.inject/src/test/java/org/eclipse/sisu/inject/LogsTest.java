@@ -30,7 +30,8 @@ class LogsTest
     }
 
     @Test
-    void testProductionLogging() throws Exception
+    void testProductionLogging()
+        throws Exception
     {
         try
         {
@@ -59,7 +60,8 @@ class LogsTest
     }
 
     @Test
-    void testFallBackToJDKLogging() throws Exception
+    void testFallBackToJDKLogging()
+        throws Exception
     {
         final Logger rootLogger = Logger.getLogger( "" );
 
@@ -102,7 +104,8 @@ class LogsTest
     }
 
     @Test
-    void testConsoleLogging() throws Exception
+    void testConsoleLogging()
+        throws Exception
     {
         System.setProperty( "org.eclipse.sisu.log", "console" );
         try

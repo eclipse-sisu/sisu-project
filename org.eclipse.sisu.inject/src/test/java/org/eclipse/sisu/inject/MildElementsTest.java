@@ -41,7 +41,7 @@ class MildElementsTest
         testElements( false );
     }
 
-    private static void testElements(final boolean soft)
+    private static void testElements( final boolean soft )
     {
         final Collection<String> names = new MildElements<String>( new ArrayList<Reference<String>>(), soft );
 

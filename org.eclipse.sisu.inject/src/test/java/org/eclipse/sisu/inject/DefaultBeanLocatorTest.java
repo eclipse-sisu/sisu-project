@@ -47,7 +47,8 @@ class DefaultBeanLocatorTest
     Injector child4;
 
     @BeforeEach
-    public void setUp() throws Exception
+    public void setUp()
+        throws Exception
     {
         parent = Guice.createInjector( new AbstractModule()
         {

@@ -51,7 +51,8 @@ class BundleClassSpaceTest
     private Framework framework;
 
     @BeforeEach
-    void setUp() throws Exception
+    void setUp()
+        throws Exception
     {
 
         final Map<String, String> configuration = new HashMap<String, String>();
@@ -64,14 +65,16 @@ class BundleClassSpaceTest
     }
 
     @AfterEach
-    void tearDown() throws Exception
+    void tearDown()
+        throws Exception
     {
         framework.stop();
         framework.waitForStop( 0 );
     }
 
     @Test
-    void testHashCodeAndEquals() throws Exception
+    void testHashCodeAndEquals()
+        throws Exception
     {
         final Bundle testBundle = framework.getBundleContext().installBundle( LOGGING_BUNDLE.toString() );
         final ClassSpace space = new BundleClassSpace( testBundle );
@@ -113,7 +116,8 @@ class BundleClassSpaceTest
     }
 
     @Test
-    void testClassSpaceResources() throws Exception
+    void testClassSpaceResources()
+        throws Exception
     {
         final Bundle testBundle1 = framework.getBundleContext().installBundle( LOGGING_BUNDLE.toString() );
         final ClassSpace space1 = new BundleClassSpace( testBundle1 );
@@ -176,7 +180,8 @@ class BundleClassSpaceTest
     }
 
     @Test
-    void testDeferredClass() throws Exception
+    void testDeferredClass()
+        throws Exception
     {
         final Bundle testBundle = framework.getBundleContext().installBundle( LOGGING_BUNDLE.toString() );
         final ClassSpace space = new BundleClassSpace( testBundle );

@@ -45,7 +45,8 @@ class WatchedBeansTest
     Injector child3;
 
     @BeforeEach
-    void setUp() throws Exception
+    void setUp()
+        throws Exception
     {
         parent = Guice.createInjector( new AbstractModule()
         {
@@ -101,7 +102,7 @@ class WatchedBeansTest
         }
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings( { "rawtypes", "unchecked" } )
     @Test
     void testWatchedBeans()
     {
@@ -205,7 +206,7 @@ class WatchedBeansTest
         }
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings( { "rawtypes", "unchecked" } )
     @Test
     void testBrokenWatcher()
     {

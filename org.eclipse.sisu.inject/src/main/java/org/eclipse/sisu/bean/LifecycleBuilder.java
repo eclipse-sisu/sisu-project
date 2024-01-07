@@ -29,8 +29,8 @@ final class LifecycleBuilder
         boolean hasJsr250Annotations;
         try
         {
-            hasJsr250Annotations = javax.annotation.PostConstruct.class.isAnnotation()
-                    && javax.annotation.PreDestroy.class.isAnnotation();
+            hasJsr250Annotations =
+                javax.annotation.PostConstruct.class.isAnnotation() && javax.annotation.PreDestroy.class.isAnnotation();
         }
         catch ( final LinkageError e )
         {

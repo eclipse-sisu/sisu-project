@@ -176,7 +176,7 @@ public class BeanWatcherTest
 
     @BeforeEach
     public void setUp()
-throws Exception
+        throws Exception
     {
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );

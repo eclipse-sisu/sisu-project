@@ -886,7 +886,7 @@ class BeanImportTest
         assertFalse( itr.hasNext() );
     }
 
-    @SuppressWarnings("boxing")
+    @SuppressWarnings( "boxing" )
     @Test
     void testDynamicProxy()
     {

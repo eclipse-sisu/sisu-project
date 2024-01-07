@@ -229,7 +229,8 @@ class QualifiedTypesTest
     private Injector injector;
 
     @BeforeEach
-    void setUp() throws Exception
+    void setUp()
+        throws Exception
     {
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );

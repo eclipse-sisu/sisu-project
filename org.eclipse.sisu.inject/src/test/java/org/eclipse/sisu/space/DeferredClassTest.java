@@ -33,7 +33,8 @@ class DeferredClassTest
     URLClassLoader testLoader;
 
     @BeforeEach
-    void setUp() throws MalformedURLException
+    void setUp()
+        throws MalformedURLException
     {
         testLoader =
             URLClassLoader.newInstance( new URL[] { new File( "target/test-classes" ).toURI().toURL() }, null );

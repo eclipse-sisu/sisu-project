@@ -72,7 +72,8 @@ class LocatedBeansTest
     Injector injector;
 
     @BeforeEach
-    void setUp() throws Exception
+    void setUp()
+        throws Exception
     {
         injector = Guice.createInjector( new AbstractModule()
         {

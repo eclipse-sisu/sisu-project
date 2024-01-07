@@ -215,7 +215,8 @@ class QualifiedScanningTest
     }
 
     @Test
-    void testBrokenScanning() throws IOException
+    void testBrokenScanning()
+        throws IOException
     {
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );
@@ -287,7 +288,8 @@ class QualifiedScanningTest
     }
 
     @Test
-    void testSourceDetection() throws MalformedURLException
+    void testSourceDetection()
+        throws MalformedURLException
     {
         final TestListener listener = new TestListener();
 
@@ -329,7 +331,8 @@ class QualifiedScanningTest
     }
 
     @Test
-    void testOptionalLogging() throws Exception
+    void testOptionalLogging()
+        throws Exception
     {
         final Level level = Logger.getLogger( "" ).getLevel();
         try

@@ -272,7 +272,7 @@ class TypeArgumentsTest
         }
     }
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings( "rawtypes" )
     @Test
     void testIsAssignableFrom()
     {

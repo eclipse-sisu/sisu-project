@@ -27,7 +27,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 class ZipEntryIteratorTest
 {
     @Test
-    void testNonJar() throws IOException
+    void testNonJar()
+        throws IOException
     {
         final Iterator<String> i = new ZipEntryIterator( new URL( "file:" ) );
         assertFalse( i.hasNext() );
@@ -140,7 +141,8 @@ class ZipEntryIteratorTest
     }
 
     @Test
-    void testEmbeddedZip() throws MalformedURLException
+    void testEmbeddedZip()
+        throws MalformedURLException
     {
         final Iterator<String> i =
             new ZipEntryIterator( new URL( "jar:" + resource( "embedded.zip" ) + "!/simple.zip" ) );
@@ -179,7 +181,8 @@ class ZipEntryIteratorTest
     }
 
     @Test
-    void testRemoveNotSupported() throws IOException
+    void testRemoveNotSupported()
+        throws IOException
     {
         final Iterator<String> i = new ZipEntryIterator( new URL( "file:" ) );
         try

@@ -41,7 +41,7 @@ class MildValuesTest
         testValues( false );
     }
 
-    private static void testValues(final boolean soft)
+    private static void testValues( final boolean soft )
     {
         final Map<String, String> names =
             new MildValues<String, String>( new LinkedHashMap<String, Reference<String>>(), soft );

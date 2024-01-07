@@ -116,7 +116,8 @@ class URLClassSpaceTest
     }
 
     @Test
-    void testClassSpaceResources() throws IOException
+    void testClassSpaceResources()
+        throws IOException
     {
         final ClassSpace space = new URLClassSpace( URLClassLoader.newInstance( new URL[] { COMMONS_LOGGING_JAR } ) );
         Enumeration<URL> e;
@@ -149,7 +150,8 @@ class URLClassSpaceTest
     }
 
     @Test
-    void testClassPathExpansion() throws IOException
+    void testClassPathExpansion()
+        throws IOException
     {
         final URLClassSpace space = new URLClassSpace( URLClassLoader.newInstance( new URL[] { SIMPLE_JAR,
             CLASS_PATH_JAR, new URL( "oops:bad/" ), CLASS_PATH_JAR, CORRUPT_MANIFEST } ) );
@@ -240,7 +242,8 @@ class URLClassSpaceTest
     }
 
     @Test
-    void testJarProtocol() throws MalformedURLException
+    void testJarProtocol()
+        throws MalformedURLException
     {
         final URLClassSpace space =
             new URLClassSpace( URLClassLoader.newInstance( new URL[] { new URL( "jar:" + CLASS_PATH_JAR + "!/" ) } ) );
@@ -258,7 +261,8 @@ class URLClassSpaceTest
     }
 
     @Test
-    void testNestedWar() throws MalformedURLException
+    void testNestedWar()
+        throws MalformedURLException
     {
         final URLClassSpace space = new URLClassSpace( URLClassLoader.newInstance( new URL[] {
             new URL( "jar:" + NESTED_WAR + "!/WEB-INF/classes/" ),

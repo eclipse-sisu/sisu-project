@@ -41,7 +41,7 @@ class MildKeysTest
         testKeys( false );
     }
 
-    private static void testKeys(final boolean soft)
+    private static void testKeys( final boolean soft )
     {
         final Map<String, String> names =
             new MildKeys<String, String>( new LinkedHashMap<Reference<String>, String>(), soft );

@@ -37,7 +37,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 class FileEntryIteratorTest
 {
     @Test
-    void testURLtoFile() throws MalformedURLException
+    void testURLtoFile()
+        throws MalformedURLException
     {
         assertEquals( "test", FileEntryIterator.toFile( new URL( "file:test" ) ).getPath() );
         assertEquals( "A B C", FileEntryIterator.toFile( new URL( "file:A B C" ) ).getPath() );
@@ -47,7 +48,8 @@ class FileEntryIteratorTest
     }
 
     @Test
-    void testNoSuchFile() throws Exception
+    void testNoSuchFile()
+        throws Exception
     {
         final Iterator<String> i = new FileEntryIterator( new URL( "file:UNKNOWN" ), "", true );
         assertFalse( i.hasNext() );
@@ -62,7 +64,8 @@ class FileEntryIteratorTest
     }
 
     @Test
-    void testEmptyFolder() throws Exception
+    void testEmptyFolder()
+        throws Exception
     {
         final Iterator<String> i = new FileEntryIterator( expand( resource( "empty.zip" ) ), "", true );
         assertFalse( i.hasNext() );
@@ -77,7 +80,8 @@ class FileEntryIteratorTest
     }
 
     @Test
-    void testTrivialFolder() throws Exception
+    void testTrivialFolder()
+        throws Exception
     {
         final Iterator<String> i = new FileEntryIterator( expand( resource( "empty.jar" ) ), "", true );
         assertTrue( i.hasNext() );
@@ -96,7 +100,8 @@ class FileEntryIteratorTest
     }
 
     @Test
-    void testSimpleFolder() throws Exception
+    void testSimpleFolder()
+        throws Exception
     {
         final Iterator<String> i = new FileEntryIterator( expand( resource( "simple.jar" ) ), "", true );
 
@@ -126,7 +131,8 @@ class FileEntryIteratorTest
     }
 
     @Test
-    void testNoRecursion() throws Exception
+    void testNoRecursion()
+        throws Exception
     {
         final Iterator<String> i = new FileEntryIterator( expand( resource( "simple.jar" ) ), "", false );
 
@@ -147,7 +153,8 @@ class FileEntryIteratorTest
     }
 
     @Test
-    void testSubPath() throws Exception
+    void testSubPath()
+        throws Exception
     {
         final Iterator<String> i = new FileEntryIterator( expand( resource( "simple.jar" ) ), "a/b", true );
 
@@ -165,7 +172,8 @@ class FileEntryIteratorTest
     }
 
     @Test
-    void testRemoveNotSupported() throws IOException
+    void testRemoveNotSupported()
+        throws IOException
     {
         final Iterator<String> i = new FileEntryIterator( new URL( "file:" ), "", false );
         try
@@ -184,7 +192,7 @@ class FileEntryIteratorTest
         final File jar = new File( url.toURI() );
         final File dir = new File( jar.getParentFile(), jar.getName() + "_expanded" );
 
-        try( final ZipFile zip = new ZipFile( jar ) )
+        try ( final ZipFile zip = new ZipFile( jar ) )
         {
             for ( final Enumeration<? extends ZipEntry> e = zip.entries(); e.hasMoreElements(); )
             {
@@ -192,7 +200,7 @@ class FileEntryIteratorTest
                 final File path = new File( dir, entry.getName() );
                 if ( !path.toPath().normalize().startsWith( dir.toPath().normalize() ) )
                 {
-                    throw new IOException("Bad zip entry");
+                    throw new IOException( "Bad zip entry" );
                 }
                 if ( entry.isDirectory() )
                 {

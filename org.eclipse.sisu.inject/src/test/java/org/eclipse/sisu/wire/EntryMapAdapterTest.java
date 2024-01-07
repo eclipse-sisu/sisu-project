@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @BaseTests
 class EntryMapAdapterTest
 {
-    @SuppressWarnings("boxing")
+    @SuppressWarnings( "boxing" )
     @Test
     void testMapSize()
     {
@@ -43,7 +43,7 @@ class EntryMapAdapterTest
         assertEquals( 2, adapter.size() );
     }
 
-    @SuppressWarnings("boxing")
+    @SuppressWarnings( "boxing" )
     @Test
     void testMapEquality()
     {

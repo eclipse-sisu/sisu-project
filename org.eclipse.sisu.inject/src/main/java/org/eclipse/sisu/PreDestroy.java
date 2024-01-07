@@ -38,5 +38,6 @@ import java.lang.annotation.Target;
 @Target( value = { ElementType.METHOD } )
 @Retention( RetentionPolicy.RUNTIME )
 @Documented
-public @interface PreDestroy {
+public @interface PreDestroy
+{
 }
