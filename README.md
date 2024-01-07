@@ -32,6 +32,13 @@ Sisu uses [Google-Guice](https://github.com/google/guice) to perform dependency 
 
 [Javadoc](https://eclipse.github.io/sisu.inject/apidocs/)
 
+### Generation of Named Index
+
+Often Sisu's `SpaceModule` doesn't scan the full classpath at run time (for relevant annotations) but relies on a pre-generated index at `META-INF/sisu/javax.inject.Named`. There are two different ways how to create such an index file:
+
+1. By leveraging the Java annotation processor in [org.eclipse.sisu.space.SisuIndexAPT6](https://github.com/eclipse/sisu.inject/blob/master/org.eclipse.sisu.inject/src/main/java/org/eclipse/sisu/space/SisuIndexAPT6.java) to generate the index. One needs to enable via [`javac -processor org.eclipse.sisu.space.SisuIndexAPT6`](https://docs.oracle.com/en/java/javase/17/docs/specs/man/javac.html#annotation-processing) or with the according [`maven-compiler-plugin` parameter `annotationProcessors`](https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#annotationProcessors).
+2. By leveraging the dedicated Maven plugin <https://github.com/eclipse/sisu.mojos/>
+
 ## Related projects
 
 https://github.com/eclipse/sisu.mojos/
