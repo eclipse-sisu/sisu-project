@@ -183,7 +183,8 @@ public class IndexMojo
             new SisuIndex( outputDirectory )
             {
                 @Override
-                protected Writer getWriter( String path ) throws IOException
+                protected Writer getWriter( String path )
+                    throws IOException
                 {
                     Path p = outputDirectory.toPath().resolve( path );
                     Path d = p.getParent();
@@ -279,22 +280,22 @@ public class IndexMojo
         if ( directory.isDirectory() )
         {
             Scanner scanner = buildContext.newScanner( directory );
-            scanner.setIncludes( new String[] {"**/*.class"} );
+            scanner.setIncludes( new String[] { "**/*.class" } );
             scanner.scan();
             String[] includedFiles = scanner.getIncludedFiles();
             if ( includedFiles != null && includedFiles.length > 0 )
             {
-                getLog().debug("Found at least one class file in " + directory );
+                getLog().debug( "Found at least one class file in " + directory );
                 appendFileToClassPath( urls, directory );
             }
             else
             {
-                getLog().debug("No class files found in " + directory );
+                getLog().debug( "No class files found in " + directory );
             }
         }
         else
         {
-            getLog().debug("Path " + directory + " does not exist or is no directory" );
+            getLog().debug( "Path " + directory + " does not exist or is no directory" );
         }
     }
 
