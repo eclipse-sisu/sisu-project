@@ -59,15 +59,16 @@ public abstract class AbstractBasicConverter
     // ----------------------------------------------------------------------
 
     protected Object fromString( final String str, final Class<?> type )
-            throws ComponentConfigurationException
+        throws ComponentConfigurationException
     {
         return fromString( str );
     }
 
     protected Object fromString( final String str )
-        throws ComponentConfigurationException 
+        throws ComponentConfigurationException
     {
-        throw new UnsupportedOperationException("The class " + this.getClass().getName() + " must implement one of the fromString(...) methods, but it doesn't");
+        throw new UnsupportedOperationException( "The class " + this.getClass().getName()
+            + " must implement one of the fromString(...) methods, but it doesn't" );
     }
 
     // ----------------------------------------------------------------------
@@ -76,7 +77,7 @@ public abstract class AbstractBasicConverter
 
     @Override
     protected Object fromExpression( final PlexusConfiguration configuration, final ExpressionEvaluator evaluator,
-                                           final Class<?> type )
+                                     final Class<?> type )
         throws ComponentConfigurationException
     {
         String value = configuration.getValue();

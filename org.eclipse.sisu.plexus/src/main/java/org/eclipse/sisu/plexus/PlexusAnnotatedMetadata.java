@@ -89,9 +89,12 @@ public final class PlexusAnnotatedMetadata
             return text;
         }
         // use same interpolation method as XML for sake of consistency
-        try ( Reader r = new InterpolationFilterReader( new StringReader( text ), variables ) ) {
-            return IOUtil.toString(r);
-        } catch ( IOException e ) {
+        try ( Reader r = new InterpolationFilterReader( new StringReader( text ), variables ) )
+        {
+            return IOUtil.toString( r );
+        }
+        catch ( IOException e )
+        {
             return text; // should never actually happen, as no actual I/O involved
         }
     }

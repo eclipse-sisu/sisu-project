@@ -63,10 +63,11 @@ public class ObjectWithFieldsConverter
                 }
                 else
                 {
-                    new CompositeBeanHelper( lookup, loader, evaluator, listener ).setDefault( bean, value, configuration );
+                    new CompositeBeanHelper( lookup, loader, evaluator, listener ).setDefault( bean, value,
+                                                                                               configuration );
                 }
             }
-            catch( ComponentConfigurationException e )
+            catch ( ComponentConfigurationException e )
             {
                 // fallback: try with constructor taking single string
                 if ( configuration.getChildCount() == 0 && value instanceof String )
@@ -90,7 +91,9 @@ public class ObjectWithFieldsConverter
         }
     }
 
-    private Object fromConstructorTakingString( final Class<?> type, String value, ComponentConfigurationException precedingException ) throws ComponentConfigurationException
+    private Object fromConstructorTakingString( final Class<?> type, String value,
+                                                ComponentConfigurationException precedingException )
+        throws ComponentConfigurationException
     {
         try
         {
@@ -114,7 +117,8 @@ public class ObjectWithFieldsConverter
         }
         catch ( ReflectiveOperationException e )
         {
-            ComponentConfigurationException cce = new ComponentConfigurationException( "Cannot create instance of " + type + " with public constructor having a single String argument", e );
+            ComponentConfigurationException cce = new ComponentConfigurationException( "Cannot create instance of "
+                + type + " with public constructor having a single String argument", e );
             if ( precedingException != null )
             {
                 cce.addSuppressed( precedingException );

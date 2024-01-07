@@ -75,65 +75,51 @@ public class BasicComponentConfiguratorTest
     }
 
     @Test
-    public void testTemporalConvertersWithoutMillisecondsAndOffset() throws ComponentConfigurationException
+    public void testTemporalConvertersWithoutMillisecondsAndOffset()
+        throws ComponentConfigurationException
     {
         TemporalComponent component = new TemporalComponent();
         String dateString = "2023-01-02 03:04:05";
-        configure( component, 
-                "localDateTime", dateString,
-                "localDate", dateString,
-                "localTime", dateString,
-                "instant", dateString,
-                "offsetDateTime", dateString,
-                "offsetTime", dateString,
-                "zonedDateTime", dateString );
-        assertEquals( LocalDateTime.of(2023, 1, 2, 3, 4, 5, 0), component.localDateTime );
-        assertEquals( LocalDate.of(2023, 1, 2), component.localDate );
-        assertEquals( LocalTime.of(3, 4, 5, 0), component.localTime );
+        configure( component, "localDateTime", dateString, "localDate", dateString, "localTime", dateString, "instant",
+                   dateString, "offsetDateTime", dateString, "offsetTime", dateString, "zonedDateTime", dateString );
+        assertEquals( LocalDateTime.of( 2023, 1, 2, 3, 4, 5, 0 ), component.localDateTime );
+        assertEquals( LocalDate.of( 2023, 1, 2 ), component.localDate );
+        assertEquals( LocalTime.of( 3, 4, 5, 0 ), component.localTime );
         ZoneOffset systemOffset = ZoneId.systemDefault().getRules().getOffset( component.localDateTime );
-        assertEquals( OffsetDateTime.of( component.localDateTime, systemOffset).toInstant(), component.instant );
-        assertEquals( OffsetDateTime.of( component.localDateTime, systemOffset), component.offsetDateTime );
+        assertEquals( OffsetDateTime.of( component.localDateTime, systemOffset ).toInstant(), component.instant );
+        assertEquals( OffsetDateTime.of( component.localDateTime, systemOffset ), component.offsetDateTime );
         assertEquals( OffsetTime.of( component.localTime, systemOffset ), component.offsetTime );
         assertEquals( ZonedDateTime.of( component.localDateTime, ZoneId.systemDefault() ), component.zonedDateTime );
     }
 
     @Test
-    public void testTemporalConvertersWithISO8601StringWithOffset() throws ComponentConfigurationException
+    public void testTemporalConvertersWithISO8601StringWithOffset()
+        throws ComponentConfigurationException
     {
         TemporalComponent component = new TemporalComponent();
         String dateString = "2023-01-02T03:04:05.000000900+02:30";
-        configure( component, 
-                "localDateTime", dateString,
-                "localDate", dateString,
-                "localTime", dateString,
-                "instant", dateString,
-                "offsetDateTime", dateString,
-                "offsetTime", dateString,
-                "zonedDateTime", dateString );
-        assertEquals( LocalDateTime.of(2023, 1, 2, 3, 4, 5, 900), component.localDateTime );
-        assertEquals( LocalDate.of(2023, 1, 2), component.localDate );
-        assertEquals( LocalTime.of(3, 4, 5, 900), component.localTime );
+        configure( component, "localDateTime", dateString, "localDate", dateString, "localTime", dateString, "instant",
+                   dateString, "offsetDateTime", dateString, "offsetTime", dateString, "zonedDateTime", dateString );
+        assertEquals( LocalDateTime.of( 2023, 1, 2, 3, 4, 5, 900 ), component.localDateTime );
+        assertEquals( LocalDate.of( 2023, 1, 2 ), component.localDate );
+        assertEquals( LocalTime.of( 3, 4, 5, 900 ), component.localTime );
         ZoneOffset offset = ZoneOffset.ofHoursMinutes( 2, 30 );
-        assertEquals( OffsetDateTime.of( component.localDateTime, offset).toInstant(), component.instant );
-        assertEquals( OffsetDateTime.of( component.localDateTime, offset), component.offsetDateTime );
+        assertEquals( OffsetDateTime.of( component.localDateTime, offset ).toInstant(), component.instant );
+        assertEquals( OffsetDateTime.of( component.localDateTime, offset ), component.offsetDateTime );
         assertEquals( OffsetTime.of( component.localTime, offset ), component.offsetTime );
-        assertEquals( ZonedDateTime.of( component.localDateTime,  offset ), component.zonedDateTime );
+        assertEquals( ZonedDateTime.of( component.localDateTime, offset ), component.zonedDateTime );
     }
 
     @Test
-    public void testTemporalConvertersWithInvalidString() throws ComponentConfigurationException
+    public void testTemporalConvertersWithInvalidString()
+        throws ComponentConfigurationException
     {
         TemporalComponent component = new TemporalComponent();
         String dateString = "invalid";
-        assertThrows( ComponentConfigurationException.class, 
-                () -> configure( component, 
-                "localDateTime", dateString,
-                "localDate", dateString,
-                "localTime", dateString,
-                "instant", dateString,
-                "offsetDateTime", dateString,
-                "offsetTime", dateString,
-                "zonedDateTime", dateString ) );
+        assertThrows( ComponentConfigurationException.class,
+                      () -> configure( component, "localDateTime", dateString, "localDate", dateString, "localTime",
+                                       dateString, "instant", dateString, "offsetDateTime", dateString, "offsetTime",
+                                       dateString, "zonedDateTime", dateString ) );
     }
 
     private void configure( Object component, String... keysAndValues )

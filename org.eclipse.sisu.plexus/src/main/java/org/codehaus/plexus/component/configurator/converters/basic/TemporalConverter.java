@@ -37,9 +37,8 @@ public class TemporalConverter
     /**
      * Supports all formats of {@link org.eclipse.sisu.plexus.PlexusDateTypeConverter}
      */
-    private static final DateTimeFormatter PLEXUS_DATE_TIME_FORMATTER = DateTimeFormatter
-            .ofPattern( "yyyy-MM-dd HH:mm:ss[[a][.S [a]]", Locale.US )
-            .withZone( ZoneId.systemDefault() );
+    private static final DateTimeFormatter PLEXUS_DATE_TIME_FORMATTER =
+        DateTimeFormatter.ofPattern( "yyyy-MM-dd HH:mm:ss[[a][.S [a]]", Locale.US ).withZone( ZoneId.systemDefault() );
 
     public boolean canConvert( final Class<?> type )
     {
@@ -47,15 +46,16 @@ public class TemporalConverter
     }
 
     @Override
-    protected final Object fromString( final String str, final Class<?> type ) throws ComponentConfigurationException
+    protected final Object fromString( final String str, final Class<?> type )
+        throws ComponentConfigurationException
     {
         return createTemporalFromString( str, type );
     }
 
-    private Temporal createTemporalFromString( String value, final Class<?> type ) 
+    private Temporal createTemporalFromString( String value, final Class<?> type )
     {
         TemporalAccessor temporalAccessor;
-        try 
+        try
         {
             temporalAccessor = DateTimeFormatter.ISO_OFFSET_DATE_TIME.parse( value );
         }
@@ -67,11 +67,11 @@ public class TemporalConverter
         if ( type.equals( LocalDate.class ) )
         {
             temporal = LocalDate.from( temporalAccessor );
-        } 
+        }
         else if ( type.equals( LocalDateTime.class ) )
         {
             temporal = LocalDateTime.from( temporalAccessor );
-        } 
+        }
         else if ( type.equals( LocalTime.class ) )
         {
             temporal = LocalTime.from( temporalAccessor );
@@ -88,7 +88,7 @@ public class TemporalConverter
         {
             temporal = ZonedDateTime.from( temporalAccessor ).toOffsetDateTime().toOffsetTime();
         }
-        else if ( type.equals(ZonedDateTime.class ) )
+        else if ( type.equals( ZonedDateTime.class ) )
         {
             temporal = ZonedDateTime.from( temporalAccessor );
         }
