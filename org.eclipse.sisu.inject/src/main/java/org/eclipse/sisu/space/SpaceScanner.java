@@ -43,7 +43,7 @@ public final class SpaceScanner
     private final ClassFinder finder;
 
     /**
-     * If set to {@code true} will throw ISE in case class cannot be scanned
+     * If set to {@code true} will throw {@link RuntimeException} in case class cannot be scanned.
      */
     private final boolean isStrict;
 
@@ -128,7 +128,7 @@ public final class SpaceScanner
      * 
      * @param visitor The class space visitor
      * @param url The class resource URL
-     * @param isStrict If set to {@code true} throws {@link IllegalStateException} in case of parsing issues with the class
+     * @param isStrict If set to {@code true} throws {@link RuntimeException} in case of parsing issues with the class
      */
     public static void accept( final ClassVisitor visitor, final URL url, boolean isStrict )
     {

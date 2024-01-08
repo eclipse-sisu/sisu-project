@@ -61,7 +61,7 @@ public final class SpaceModule
     private final ClassFinder finder;
 
     /**
-     * If set to {@code true} will throw ISE in case class cannot be scanned
+     * If set to {@code true} will throw {@link RuntimeException} in case class cannot be scanned
      */
     private final boolean isStrict;
 
@@ -196,7 +196,7 @@ public final class SpaceModule
         };
 
         /**
-         * Same as {@link #DEFAULT} but throwing {@link IllegalStateException} in case class cannot be scanned.
+         * Same as {@link #DEFAULT} but throwing {@link RuntimeException} in case class cannot be scanned.
          */
         Strategy DEFAULT_STRICT = new Strategy()
         {
