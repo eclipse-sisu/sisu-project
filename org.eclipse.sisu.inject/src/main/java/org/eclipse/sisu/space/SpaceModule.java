@@ -60,29 +60,64 @@ public final class SpaceModule
 
     private final ClassFinder finder;
 
+    /**
+     * If set to {@code true} will throw ISE in case class cannot be scanned
+     */
+    private final boolean isStrict;
+
     private Strategy strategy = Strategy.DEFAULT;
 
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
+    /**
+     * 
+     * @param space
+     * @deprecated Use {@link #SpaceModule(ClassSpace, ClassFinder, boolean)} instead.
+     */
+    @Deprecated
     public SpaceModule( final ClassSpace space )
     {
         this( space, BeanScanning.ON );
     }
 
+    /**
+     * 
+     * @param space
+     * @param finder
+     * @deprecated Use {@link #SpaceModule(ClassSpace, ClassFinder, boolean)} instead.
+     */
+    @Deprecated
     public SpaceModule( final ClassSpace space, final ClassFinder finder )
+    {
+        this( space, finder, false );
+    }
+
+    public SpaceModule( final ClassSpace space, final ClassFinder finder, boolean isStrict )
     {
         caching = false;
 
         this.space = space;
         this.finder = finder;
+        this.isStrict = isStrict;
     }
 
+    /**
+     * 
+     * @param space
+     * @param scanning
+     * @deprecated Use {@link #SpaceModule(ClassSpace, ClassFinder, boolean) instead
+     */
+    @Deprecated
     public SpaceModule( final ClassSpace space, final BeanScanning scanning )
     {
-        caching = BeanScanning.CACHE == scanning;
+        this( space, scanning, false );
+    }
 
+    public SpaceModule( final ClassSpace space, final BeanScanning scanning, boolean isStrict )
+    {
+        caching = BeanScanning.CACHE == scanning;
         this.space = space;
         switch ( scanning )
         {
@@ -99,6 +134,7 @@ public final class SpaceModule
                 finder = LOCAL_SCAN;
                 break;
         }
+        this.isStrict = isStrict;
     }
 
     // ----------------------------------------------------------------------
@@ -158,6 +194,17 @@ public final class SpaceModule
                 return new QualifiedTypeVisitor( new QualifiedTypeBinder( binder ) );
             }
         };
+
+        /**
+         * Same as {@link #DEFAULT} but throwing {@link IllegalStateException} in case class cannot be scanned.
+         */
+        Strategy DEFAULT_STRICT = new Strategy()
+        {
+            public SpaceVisitor visitor( final Binder binder )
+            {
+                return new QualifiedTypeVisitor( new QualifiedTypeBinder( binder ), true );
+            }
+        };
     }
 
     // ----------------------------------------------------------------------
@@ -166,7 +213,7 @@ public final class SpaceModule
 
     void scanForElements( final Binder binder )
     {
-        new SpaceScanner( space, finder, true ).accept( strategy.visitor( binder ) );
+        new SpaceScanner( space, finder, isStrict ).accept( strategy.visitor( binder ) );
     }
 
     private void recordAndReplayElements( final Binder binder )

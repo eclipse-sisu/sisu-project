@@ -41,7 +41,7 @@ public class SisuIndex
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final QualifierCache qualifierCache = new QualifierCache();
+    private final QualifierCache qualifierCache = new QualifierCache( true );
 
     private final File targetDirectory;
 

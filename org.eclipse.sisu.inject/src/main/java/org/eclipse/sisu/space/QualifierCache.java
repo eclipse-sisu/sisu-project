@@ -37,14 +37,22 @@ final class QualifierCache
 
     private boolean isQualified;
 
+    private final boolean isStrict;
+
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
+
+    public QualifierCache(boolean isStrict) {
+        super();
+        this.isStrict = isStrict;
+    }
 
     public void enterClass( final int modifiers, final String name, final String _extends, final String[] _implements )
     {
         // no-op
     }
+
 
     public AnnotationVisitor visitAnnotation( final String desc )
     {
@@ -80,7 +88,7 @@ final class QualifierCache
             isQualified = false;
 
             final String name = desc.substring( 1, desc.length() - 1 );
-            SpaceScanner.accept( this, space.getResource( name + ".class" ) );
+            SpaceScanner.accept( this, space.getResource( name + ".class" ), isStrict );
             cachedResults.put( desc, Boolean.valueOf( isQualified ) );
 
             return isQualified;

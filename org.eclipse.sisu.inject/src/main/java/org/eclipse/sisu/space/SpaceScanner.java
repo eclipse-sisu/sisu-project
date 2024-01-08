@@ -42,6 +42,9 @@ public final class SpaceScanner
 
     private final ClassFinder finder;
 
+    /**
+     * If set to {@code true} will throw ISE in case class cannot be scanned
+     */
     private final boolean isStrict;
 
     // ----------------------------------------------------------------------
