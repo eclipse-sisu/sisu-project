@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.sisu.space;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.net.URL;
@@ -41,16 +42,44 @@ public final class SpaceScanner
 
     private final ClassFinder finder;
 
+    /**
+     * If set to {@code true} will throw {@link RuntimeException} in case class cannot be scanned.
+     */
+    private final boolean isStrict;
+
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
-    public SpaceScanner( final ClassSpace space, final ClassFinder finder )
+    public SpaceScanner( final ClassSpace space, final ClassFinder finder, boolean isStrict )
     {
         this.space = space;
         this.finder = finder;
+        this.isStrict = isStrict;
     }
 
+    /**
+     * @param space
+     * @param finder
+     * @deprecated Use {@link #SpaceScanner(ClassSpace, ClassFinder, boolean)} instead.
+     */
+    @Deprecated
+    public SpaceScanner( final ClassSpace space, final ClassFinder finder )
+    {
+        this( space, finder, false );
+    }
+
+    public SpaceScanner( final ClassSpace space, boolean isStrict )
+    {
+        this( space, DEFAULT_FINDER, isStrict );
+    }
+
+    /**
+     * 
+     * @param space
+     * @deprecated Use {@link #SpaceScanner(ClassSpace, boolean)} instead.
+     */
+    @Deprecated
     public SpaceScanner( final ClassSpace space )
     {
         this( space, DEFAULT_FINDER );
@@ -75,7 +104,7 @@ public final class SpaceScanner
             final ClassVisitor cv = visitor.visitClass( url );
             if ( null != cv )
             {
-                accept( cv, url );
+                accept( cv, url, isStrict );
             }
         }
 
@@ -83,36 +112,44 @@ public final class SpaceScanner
     }
 
     /**
+     * Shortcut for {@link #accept(ClassVisitor, URL, boolean)} with third parameter being {@code false}.
+     * @param visitor The class space visitor
+     * @param url The class resource URL
+     * @deprecated Use {@link #accept(ClassVisitor, URL, boolean)} instead.
+     */
+    @Deprecated
+    public static void accept( final ClassVisitor visitor, final URL url )
+    {
+        accept( visitor, url, false );
+    }
+
+    /**
      * Makes the given {@link ClassVisitor} visit the class contained in the resource {@link URL}.
      * 
      * @param visitor The class space visitor
      * @param url The class resource URL
+     * @param isStrict If set to {@code true} throws {@link RuntimeException} in case of parsing issues with the class
      */
-    public static void accept( final ClassVisitor visitor, final URL url )
+    public static void accept( final ClassVisitor visitor, final URL url, boolean isStrict )
     {
         if ( null == url )
         {
             return; // nothing to visit
         }
-        try
+        try( final InputStream in = Streams.open( url ) )
         {
-            final InputStream in = Streams.open( url );
-            try
-            {
-                new ClassReader( in ).accept( adapt( visitor ), ASM_FLAGS );
-            }
-            finally
-            {
-                in.close();
-            }
+            new ClassReader( in ).accept( adapt( visitor ), ASM_FLAGS );
         }
-        catch ( final ArrayIndexOutOfBoundsException e ) // NOPMD
+        catch ( final IOException|RuntimeException e )
         {
-            // ignore broken class constant pool in icu4j
-        }
-        catch ( final Exception e )
-        {
-            Logs.debug( "Problem scanning: {}", url, e );
+            if (isStrict)
+            {
+                throw new IllegalStateException( "Problem scanning " + url, e);
+            } 
+            else
+            {
+                Logs.debug( "Problem scanning: {}", url, e );
+            }
         }
     }
 

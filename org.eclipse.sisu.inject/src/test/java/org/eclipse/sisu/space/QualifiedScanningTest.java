@@ -134,7 +134,7 @@ class QualifiedScanningTest
         final TestListener listener = new TestListener();
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );
-        new SpaceScanner( space ).accept( new QualifiedTypeVisitor( listener ) );
+        new SpaceScanner( space, true ).accept( new QualifiedTypeVisitor( listener ) );
         assertEquals( 37, listener.clazzes.size() );
 
         assertTrue( listener.clazzes.contains( C.class ) );
@@ -149,7 +149,7 @@ class QualifiedScanningTest
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );
         final SpaceVisitor visitor = new QualifiedTypeVisitor( listener );
-        new SpaceScanner( space ).accept( new SpaceVisitor()
+        new SpaceScanner( space, true ).accept( new SpaceVisitor()
         {
             public void enterSpace( final ClassSpace _space )
             {
@@ -190,7 +190,7 @@ class QualifiedScanningTest
             {
                 return space2.findEntries( null, "*D.class", true );
             }
-        } ).accept( visitor );
+        }, true ).accept( visitor );
 
         assertEquals( 1, listener.clazzes.size() );
 
@@ -204,7 +204,7 @@ class QualifiedScanningTest
         final ClassSpace space =
             new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );
         final SpaceVisitor visitor = new QualifiedTypeVisitor( listener );
-        new SpaceScanner( space, SpaceModule.LOCAL_INDEX ).accept( visitor );
+        new SpaceScanner( space, SpaceModule.LOCAL_INDEX, true ).accept( visitor );
 
         // we deliberately use a partial index
 
@@ -215,7 +215,7 @@ class QualifiedScanningTest
     }
 
     @Test
-    void testBrokenScanning()
+    void testBrokenLenientScanning()
         throws IOException
     {
         final ClassSpace space =
@@ -250,7 +250,7 @@ class QualifiedScanningTest
             }
         };
 
-        new SpaceScanner( brokenResourceSpace ).accept( new QualifiedTypeVisitor( null ) );
+        new SpaceScanner( brokenResourceSpace, false ).accept( new QualifiedTypeVisitor( null ) );
 
         final ClassSpace brokenLoadSpace = new ClassSpace()
         {
@@ -280,9 +280,9 @@ class QualifiedScanningTest
             }
         };
 
-        new SpaceScanner( brokenLoadSpace ).accept( new QualifiedTypeVisitor( null ) );
+        new SpaceScanner( brokenLoadSpace, false ).accept( new QualifiedTypeVisitor( null ) );
 
-        SpaceScanner.accept( null, null );
+        SpaceScanner.accept( null, null, true );
 
         assertFalse( SpaceModule.LOCAL_INDEX.findClasses( brokenResourceSpace ).hasMoreElements() );
     }
@@ -375,7 +375,7 @@ class QualifiedScanningTest
         final ClassSpace space = new URLClassSpace( loader, urls );
 
         final TestListener listener = new TestListener();
-        new SpaceScanner( space ).accept( new QualifiedTypeVisitor( listener ) );
+        new SpaceScanner( space, true ).accept( new QualifiedTypeVisitor( listener ) );
         assertEquals( 0, listener.clazzes.size() );
     }
 }

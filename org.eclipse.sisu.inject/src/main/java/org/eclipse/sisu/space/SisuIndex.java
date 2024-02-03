@@ -41,7 +41,7 @@ public class SisuIndex
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final QualifierCache qualifierCache = new QualifierCache();
+    private final QualifierCache qualifierCache = new QualifierCache( true );
 
     private final File targetDirectory;
 
@@ -92,7 +92,7 @@ public class SisuIndex
     {
         try
         {
-            new SpaceScanner( _space ).accept( this );
+            new SpaceScanner( _space, true ).accept( this );
         }
         finally
         {

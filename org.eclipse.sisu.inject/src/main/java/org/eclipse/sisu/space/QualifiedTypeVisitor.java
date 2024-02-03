@@ -28,7 +28,7 @@ public final class QualifiedTypeVisitor
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final QualifierCache qualifierCache = new QualifierCache();
+    private final QualifierCache qualifierCache;
 
     private final QualifiedTypeListener listener;
 
@@ -48,6 +48,11 @@ public final class QualifiedTypeVisitor
 
     public QualifiedTypeVisitor( final QualifiedTypeListener listener )
     {
+       this( listener, false );
+    }
+
+    public QualifiedTypeVisitor( final QualifiedTypeListener listener, boolean isStrict ) {
+        qualifierCache = new QualifierCache( isStrict );
         this.listener = listener;
     }
 
