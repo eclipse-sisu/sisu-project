@@ -79,7 +79,7 @@ public final class CompositeBeanHelper
 
         // ----------------------------------------------------------------------
 
-        final Method setter = findMethod( beanType, paramTypeHolder, "set" );
+        final Method setter = findMethod( beanType, paramTypeHolder, "set", null );
         if ( null == setter )
         {
             throw new ComponentConfigurationException( configuration, "Cannot find default setter in " + beanType );
@@ -140,10 +140,10 @@ public final class CompositeBeanHelper
         // ----------------------------------------------------------------------
 
         final String title = Character.toTitleCase( propertyName.charAt( 0 ) ) + propertyName.substring( 1 );
-        Method setter = findMethod( beanType, paramTypeHolder, "set" + title );
+        Method setter = findMethod( beanType, paramTypeHolder, "set" + title, valueType );
         if ( null == setter )
         {
-            setter = findMethod( beanType, paramTypeHolder, "add" + title );
+            setter = findMethod( beanType, paramTypeHolder, "add" + title, valueType );
         }
 
         // ----------------------------------------------------------------------
@@ -264,8 +264,10 @@ public final class CompositeBeanHelper
                                             listener );
     }
 
-    private static Method findMethod( final Class<?> beanType, final Type[] paramTypeHolder, final String methodName )
+    private Method findMethod( final Class<?> beanType, final Type[] paramTypeHolder, final String methodName,
+                               final Class<?> valueType )
     {
+        Method candidate = null;
         for ( final Method m : beanType.getMethods() )
         {
             if ( methodName.equals( m.getName() ) && !Modifier.isStatic( m.getModifiers() ) )
@@ -273,12 +275,24 @@ public final class CompositeBeanHelper
                 final Type[] paramTypes = m.getGenericParameterTypes();
                 if ( paramTypes.length == 1 )
                 {
-                    paramTypeHolder[0] = paramTypes[0];
-                    return m;
+                    if ( valueType != null )
+                    {
+                        if ( m.getParameters()[0].getType().isAssignableFrom( valueType ) )
+                        {
+                            paramTypeHolder[0] = paramTypes[0];
+                            return m;
+                        }
+                    }
+                    // backward compat we keep returning the first method found
+                    if ( candidate == null )
+                    {
+                        paramTypeHolder[0] = paramTypes[0];
+                        candidate = m;
+                    }
                 }
             }
         }
-        return null;
+        return candidate;
     }
 
     private static Field findField( final Class<?> beanType, final String fieldName )

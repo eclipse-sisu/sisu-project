@@ -20,7 +20,13 @@ import java.time.OffsetTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
+import org.codehaus.plexus.classworlds.ClassWorld;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.configurator.BasicComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ComponentConfigurator;
@@ -35,6 +41,7 @@ import org.junit.rules.TemporaryFolder;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 public class BasicComponentConfiguratorTest
 {
@@ -122,6 +129,28 @@ public class BasicComponentConfiguratorTest
                                        dateString, "zonedDateTime", dateString ) );
     }
 
+    @Test
+    public void testConfigureComplexBean()
+        throws Exception
+    {
+        ComplexBean complexBean = new ComplexBean();
+
+        // configure( complexBean, "resources", "foo;bar" );
+        DefaultPlexusConfiguration config = new DefaultPlexusConfiguration( "testConfig" );
+
+        DefaultPlexusConfiguration child = new DefaultPlexusConfiguration( "resources", "foo;bar" );
+        child.setAttribute( "implementation", "java.lang.String" );
+
+        config.addChild( child );
+
+        configure( complexBean, config,
+                   new ClassWorld( "foo", Thread.currentThread().getContextClassLoader() ).getClassRealm( "foo" ) );
+
+        assertEquals( complexBean.resources.size(), 2 );
+        assertTrue( complexBean.resources.toString(), complexBean.resources.contains( Resource.newResource( "foo" ) ) );
+        assertTrue( complexBean.resources.toString(), complexBean.resources.contains( Resource.newResource( "bar" ) ) );
+    }
+
     private void configure( Object component, String... keysAndValues )
         throws ComponentConfigurationException
     {
@@ -140,6 +169,12 @@ public class BasicComponentConfiguratorTest
     private void configure( Object component, PlexusConfiguration config )
         throws ComponentConfigurationException
     {
+        configure( component, config, null );
+    }
+
+    private void configure( Object component, PlexusConfiguration config, ClassRealm loader )
+        throws ComponentConfigurationException
+    {
         final ExpressionEvaluator evaluator = new DefaultExpressionEvaluator()
         {
             @Override
@@ -155,7 +190,7 @@ public class BasicComponentConfiguratorTest
                 }
             }
         };
-        configurator.configureComponent( component, config, evaluator, null );
+        configurator.configureComponent( component, config, evaluator, loader );
     }
 
     static final class PathTestComponent
@@ -210,5 +245,58 @@ public class BasicComponentConfiguratorTest
         OffsetTime offsetTime;
 
         ZonedDateTime zonedDateTime;
+    }
+
+    static final class ComplexBean
+    {
+        private List<Resource> resources;
+
+        public void setResources( List<Resource> resources )
+        {
+            this.resources = resources;
+        }
+
+        public void setResources( String resources )
+        {
+            this.resources =
+                Arrays.stream( resources.split( ";" ) ).map( Resource::newResource ).collect( Collectors.toList() );
+        }
+
+    }
+
+    static abstract class Resource
+    {
+        String path;
+
+        static Resource newResource( String path )
+        {
+            return new BaseResource( path );
+        }
+
+        static class BaseResource
+            extends Resource
+        {
+            public BaseResource( String path )
+            {
+                this.path = path;
+            }
+        }
+
+        @Override
+        public boolean equals( Object o )
+        {
+            if ( this == o )
+                return true;
+            if ( o == null || getClass() != o.getClass() )
+                return false;
+            Resource resource = (Resource) o;
+            return Objects.equals( path, resource.path );
+        }
+
+        @Override
+        public int hashCode()
+        {
+            return Objects.hashCode( path );
+        }
     }
 }
