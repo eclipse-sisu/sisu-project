@@ -46,6 +46,8 @@ public final class DefaultContainerConfiguration
 
     private boolean jsr250Lifecycle;
 
+    private boolean strictClassPathScanning;
+
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
@@ -167,5 +169,18 @@ public final class DefaultContainerConfiguration
     public boolean getJSR250Lifecycle()
     {
         return jsr250Lifecycle;
+    }
+
+    @Override
+    public ContainerConfiguration setStrictClassPathScanning( boolean strictScanning )
+    {
+        this.strictClassPathScanning = strictScanning;
+        return this;
+    }
+
+    @Override
+    public boolean getStrictClassPathScanning()
+    {
+        return strictClassPathScanning;
     }
 }

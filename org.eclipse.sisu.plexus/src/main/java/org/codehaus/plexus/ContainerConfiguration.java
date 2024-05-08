@@ -62,4 +62,9 @@ public interface ContainerConfiguration
     ContainerConfiguration setJSR250Lifecycle( boolean on );
 
     boolean getJSR250Lifecycle();
+
+    ContainerConfiguration setStrictClassPathScanning( boolean strictScanning );
+
+    boolean getStrictClassPathScanning();
+
 }

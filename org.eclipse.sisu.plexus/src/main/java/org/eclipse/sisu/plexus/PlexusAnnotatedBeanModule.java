@@ -68,12 +68,27 @@ public final class PlexusAnnotatedBeanModule
      * @param space The local class space
      * @param variables The filter variables
      * @param scanning The scanning options
+     * @deprecated Use {@link #PlexusAnnotatedBeanModule(ClassSpace, Map, BeanScanning, boolean)} instead.
      */
+    @Deprecated
     public PlexusAnnotatedBeanModule( final ClassSpace space, final Map<?, ?> variables, final BeanScanning scanning )
+    {
+        this( space, variables, scanning, false );
+    }
+
+    /**
+     * Creates a bean source that scans the given class space for Plexus annotations using the given scanner.
+     * 
+     * @param space The local class space
+     * @param variables The filter variables
+     * @param scanning The scanning options
+     */
+    public PlexusAnnotatedBeanModule( final ClassSpace space, final Map<?, ?> variables, final BeanScanning scanning,
+                                      boolean strictScanning )
     {
         if ( null != space && scanning != BeanScanning.OFF )
         {
-            spaceModule = new SpaceModule( space, scanning ).with( PLEXUS_STRATEGY );
+            spaceModule = new SpaceModule( space, scanning, strictScanning ).with( PLEXUS_STRATEGY );
         }
         else
         {

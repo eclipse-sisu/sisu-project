@@ -200,7 +200,8 @@ public final class DefaultPlexusContainer
         final ClassSpace space = new URLClassSpace( containerRealm );
         beanModules.add( new PlexusXmlBeanModule( space, variables, plexusXml ) );
         final BeanScanning global = BeanScanning.INDEX == scanning ? BeanScanning.GLOBAL_INDEX : scanning;
-        beanModules.add( new PlexusAnnotatedBeanModule( space, variables, global ) );
+        beanModules.add( new PlexusAnnotatedBeanModule( space, variables, global,
+                                                        configuration.getStrictClassPathScanning() ) );
 
         try
         {
