@@ -32,7 +32,8 @@ The Sisu build requires Java 11 and Maven 3.6.3 (or above), while the resulting 
 Coding Style
 ------------
 
-Sisu follows the same [code style and code conventions][style-guide] as Maven.
+Sisu follows the **old Maven code style and code conventions**. Since then, Maven switched to modern 
+[code style and code conventions][style-guide] that are not applicable to Sisu.
 
 Avoid changing whitespace on lines that are unrelated to your pull request. This helps preserve the accuracy of the git blame view, and makes code reviews easier.
 
