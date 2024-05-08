@@ -43,7 +43,8 @@ final class QualifierCache
     // Public methods
     // ----------------------------------------------------------------------
 
-    public QualifierCache(boolean isStrict) {
+    public QualifierCache( boolean isStrict )
+    {
         super();
         this.isStrict = isStrict;
     }
@@ -52,7 +53,6 @@ final class QualifierCache
     {
         // no-op
     }
-
 
     public AnnotationVisitor visitAnnotation( final String desc )
     {

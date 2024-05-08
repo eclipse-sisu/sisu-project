@@ -136,16 +136,16 @@ public final class SpaceScanner
         {
             return; // nothing to visit
         }
-        try( final InputStream in = Streams.open( url ) )
+        try ( final InputStream in = Streams.open( url ) )
         {
             new ClassReader( in ).accept( adapt( visitor ), ASM_FLAGS );
         }
-        catch ( final IOException|RuntimeException e )
+        catch ( final IOException | RuntimeException e )
         {
-            if (isStrict)
+            if ( isStrict )
             {
-                throw new IllegalStateException( "Problem scanning " + url, e);
-            } 
+                throw new IllegalStateException( "Problem scanning " + url, e );
+            }
             else
             {
                 Logs.debug( "Problem scanning: {}", url, e );
