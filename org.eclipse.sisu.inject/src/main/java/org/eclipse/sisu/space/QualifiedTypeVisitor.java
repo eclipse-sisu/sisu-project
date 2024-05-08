@@ -48,10 +48,11 @@ public final class QualifiedTypeVisitor
 
     public QualifiedTypeVisitor( final QualifiedTypeListener listener )
     {
-       this( listener, false );
+        this( listener, false );
     }
 
-    public QualifiedTypeVisitor( final QualifiedTypeListener listener, boolean isStrict ) {
+    public QualifiedTypeVisitor( final QualifiedTypeListener listener, boolean isStrict )
+    {
         qualifierCache = new QualifierCache( isStrict );
         this.listener = listener;
     }
