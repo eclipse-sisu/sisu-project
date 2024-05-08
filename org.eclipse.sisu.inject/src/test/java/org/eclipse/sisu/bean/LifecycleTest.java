@@ -39,6 +39,7 @@ class LifecycleTest
     void testBaseLifecycle()
     {
         assertEquals( "a", injector.getInstance( org.eclipse.sisu.bean.alpha.Public.class ).results() );
+        assertEquals( "a", injector.getInstance( org.eclipse.sisu.bean.alpha.SisuPublic.class ).results() );
         assertEquals( "ab", injector.getInstance( org.eclipse.sisu.bean.alpha.Protected.class ).results() );
         assertEquals( "abc", injector.getInstance( org.eclipse.sisu.bean.alpha.Package.class ).results() );
         assertEquals( "abcd", injector.getInstance( org.eclipse.sisu.bean.alpha.Private.class ).results() );
@@ -46,6 +47,7 @@ class LifecycleTest
         injector.getInstance( BeanManager.class ).unmanage();
 
         assertEquals( "az", injector.getInstance( org.eclipse.sisu.bean.alpha.Public.class ).results() );
+        assertEquals( "az", injector.getInstance( org.eclipse.sisu.bean.alpha.SisuPublic.class ).results() );
         assertEquals( "abyz", injector.getInstance( org.eclipse.sisu.bean.alpha.Protected.class ).results() );
         assertEquals( "abcxyz", injector.getInstance( org.eclipse.sisu.bean.alpha.Package.class ).results() );
         assertEquals( "abcdwxyz", injector.getInstance( org.eclipse.sisu.bean.alpha.Private.class ).results() );
@@ -55,6 +57,7 @@ class LifecycleTest
     void testOverriddenLifecycle()
     {
         assertEquals( "bcdA", injector.getInstance( org.eclipse.sisu.bean.alpha.OverriddenPublic.class ).results() );
+        assertEquals( "bcdA", injector.getInstance( org.eclipse.sisu.bean.alpha.SisuOverriddenPublic.class ).results() );
         assertEquals( "cdAB", injector.getInstance( org.eclipse.sisu.bean.alpha.OverriddenProtected.class ).results() );
         assertEquals( "dABC", injector.getInstance( org.eclipse.sisu.bean.alpha.OverriddenPackage.class ).results() );
         assertEquals( "dABCD", injector.getInstance( org.eclipse.sisu.bean.alpha.OverriddenPrivate.class ).results() );
@@ -63,6 +66,8 @@ class LifecycleTest
 
         assertEquals( "bcdAZwxy",
                       injector.getInstance( org.eclipse.sisu.bean.alpha.OverriddenPublic.class ).results() );
+        assertEquals( "bcdAZwxy",
+                injector.getInstance( org.eclipse.sisu.bean.alpha.SisuOverriddenPublic.class ).results() );
         assertEquals( "cdABYZwx",
                       injector.getInstance( org.eclipse.sisu.bean.alpha.OverriddenProtected.class ).results() );
         assertEquals( "dABCXYZw",
