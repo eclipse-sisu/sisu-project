@@ -475,7 +475,7 @@
             <id>jacoco-report</id>
             <phase>verify</phase>
             <goals>
-              <goal>report-aggregate</goal>
+              <goal>report</goal>
             </goals>
             <configuration>
               <title>Sisu Plexus</title>
