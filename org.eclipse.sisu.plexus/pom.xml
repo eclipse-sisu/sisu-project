@@ -35,19 +35,25 @@
     </dependency>
     <!--
      | @PostConstruct and @PreDestroy help with Plexus->JSR330 migration
+     | Optional: include if needed, or use Sisu own annotations
     -->
     <dependency>
       <groupId>javax.annotation</groupId>
       <artifactId>javax.annotation-api</artifactId>
       <version>1.2</version>
+      <scope>provided</scope>
+      <optional>true</optional>
     </dependency>
     <!--
      | CDI's @Typed helps with Plexus->JSR330 migration
+     | Optional: include if needed, or use Sisu own annotations
     -->
     <dependency>
       <groupId>javax.enterprise</groupId>
       <artifactId>cdi-api</artifactId>
       <version>1.2</version>
+      <scope>provided</scope>
+      <optional>true</optional>
       <exclusions>
         <exclusion>
           <groupId>javax.el</groupId>
@@ -93,18 +99,21 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>1.7.36</version>
+      <scope>provided</scope>
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.osgi</groupId>
       <artifactId>osgi.core</artifactId>
       <version>5.0.0</version>
+      <scope>provided</scope>
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.13.2</version>
+      <scope>provided</scope>
       <optional>true</optional>
     </dependency>
     <dependency>
