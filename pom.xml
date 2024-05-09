@@ -118,8 +118,8 @@
   <properties>
     <maven.compiler.release>8</maven.compiler.release>
     <!-- Set to same version as release target for consistency -->
-    <maven.compiler.source>1.${maven.compiler.release}</maven.compiler.source>
-    <maven.compiler.target>1.${maven.compiler.release}</maven.compiler.target>
+    <maven.compiler.source>${maven.compiler.release}</maven.compiler.source>
+    <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <mavenBuildVersion>3.6.3</mavenBuildVersion>
@@ -131,7 +131,7 @@
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>5.10.0</version>
+        <version>5.10.2</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -144,7 +144,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.2.1</version>
+          <version>3.4.1</version>
           <configuration>
             <rules>
               <enforceBytecodeVersion>
@@ -153,7 +153,7 @@
                   <!-- Used in tests only -->
                   <exclude>org.junit.jupiter:junit-jupiter-api</exclude>
                   <exclude>org.junit.platform:junit-platform-commons</exclude>
-                  <exclude>org.apache.felix:org.apache.felix.framework:jar:7.0.5</exclude>
+                  <exclude>org.apache.felix:org.apache.felix.framework</exclude>
                 </excludes>
               </enforceBytecodeVersion>
               <requireMavenVersion>
@@ -176,14 +176,14 @@
             <dependency>
               <groupId>org.codehaus.mojo</groupId>
               <artifactId>extra-enforcer-rules</artifactId>
-              <version>1.6.1</version>
+              <version>1.8.0</version>
             </dependency>
           </dependencies>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-clean-plugin</artifactId>
-          <version>3.2.0</version>
+          <version>3.3.2</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -193,38 +193,26 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.11.0</version>
+          <version>3.13.0</version>
           <configuration>
             <proc>none</proc>
+            <showDeprecation>true</showDeprecation>
           </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
-          <version>3.5.0</version>
+          <version>3.6.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.0.0</version>
-          <dependencies>
-            <dependency>
-              <groupId>org.junit.jupiter</groupId>
-              <artifactId>junit-jupiter-engine</artifactId>
-              <version>5.10.0</version>
-            </dependency>
-            <!-- some tests leverage JUnit3 still -->
-            <dependency>
-              <groupId>org.junit.vintage</groupId>
-              <artifactId>junit-vintage-engine</artifactId>
-              <version>5.10.0</version>
-            </dependency>
-          </dependencies>
+          <version>3.2.5</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>3.0.0</version>
+          <version>3.2.5</version>
         </plugin>
         <plugin>
           <groupId>biz.aQute.bnd</groupId>
@@ -250,7 +238,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>3.3.0</version>
+          <version>3.4.1</version>
           <executions>
             <execution>
               <id>default-jar</id>
@@ -265,27 +253,27 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>3.4.1</version>
+          <version>3.5.3</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-install-plugin</artifactId>
-          <version>3.1.1</version>
+          <version>3.1.2</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-deploy-plugin</artifactId>
-          <version>3.1.1</version>
+          <version>3.1.2</version>
         </plugin>
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.8.8</version>
+          <version>0.8.12</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
-          <version>3.0.0</version>
+          <version>3.0.1</version>
           <configuration>
             <mavenExecutorId>forked-path</mavenExecutorId>
             <useReleaseProfile>false</useReleaseProfile>
@@ -305,7 +293,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
-          <version>3.2.1</version>
+          <version>3.3.1</version>
           <executions>
             <execution>
               <id>attach-sources</id>
@@ -318,7 +306,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.5.0</version>
+          <version>3.6.3</version>
           <configuration>
             <overview>${basedir}/overview.html</overview>
             <excludePackageNames>*.internal,*.asm</excludePackageNames>
@@ -338,7 +326,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-gpg-plugin</artifactId>
-          <version>3.0.1</version>
+          <version>3.2.4</version>
           <configuration>
             <passphrase>${gpg.passphrase}</passphrase>
             <useAgent>true</useAgent>
@@ -366,7 +354,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.4.2</version>
+          <version>3.5.0</version>
         </plugin>
         <plugin>
           <groupId>com.diffplug.spotless</groupId>
