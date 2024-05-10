@@ -82,7 +82,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version><!-- older version not supported by junit-vintage runner -->
+      <version>4.13.2</version><!-- older version not supported by junit-vintage runner -->
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
@@ -103,7 +103,7 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.1.11</version>
+      <version>1.2.13</version>
       <scope>test</scope>
     </dependency>
     <dependency>
