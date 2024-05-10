@@ -264,7 +264,7 @@ public final class CompositeBeanHelper
                                             listener );
     }
 
-    private Method findMethod( final Class<?> beanType, final Type[] paramTypeHolder, final String methodName,
+    private static Method findMethod( final Class<?> beanType, final Type[] paramTypeHolder, final String methodName,
                                final Class<?> valueType )
     {
         Method candidate = null;
