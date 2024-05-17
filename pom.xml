@@ -55,6 +55,9 @@
   <modules>
     <module>org.eclipse.sisu.inject</module>
     <module>org.eclipse.sisu.inject.extender</module>
+    <module>org.eclipse.sisu.plexus</module>
+    <module>org.eclipse.sisu.plexus.extender</module>
+    <module>org.eclipse.sisu.mojos</module>
   </modules>
 
   <developers>
@@ -122,8 +125,10 @@
     <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+    <mavenRuntimeVersion>3.2.5</mavenRuntimeVersion>
     <mavenBuildVersion>3.6.3</mavenBuildVersion>
     <javaBuildVersion>11</javaBuildVersion>
+    <mavenPluginToolsVersion>3.13.0</mavenPluginToolsVersion>
   </properties>
 
   <dependencyManagement>
@@ -203,6 +208,11 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
           <version>3.6.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-plugin-plugin</artifactId>
+          <version>${mavenPluginToolsVersion}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
