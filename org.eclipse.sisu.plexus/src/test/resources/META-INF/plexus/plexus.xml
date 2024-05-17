@@ -1,0 +1,61 @@
+<plexus>
+
+  <load-on-start>
+    <component>
+      <role>
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$DefaultBean
+      </role>
+    </component>
+  </load-on-start>
+
+  <components>
+    <component>
+      <implementation>
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$DefaultBean
+      </implementation>
+      <instantiation-strategy>
+        per-lookup
+      </instantiation-strategy>
+    </component>
+    <component>
+      <role>
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$Bean
+      </role>
+      <role-hint>
+        debug
+      </role-hint>
+      <implementation>
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$DebugBean
+      </implementation>
+      <description>
+        For debugging
+      </description>
+    </component>
+  </components>
+
+  <load-on-start>
+    <component>
+      <role>
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$Bean
+      </role>
+      <role-hint>
+        debug
+      </role-hint>
+      <extra-bits/>
+    </component>
+    <component>
+      <role>
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$DefaultBean
+      </role>
+    </component>
+  </load-on-start>
+
+  <dependencies>
+    <dependency>
+      <group-id>foo</group-id>
+      <artifact-id>bar</artifact-id>
+      <version>1.0</version>
+    </dependency>
+  </dependencies>
+
+</plexus>

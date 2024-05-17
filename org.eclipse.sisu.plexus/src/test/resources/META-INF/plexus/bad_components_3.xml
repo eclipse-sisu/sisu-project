@@ -1,0 +1,18 @@
+<component-set>
+
+  <components>
+    <component>
+      <implementation>
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$DefaultBean
+      </implementation>
+      <requirements>
+        <requirement>
+          <role>
+            no.such.class
+          </role>
+        </requirement>
+      </requirements>
+    </component>
+  </components>
+
+</component-set>

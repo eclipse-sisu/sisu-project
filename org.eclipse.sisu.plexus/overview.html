@@ -1,0 +1,24 @@
+<html>
+<body>
+<h1>Overview</h1>
+Implements Plexus semantics on top of Sisu and Google-Guice.
+<p>
+Legacy applications can use the Plexus container API as usual:
+<pre>
+ContainerConfiguration config = new DefaultContainerConfiguration();
+// ... configure ...
+PlexusContainer container = null;
+try {
+  container = new DefaultPlexusContainer( config );
+  // ... execute/wait ...
+} finally {
+  if ( container != null ) {
+    container.dispose();
+  }
+}</pre>
+<p>
+Sisu applications that want to re-use Plexus components can use the {@link org.eclipse.sisu.plexus.PlexusSpaceModule} wrapper:
+<pre>
+binder.install( new PlexusSpaceModule( space ) );</pre>
+</body>
+</html>

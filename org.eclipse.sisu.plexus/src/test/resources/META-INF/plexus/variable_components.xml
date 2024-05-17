@@ -1,0 +1,32 @@
+<component-set>
+
+  <components>
+    <component>
+      <implementation>
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$DefaultBean
+      </implementation>
+      <configuration>
+        <prefix>foo</prefix>
+        <variable>${some.value}</variable>
+        <suffix>bar</suffix>
+      </configuration>
+    </component>
+    <component>
+      <role-hint>
+        debug
+      </role-hint>
+      <implementation>
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$DefaultBean
+      </implementation>
+    </component>
+    <component>
+      <role-hint>
+        again
+      </role-hint>
+      <implementation>
+        org.eclipse.sisu.plexus.PlexusXmlScannerTest$DefaultBean
+      </implementation>
+    </component>
+  </components>
+
+</component-set>
