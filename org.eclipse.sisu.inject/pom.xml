@@ -192,7 +192,7 @@
                 <artifactItem>
                   <groupId>org.ow2.asm</groupId>
                   <artifactId>asm</artifactId>
-                  <version>9.5</version>
+                  <version>9.7</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>cglib</groupId>
@@ -240,7 +240,7 @@
                 <artifactItem>
                   <groupId>org.ow2.asm</groupId>
                   <artifactId>asm</artifactId>
-                  <version>9.5</version>
+                  <version>9.7</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>com.google.inject</groupId>
@@ -288,7 +288,7 @@
                 <artifactItem>
                   <groupId>org.ow2.asm</groupId>
                   <artifactId>asm</artifactId>
-                  <version>9.5</version>
+                  <version>9.7</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>com.google.inject</groupId>
