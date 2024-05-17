@@ -55,8 +55,6 @@
   <modules>
     <module>org.eclipse.sisu.inject</module>
     <module>org.eclipse.sisu.inject.extender</module>
-    <module>org.eclipse.sisu.plexus</module>
-    <module>org.eclipse.sisu.plexus.extender</module>
   </modules>
 
   <developers>
@@ -210,25 +208,11 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>3.2.5</version>
-          <dependencies>
-            <dependency>
-              <groupId>org.apache.maven.surefire</groupId>
-              <artifactId>surefire-junit47</artifactId>
-              <version>3.2.5</version>
-            </dependency>
-          </dependencies>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
           <version>3.2.5</version>
-          <dependencies>
-            <dependency>
-              <groupId>org.apache.maven.surefire</groupId>
-              <artifactId>surefire-junit47</artifactId>
-              <version>3.2.5</version>
-            </dependency>
-          </dependencies>
         </plugin>
         <plugin>
           <groupId>biz.aQute.bnd</groupId>

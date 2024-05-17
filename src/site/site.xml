@@ -1,0 +1,27 @@
+<project name="${project.name}">
+  <publishDate position="left"/>
+  <version position="left"/>
+  <body>
+    <links>
+      <item name="Sisu" href="http://eclipse.org/sisu/"/>
+      <item name="Maven" href="http://maven.apache.org/"/>
+    </links>
+    <menu name="Overview">
+      <item name="Introduction" href="index.html"/>
+      <item name="Goals" href="plugin-info.html"/>
+    </menu>
+    <menu ref="reports"/>
+  </body>
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>1.9</version>
+  </skin>
+  <custom>
+    <fluidoSkin>
+      <topBarEnabled>true</topBarEnabled>
+      <sideBarEnabled>false</sideBarEnabled>
+    </fluidoSkin>
+  </custom>
+</project>
+      
