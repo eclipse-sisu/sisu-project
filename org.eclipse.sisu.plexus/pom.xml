@@ -22,6 +22,7 @@
 
   <artifactId>org.eclipse.sisu.plexus</artifactId>
   <packaging>jar</packaging>
+  <description>Plexus-JSR330 adapter; adds Plexus support to the Sisu-Inject container</description>
 
   <dependencies>
     <!--

@@ -22,7 +22,6 @@
 
   <artifactId>sisu-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-
   <description>Manage Sisu components and applications</description>
 
   <prerequisites>
