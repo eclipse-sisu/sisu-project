@@ -483,7 +483,6 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
           <artifactId>maven-gpg-plugin</artifactId>
           <version>3.2.4</version>
           <configuration>
-            <passphrase>${gpg.passphrase}</passphrase>
             <useAgent>true</useAgent>
           </configuration>
           <executions>
@@ -495,16 +494,6 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
               </goals>
             </execution>
           </executions>
-        </plugin>
-        <plugin>
-          <groupId>org.sonatype.plugins</groupId>
-          <artifactId>nexus-staging-maven-plugin</artifactId>
-          <version>1.6.13</version>
-          <extensions>true</extensions>
-          <configuration>
-            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-            <serverId>sonatype-nexus-staging</serverId>
-          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -595,11 +584,6 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-          </plugin>
-          <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
-            <extensions>true</extensions>
           </plugin>
         </plugins>
       </build>
