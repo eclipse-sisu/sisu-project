@@ -107,7 +107,7 @@ public final class SpaceModule
      * 
      * @param space
      * @param scanning
-     * @deprecated Use {@link #SpaceModule(ClassSpace, ClassFinder, boolean) instead
+     * @deprecated Use {@link #SpaceModule(ClassSpace, ClassFinder, boolean)} instead
      */
     @Deprecated
     public SpaceModule( final ClassSpace space, final BeanScanning scanning )
