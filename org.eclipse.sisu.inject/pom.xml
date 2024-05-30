@@ -456,7 +456,7 @@
 
   <profiles>
     <profile>
-      <id>sonatype-oss-release</id>
+      <id>sisu-release</id>
       <build>
         <plugins>
           <plugin>
