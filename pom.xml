@@ -528,7 +528,8 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
           </executions>
         </plugin>
         <!--
-        Usage: mvn -N license:check to check or mvn -N license:format to format sources. Using it manually for now.
+        Plugin is set to work in "aggregate" mode, so invoke it from root directory of checkout combined with -N:
+        mvn -N license:check to check or mvn -N license:format to format sources. Using it manually for now.
         -->
         <plugin>
           <groupId>com.mycila</groupId>
@@ -560,7 +561,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
                   <exclude>bin/**</exclude>
                   <exclude>docs/**</exclude>
                   <exclude>leftovers/**</exclude>
-                  <exlude>org.eclipse.sisu.inject/src/main/java/org/eclipse/sisu/space/asm/**</exlude>
+                  <exlude>**/src/main/java/org/eclipse/sisu/space/asm/**</exlude>
                   <exclude>**/target/**</exclude>
                   <exclude>**/conf/**</exclude>
                   <exclude>**/.*</exclude>
