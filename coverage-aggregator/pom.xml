@@ -21,6 +21,7 @@
   </parent>
 
   <artifactId>coverage-aggregator</artifactId>
+  <packaging>pom</packaging>
   <description>Module to aggregate code test coverage</description>
 
   <properties>
@@ -47,20 +48,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>default-jar</id>
-            <configuration>
-              <archive combine.self="override">
-                <manifestFile />
-              </archive>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <executions>
@@ -70,6 +57,12 @@
             <goals>
               <goal>report-aggregate</goal>
             </goals>
+            <configuration>
+              <title>Eclipse Sisu</title>
+              <excludes>
+                <exclude>**/asm/*</exclude>
+              </excludes>
+            </configuration>
           </execution>
         </executions>
       </plugin>
