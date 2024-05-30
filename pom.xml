@@ -58,6 +58,7 @@
     <module>org.eclipse.sisu.plexus</module>
     <module>org.eclipse.sisu.plexus.extender</module>
     <module>org.eclipse.sisu.mojos</module>
+    <module>coverage-aggregator</module>
   </modules>
 
   <developers>
@@ -124,9 +125,7 @@
     <maven.compiler.source>${maven.compiler.release}</maven.compiler.source>
     <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-    <sonar.language>java</sonar.language>
-    <sonar.coverage.jacoco.xmlReportPaths>${basedir}/target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+    <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/coverage-aggregator/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 
     <mavenRuntimeVersion>3.2.5</mavenRuntimeVersion>
     <mavenBuildVersion>3.6.3</mavenBuildVersion>
@@ -150,6 +149,11 @@
       <dependency>
         <groupId>org.eclipse.sisu</groupId>
         <artifactId>org.eclipse.sisu.plexus</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.sisu</groupId>
+        <artifactId>sisu-maven-plugin</artifactId>
         <version>${project.version}</version>
       </dependency>
 
