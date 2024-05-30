@@ -265,7 +265,7 @@ public final class CompositeBeanHelper
     }
 
     private static Method findMethod( final Class<?> beanType, final Type[] paramTypeHolder, final String methodName,
-                               final Class<?> valueType )
+                                      final Class<?> valueType )
     {
         Method candidate = null;
         for ( final Method m : beanType.getMethods() )
