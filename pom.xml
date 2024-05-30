@@ -432,7 +432,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
           <configuration>
             <mavenExecutorId>forked-path</mavenExecutorId>
             <useReleaseProfile>false</useReleaseProfile>
-            <arguments>-Psonatype-oss-release</arguments>
+            <arguments>-Psisu-release</arguments>
             <localCheckout>true</localCheckout>
             <pushChanges>false</pushChanges>
             <scmCommentPrefix>|</scmCommentPrefix>
@@ -570,7 +570,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
       </build>
     </profile>
     <profile>
-      <id>sonatype-oss-release</id>
+      <id>sisu-release</id>
       <build>
         <plugins>
           <plugin>
