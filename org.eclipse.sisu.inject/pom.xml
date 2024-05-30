@@ -154,7 +154,7 @@
                 <artifactItem>
                   <groupId>com.google.inject.extensions</groupId>
                   <artifactId>guice-servlet</artifactId>
-                  <version>3.0</version>
+                  <version>7.0.0</version>
                 </artifactItem>
               </artifactItems>
               <outputDirectory>${project.build.directory}/guice3</outputDirectory>
@@ -202,7 +202,7 @@
                 <artifactItem>
                   <groupId>com.google.inject.extensions</groupId>
                   <artifactId>guice-servlet</artifactId>
-                  <version>4.2.3</version>
+                  <version>7.0.0</version>
                 </artifactItem>
               </artifactItems>
               <outputDirectory>${project.build.directory}/guice4</outputDirectory>
@@ -245,7 +245,7 @@
                 <artifactItem>
                   <groupId>com.google.inject.extensions</groupId>
                   <artifactId>guice-servlet</artifactId>
-                  <version>5.1.0</version>
+                  <version>7.0.0</version>
                 </artifactItem>
               </artifactItems>
               <outputDirectory>${project.build.directory}/guice5</outputDirectory>
@@ -293,7 +293,7 @@
                 <artifactItem>
                   <groupId>com.google.inject.extensions</groupId>
                   <artifactId>guice-servlet</artifactId>
-                  <version>6.0.0</version>
+                  <version>7.0.0</version>
                 </artifactItem>
               </artifactItems>
               <outputDirectory>${project.build.directory}/guice6</outputDirectory>
