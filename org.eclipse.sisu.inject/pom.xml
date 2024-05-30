@@ -443,7 +443,6 @@
             </goals>
             <configuration>
               <title>Sisu Inject</title>
-              <outputDirectory>${project.basedir}/../target/site/jacoco</outputDirectory>
               <excludes>
                 <exclude>**/asm/*</exclude>
               </excludes>

@@ -457,7 +457,6 @@
             </goals>
             <configuration>
               <title>Sisu Plexus</title>
-              <outputDirectory>${project.basedir}/../target/site/jacoco</outputDirectory>
             </configuration>
           </execution>
         </executions>
