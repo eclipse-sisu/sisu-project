@@ -149,7 +149,7 @@
                 <artifactItem>
                   <groupId>com.google.inject.extensions</groupId>
                   <artifactId>guice-assistedinject</artifactId>
-                  <version>3.0</version>
+                  <version>7.0.0</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>com.google.inject.extensions</groupId>
@@ -197,7 +197,7 @@
                 <artifactItem>
                   <groupId>com.google.inject.extensions</groupId>
                   <artifactId>guice-assistedinject</artifactId>
-                  <version>4.2.3</version>
+                  <version>7.0.0</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>com.google.inject.extensions</groupId>
@@ -240,7 +240,7 @@
                 <artifactItem>
                   <groupId>com.google.inject.extensions</groupId>
                   <artifactId>guice-assistedinject</artifactId>
-                  <version>5.1.0</version>
+                  <version>7.0.0</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>com.google.inject.extensions</groupId>
@@ -288,7 +288,7 @@
                 <artifactItem>
                   <groupId>com.google.inject.extensions</groupId>
                   <artifactId>guice-assistedinject</artifactId>
-                  <version>6.0.0</version>
+                  <version>7.0.0</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>com.google.inject.extensions</groupId>
