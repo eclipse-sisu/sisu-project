@@ -527,6 +527,9 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
             </execution>
           </executions>
         </plugin>
+        <!--
+        Usage: mvn -N license:check to check or mvn -N license:format to format sources. Using it manually for now.
+        -->
         <plugin>
           <groupId>com.mycila</groupId>
           <artifactId>license-maven-plugin</artifactId>
