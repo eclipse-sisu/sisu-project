@@ -21,8 +21,13 @@
   </parent>
 
   <artifactId>coverage-aggregator</artifactId>
-  <packaging>pom</packaging>
   <description>Module to aggregate code test coverage</description>
+
+  <properties>
+    <!-- This module exists only to feed Sonar -->
+    <maven.install.skip>true</maven.install.skip>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -41,6 +46,20 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-jar</id>
+            <configuration>
+              <archive combine.self="override">
+                <manifestFile />
+              </archive>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
