@@ -149,6 +149,11 @@
         <artifactId>org.eclipse.sisu.plexus</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.eclipse.sisu</groupId>
+        <artifactId>sisu-maven-plugin</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
       <!--
        | Sisu is compatible with Guice 3.0+
@@ -426,6 +431,31 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
           <version>0.8.12</version>
+          <configuration>
+            <propertyName>jacoco.argLine</propertyName>
+            <excludes>
+              <exclude>**/asm/*</exclude>
+              <exclude>Incomplete*</exclude>
+            </excludes>
+          </configuration>
+          <executions>
+            <execution>
+              <id>jacoco-prepare</id>
+              <goals>
+                <goal>prepare-agent</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>jacoco-report</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>report</goal>
+              </goals>
+              <configuration>
+                <title>${project.name}</title>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -528,6 +558,10 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>
