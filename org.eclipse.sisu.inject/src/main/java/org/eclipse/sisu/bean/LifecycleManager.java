@@ -168,6 +168,7 @@ public final class LifecycleManager
      * 
      * @param remove a tester that can decide if this key needs to be flushed or
      *               not.
+     * @since TBD
      */
     public void flushCacheFor( ClassTester remove )
     {
@@ -182,6 +183,8 @@ public final class LifecycleManager
 
     /**
      * Allows testing if a class should be flushed from the cache
+     *
+     * @since TBD
      */
     public static interface ClassTester
     {
