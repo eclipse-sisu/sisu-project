@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
- ~ Copyright (c) 2010-present Sonatype, Inc.
- ~ All rights reserved. This program and the accompanying materials
- ~ are made available under the terms of the Eclipse Public License v1.0
- ~ which accompanies this distribution, and is available at
- ~ http://www.eclipse.org/legal/epl-v10.html
- ~
- ~ Contributors:
- ~   Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
+
+    Copyright (c) 2010-2024 Sonatype, Inc.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License 2.0
+    which accompanies this distribution, and is available at
+    https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+      Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
+
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -29,8 +32,8 @@
   </organization>
   <licenses>
     <license>
-      <name>Eclipse Public License, Version 1.0</name>
-      <url>http://www.eclipse.org/legal/epl-v10.html</url>
+      <name>Eclipse Public License, Version 2.0</name>
+      <url>https://www.eclipse.org/legal/epl-v20.html</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
@@ -125,6 +128,11 @@
     <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+    <!-- Source headers -->
+    <sisu.licenseHeader>https://raw.githubusercontent.com/eclipse-sisu/sisu-project/main/license-header-epl2.txt</sisu.licenseHeader>
+    <sisu.licenseYear>${project.inceptionYear}-2024</sisu.licenseYear>
+
+    <!-- Versions -->
     <mavenRuntimeVersion>3.2.5</mavenRuntimeVersion>
     <mavenBuildVersion>3.6.3</mavenBuildVersion>
     <javaBuildVersion>11</javaBuildVersion>
@@ -550,6 +558,63 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
               </goals>
             </execution>
           </executions>
+        </plugin>
+        <!--
+        Plugin is set to work in "aggregate" mode, so invoke it from root directory of checkout combined with -N:
+        mvn -N license:check to check or mvn -N license:format to format sources. Using it manually for now.
+        -->
+        <plugin>
+          <groupId>com.mycila</groupId>
+          <artifactId>license-maven-plugin</artifactId>
+          <version>4.5</version>
+          <configuration>
+            <aggregate>true</aggregate>
+            <strictCheck>true</strictCheck>
+            <useDefaultExcludes>false</useDefaultExcludes>
+            <licenseSets>
+              <licenseSet>
+                <header>${sisu.licenseHeader}</header>
+                <includes>
+                  <include>**/pom.xml</include>
+                  <include>**/*.xml</include>
+                  <include>**/*.xsd</include>
+                  <include>**/*.xjb</include>
+                  <include>**/*.mdo</include>
+                  <include>**/*.properties</include>
+                  <include>**/*.java</include>
+                  <include>**/*.groovy</include>
+                  <include>**/*.scala</include>
+                  <include>**/*.aj</include>
+                  <include>**/*.js</include>
+                  <include>**/*.css</include>
+                </includes>
+                <excludes>
+                  <exclude>.mvn/**</exclude>
+                  <exclude>bin/**</exclude>
+                  <exclude>docs/**</exclude>
+                  <exclude>leftovers/**</exclude>
+                  <exlude>**/src/main/java/org/eclipse/sisu/space/asm/**</exlude>
+                  <exclude>**/target/**</exclude>
+                  <exclude>**/conf/**</exclude>
+                  <exclude>**/.*</exclude>
+                  <exclude>**/pkg/**</exclude>
+                  <exclude>**/.idea/**</exclude>
+                  <exclude>**/release.properties</exclude>
+                  <exclude>**/pom.xml.releaseBackup</exclude>
+                  <exclude>release.sh</exclude>
+                  <exclude>**/src/test/**</exclude>
+                </excludes>
+              </licenseSet>
+            </licenseSets>
+            <properties>
+              <year>${sisu.licenseYear}</year>
+            </properties>
+            <mapping>
+              <scala>JAVADOC_STYLE</scala>
+              <xjb>XML_STYLE</xjb>
+              <mdo>XML_STYLE</mdo>
+            </mapping>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
