@@ -126,6 +126,9 @@
     <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+    <!-- Sonar -->
+    <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/coverage-aggregator/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+
     <mavenRuntimeVersion>3.2.5</mavenRuntimeVersion>
     <mavenBuildVersion>3.6.3</mavenBuildVersion>
     <javaBuildVersion>11</javaBuildVersion>
@@ -432,6 +435,31 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
           <version>0.8.12</version>
+          <configuration>
+            <propertyName>jacoco.argLine</propertyName>
+            <excludes>
+              <exclude>**/asm/*</exclude>
+              <exclude>Incomplete*</exclude>
+            </excludes>
+          </configuration>
+          <executions>
+            <execution>
+              <id>jacoco-prepare</id>
+              <goals>
+                <goal>prepare-agent</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>jacoco-report</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>report</goal>
+              </goals>
+              <configuration>
+                <title>${project.name}</title>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>

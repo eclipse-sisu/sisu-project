@@ -439,27 +439,6 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <configuration>
-          <propertyName>jacoco.argLine</propertyName>
-        </configuration>
-        <executions>
-          <execution>
-            <id>jacoco-prepare</id>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>jacoco-report</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-            <configuration>
-              <title>Sisu Plexus</title>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>

@@ -22,7 +22,7 @@
 
   <artifactId>coverage-aggregator</artifactId>
   <packaging>pom</packaging>
-  <description>Module to aggregate code test coverage</description>
+  <description>Eclipse Sisu aggregated code coverage</description>
 
   <properties>
     <!-- This module exists only to feed Sonar -->
@@ -57,13 +57,6 @@
             <goals>
               <goal>report-aggregate</goal>
             </goals>
-            <configuration>
-              <title>Eclipse Sisu</title>
-              <outputDirectory>${project.basedir}/../target/site/jacoco</outputDirectory>
-              <excludes>
-                <exclude>**/asm/*</exclude>
-              </excludes>
-            </configuration>
           </execution>
         </executions>
       </plugin>
