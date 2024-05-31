@@ -126,7 +126,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <mavenRuntimeVersion>3.2.5</mavenRuntimeVersion>
-    <mavenBuildVersion>3.6.3</mavenBuildVersion>
+    <mavenBuildVersion>3.9.7</mavenBuildVersion>
     <javaBuildVersion>11</javaBuildVersion>
     <mavenPluginToolsVersion>3.13.0</mavenPluginToolsVersion>
     <!-- Note: this version is used in tests, to update embedded asm use bin/update_asm.sh -->
