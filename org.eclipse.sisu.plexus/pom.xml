@@ -441,7 +441,6 @@
       </plugin>
     </plugins>
   </build>
-
   <profiles>
     <profile>
       <id>code-coverage</id>
@@ -455,5 +454,4 @@
       </build>
     </profile>
   </profiles>
-
 </project>

@@ -116,6 +116,7 @@
     <!-- Source headers -->
     <sisu.licenseHeader>https://raw.githubusercontent.com/eclipse-sisu/sisu-project/main/license-header-epl2.txt</sisu.licenseHeader>
     <sisu.licenseYear>${project.inceptionYear}-2024</sisu.licenseYear>
+    <jacoco.argLine />
 
     <!-- Versions -->
     <mavenRuntimeVersion>3.2.5</mavenRuntimeVersion>
