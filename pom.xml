@@ -674,16 +674,5 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         </plugins>
       </build>
     </profile>
-    <profile>
-      <id>code-coverage</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
   </profiles>
 </project>
