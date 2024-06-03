@@ -470,6 +470,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
           <artifactId>maven-release-plugin</artifactId>
           <version>3.0.1</version>
           <configuration>
+            <autoVersionSubmodules>true</autoVersionSubmodules>
             <mavenExecutorId>forked-path</mavenExecutorId>
             <useReleaseProfile>false</useReleaseProfile>
             <arguments>-Psisu-release</arguments>
