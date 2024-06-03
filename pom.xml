@@ -116,7 +116,13 @@
     <!-- Source headers -->
     <sisu.licenseHeader>https://raw.githubusercontent.com/eclipse-sisu/sisu-project/main/license-header-epl2.txt</sisu.licenseHeader>
     <sisu.licenseYear>${project.inceptionYear}-2024</sisu.licenseYear>
+
+    <!-- Jacoco and Sonar -->
     <jacoco.argLine />
+    <sonar.coverage.jacoco.xmlReportPaths>
+      ${maven.multiModuleProjectDirectory}/org.eclipse.sisu.inject/target/site/jacoco/jacoco.xml,
+      ${maven.multiModuleProjectDirectory}/org.eclipse.sisu.plexus/target/site/jacoco/jacoco.xml
+    </sonar.coverage.jacoco.xmlReportPaths>
 
     <!-- Versions -->
     <mavenRuntimeVersion>3.2.5</mavenRuntimeVersion>
