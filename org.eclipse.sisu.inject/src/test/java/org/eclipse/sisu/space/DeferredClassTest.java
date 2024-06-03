@@ -57,8 +57,6 @@ class DeferredClassTest
 
         assertEquals( ( 17 * 31 + clazzName.hashCode() ) * 31 + space.hashCode(), clazz.hashCode() );
 
-        assertEquals( clazz, clazz );
-
         assertEquals( new NamedClass<Object>( space, clazzName ), clazz );
 
         assertFalse( clazz.equals( new DeferredClass<Object>()
@@ -100,8 +98,6 @@ class DeferredClassTest
         assertEquals( String.class.getName(), stringClazz.getName() );
         assertEquals( String.class.getName(), stringClazz.load().getName() );
         assertSame( String.class, stringClazz.load() );
-
-        assertEquals( stringClazz, stringClazz );
 
         assertFalse( stringClazz.equals( dummyClazz ) );
         assertFalse( stringClazz.equals( String.class ) );
