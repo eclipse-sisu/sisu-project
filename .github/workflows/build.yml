@@ -24,7 +24,23 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
+      # sets environment variables to be used in subsequent steps: https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-environment-variable
+      - name: Set environment variables
+        shell: bash
+        run: |
+          if [ "${{ matrix.isMainBuildEnv }}" = "true" ]; then
+            echo "SONAR_TOKEN=${{ secrets.SONAR_TOKEN }}" >> $GITHUB_ENV
+            echo "MVN_ADDITIONAL_OPTS=org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }} -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}" >> $GITHUB_ENV
+            echo "GIT_FETCH_DEPTH=0" >> $GITHUB_ENV # Shallow clones should be disabled for a better relevancy of analysis
+          else
+            echo "MVN_ADDITIONAL_OPTS=" >> $GITHUB_ENV
+            echo "GIT_FETCH_DEPTH=1" >> $GITHUB_ENV
+          fi
+
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: ${{ env.GIT_FETCH_DEPTH }}
+
       - uses: actions/setup-java@v4
         with:
           java-version: ${{ matrix.java }}
@@ -32,12 +48,4 @@ jobs:
           cache: 'maven'
 
       - name: Build with Maven
-        if: '!matrix.isMainBuildEnv'
-        run: ./mvnw verify -e -B -V
-
-      - name: Build with Maven (incl. Sonarcloud analysis)
-        if: 'matrix.isMainBuildEnv'
-        env: 
-          # SonarCloud access token and project coordinates provided in context of https://gitlab.eclipse.org/eclipsefdn/helpdesk/-/issues/4700
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./mvnw verify -Pcode-coverage -e -B -V org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }} -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
+        run: ./mvnw verify -e -B -V ${{ env.MVN_ADDITIONAL_OPTS }}
