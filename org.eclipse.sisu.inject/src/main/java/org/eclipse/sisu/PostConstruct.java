@@ -30,7 +30,7 @@ import java.lang.annotation.Target;
  * To use annotation {@link org.eclipse.sisu.bean.LifecycleModule} needs to be
  * installed.
  *
- * @since TBD
+ * @since 0.9.0.M3
  */
 @Target( value = { ElementType.METHOD } )
 @Retention( RetentionPolicy.RUNTIME )
