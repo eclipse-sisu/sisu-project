@@ -11,6 +11,11 @@ See [maven-gpg-plugin site](https://maven.apache.org/plugins/maven-gpg-plugin/us
 
 ### Release steps
 
+Prerequsites:
+* deploy snapshot: `mvn deploy -P sisu-release` for testing
+* make sure source code does not have `@since TBD`; of have, search/replace it with upcoming version
+* perform the release
+
 The "usual" Maven release:
 * `mvn release:prepare`
 * `mvn release:perform`
