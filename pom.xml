@@ -93,21 +93,6 @@
     <url>https://ci.eclipse.org/sisu/job/sisu.inject/</url>
   </ciManagement>
 
-  <repositories>
-    <repository>
-      <id>sonatype-nexus-snapshots</id>
-      <name>Sonatype Nexus Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-    </repository>
-  </repositories>
-
   <distributionManagement>
     <snapshotRepository>
       <id>sonatype-nexus-snapshots</id>
@@ -136,7 +121,7 @@
     <mavenRuntimeVersion>3.2.5</mavenRuntimeVersion>
     <mavenBuildVersion>3.6.3</mavenBuildVersion>
     <javaBuildVersion>11</javaBuildVersion>
-    <mavenPluginToolsVersion>3.13.0</mavenPluginToolsVersion>
+    <mavenPluginToolsVersion>3.13.1</mavenPluginToolsVersion>
     <!-- Note: this version is used in tests, to update embedded asm use bin/update_asm.sh -->
     <asmVersion>9.7</asmVersion>
   </properties>
@@ -309,7 +294,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.4.1</version>
+          <version>3.5.0</version>
           <configuration>
             <rules>
               <enforceBytecodeVersion>
@@ -378,6 +363,9 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>3.2.5</version>
+          <configuration>
+            <failIfNoSpecifiedTests>false</failIfNoSpecifiedTests>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -423,7 +411,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>3.5.3</version>
+          <version>3.6.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -473,7 +461,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
             <autoVersionSubmodules>true</autoVersionSubmodules>
             <mavenExecutorId>forked-path</mavenExecutorId>
             <useReleaseProfile>false</useReleaseProfile>
-            <arguments>-Psisu-release</arguments>
+            <arguments>-Psisu-release -Dtest=none</arguments>
             <localCheckout>true</localCheckout>
             <pushChanges>false</pushChanges>
             <scmCommentPrefix>|</scmCommentPrefix>
@@ -502,7 +490,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.6.3</version>
+          <version>3.7.0</version>
           <configuration>
             <overview>${basedir}/overview.html</overview>
             <excludePackageNames>*.internal,*.asm</excludePackageNames>
