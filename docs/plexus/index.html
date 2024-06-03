@@ -769,15 +769,43 @@ public class MyPluginModule
 }
 </pre>
                 <div class="alert alert-info">
-                    <p>Maven Class Loading mechanism does not expose the Guice API to build plugins, but only to core extensions.</p>
-                    <p>So you can only define custom bindings in core extensions. </p>
-                    <p>Note that extensions does not have access to the API by default, you need to expose it yourself using the `extension.xml` config file. See the example [here](https://maven.apache.org/ref/3.9.0/maven-core/core-extensions.html) for more details.</p>
+                    <p>Note that Maven Class Loading mechanism does not expose the Guice API to plugins by default, you need to expose it yourself using the `extension.xml` config file. This file is where we list the exposed APIs from maven core to plugins. </p>
+                    <p>Since core extensions are the only way to modify any behaviour of maven core, we have to create a core extension and put this file in it in order to modify the exposed APIs.</p>
                 </div>
 
                 <div class="alert alert-danger">
-                    <p>Even if you define custom Guice modules in your build plugins by adding the classes in your Classpath, they will not be picked up by maven due to the separation of Classpaths.</p>
-                    <p>If you want to read more about maven class loader, see documentation [here](https://maven.apache.org/guides/mini/guide-maven-classloading.html#Core_Classloader)</p>
+                    <p>Even if you define custom Guice modules in your plugins by adding the Guice classes into your Classpath (by adding Guice libraries as dependencies in your pom.xml for example), they will not be picked up by maven due to the separation of Classpaths.</p>
+                    <p>If you want to read more about maven class loader, see documentation <a href="https://maven.apache.org/guides/mini/guide-maven-classloading.html#Core_Classloader">here</a>.</p>
                 </div>
+
+                <p>To activate the Guice API, put the following file <b>extensions.xml</b> in the <b>/META-INF/maven/</b> folder of your core extension.</p>
+
+                <pre class="prettyprint lang-xml">
+&lt;extension&gt;
+    &lt;exportedPackages&gt;
+        &lt;exportedPackage&gt;com.google.inject.*&lt;/exportedPackage&gt;
+        &lt;exportedPackage&gt;com.google.inject.binder.*&lt;/exportedPackage&gt;
+        &lt;exportedPackage&gt;com.google.inject.matcher.*&lt;/exportedPackage&gt;
+        &lt;exportedPackage&gt;com.google.inject.name.*&lt;/exportedPackage&gt;
+        &lt;exportedPackage&gt;com.google.inject.spi.*&lt;/exportedPackage&gt;
+        &lt;exportedPackage&gt;com.google.inject.util.*&lt;/exportedPackage&gt;
+        &lt;exportedPackage&gt;com.google.inject.internal.*&lt;/exportedPackage&gt;
+    &lt;/exportedPackages&gt;
+&lt;/extension&gt;</pre>
+                <p>Build your extensions as a jar, and put the its artifact identifiers in the <b>.mvn/extensions.xml</b> file to activate your extension, in the maven project where you want to use custom guice bindings.</p>
+                <pre class="prettyprint lang-xml">&lt;extensions xmlns="http://maven.apache.org/EXTENSIONS/1.1.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/EXTENSIONS/1.1.0
+                    https://maven.apache.org/xsd/core-extensions-1.0.0.xsd"&gt;
+  &lt;extension&gt;
+    &lt;groupId/&gt;
+    &lt;artifactId/&gt;
+    &lt;version/&gt;
+  &lt;/extension&gt;
+&lt;/extensions&gt;</pre>
+
+                <p>See the documentation <a href="https://maven.apache.org/ref/3.9.0/maven-core/core-extensions.html">here</a> for more details on the exposed APIs by default.</p>
+                <p>Here is the <a href="https://maven.apache.org/guides/mini/guide-using-extensions.html">documentation</a> that explains how to define a core extension.</p>
 
             </section>
 
