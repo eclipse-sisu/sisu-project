@@ -14,6 +14,11 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         java: [ '11', '17', '21' ]
+        include:
+          # lengthy build steps should only be performed on linux with Java 17 (Sonarcloud analysis, deployment)
+          - os: ubuntu-latest
+            java: '17'
+            isMainBuildEnv: true
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
@@ -27,5 +32,12 @@ jobs:
           cache: 'maven'
 
       - name: Build with Maven
+        if: '!matrix.isMainBuildEnv'
         run: ./mvnw verify -e -B -V
 
+      - name: Build with Maven (incl. Sonarcloud analysis)
+        if: 'matrix.isMainBuildEnv'
+        env: 
+          # SonarCloud access token and project coordinates provided in context of https://gitlab.eclipse.org/eclipsefdn/helpdesk/-/issues/4700
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./mvnw verify -Pcode-coverage -e -B -V org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }} -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
