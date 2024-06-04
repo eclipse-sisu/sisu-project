@@ -309,7 +309,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
-          <argLine>-Xmx64m --add-opens java.base/java.lang=ALL-UNNAMED @{jacoco.argLine}</argLine>
+          <argLine>-Xmx64m --add-opens java.base/java.lang=ALL-UNNAMED @{argLine}</argLine>
           <classpathDependencyExcludes>
             <classpathDependencyExclude>com.google.guava:guava</classpathDependencyExclude>
             <classpathDependencyExclude>com.google.inject:guice</classpathDependencyExclude>
@@ -470,17 +470,6 @@
                 </configuration>
               </execution>
             </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>code-coverage</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
           </plugin>
         </plugins>
       </build>

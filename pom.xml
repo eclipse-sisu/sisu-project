@@ -117,13 +117,6 @@
     <sisu.licenseHeader>https://raw.githubusercontent.com/eclipse-sisu/sisu-project/main/license-header-epl2.txt</sisu.licenseHeader>
     <sisu.licenseYear>${project.inceptionYear}-2024</sisu.licenseYear>
 
-    <!-- Jacoco and Sonar -->
-    <jacoco.argLine />
-    <sonar.coverage.jacoco.xmlReportPaths>
-      ${maven.multiModuleProjectDirectory}/org.eclipse.sisu.inject/target/site/jacoco/jacoco.xml,
-      ${maven.multiModuleProjectDirectory}/org.eclipse.sisu.plexus/target/site/jacoco/jacoco.xml
-    </sonar.coverage.jacoco.xmlReportPaths>
-
     <!-- Versions -->
     <mavenRuntimeVersion>3.2.5</mavenRuntimeVersion>
     <mavenBuildVersion>3.6.3</mavenBuildVersion>
@@ -131,6 +124,8 @@
     <mavenPluginToolsVersion>3.13.1</mavenPluginToolsVersion>
     <!-- Note: this version is used in tests, to update embedded asm use bin/update_asm.sh -->
     <asmVersion>9.7</asmVersion>
+    <!-- define empty, as jacoco is only conditionally executed (https://www.eclemma.org/jacoco/trunk/doc/prepare-agent-mojo.html) -->
+    <argLine />
   </properties>
 
   <dependencyManagement>
@@ -677,6 +672,18 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <!-- not all sub modules have tests yet, but those additional executions don't do any harm -->
+    <profile>
+      <id>code-coverage</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
           </plugin>
         </plugins>
       </build>
