@@ -430,11 +430,11 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
           <artifactId>jacoco-maven-plugin</artifactId>
           <version>0.8.12</version>
           <configuration>
-            <propertyName>jacoco.argLine</propertyName>
             <excludes>
               <exclude>**/asm/*</exclude>
               <exclude>Incomplete*</exclude>
             </excludes>
+            <append>true</append>
           </configuration>
           <executions>
             <execution>
