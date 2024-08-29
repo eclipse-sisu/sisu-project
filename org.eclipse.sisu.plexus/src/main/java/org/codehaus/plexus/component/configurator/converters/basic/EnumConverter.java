@@ -39,7 +39,7 @@ public class EnumConverter
                 + "' must not contain child elements" );
         }
 
-        Object result = fromExpression( configuration, evaluator );
+        Object result = fromExpression( configuration, evaluator, type, false );
         if ( result instanceof String )
         {
             try

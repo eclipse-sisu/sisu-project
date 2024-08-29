@@ -53,7 +53,7 @@ public class CollectionConverter
                                      final ConfigurationListener listener )
         throws ComponentConfigurationException
     {
-        final Object value = fromExpression( configuration, evaluator );
+        final Object value = fromExpression( configuration, evaluator, type, false );
         if ( type.isInstance( value ) )
         {
             return value;

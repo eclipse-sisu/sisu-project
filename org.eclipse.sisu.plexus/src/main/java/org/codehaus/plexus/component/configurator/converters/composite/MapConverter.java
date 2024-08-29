@@ -60,13 +60,13 @@ public class MapConverter
         try
         {
             final Map<Object, Object> map = instantiateMap( configuration, type, loader );
-            final Type elementType = findElementType( typeArguments );
+            final Type elementType = findElementClass( typeArguments );
             if ( Object.class == elementType || String.class == elementType )
             {
                 for ( int i = 0, size = configuration.getChildCount(); i < size; i++ )
                 {
                     final PlexusConfiguration element = configuration.getChild( i );
-                    map.put( element.getName(), fromExpression( element, evaluator ) );
+                    map.put( element.getName(), fromExpression( element, evaluator, (Class<?>)elementType ) );
                 }
                 return map;
             }
@@ -96,7 +96,7 @@ public class MapConverter
                 // TEMP: remove when http://jira.codehaus.org/browse/MSHADE-168 is fixed
                 catch ( final ComponentConfigurationException e )
                 {
-                    elementValue = fromExpression( element, evaluator );
+                    elementValue = fromExpression( element, evaluator, type );
 
                     Logs.warn( "Map in " + enclosingType + " declares value type as: {} but saw: {} at runtime",
                                elementType, null != elementValue ? elementValue.getClass() : null );
@@ -132,7 +132,7 @@ public class MapConverter
         return (Map<Object, Object>) impl;
     }
 
-    private static Type findElementType( final Type[] typeArguments )
+    private static Type findElementClass( final Type[] typeArguments )
     {
         if ( null != typeArguments && typeArguments.length > 1 )
         {
@@ -140,4 +140,5 @@ public class MapConverter
         }
         return Object.class;
     }
+
 }

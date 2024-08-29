@@ -31,7 +31,9 @@ import org.codehaus.plexus.component.configurator.BasicComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ComponentConfigurator;
 import org.codehaus.plexus.component.configurator.expression.DefaultExpressionEvaluator;
+import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluationException;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
+import org.codehaus.plexus.component.configurator.expression.TypeAwareExpressionEvaluator;
 import org.codehaus.plexus.configuration.DefaultPlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.junit.Before;
@@ -40,6 +42,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
@@ -82,6 +85,38 @@ public class BasicComponentConfiguratorTest
     }
 
     @Test
+    public void testTypePassedToExpressionEvaluator()
+        throws ComponentConfigurationException
+    {
+        CustomTypeComponent component = new CustomTypeComponent();
+        ExpressionEvaluator evaluator = new TypeAwareExpressionEvaluator()
+        {
+            @Override
+            public Object evaluate( String expression, Class<?> type )
+                    throws ExpressionEvaluationException
+            {
+                assertEquals( CustomType.class, type );
+                return expression;
+            }
+
+            @Override
+            public Object evaluate( String expression ) throws ExpressionEvaluationException
+            {
+                fail( "Wrong evaluate method being called (without type)" );
+                return expression; // unreachable
+            }
+
+            @Override
+            public File alignToBaseDirectory(File path)
+            {
+                return path;
+            }
+        };
+        configure( evaluator, component, "custom", "hello world" );
+        assertEquals( "hello world", component.custom.toString() );
+    }
+
+    @Test
     public void testTemporalConvertersWithoutMillisecondsAndOffset()
         throws ComponentConfigurationException
     {
@@ -119,7 +154,6 @@ public class BasicComponentConfiguratorTest
 
     @Test
     public void testTemporalConvertersWithInvalidString()
-        throws ComponentConfigurationException
     {
         TemporalComponent component = new TemporalComponent();
         String dateString = "invalid";
@@ -143,7 +177,7 @@ public class BasicComponentConfiguratorTest
 
         config.addChild( child );
 
-        configure( complexBean, config,
+        configure( null, complexBean, config,
                    new ClassWorld( "foo", Thread.currentThread().getContextClassLoader() ).getClassRealm( "foo" ) );
 
         assertEquals( complexBean.resources.size(), 2 );
@@ -154,6 +188,12 @@ public class BasicComponentConfiguratorTest
     private void configure( Object component, String... keysAndValues )
         throws ComponentConfigurationException
     {
+        configure( null, component, keysAndValues );
+    }
+
+    private void configure( ExpressionEvaluator evaluator, Object component, String... keysAndValues )
+            throws ComponentConfigurationException
+    {
         final DefaultPlexusConfiguration config = new DefaultPlexusConfiguration( "testConfig" );
         if ( keysAndValues.length % 2 != 0 )
         {
@@ -163,33 +203,36 @@ public class BasicComponentConfiguratorTest
         {
             config.addChild( keysAndValues[i], keysAndValues[i + 1] );
         }
-        configure( component, config );
+        configure( evaluator, component, config );
     }
 
-    private void configure( Object component, PlexusConfiguration config )
+    private void configure( ExpressionEvaluator evaluator, Object component, PlexusConfiguration config )
         throws ComponentConfigurationException
     {
-        configure( component, config, null );
+        configure( evaluator, component, config, null );
     }
 
-    private void configure( Object component, PlexusConfiguration config, ClassRealm loader )
+    private void configure( ExpressionEvaluator evaluator, Object component, PlexusConfiguration config, ClassRealm loader )
         throws ComponentConfigurationException
     {
-        final ExpressionEvaluator evaluator = new DefaultExpressionEvaluator()
+        if ( evaluator == null )
         {
-            @Override
-            public File alignToBaseDirectory( File path )
+            evaluator = new DefaultExpressionEvaluator()
             {
-                if ( !path.isAbsolute() )
+                @Override
+                public File alignToBaseDirectory( File path )
                 {
-                    return new File( tmpDirectory.getRoot(), path.getPath() );
+                    if ( !path.isAbsolute() )
+                    {
+                        return new File( tmpDirectory.getRoot(), path.getPath() );
+                    }
+                    else
+                    {
+                        return path;
+                    }
                 }
-                else
-                {
-                    return path;
-                }
-            }
-        };
+            };
+        }
         configurator.configureComponent( component, config, evaluator, loader );
     }
 
