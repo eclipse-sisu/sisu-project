@@ -18,6 +18,7 @@ import org.codehaus.plexus.component.configurator.ComponentConfigurationExceptio
 import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluationException;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
+import org.codehaus.plexus.component.configurator.expression.TypeAwareExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.eclipse.sisu.plexus.Roles;
 
@@ -37,43 +38,70 @@ public abstract class AbstractConfigurationConverter
     // Customizable methods
     // ----------------------------------------------------------------------
 
+    /**
+     * 
+     * @param configuration
+     * @param evaluator
+     * @return
+     * @throws ComponentConfigurationException
+     * @deprecated Use {@link #fromExpression(PlexusConfiguration, ExpressionEvaluator, Class)} instead
+     */
+    @Deprecated
     protected Object fromExpression( final PlexusConfiguration configuration, final ExpressionEvaluator evaluator )
         throws ComponentConfigurationException
     {
-        String value = configuration.getValue();
-        try
-        {
-            Object result = null;
-            if ( null != value && value.length() > 0 )
-            {
-                result = evaluator.evaluate( value );
-            }
-            if ( null == result && configuration.getChildCount() == 0 )
-            {
-                value = configuration.getAttribute( "default-value" );
-                if ( null != value && value.length() > 0 )
-                {
-                    result = evaluator.evaluate( value );
-                }
-            }
-            return result;
-        }
-        catch ( final ExpressionEvaluationException e )
-        {
-            final String reason = String.format( "Cannot evaluate expression '%s' for configuration entry '%s'", value,
-                                                 configuration.getName() );
-
-            throw new ComponentConfigurationException( configuration, reason, e );
-        }
+        return fromExpression( configuration, evaluator, null );
     }
 
     protected Object fromExpression( final PlexusConfiguration configuration, final ExpressionEvaluator evaluator,
                                      final Class<?> type )
         throws ComponentConfigurationException
     {
-        final Object result = fromExpression( configuration, evaluator );
-        failIfNotTypeCompatible( result, type, configuration );
-        return result;
+        return fromExpression( configuration, evaluator, type, true );
+    }
+
+    protected Object fromExpression( final PlexusConfiguration configuration, final ExpressionEvaluator evaluator,
+                                     final Class<?> type, boolean enforceTypeCompatibility )
+         throws ComponentConfigurationException
+
+    {
+        String value = configuration.getValue();
+        try
+        {
+            Object result = null;
+            if ( null != value && !value.isEmpty() )
+            {
+                if ( evaluator instanceof TypeAwareExpressionEvaluator && type != null )
+                {
+                    result = ((TypeAwareExpressionEvaluator) evaluator).evaluate( value, type );
+                } else
+                {
+                    result = evaluator.evaluate( value );
+                }
+            }
+            if ( null == result && configuration.getChildCount() == 0 ) {
+                value = configuration.getAttribute( "default-value" );
+                if ( null != value && !value.isEmpty() ) {
+                    if ( evaluator instanceof TypeAwareExpressionEvaluator && type != null ) {
+                        result = ((TypeAwareExpressionEvaluator) evaluator).evaluate( value, type );
+                    } else {
+                        result = evaluator.evaluate( value );
+                    }
+                }
+            }
+            if ( enforceTypeCompatibility && type != null ) {
+                failIfNotTypeCompatible( result, type, configuration );
+            }
+            return result;
+        }
+        catch ( final ExpressionEvaluationException e )
+        {
+            final String reason = 
+                String.format( "Cannot evaluate expression '%s' for configuration entry '%s'", 
+                        value, configuration.getName() );
+
+            throw new ComponentConfigurationException( configuration, reason, e );
+        }
     }
 
     // ----------------------------------------------------------------------

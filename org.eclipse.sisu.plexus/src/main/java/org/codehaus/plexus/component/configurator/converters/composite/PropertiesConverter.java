@@ -48,7 +48,7 @@ public class PropertiesConverter
                 final PlexusConfiguration element = configuration.getChild( i );
                 if ( element.getChildCount() > 0 )
                 {
-                    final Object name = fromExpression( element.getChild( "name" ), evaluator );
+                    final Object name = fromExpression( element.getChild( "name" ), evaluator, String.class, false );
                     setProperty( properties, name, element.getChild( "value" ), evaluator );
                 }
                 else
@@ -91,7 +91,7 @@ public class PropertiesConverter
         final String key = null != name ? name.toString() : null;
         if ( null != key )
         {
-            final Object value = fromExpression( valueConfiguration, evaluator );
+            final Object value = fromExpression( valueConfiguration, evaluator, String.class, false );
             properties.setProperty( key, null != value ? value.toString() : "" );
         }
         else

@@ -40,7 +40,8 @@ public class ObjectWithFieldsConverter
                                      final ExpressionEvaluator evaluator, final ConfigurationListener listener )
         throws ComponentConfigurationException
     {
-        final Object value = fromExpression( configuration, evaluator );
+        // no type enforcement as also accepting string types used in the custom types constructor
+        final Object value = fromExpression( configuration, evaluator, type, false );
         if ( type.isInstance( value ) )
         {
             return value;
