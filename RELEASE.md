@@ -1,5 +1,9 @@
 # Releasing Sisu
 
+## Eclipse Foundation Release Policy
+
+<https://www.eclipse.org/projects/handbook/#release>
+
 ## Maven
 
 Note: Build uses latest `maven-gpg-plugin` and is getting rid "old bad practices" of storing sensitive information in
@@ -11,7 +15,7 @@ See [maven-gpg-plugin site](https://maven.apache.org/plugins/maven-gpg-plugin/us
 
 ### Release steps
 
-Prerequsites:
+**Prerequisites:**
 * deploy snapshot: `mvn deploy -P sisu-release` for testing
 * make sure source code does not have `@since TBD`; of have, search/replace it with upcoming version
 * perform the release
@@ -19,8 +23,8 @@ Prerequsites:
 The "usual" Maven release:
 * `mvn release:prepare`
 * `mvn release:perform`
-* project uses https://oss.sonatype.org/ to stage (manual step: close and release staging repository)
+* project uses <https://oss.sonatype.org/> to stage (manual step: close and release staging repository)
 
 ## Site
 
-TBD
+Look at https://eclipse.dev/sisu/development.html#Site_Publishing

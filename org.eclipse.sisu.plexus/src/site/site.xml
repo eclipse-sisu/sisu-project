@@ -1,6 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (c) 2010-2024 Sonatype, Inc.
     All rights reserved. This program and the accompanying materials
     are made available under the terms of the Eclipse Public License 2.0
     which accompanies this distribution, and is available at
@@ -8,20 +8,18 @@
 
     SPDX-License-Identifier: EPL-2.0
 
-    Contributors:
-      Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
-
 -->
 <site xmlns="http://maven.apache.org/SITE/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/SITE/2.0.0 https://maven.apache.org/xsd/site-2.0.0.xsd">
-  <body>
-    <links>
-      <item name="Maven" href="http://maven.apache.org/"/>
-    </links>
-    <menu name="Overview">
-      <item name="Introduction" href="index.html"/>
-      <item name="Goals" href="plugin-info.html"/>
-    </menu>
-    <menu ref="reports"/>
-  </body>
+    <body>
+            <breadcrumbs>
+                <item name="Sisu" href="index.html"/>
+            </breadcrumbs>
+            <menu name="Sisu Plexus">
+          <item href="index.html" name="Overview" />
+          <item href="conversion-to-jsr330.html" name="Convert to JSR-330 annotations" />
+          </menu>
+          <menu ref="modules" />
+          <menu ref="reports" />
+    </body>
 </site>

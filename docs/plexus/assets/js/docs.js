@@ -1,1 +1,0 @@
-!function(e){e(function(){var t=e(window);e("section [href^=#]").click(function(e){e.preventDefault()});setTimeout(function(){e(".sisu-docs-sidenav").affix({offset:{top:function(){return t.width()<=980?250:170},bottom:270}})},100);window.prettyPrint&&prettyPrint()})}(window.jQuery)
