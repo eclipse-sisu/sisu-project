@@ -22,9 +22,9 @@
   <version>0.9.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>Sisu Inject</name>
+  <name>Sisu</name>
   <description>Eclipse Sisu: JSR330-based container, Plexus-JSR330 adapter and supporting Maven Mojos</description>
-  <url>http://www.eclipse.org/sisu/</url>
+  <url>https://eclipse.dev/sisu/</url>
   <inceptionYear>2010</inceptionYear>
   <organization>
     <name>The Eclipse Foundation</name>
@@ -44,23 +44,23 @@
       <subscribe>sisu-dev-subscribe@eclipse.org</subscribe>
       <unsubscribe>sisu-dev-unsubscribe@eclipse.org</unsubscribe>
       <post>sisu-dev@eclipse.org</post>
-      <archive>http://dev.eclipse.org/mhonarc/lists/sisu-dev/</archive>
+      <archive>https://www.eclipse.org/lists/sisu-dev</archive>
     </mailingList>
     <mailingList>
       <name>Sisu Users List</name>
       <subscribe>sisu-users-subscribe@eclipse.org</subscribe>
       <unsubscribe>sisu-users-unsubscribe@eclipse.org</unsubscribe>
       <post>sisu-users@eclipse.org</post>
-      <archive>http://dev.eclipse.org/mhonarc/lists/sisu-users/</archive>
+      <archive>https://www.eclipse.org/lists/sisu-users</archive>
     </mailingList>
   </mailingLists>
 
   <modules>
     <module>org.eclipse.sisu.inject</module>
-    <module>org.eclipse.sisu.inject.extender</module>
     <module>org.eclipse.sisu.plexus</module>
-    <module>org.eclipse.sisu.plexus.extender</module>
     <module>org.eclipse.sisu.mojos</module>
+    <module>org.eclipse.sisu.inject.extender</module>
+    <module>org.eclipse.sisu.plexus.extender</module>
   </modules>
 
   <developers>
@@ -79,18 +79,18 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git://github.com/eclipse/sisu.inject.git</connection>
-    <developerConnection>scm:git:git@github.com:eclipse/sisu.inject.git</developerConnection>
-    <url>https://github.com/eclipse/sisu.inject</url>
+    <connection>scm:git:git://github.com/eclipse-sisu/sisu-project.git</connection>
+    <developerConnection>scm:git:git@github.com:eclipse-sisu/sisu-project.git</developerConnection>
+    <url>https://github.com/eclipse-sisu/sisu-project</url>
     <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/eclipse/sisu.inject/issues</url>
+    <url>https://github.com/eclipse-sisu/sisu-project/issues</url>
   </issueManagement>
   <ciManagement>
-    <system>Jenkins</system>
-    <url>https://ci.eclipse.org/sisu/job/sisu.inject/</url>
+    <system>GitHub Actions</system>
+    <url>https://github.com/eclipse-sisu/sisu-project/actions/runs/9362606818/</url>
   </ciManagement>
 
   <distributionManagement>
@@ -104,6 +104,10 @@
       <name>Nexus Release Repository</name>
       <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
+    <site>
+      <id>sisu.site-deploy</id>
+      <url>scm:git:ssh://git@github.com/eclipse-sisu/sisu-website.git</url>
+    </site>
   </distributionManagement>
 
   <properties>
@@ -363,6 +367,11 @@
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-plugin-report-plugin</artifactId>
+          <version>${mavenPluginToolsVersion}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>3.2.5</version>
           <configuration>
@@ -474,7 +483,15 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
-          <version>3.12.1</version>
+          <version>3.20.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-scm-publish-plugin</artifactId>
+          <version>3.3.0</version>
+          <configuration>
+            <scmBranch>gh-pages</scmBranch>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -499,6 +516,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
             <additionalJOption>-Xdoclint:all,-missing</additionalJOption>
             <detectOfflineLinks>false</detectOfflineLinks>
             <quiet>true</quiet>
+            <notimestamp>true</notimestamp>
           </configuration>
           <executions>
             <execution>
@@ -623,6 +641,30 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <id>aggregate</id>
+            <configuration>
+              <groups>
+                <group>
+                  <title>Sisu Container</title>
+                  <packages>org.eclipse.sisu*:org.sonatype.inject</packages>  
+                </group>
+                <group>
+                  <title>Plexus API</title>
+                  <packages>org.codehaus.plexus*:org.eclipse.sisu.plexus</packages>  
+                </group>
+              </groups>
+            </configuration>
+            <reports>
+              <report>aggregate</report>
+            </reports>
+          </reportSet>
+        </reportSets>
       </plugin>
     </plugins>
   </reporting>

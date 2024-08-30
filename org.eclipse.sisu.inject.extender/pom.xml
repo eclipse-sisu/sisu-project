@@ -25,7 +25,8 @@
 
   <artifactId>org.eclipse.sisu.inject.extender</artifactId>
   <packaging>jar</packaging>
-  <description>JSR330-based container; supports classpath scanning, auto-binding, and dynamic auto-wiring</description>
+  <name>Eclipse Sisu JSR-330 Extender</name>
+  <description>Automatically discovers and wires JSR-330 annotated Sisu components contained in OSGi bundles</description>
 
   <build>
     <resources>

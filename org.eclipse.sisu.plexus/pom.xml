@@ -25,6 +25,7 @@
 
   <artifactId>org.eclipse.sisu.plexus</artifactId>
   <packaging>jar</packaging>
+  <name>Eclipse Sisu Plexus</name>
   <description>Plexus-JSR330 adapter; adds Plexus support to the Sisu-Inject container</description>
 
   <dependencies>
@@ -441,4 +442,14 @@
       </plugin>
     </plugins>
   </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
+
 </project>

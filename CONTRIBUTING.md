@@ -67,8 +67,8 @@ One of the committers will take a look and provide feedback or merge your contri
 
 That's it, thanks for contributing to Sisu!
 
-[ECA]:             https://www.eclipse.org/legal/ECA.php
-[issue-tracker]:   https://github.com/eclipse/sisu.inject/issues
+[ECA]:             https://www.eclipse.org/legal/eca/
+[issue-tracker]:   https://github.com/eclipse-sisu/sisu-project/issues
 [style-guide]:     https://maven.apache.org/developers/conventions/code.html
 [rebase]:          https://github.com/edx/edx-platform/wiki/How-to-Rebase-a-Pull-Request
 [github-issue]:    https://help.github.com/articles/closing-issues-via-commit-messages/
