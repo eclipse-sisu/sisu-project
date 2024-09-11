@@ -18,7 +18,7 @@ Sisu uses [Google Guice](https://github.com/google/guice) to perform dependency 
 
 ## Documentation
 
-* [Sisu Website](https://eclipse.github.io/sisu.inject/) (soon also available on <https://eclipse.dev/sisu/>)
+* [Sisu Website](https://eclipse.dev/sisu/)
 * [Eclipse Project Information](https://projects.eclipse.org/projects/technology.sisu)
 
 ## How to Contribute
