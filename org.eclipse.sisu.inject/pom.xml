@@ -119,9 +119,7 @@
         <directory>.</directory>
         <includes>
           <include>META-INF/**</include>
-          <include>about.html</include>
           <include>overview.html</include>
-          <include>plugin.xml</include>
         </includes>
       </resource>
     </resources>

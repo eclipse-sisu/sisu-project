@@ -33,7 +33,6 @@
         <directory>.</directory>
         <includes>
           <include>META-INF/**</include>
-          <include>about.html</include>
           <include>overview.html</include>
         </includes>
       </resource>
