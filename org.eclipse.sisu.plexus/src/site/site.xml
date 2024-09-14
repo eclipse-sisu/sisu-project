@@ -17,6 +17,7 @@
             </breadcrumbs>
             <menu name="Sisu Plexus">
           <item href="index.html" name="Overview" />
+          <item href="configuration.html" name="Configuration" />
           <item href="conversion-to-jsr330.html" name="Convert to JSR-330 annotations" />
           </menu>
           <menu ref="modules" />
