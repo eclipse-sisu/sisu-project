@@ -90,7 +90,7 @@
   </issueManagement>
   <ciManagement>
     <system>GitHub Actions</system>
-    <url>https://github.com/eclipse-sisu/sisu-project/actions/runs/9362606818/</url>
+    <url>https://github.com/eclipse-sisu/sisu-project/actions/workflows/build.yml?query=branch%3Amain</url>
   </ciManagement>
 
   <distributionManagement>
