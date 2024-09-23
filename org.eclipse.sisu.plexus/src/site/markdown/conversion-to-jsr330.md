@@ -458,7 +458,9 @@ public class MyComponent
 
 ### Startable
 
-Support for JSR250 lifecycle annotations is available when enabled for the Plexus wrapper (\[Maven 3.5+\](https://issues.apache.org/jira/browse/MNG-6084) enables JSR250 support). If JSR250 support is not enabled then applications can use other techniques to handle start/stop behavior. The examples below show the solution used in Sonatype Nexus, which relies on a modified implementation of the Google-Guava EventBus to manage lifecycle events.
+Support for [Sisu/JSR250 lifecycle annotations](../org.eclipse.sisu.inject/lifecycle.html) is available when enabled for the Plexus wrapper (\[Maven 3.5+\](https://issues.apache.org/jira/browse/MNG-6084) enables JSR250 support). 
+
+If JSR250 support is not enabled then applications can use other techniques to handle start/stop behavior. The examples below show the solution used in Sonatype Nexus, which relies on a modified implementation of the Google-Guava EventBus to manage lifecycle events.
 
 ```
 @Component(role=Component.class, hint="my")
