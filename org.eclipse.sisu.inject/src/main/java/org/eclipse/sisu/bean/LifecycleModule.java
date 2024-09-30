@@ -14,12 +14,8 @@ package org.eclipse.sisu.bean;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
-import com.google.inject.TypeLiteral;
-import com.google.inject.matcher.AbstractMatcher;
-import com.google.inject.matcher.Matcher;
-import com.google.inject.spi.InjectionListener;
-import com.google.inject.spi.TypeEncounter;
-import com.google.inject.spi.TypeListener;
+import com.google.inject.matcher.Matchers;
+import com.google.inject.spi.ProvisionListener;
 
 /**
  * Guice {@link Module} that provides lifecycle management by following {@link org.eclipse.sisu.PostConstruct}
@@ -36,27 +32,11 @@ public final class LifecycleModule
 
     /* These classes map the Guice SPI to the BeanManager SPI */
 
-    private final Matcher<TypeLiteral<?>> matcher = new AbstractMatcher<TypeLiteral<?>>()
+    private final ProvisionListener provisionListener = new ProvisionListener()
     {
-        public boolean matches( final TypeLiteral<?> type )
+        public <T> void onProvision(final ProvisionInvocation<T> provision)
         {
-            return manager.manage( type.getRawType() );
-        }
-    };
-
-    private final TypeListener typeListener = new TypeListener()
-    {
-        private final InjectionListener<Object> listener = new InjectionListener<Object>()
-        {
-            public void afterInjection( final Object bean )
-            {
-                manager.manage( bean );
-            }
-        };
-
-        public <B> void hear( final TypeLiteral<B> type, final TypeEncounter<B> encounter )
-        {
-            encounter.register( listener );
+            manager.manage(provision.provision());
         }
     };
 
@@ -83,6 +63,6 @@ public final class LifecycleModule
     public void configure( final Binder binder )
     {
         binder.bind( BeanManager.class ).toInstance( manager );
-        binder.bindListener( matcher, typeListener );
+        binder.bindListener( Matchers.any(), provisionListener );
     }
 }
