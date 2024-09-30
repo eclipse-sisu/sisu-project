@@ -7,7 +7,7 @@ Those are
 Annotation | Method called... | Leveraged Guice Hook
 --- | ---
  `org.eclipse.sisu.PostConstruct` (or `javax.annotation.PostConstruct`) | Before bean is started | [`com.google.inject.spi.InjectionListener.afterInjection(...)`](https://google.github.io/guice/api-docs/6.0.0/javadoc/com/google/inject/spi/InjectionListener.html#afterInjection(I))
- `org.eclipse.sisu.PreDestroy` (or `javax.annotation.PreDestroy.`) | Before bean is stopped | Is not called by default, only via [Plexus API](../org.eclipse.sisu.plexus).
+ `org.eclipse.sisu.PreDestroy` (or `javax.annotation.PreDestroy`) | Before bean is stopped | Is not called by default, only via [Plexus API](../org.eclipse.sisu.plexus/apidocs/org/codehaus/plexus/DefaultPlexusContainer.html).
  
  The annotations defined in [JSR 250](https://jcp.org/en/jsr/detail?id=250) are recognized in addition to the native Sisu ones when their classes are detected in the class path.
  
