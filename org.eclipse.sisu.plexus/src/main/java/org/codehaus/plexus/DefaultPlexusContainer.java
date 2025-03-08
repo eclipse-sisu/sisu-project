@@ -141,6 +141,8 @@ public final class DefaultPlexusContainer
 
     private final boolean isAutoWiringEnabled;
 
+    private final boolean strictClassPathScanning;
+
     private final BeanScanning scanning;
 
     private final Module containerModule = new ContainerModule();
@@ -185,6 +187,7 @@ public final class DefaultPlexusContainer
 
         componentVisibility = configuration.getComponentVisibility();
         isAutoWiringEnabled = configuration.getAutoWiring();
+        strictClassPathScanning = configuration.getStrictClassPathScanning();
 
         scanning = parseScanningOption( configuration.getClassPathScanning() );
 
@@ -200,8 +203,7 @@ public final class DefaultPlexusContainer
         final ClassSpace space = new URLClassSpace( containerRealm );
         beanModules.add( new PlexusXmlBeanModule( space, variables, plexusXml ) );
         final BeanScanning global = BeanScanning.INDEX == scanning ? BeanScanning.GLOBAL_INDEX : scanning;
-        beanModules.add( new PlexusAnnotatedBeanModule( space, variables, global,
-                                                        configuration.getStrictClassPathScanning() ) );
+        beanModules.add( new PlexusAnnotatedBeanModule( space, variables, global, strictClassPathScanning ) );
 
         try
         {
@@ -454,7 +456,8 @@ public final class DefaultPlexusContainer
                 {
                     beanModules.add( new PlexusXmlBeanModule( space, variables ) );
                     final BeanScanning local = BeanScanning.GLOBAL_INDEX == scanning ? BeanScanning.INDEX : scanning;
-                    beanModules.add( new PlexusAnnotatedBeanModule( space, variables, local ) );
+                    beanModules.add( new PlexusAnnotatedBeanModule( space, variables, local,
+                                                                    strictClassPathScanning ) );
                 }
             }
             if ( !beanModules.isEmpty() )
@@ -464,7 +467,14 @@ public final class DefaultPlexusContainer
         }
         catch ( final RuntimeException e )
         {
-            getLogger().warn( realm.toString(), e );
+            if ( strictClassPathScanning )
+            {
+                throw e;
+            }
+            else
+            {
+                getLogger().warn( realm.toString(), e );
+            }
         }
 
         return null; // no-one actually seems to use or check the returned component list!
