@@ -1,6 +1,6 @@
 # Named Index
 
-Often Sisu's `SpaceModule` doesn't scan the full classpath at run time (for relevant annotations) but relies on a pre-generated index at `META-INF/sisu/javax.inject.Named`. 
+Often Sisu's `SpaceModule` doesn't scan the full classpath at run time (for relevant annotations) but relies on a pre-generated index at `META-INF/sisu/javax.inject.Named`. This file contains the fully qualified class names (one class name per line). The line separator may be either `\n`, `\r` or `\r\n`.
 
 ## Generate the named index
 
