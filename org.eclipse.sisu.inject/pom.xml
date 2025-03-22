@@ -37,7 +37,13 @@
       <artifactId>guice</artifactId>
       <scope>provided</scope>
     </dependency>
-
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm</artifactId>
+      <version>${asmVersion}</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
     <!--
      | Optional support dependencies
     -->
@@ -449,11 +455,11 @@
                   <goal>shade</goal>
                 </goals>
                 <configuration>
-                  <!--
-                   | Create 'no_asm' jar which doesn't embed ASM and refers to the original org.objectweb.asm package.
+                 <!--
+                   | Create 'embedded_asm' jar which embeds and relocates ASM to package org.eclipse.sisu.space.asm.
                   -->
                   <shadedArtifactAttached>true</shadedArtifactAttached>
-                  <shadedClassifierName>no_asm</shadedClassifierName>
+                  <shadedClassifierName>embedded_asm</shadedClassifierName>
                   <filters>
                     <filter>
                       <artifact>org.eclipse.sisu:org.eclipse.sisu.inject</artifact>
@@ -464,15 +470,12 @@
                   </filters>
                   <relocations>
                     <relocation>
-                      <pattern>org.eclipse.sisu.space.asm</pattern>
-                      <shadedPattern>org.objectweb.asm</shadedPattern>
+                      <pattern>org.objectweb.asm</pattern>
+                      <shadedPattern>org.eclipse.sisu.space.asm</shadedPattern>
                     </relocation>
                   </relocations>
                   <transformers>
                     <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                      <manifestEntries>
-                        <DynamicImport-Package>org.objectweb.asm</DynamicImport-Package>
-                      </manifestEntries>
                     </transformer>
                   </transformers>
                 </configuration>

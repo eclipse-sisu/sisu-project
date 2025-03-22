@@ -15,6 +15,9 @@ The following artifacts are available from the [Central Repository](https://cent
     </dependency>
     ```
 
+    This artifact embedded [ASM (for Java bytecode parsing)](https://asm.ow2.io/) by default till version 0.9.0M3. A version without ASM was available with classifier `no_asm`. 
+    Newer versions of this artifact provide an ASM embedded variant with classifier `embedded_asm`, the artifact without classifier does no longer embed ASM (but still depends on it).
+
 *  Maven plugin that generates annotation indexes for Sisu to avoid classpath scanning at runtime
 
     ```

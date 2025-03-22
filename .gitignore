@@ -10,3 +10,4 @@ target/
 *.patch
 *.log
 *.swp
+dependency-reduced-pom.xml
