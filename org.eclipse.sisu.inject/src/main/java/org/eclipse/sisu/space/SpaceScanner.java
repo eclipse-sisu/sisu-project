@@ -19,9 +19,9 @@ import java.net.URL;
 import java.util.Enumeration;
 
 import org.eclipse.sisu.inject.Logs;
-import org.eclipse.sisu.space.asm.ClassReader;
-import org.eclipse.sisu.space.asm.Opcodes;
-import org.eclipse.sisu.space.asm.Type;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 /**
  * Makes a {@link SpaceVisitor} visit a {@link ClassSpace}; can be directed by an optional {@link ClassFinder}.
@@ -177,9 +177,9 @@ public final class SpaceScanner
      * @param _cv The class visitor to adapt
      * @return ASM-compatible class visitor
      */
-    private static org.eclipse.sisu.space.asm.ClassVisitor adapt( final ClassVisitor _cv )
+    private static org.objectweb.asm.ClassVisitor adapt( final ClassVisitor _cv )
     {
-        return null == _cv ? null : new org.eclipse.sisu.space.asm.ClassVisitor( Opcodes.ASM9 )
+        return null == _cv ? null : new org.objectweb.asm.ClassVisitor( Opcodes.ASM9 )
         {
             @Override
             public void visit( final int version, final int access, final String name, final String signature,
@@ -189,11 +189,11 @@ public final class SpaceScanner
             }
 
             @Override
-            public org.eclipse.sisu.space.asm.AnnotationVisitor visitAnnotation( final String desc,
+            public org.objectweb.asm.AnnotationVisitor visitAnnotation( final String desc,
                                                                                  final boolean visible )
             {
                 final AnnotationVisitor _av = _cv.visitAnnotation( desc );
-                return null == _av ? null : new org.eclipse.sisu.space.asm.AnnotationVisitor( Opcodes.ASM9 )
+                return null == _av ? null : new org.objectweb.asm.AnnotationVisitor( Opcodes.ASM9 )
                 {
                     {
                         _av.enterAnnotation();
