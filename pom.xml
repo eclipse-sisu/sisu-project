@@ -126,8 +126,7 @@
     <mavenBuildVersion>3.6.3</mavenBuildVersion>
     <javaBuildVersion>11</javaBuildVersion>
     <mavenPluginToolsVersion>3.13.1</mavenPluginToolsVersion>
-    <!-- Note: this version is used in tests, to update embedded asm use bin/update_asm.sh -->
-    <asmVersion>9.7</asmVersion>
+    <asmVersion>9.8</asmVersion>
     <!-- define empty, as jacoco is only conditionally executed (https://www.eclemma.org/jacoco/trunk/doc/prepare-agent-mojo.html) -->
     <argLine />
   </properties>
