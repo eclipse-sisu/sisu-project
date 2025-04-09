@@ -16,6 +16,7 @@ See [maven-gpg-plugin site](https://maven.apache.org/plugins/maven-gpg-plugin/us
 ### Release steps
 
 **Prerequisites:**
+* have Sonatype Central Repository Portal User token in `settings.xml` (https://central.sonatype.org/publish/generate-portal-token/) for server with id `central`
 * deploy snapshot: `mvn deploy -P sisu-release` for testing
 * make sure source code does not have `@since TBD`; of have, search/replace it with upcoming version
 * perform the release
@@ -23,8 +24,8 @@ See [maven-gpg-plugin site](https://maven.apache.org/plugins/maven-gpg-plugin/us
 The "usual" Maven release:
 * `mvn release:prepare`
 * `mvn release:perform`
-* project uses <https://oss.sonatype.org/> to stage (manual step: close and release staging repository)
+* project uses <https://central.sonatype.com/publishing> to stage, afterwards you need to [manually publish via the web UI](https://central.sonatype.org/publish/publish-portal-guide/#publishing-your-components)
 
 ## Site
 
-Look at https://eclipse.dev/sisu/development.html#Site_Publishing
+Look at <https://eclipse.dev/sisu/development.html#Site_Publishing>
