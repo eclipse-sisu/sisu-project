@@ -95,14 +95,14 @@
 
   <distributionManagement>
     <snapshotRepository>
-      <id>sonatype-nexus-snapshots</id>
-      <name>Sonatype Nexus Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <id>njord-snapshots</id>
+      <name>Local Snapshots Staging</name>
+      <url>njord:snapshot-sca</url>
     </snapshotRepository>
     <repository>
-      <id>sonatype-nexus-staging</id>
-      <name>Nexus Release Repository</name>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      <id>njord-releases</id>
+      <name>Local Release Staging</name>
+      <url>njord:release-sca</url>
     </repository>
     <site>
       <id>sisu.site-deploy</id>
