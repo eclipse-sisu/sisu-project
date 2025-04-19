@@ -22,8 +22,9 @@
   <version>0.9.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>Sisu</name>
+  <name>${project.groupId}:${project.artifactId}</name>
   <description>Eclipse Sisu: JSR330-based container, Plexus-JSR330 adapter and supporting Maven Mojos</description>
+
   <url>https://eclipse.dev/sisu/</url>
   <inceptionYear>2010</inceptionYear>
   <organization>

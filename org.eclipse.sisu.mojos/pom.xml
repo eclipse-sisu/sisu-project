@@ -25,7 +25,8 @@
 
   <artifactId>sisu-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <name>Eclipse Sisu Maven Plugin</name>
+
+  <name>${project.groupId}:${project.artifactId}</name>
   <description>Maven plugin generating Sisu index files</description>
 
   <prerequisites>
