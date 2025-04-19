@@ -125,7 +125,7 @@
     <mavenRuntimeVersion>3.2.5</mavenRuntimeVersion>
     <mavenBuildVersion>3.6.3</mavenBuildVersion>
     <javaBuildVersion>11</javaBuildVersion>
-    <mavenPluginToolsVersion>3.13.1</mavenPluginToolsVersion>
+    <mavenPluginToolsVersion>3.15.1</mavenPluginToolsVersion>
     <asmVersion>9.8</asmVersion>
     <!-- define empty, as jacoco is only conditionally executed (https://www.eclemma.org/jacoco/trunk/doc/prepare-agent-mojo.html) -->
     <argLine />
@@ -338,7 +338,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-clean-plugin</artifactId>
-          <version>3.3.2</version>
+          <version>3.4.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -348,7 +348,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.13.0</version>
+          <version>3.14.0</version>
           <configuration>
             <proc>none</proc>
             <showDeprecation>true</showDeprecation>
@@ -357,7 +357,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
-          <version>3.6.1</version>
+          <version>3.8.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -372,7 +372,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.2.5</version>
+          <version>3.5.3</version>
           <configuration>
             <failIfNoSpecifiedTests>false</failIfNoSpecifiedTests>
           </configuration>
@@ -380,12 +380,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>3.2.5</version>
+          <version>3.5.3</version>
         </plugin>
         <plugin>
           <groupId>biz.aQute.bnd</groupId>
           <artifactId>bnd-maven-plugin</artifactId>
-          <version>6.4.0</version>
+          <version>7.1.0</version>
           <configuration>
             <bnd><![CDATA[
 Bundle-Copyright: Copyright (c) 2010-present Sonatype, Inc. and others
@@ -406,7 +406,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>3.4.1</version>
+          <version>3.4.2</version>
           <executions>
             <execution>
               <id>default-jar</id>
@@ -426,17 +426,17 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-install-plugin</artifactId>
-          <version>3.1.2</version>
+          <version>3.1.4</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-deploy-plugin</artifactId>
-          <version>3.1.2</version>
+          <version>3.1.4</version>
         </plugin>
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.8.12</version>
+          <version>0.8.13</version>
           <configuration>
             <excludes>
               <exclude>**/asm/*</exclude>
@@ -466,7 +466,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
-          <version>3.0.1</version>
+          <version>3.1.1</version>
           <configuration>
             <autoVersionSubmodules>true</autoVersionSubmodules>
             <mavenExecutorId>forked-path</mavenExecutorId>
@@ -482,7 +482,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
-          <version>3.20.0</version>
+          <version>3.21.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -508,7 +508,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.7.0</version>
+          <version>3.11.2</version>
           <configuration>
             <overview>${basedir}/overview.html</overview>
             <excludePackageNames>*.internal,*.asm</excludePackageNames>
@@ -529,7 +529,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-gpg-plugin</artifactId>
-          <version>3.2.4</version>
+          <version>3.2.7</version>
           <configuration>
             <useAgent>true</useAgent>
           </configuration>
@@ -546,12 +546,12 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.5.0</version>
+          <version>3.9.0</version>
         </plugin>
         <plugin>
           <groupId>com.diffplug.spotless</groupId>
           <artifactId>spotless-maven-plugin</artifactId>
-          <version>2.35.0</version>
+          <version>2.44.4</version>
         </plugin>
         <plugin>
           <groupId>org.eclipse.sisu</groupId>
@@ -574,7 +574,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>com.mycila</groupId>
           <artifactId>license-maven-plugin</artifactId>
-          <version>4.5</version>
+          <version>5.0.0</version>
           <configuration>
             <aggregate>true</aggregate>
             <strictCheck>true</strictCheck>
