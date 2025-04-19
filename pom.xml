@@ -124,8 +124,8 @@
 
     <!-- Versions -->
     <mavenRuntimeVersion>3.2.5</mavenRuntimeVersion>
-    <mavenBuildVersion>3.6.3</mavenBuildVersion>
-    <javaBuildVersion>11</javaBuildVersion>
+    <mavenBuildVersion>3.9.9</mavenBuildVersion>
+    <javaBuildVersion>17</javaBuildVersion>
     <mavenPluginToolsVersion>3.15.1</mavenPluginToolsVersion>
     <asmVersion>9.8</asmVersion>
     <!-- define empty, as jacoco is only conditionally executed (https://www.eclemma.org/jacoco/trunk/doc/prepare-agent-mojo.html) -->
