@@ -66,7 +66,7 @@ public class MapConverter
                 for ( int i = 0, size = configuration.getChildCount(); i < size; i++ )
                 {
                     final PlexusConfiguration element = configuration.getChild( i );
-                    map.put( element.getName(), fromExpression( element, evaluator, (Class<?>) elementType ) );
+                    map.put( element.getName(), fromExpression( element, evaluator, (Class<?>)elementType ) );
                 }
                 return map;
             }

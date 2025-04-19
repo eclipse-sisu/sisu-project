@@ -93,22 +93,21 @@ public class BasicComponentConfiguratorTest
         {
             @Override
             public Object evaluate( String expression, Class<?> type )
-                throws ExpressionEvaluationException
+                    throws ExpressionEvaluationException
             {
                 assertEquals( CustomType.class, type );
                 return expression;
             }
 
             @Override
-            public Object evaluate( String expression )
-                throws ExpressionEvaluationException
+            public Object evaluate( String expression ) throws ExpressionEvaluationException
             {
                 fail( "Wrong evaluate method being called (without type)" );
                 return expression; // unreachable
             }
 
             @Override
-            public File alignToBaseDirectory( File path )
+            public File alignToBaseDirectory(File path)
             {
                 return path;
             }
@@ -193,7 +192,7 @@ public class BasicComponentConfiguratorTest
     }
 
     private void configure( ExpressionEvaluator evaluator, Object component, String... keysAndValues )
-        throws ComponentConfigurationException
+            throws ComponentConfigurationException
     {
         final DefaultPlexusConfiguration config = new DefaultPlexusConfiguration( "testConfig" );
         if ( keysAndValues.length % 2 != 0 )
@@ -213,8 +212,7 @@ public class BasicComponentConfiguratorTest
         configure( evaluator, component, config, null );
     }
 
-    private void configure( ExpressionEvaluator evaluator, Object component, PlexusConfiguration config,
-                            ClassRealm loader )
+    private void configure( ExpressionEvaluator evaluator, Object component, PlexusConfiguration config, ClassRealm loader )
         throws ComponentConfigurationException
     {
         if ( evaluator == null )

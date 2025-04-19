@@ -170,7 +170,7 @@ public class PlexusStrictClasspathScanningTest
                               () -> createIsolatedPlexusContainer( configConsumer,
                                                                    Optional.of( dirClasspath.getURL() ) ) );
             assertEquals( "Problem scanning " + dirClasspath.getClassFileUrl( Jsr330Component2.class.getName() ),
-                          e.getCause().getMessage() );
+                    e.getCause().getMessage() );
             assertEquals( "Unsupported class file major version 255", e.getCause().getCause().getMessage() );
 
             // test with container realm containing invalid class file
@@ -296,13 +296,10 @@ public class PlexusStrictClasspathScanningTest
         public URL getClassFileUrl( String className )
         {
             String relativePath = className.replace( '.', File.separatorChar ) + ".class";
-            try
-            {
+            try {
                 return tempDir.resolve( relativePath ).toUri().toURL();
-            }
-            catch ( MalformedURLException e )
-            {
-                throw new IllegalArgumentException( "Invalid class name: " + className, e );
+            } catch (MalformedURLException e) {
+                throw new IllegalArgumentException("Invalid class name: " + className, e);
             }
         }
 

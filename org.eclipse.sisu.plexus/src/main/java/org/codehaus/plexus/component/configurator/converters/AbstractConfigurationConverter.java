@@ -62,7 +62,7 @@ public abstract class AbstractConfigurationConverter
 
     protected Object fromExpression( final PlexusConfiguration configuration, final ExpressionEvaluator evaluator,
                                      final Class<?> type, boolean enforceTypeCompatibility )
-        throws ComponentConfigurationException
+         throws ComponentConfigurationException
 
     {
         String value = configuration.getValue();
@@ -73,38 +73,32 @@ public abstract class AbstractConfigurationConverter
             {
                 if ( evaluator instanceof TypeAwareExpressionEvaluator && type != null )
                 {
-                    result = ( (TypeAwareExpressionEvaluator) evaluator ).evaluate( value, type );
-                }
-                else
+                    result = ((TypeAwareExpressionEvaluator) evaluator).evaluate( value, type );
+                } else
                 {
                     result = evaluator.evaluate( value );
                 }
             }
-            if ( null == result && configuration.getChildCount() == 0 )
-            {
+            if ( null == result && configuration.getChildCount() == 0 ) {
                 value = configuration.getAttribute( "default-value" );
-                if ( null != value && !value.isEmpty() )
-                {
-                    if ( evaluator instanceof TypeAwareExpressionEvaluator && type != null )
-                    {
-                        result = ( (TypeAwareExpressionEvaluator) evaluator ).evaluate( value, type );
-                    }
-                    else
-                    {
+                if ( null != value && !value.isEmpty() ) {
+                    if ( evaluator instanceof TypeAwareExpressionEvaluator && type != null ) {
+                        result = ((TypeAwareExpressionEvaluator) evaluator).evaluate( value, type );
+                    } else {
                         result = evaluator.evaluate( value );
                     }
                 }
             }
-            if ( enforceTypeCompatibility && type != null )
-            {
+            if ( enforceTypeCompatibility && type != null ) {
                 failIfNotTypeCompatible( result, type, configuration );
             }
             return result;
         }
         catch ( final ExpressionEvaluationException e )
         {
-            final String reason = String.format( "Cannot evaluate expression '%s' for configuration entry '%s'", value,
-                                                 configuration.getName() );
+            final String reason = 
+                String.format( "Cannot evaluate expression '%s' for configuration entry '%s'", 
+                        value, configuration.getName() );
 
             throw new ComponentConfigurationException( configuration, reason, e );
         }
