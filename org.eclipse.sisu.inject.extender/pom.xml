@@ -25,7 +25,8 @@
 
   <artifactId>org.eclipse.sisu.inject.extender</artifactId>
   <packaging>jar</packaging>
-  <name>Eclipse Sisu JSR-330 Extender</name>
+
+  <name>${project.groupId}:${project.artifactId}</name>
   <description>Automatically discovers and wires JSR-330 annotated Sisu components contained in OSGi bundles</description>
 
   <build>
