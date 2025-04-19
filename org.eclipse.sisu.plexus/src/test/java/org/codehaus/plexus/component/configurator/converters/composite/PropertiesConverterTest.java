@@ -34,7 +34,7 @@ public class PropertiesConverterTest
     }
 
     @Test
-    public void testConvert()
+    public void testConvert1()
         throws ComponentConfigurationException
     {
         XmlPlexusConfiguration config = new XmlPlexusConfiguration( "properties" );
@@ -60,6 +60,46 @@ public class PropertiesConverterTest
         assertTrue( object instanceof Properties );
         Properties result = (Properties) object;
         assertTrue( result.size() == 2 );
+        assertEquals( "value1", result.getProperty("key1") );
+        assertEquals( "value2", result.getProperty("key2") );
+    }
+
+    @Test
+    public void testConvert2()
+            throws ComponentConfigurationException
+    {
+        XmlPlexusConfiguration config = new XmlPlexusConfiguration( "properties" );
+
+        XmlPlexusConfiguration entry1 = new XmlPlexusConfiguration( "property" );
+        entry1.addChild( "name", "key1" );
+        entry1.addChild( "value", "value1" );
+        config.addChild( entry1 );
+        XmlPlexusConfiguration entry2 = new XmlPlexusConfiguration( "property" );
+        entry2.addChild( "name", "key2" );
+        entry2.addChild( "value", "value2" );
+        config.addChild( entry2 );
+
+        System.out.println(config);
+
+        Object object = new PropertiesConverter().fromConfiguration( null, config, Properties.class, null, null,
+                new ExpressionEvaluator()
+                {
+                    @Override
+                    public Object evaluate( String expression )
+                            throws ExpressionEvaluationException
+                    {
+                        return expression;
+                    }
+
+                    @Override
+                    public File alignToBaseDirectory( File path )
+                    {
+                        return null;
+                    }
+                }, null );
+        assertTrue( object instanceof Properties );
+        Properties result = (Properties) object;
+        assertEquals(2,  result.size() );
         assertEquals( "value1", result.getProperty("key1") );
         assertEquals( "value2", result.getProperty("key2") );
     }
