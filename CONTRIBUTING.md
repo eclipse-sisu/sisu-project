@@ -27,7 +27,7 @@ Contact us
 Build
 -----
 
-The Sisu build requires Java 11 and Maven 3.6.3 (or above), while the resulting jars work with Java 8 and above.
+The Sisu build and runtime requirements are documented in [README.md](README.md).
 
 Coding Style
 ------------
