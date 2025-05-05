@@ -45,7 +45,7 @@ Follow these steps to set up yourself to publish to Central Portal:
 3. Perform release "as usual" (execute `mvn release:prepare` followed by `mvn release:perform`)
 4. If build ended OK, you will have locally staged release, use `mvn njord:list` to check store name.
 5. If needed, verify staging content using `mvn njord:list-content -Dstore=$storeName`
-6. If all okay, publish the staged store to Sonatype Central Portal `mvn njord:publish -Dstore=$storeName -Dtarget=sonatype-cp`
+6. If all okay, publish the staged store to Sonatype Central Portal `mvn njord:publish` (by default will publish to `sonatype-cp` and will figure out store. If override needed, use `-Dstore=$storeName -Dtarget=sonatype-cp`)
 
 ## Site
 
