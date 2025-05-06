@@ -94,16 +94,16 @@
   </ciManagement>
 
   <distributionManagement>
-    <snapshotRepository>
-      <id>sonatype-cp</id>
-      <name>Sonatype Central Portal Snapshots</name>
-      <url>https://central.sonatype.com/repository/maven-snapshots</url>
-    </snapshotRepository>
     <repository>
-      <id>sonatype-cp</id>
+      <id>sonatype-cp-service</id>
       <name>Sonatype Central Portal</name>
       <url>https://repo.maven.apache.org/maven2</url>
     </repository>
+    <snapshotRepository>
+      <id>sonatype-cp-service</id>
+      <name>Sonatype Central Portal Snapshots</name>
+      <url>https://central.sonatype.com/repository/maven-snapshots</url>
+    </snapshotRepository>
     <site>
       <id>sisu.site-deploy</id>
       <url>scm:git:ssh://git@github.com/eclipse-sisu/sisu-website.git</url>

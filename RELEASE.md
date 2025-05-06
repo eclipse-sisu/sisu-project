@@ -30,10 +30,18 @@ Follow these steps to set up yourself to publish to Central Portal:
 1. Using https://central.sonatype.com/account (while logged in) generate tokens for your account.
 2. Edit your settings and add following server entry:
    ```xml
-   <server>
-      <id>sonatype-cp</id>
-      <username>{tokenusername}</username>
-      <password>{tokenpassword}</password>
+    <server>
+      <id>sonatype-cp-service</id>
+      <!-- Create TOKEN1/TOKEN2 with Portal Service -->
+      <username>$TOKEN1</username>
+      <password>$TOKEN2</password>
+      <configuration>
+        <!-- Using Sonatype Central Portal publisher -->
+        <njord.publisher>sonatype-cp</njord.publisher>
+        <!-- Releases are staged locally (if omitted, would go directly to URL as per POM) -->
+        <!-- Snapshots goes directly to URL as per POM -->
+        <njord.releaseUrl>njord:template:release-sca</njord.releaseUrl>
+      </configuration>
     </server>
    ```
    while here, another good change for settings is this:
