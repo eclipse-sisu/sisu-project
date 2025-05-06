@@ -95,14 +95,14 @@
 
   <distributionManagement>
     <snapshotRepository>
-      <id>njord-snapshots</id>
-      <name>Local Snapshots Staging</name>
-      <url>njord:snapshot-sca</url>
+      <id>sonatype-cp</id>
+      <name>Sonatype Central Portal Snapshots</name>
+      <url>https://central.sonatype.com/repository/maven-snapshots</url>
     </snapshotRepository>
     <repository>
-      <id>njord-releases</id>
-      <name>Local Release Staging</name>
-      <url>njord:release-sca</url>
+      <id>sonatype-cp</id>
+      <name>Sonatype Central Portal</name>
+      <url>https://repo.maven.apache.org/maven2</url>
     </repository>
     <site>
       <id>sisu.site-deploy</id>
@@ -129,9 +129,6 @@
     <asmVersion>9.8</asmVersion>
     <!-- define empty, as jacoco is only conditionally executed (https://www.eclemma.org/jacoco/trunk/doc/prepare-agent-mojo.html) -->
     <argLine />
-
-    <!-- Publishing happens against Sonatype Central Portal (server.id of same name is needed in your settings.xml) -->
-    <njord.target>sonatype-cp</njord.target>
   </properties>
 
   <dependencyManagement>
