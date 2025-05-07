@@ -27,14 +27,20 @@ uses [Maveniverse Njord](https://github.com/maveniverse/njord) extension. Check 
 
 Follow these steps to set up yourself to publish to Central Portal:
 
-1. Using https://central.sonatype.com/account (while logged in) generate tokens for your account.
-2. Edit your settings and add following server entry:
+1. Using https://central.sonatype.com/account (while logged in) generate tokens for your account. Add those account
+   **to the service we use to publish: Sonatype Central Portal** as this:
    ```xml
     <server>
-      <id>sonatype-cp-service</id>
+      <id>sonatype-cp</id>
       <!-- Create TOKEN1/TOKEN2 with Portal Service -->
       <username>$TOKEN1</username>
       <password>$TOKEN2</password>
+    </server>
+   ```
+2. Sisu POM distribution management servers setup, edit your settings and add following server entry:
+   ```xml
+    <server>
+      <id>sonatype-cp-service</id>
       <configuration>
         <!-- Using Sonatype Central Portal publisher -->
         <njord.publisher>sonatype-cp</njord.publisher>
@@ -50,10 +56,12 @@ Follow these steps to set up yourself to publish to Central Portal:
      <pluginGroup>eu.maveniverse.maven.plugins</pluginGroup>
    </pluginGroups>
    ```
+   The POM `project/distributionManagement/repository/id` named server is now "redirected" to `sonatype-cp` server 
+   (and publishing service).
 3. Perform release "as usual" (execute `mvn release:prepare` followed by `mvn release:perform`)
 4. If build ended OK, you will have locally staged release, use `mvn njord:list` to check store name.
 5. If needed, verify staging content using `mvn njord:list-content -Dstore=$storeName`
-6. If all okay, publish the staged store to Sonatype Central Portal `mvn njord:publish` (by default will publish to `sonatype-cp` and will figure out store. If override needed, use `-Dstore=$storeName -Dtarget=sonatype-cp`)
+6. If all okay, publish the staged store to Sonatype Central Portal `mvn publish` (by default will publish to `sonatype-cp` and will figure out store. If override needed, use `-Dstore=$storeName -Dtarget=sonatype-cp`)
 
 ## Site
 
