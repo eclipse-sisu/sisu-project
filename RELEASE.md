@@ -27,8 +27,8 @@ uses [Maveniverse Njord](https://github.com/maveniverse/njord) extension. Check 
 
 Follow these steps to set up yourself to publish to Central Portal:
 
-1. Using https://central.sonatype.com/account (while logged in) generate tokens for your account. Add those account
-   **to the service we use to publish: Sonatype Central Portal** as this:
+1. Using https://central.sonatype.com/account (while logged in) generate tokens for your account. Add those tokens
+   **to the service/server we use to publish**, the Sonatype Central Portal as this in `settings.xml`:
    ```xml
     <server>
       <id>sonatype-cp</id>
@@ -37,7 +37,7 @@ Follow these steps to set up yourself to publish to Central Portal:
       <password>$TOKEN2</password>
     </server>
    ```
-2. Sisu POM distribution management servers setup, edit your settings and add following server entry:
+2. Sisu POM distribution management servers setup, add to your `settings.xml` following server entry:
    ```xml
     <server>
       <id>sonatype-cp-service</id>
