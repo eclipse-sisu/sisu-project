@@ -28,3 +28,12 @@ We accept contributions via GitHub pull requests. Please see [How To Contribute]
 ## License
 
 - [Eclipse Public License, v2.0](https://www.eclipse.org/legal/epl-v20.html)
+
+## Requirements
+
+Runtime requirements:
+* Java 8
+
+Build time requirements:
+* Java 17+
+* Maven 3.9.9+
