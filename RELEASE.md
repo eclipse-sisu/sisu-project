@@ -45,8 +45,9 @@ Follow these steps to set up yourself to publish to Central Portal:
         <!-- Using Sonatype Central Portal publisher -->
         <njord.publisher>sonatype-cp</njord.publisher>
         <!-- Releases are staged locally (if omitted, would go directly to URL as per POM) -->
-        <!-- Snapshots goes directly to URL as per POM -->
         <njord.releaseUrl>njord:template:release-sca</njord.releaseUrl>
+        <!-- Snapshots are staged locally (if omitted, would go directly to URL as per POM) -->
+        <njord.snapshotUrl>njord:template:snapshot-sca</njord.snapshotUrl>
       </configuration>
     </server>
    ```
