@@ -189,8 +189,7 @@ public final class SpaceScanner
             }
 
             @Override
-            public org.objectweb.asm.AnnotationVisitor visitAnnotation( final String desc,
-                                                                                 final boolean visible )
+            public org.objectweb.asm.AnnotationVisitor visitAnnotation( final String desc, final boolean visible )
             {
                 final AnnotationVisitor _av = _cv.visitAnnotation( desc );
                 return null == _av ? null : new org.objectweb.asm.AnnotationVisitor( Opcodes.ASM9 )

@@ -39,29 +39,29 @@ public class MapConverterTest
         throws ComponentConfigurationException
     {
         XmlPlexusConfiguration config = new XmlPlexusConfiguration( "properties" );
-        config.addChild("key1", "value1" );
+        config.addChild( "key1", "value1" );
         config.addChild( "key2", "value2" );
 
-        Object object = new MapConverter().fromConfiguration( null, config, HashMap.class, null, null,
-                                                               new ExpressionEvaluator()
-                                                               {
-                                                                   @Override
-                                                                   public Object evaluate( String expression )
-                                                                       throws ExpressionEvaluationException
-                                                                   {
-                                                                       return expression;
-                                                                   }
+        Object object =
+            new MapConverter().fromConfiguration( null, config, HashMap.class, null, null, new ExpressionEvaluator()
+            {
+                @Override
+                public Object evaluate( String expression )
+                    throws ExpressionEvaluationException
+                {
+                    return expression;
+                }
 
-                                                                   @Override
-                                                                   public File alignToBaseDirectory( File path )
-                                                                   {
-                                                                       return null;
-                                                                   }
-                                                               }, null );
+                @Override
+                public File alignToBaseDirectory( File path )
+                {
+                    return null;
+                }
+            }, null );
         assertTrue( object instanceof HashMap );
         HashMap result = (HashMap) object;
         assertTrue( result.size() == 2 );
-        assertEquals( "value1", result.get("key1") );
-        assertEquals( "value2", result.get("key2") );
+        assertEquals( "value1", result.get( "key1" ) );
+        assertEquals( "value2", result.get( "key2" ) );
     }
 }
