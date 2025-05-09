@@ -495,6 +495,11 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-invoker-plugin</artifactId>
+          <version>3.9.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
           <version>3.3.1</version>
           <executions>
@@ -557,7 +562,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.eclipse.sisu</groupId>
           <artifactId>sisu-maven-plugin</artifactId>
-          <version>0.9.0.M2</version>
+          <version>0.9.0.M3</version>
           <executions>
             <execution>
               <id>index-project</id>
