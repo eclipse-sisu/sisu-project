@@ -163,6 +163,12 @@
         <version>4.0</version>
       </dependency>
 
+      <dependency>
+        <groupId>org.ow2.asm</groupId>
+        <artifactId>asm</artifactId>
+        <version>${asmVersion}</version>
+      </dependency>
+
       <!--
        | Plexus classloading/utilities
       -->

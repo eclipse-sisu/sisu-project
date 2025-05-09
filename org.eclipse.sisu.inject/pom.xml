@@ -38,13 +38,15 @@
       <artifactId>guice</artifactId>
       <scope>provided</scope>
     </dependency>
+
+    <!--
+     | ASM is required
+    -->
     <dependency>
       <groupId>org.ow2.asm</groupId>
       <artifactId>asm</artifactId>
-      <version>${asmVersion}</version>
-      <scope>provided</scope>
-      <optional>true</optional>
     </dependency>
+
     <!--
      | Optional support dependencies
     -->
