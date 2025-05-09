@@ -38,13 +38,15 @@
       <artifactId>guice</artifactId>
       <scope>provided</scope>
     </dependency>
+
+    <!--
+     | ASM is required
+    -->
     <dependency>
       <groupId>org.ow2.asm</groupId>
       <artifactId>asm</artifactId>
-      <version>${asmVersion}</version>
-      <scope>provided</scope>
-      <optional>true</optional>
     </dependency>
+
     <!--
      | Optional support dependencies
     -->
@@ -440,51 +442,4 @@
       </plugin>
     </plugins>
   </reporting>
-
-  <profiles>
-    <profile>
-      <id>sisu-release</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-shade-plugin</artifactId>
-            <executions>
-              <execution>
-                <phase>package</phase>
-                <goals>
-                  <goal>shade</goal>
-                </goals>
-                <configuration>
-                 <!--
-                   | Create 'embedded_asm' jar which embeds and relocates ASM to package org.eclipse.sisu.space.asm.
-                  -->
-                  <shadedArtifactAttached>true</shadedArtifactAttached>
-                  <shadedClassifierName>embedded_asm</shadedClassifierName>
-                  <filters>
-                    <filter>
-                      <artifact>org.eclipse.sisu:org.eclipse.sisu.inject</artifact>
-                      <excludes>
-                        <exclude>org/eclipse/sisu/space/asm/**</exclude>
-                      </excludes>
-                    </filter>
-                  </filters>
-                  <relocations>
-                    <relocation>
-                      <pattern>org.objectweb.asm</pattern>
-                      <shadedPattern>org.eclipse.sisu.space.asm</shadedPattern>
-                    </relocation>
-                  </relocations>
-                  <transformers>
-                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                    </transformer>
-                  </transformers>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>
