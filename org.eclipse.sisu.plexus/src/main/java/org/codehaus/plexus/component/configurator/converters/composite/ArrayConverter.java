@@ -49,7 +49,9 @@ public class ArrayConverter
                                      final ConfigurationListener listener )
         throws ComponentConfigurationException
     {
-        final Object value = fromExpression( configuration, evaluator, type, false );
+        // Do not pass `type` here: it offers clear passage from collections to arrays and other way around
+        // See https://issues.apache.org/jira/browse/MNG-5012
+        final Object value = fromExpression( configuration, evaluator, null, false );
         if ( type.isInstance( value ) )
         {
             return value;
