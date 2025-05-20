@@ -480,7 +480,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
             <autoVersionSubmodules>true</autoVersionSubmodules>
             <mavenExecutorId>forked-path</mavenExecutorId>
             <useReleaseProfile>false</useReleaseProfile>
-            <arguments>-Psisu-release -Dtest=none</arguments>
+            <arguments>-Psisu-release -Dtest=none -Dnjord.autoPublish</arguments>
             <localCheckout>true</localCheckout>
             <pushChanges>false</pushChanges>
             <scmCommentPrefix>|</scmCommentPrefix>
