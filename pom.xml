@@ -96,14 +96,14 @@
 
   <distributionManagement>
     <snapshotRepository>
-      <id>sonatype-nexus-snapshots</id>
-      <name>Sonatype Nexus Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <id>sonatype-cp</id>
+      <name>Sonatype Central Portal</name>
+      <url>https://central.sonatype.com/repository/maven-snapshots/</url>
     </snapshotRepository>
     <repository>
-      <id>sonatype-nexus-staging</id>
-      <name>Nexus Release Repository</name>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      <id>sonatype-cp</id>
+      <name>Sonatype Central Portal</name>
+      <url>https://repo.maven.apache.org/maven2/</url>
     </repository>
     <site>
       <id>sisu.site-deploy</id>
@@ -296,6 +296,13 @@
   </dependencyManagement>
 
   <build>
+    <extensions>
+      <extension>
+        <groupId>eu.maveniverse.maven.njord</groupId>
+        <artifactId>extension</artifactId>
+        <version>0.5.3</version>
+      </extension>
+    </extensions>
     <pluginManagement>
       <plugins>
         <plugin>
