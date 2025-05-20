@@ -51,6 +51,8 @@ while there, another good change for settings is this:
    </pluginGroups>
 ```
 
+Use command `mvn njord:status` to review publishing configuration.
+
 ### Release steps
 
 **Prerequisites:**
