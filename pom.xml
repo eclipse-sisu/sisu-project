@@ -484,6 +484,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
             <localCheckout>true</localCheckout>
             <pushChanges>false</pushChanges>
             <scmCommentPrefix>|</scmCommentPrefix>
+            <goals>deploy</goals>
             <signTag>true</signTag>
             <tagNameFormat>milestones/@{project.version}</tagNameFormat>
           </configuration>
