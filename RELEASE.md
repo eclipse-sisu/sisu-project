@@ -33,10 +33,11 @@ following server entry:
 
 ```xml
     <server>
-      <id>sonatype-cp</id>
+      <id>sonatype-central-portal</id>
       <username>$TOKEN1</username>
       <password>$TOKEN2</password>
       <configuration>
+        <njord.publisher>sonatype-cp</njord.publisher>
         <njord.releaseUrl>njord:template:release-sca</njord.releaseUrl>
       </configuration>
     </server>
