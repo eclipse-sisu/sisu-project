@@ -131,6 +131,7 @@
     <asmVersion>9.8</asmVersion>
     <!-- define empty, as jacoco is only conditionally executed (https://www.eclemma.org/jacoco/trunk/doc/prepare-agent-mojo.html) -->
     <argLine />
+    <njordVersion>0.8.4</njordVersion>
   </properties>
 
   <dependencyManagement>
@@ -299,8 +300,8 @@
     <extensions>
       <extension>
         <groupId>eu.maveniverse.maven.njord</groupId>
-        <artifactId>extension</artifactId>
-        <version>0.5.3</version>
+        <artifactId>extension3</artifactId>
+        <version>${njordVersion}</version>
       </extension>
     </extensions>
     <pluginManagement>
@@ -638,6 +639,11 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
               <mdo>XML_STYLE</mdo>
             </mapping>
           </configuration>
+        </plugin>
+        <plugin>
+          <groupId>eu.maveniverse.maven.plugins</groupId>
+          <artifactId>njord</artifactId>
+          <version>${njordVersion}</version>
         </plugin>
       </plugins>
     </pluginManagement>
