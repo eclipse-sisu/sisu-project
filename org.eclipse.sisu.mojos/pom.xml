@@ -90,7 +90,7 @@
     </dependency>
     <!-- incremental build support (http://www.eclipse.org/m2e/documentation/m2e-making-maven-plugins-compat.html) -->
     <dependency>
-      <groupId>org.sonatype.plexus</groupId>
+      <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-build-api</artifactId>
     </dependency>
     <dependency>
