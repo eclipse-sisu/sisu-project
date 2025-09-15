@@ -98,8 +98,8 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
       <scope>test</scope>
     </dependency>
     <!-- to use https://docs.spring.io/spring-boot/api/java/org/springframework/boot/test/context/FilteredClassLoader.html in tests -->

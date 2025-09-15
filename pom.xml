@@ -129,6 +129,7 @@
     <javaBuildVersion>17</javaBuildVersion>
     <mavenPluginToolsVersion>3.15.1</mavenPluginToolsVersion>
     <asmVersion>9.8</asmVersion>
+    <slf4jVersion>1.7.36</slf4jVersion>
     <!-- define empty, as jacoco is only conditionally executed (https://www.eclemma.org/jacoco/trunk/doc/prepare-agent-mojo.html) -->
     <argLine />
     <njordVersion>0.8.4</njordVersion>
@@ -196,12 +197,17 @@
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
-        <version>1.7.36</version>
+        <version>${slf4jVersion}</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-nop</artifactId>
-        <version>1.7.36</version>
+        <version>${slf4jVersion}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>${slf4jVersion}</version>
       </dependency>
       <dependency>
         <groupId>org.osgi</groupId>
@@ -247,11 +253,6 @@
         <groupId>org.testng</groupId>
         <artifactId>testng</artifactId>
         <version>6.7</version>
-      </dependency>
-      <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-classic</artifactId>
-        <version>1.2.13</version>
       </dependency>
       <dependency>
         <groupId>com.google.inject.extensions</groupId>

@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 import org.eclipse.sisu.BaseTests;
 import org.eclipse.sisu.space.URLClassSpace;
 import org.junit.jupiter.api.Test;
-import org.slf4j.LoggerFactory;
+import org.slf4j.impl.SimpleLogger;
 
 @BaseTests
 class LogsTest
@@ -35,7 +35,7 @@ class LogsTest
     {
         try
         {
-            ( (ch.qos.logback.classic.Logger) LoggerFactory.getLogger( Logs.class ) ).setLevel( ch.qos.logback.classic.Level.WARN );
+            System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "WARN");
 
             final ClassLoader productionLoader =
                 new URLClassLoader( new URLClassSpace( getClass().getClassLoader() ).getURLs(), null )
@@ -44,7 +44,7 @@ class LogsTest
                     protected synchronized Class<?> loadClass( final String name, final boolean resolve )
                         throws ClassNotFoundException
                     {
-                        if ( name.startsWith( "ch" ) || name.contains( "cobertura" ) )
+                        if ( name.startsWith( "org.slf4j" ) || name.contains( "cobertura" ) )
                         {
                             return LogsTest.class.getClassLoader().loadClass( name );
                         }
