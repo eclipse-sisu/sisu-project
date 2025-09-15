@@ -44,7 +44,7 @@ import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.io.CachingWriter;
 import org.eclipse.sisu.space.SisuIndex;
 import org.eclipse.sisu.space.URLClassSpace;
-import org.sonatype.plexus.build.incremental.BuildContext;
+import org.codehaus.plexus.build.BuildContext;
 
 /**
  * Generates a qualified class index for the current project and its dependencies.

@@ -264,9 +264,9 @@
         <version>7.0.5</version>
       </dependency>
       <dependency>
-        <groupId>org.sonatype.plexus</groupId>
+        <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-build-api</artifactId>
-        <version>0.0.7</version>
+        <version>1.2.0</version>
       </dependency>
 
       <!--
