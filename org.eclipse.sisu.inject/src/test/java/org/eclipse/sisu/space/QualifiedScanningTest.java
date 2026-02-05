@@ -378,7 +378,6 @@ class QualifiedScanningTest
 
     @Test
     void testOptionalLoggingStrict()
-            throws Exception
     {
         InvocationTargetException ex = assertThrows( InvocationTargetException.class, () -> testOptionalLogging( true ));
         assertInstanceOf(IllegalStateException.class, ex.getCause());

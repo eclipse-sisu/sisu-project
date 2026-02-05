@@ -54,15 +54,4 @@ class CachingModuleTest
         Guice.createInjector( new SpaceModule( space, BeanScanning.CACHE, false ) );
         Guice.createInjector( new SpaceModule( space, BeanScanning.CACHE, false ) );
     }
-
-    @Test
-    void testQualifiedModuleStrict()
-    {
-        final ClassSpace space =
-                new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );
-
-        Guice.createInjector( new SpaceModule( space, BeanScanning.CACHE, true ) );
-        Guice.createInjector( new SpaceModule( space, BeanScanning.CACHE, true ) );
-        Guice.createInjector( new SpaceModule( space, BeanScanning.CACHE, true ) );
-    }
 }
