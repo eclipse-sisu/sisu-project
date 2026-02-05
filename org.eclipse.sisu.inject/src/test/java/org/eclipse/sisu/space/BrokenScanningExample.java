@@ -18,7 +18,7 @@ import org.eclipse.sisu.inject.DeferredClass;
 
 public class BrokenScanningExample
 {
-    public BrokenScanningExample()
+    public BrokenScanningExample( boolean strict )
         throws MalformedURLException
     {
         final ClassSpace space =
@@ -53,6 +53,6 @@ public class BrokenScanningExample
             }
         };
 
-        new SpaceScanner( brokenResourceSpace ).accept( new QualifiedTypeVisitor( null ) );
+        new SpaceScanner( brokenResourceSpace, strict ).accept( new QualifiedTypeVisitor( null ) );
     }
 }

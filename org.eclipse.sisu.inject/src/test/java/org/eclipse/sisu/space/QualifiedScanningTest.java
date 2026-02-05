@@ -17,6 +17,7 @@ import javax.inject.Singleton;
 import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -37,6 +38,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @BaseTests
@@ -330,8 +333,7 @@ class QualifiedScanningTest
         visitor.leaveSpace();
     }
 
-    @Test
-    void testOptionalLogging()
+    private void testOptionalLogging( boolean strict )
         throws Exception
     {
         final Level level = Logger.getLogger( "" ).getLevel();
@@ -359,12 +361,27 @@ class QualifiedScanningTest
                     }
                 };
 
-            noLoggingLoader.loadClass( BrokenScanningExample.class.getName() ).newInstance();
+            noLoggingLoader.loadClass( BrokenScanningExample.class.getName() ).getDeclaredConstructor( boolean.class ).newInstance( strict );
         }
         finally
         {
             Logger.getLogger( "" ).setLevel( level );
         }
+    }
+
+    @Test
+    void testOptionalLoggingNonStrict()
+            throws Exception
+    {
+        testOptionalLogging( false );
+    }
+
+    @Test
+    void testOptionalLoggingStrict()
+            throws Exception
+    {
+        InvocationTargetException ex = assertThrows( InvocationTargetException.class, () -> testOptionalLogging( true ));
+        assertInstanceOf(IllegalStateException.class, ex.getCause());
     }
 
     @Test
