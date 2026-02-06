@@ -15,9 +15,9 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         java: [ '17', '21', '24' ]
         include:
-          # lengthy build steps should only be performed on linux with Java 17 (Sonarcloud analysis, deployment)
+          # lengthy build steps should only be performed on linux with Java 21 (Sonarcloud analysis, deployment)
           - os: ubuntu-latest
-            java: '17'
+            java: '21'
             isMainBuildEnv: true
       fail-fast: false
 
@@ -30,7 +30,7 @@ jobs:
         run: |
           if [ "${{ matrix.isMainBuildEnv }}" = "true" ]; then
             echo "SONAR_TOKEN=${{ secrets.SONAR_TOKEN }}" >> $GITHUB_ENV
-            echo "MVN_ADDITIONAL_OPTS=org.sonarsource.scanner.maven:sonar-maven-plugin:5.2.0.4988:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }} -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }} -Pcode-coverage" >> $GITHUB_ENV
+            echo "MVN_ADDITIONAL_OPTS=org.sonarsource.scanner.maven:sonar-maven-plugin:5.5.0.6356:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }} -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }} -Dsonar.scanner.skipJreProvisioning -Pcode-coverage" >> $GITHUB_ENV
             echo "GIT_FETCH_DEPTH=0" >> $GITHUB_ENV # Shallow clones should be disabled for a better relevancy of analysis
           else
             echo "MVN_ADDITIONAL_OPTS=" >> $GITHUB_ENV
