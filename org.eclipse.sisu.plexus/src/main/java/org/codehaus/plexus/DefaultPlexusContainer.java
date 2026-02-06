@@ -110,10 +110,9 @@ public final class DefaultPlexusContainer implements MutablePlexusContainer {
 
     final AtomicInteger plexusRank = new AtomicInteger();
 
-    final Map<ClassRealm, List<ComponentDescriptor<?>>> descriptorMap =
-            new IdentityHashMap<ClassRealm, List<ComponentDescriptor<?>>>();
+    final Map<ClassRealm, List<ComponentDescriptor<?>>> descriptorMap = new IdentityHashMap<>();
 
-    final ThreadLocal<ClassRealm> lookupRealm = new ThreadLocal<ClassRealm>();
+    final ThreadLocal<ClassRealm> lookupRealm = new ThreadLocal<>();
 
     final LoggerManagerProvider loggerManagerProvider = new LoggerManagerProvider();
 
@@ -190,7 +189,7 @@ public final class DefaultPlexusContainer implements MutablePlexusContainer {
 
         setLookupRealm(containerRealm);
 
-        final List<PlexusBeanModule> beanModules = new ArrayList<PlexusBeanModule>();
+        final List<PlexusBeanModule> beanModules = new ArrayList<>();
 
         final ClassSpace space = new URLClassSpace(containerRealm);
         beanModules.add(new PlexusXmlBeanModule(space, variables, plexusXml));
@@ -245,19 +244,19 @@ public final class DefaultPlexusContainer implements MutablePlexusContainer {
     }
 
     public List<Object> lookupList(final String role) throws ComponentLookupException {
-        return new EntryListAdapter<Object>(locate(role, null));
+        return new EntryListAdapter<>(locate(role, null));
     }
 
     public <T> List<T> lookupList(final Class<T> role) throws ComponentLookupException {
-        return new EntryListAdapter<T>(locate(null, role));
+        return new EntryListAdapter<>(locate(null, role));
     }
 
     public Map<String, Object> lookupMap(final String role) throws ComponentLookupException {
-        return new EntryMapAdapter<String, Object>(locate(role, null));
+        return new EntryMapAdapter<>(locate(role, null));
     }
 
     public <T> Map<String, T> lookupMap(final Class<T> role) throws ComponentLookupException {
-        return new EntryMapAdapter<String, T>(locate(null, role));
+        return new EntryMapAdapter<>(locate(null, role));
     }
 
     // ----------------------------------------------------------------------
@@ -320,11 +319,7 @@ public final class DefaultPlexusContainer implements MutablePlexusContainer {
             descriptor.setRealm(realm);
         }
         synchronized (descriptorMap) {
-            List<ComponentDescriptor<?>> descriptors = descriptorMap.get(realm);
-            if (null == descriptors) {
-                descriptors = new ArrayList<ComponentDescriptor<?>>();
-                descriptorMap.put(realm, descriptors);
-            }
+            List<ComponentDescriptor<?>> descriptors = descriptorMap.computeIfAbsent(realm, k -> new ArrayList<>());
             descriptors.add(descriptor);
         }
         if (containerRealm == realm) {
@@ -353,7 +348,7 @@ public final class DefaultPlexusContainer implements MutablePlexusContainer {
     }
 
     public <T> List<ComponentDescriptor<T>> getComponentDescriptorList(final Class<T> type, final String role) {
-        final List<ComponentDescriptor<T>> tempList = new ArrayList<ComponentDescriptor<T>>();
+        final List<ComponentDescriptor<T>> tempList = new ArrayList<>();
         for (final PlexusBean<T> bean : locate(role, type)) {
             tempList.add(newComponentDescriptor(role, bean));
         }
@@ -365,7 +360,7 @@ public final class DefaultPlexusContainer implements MutablePlexusContainer {
     }
 
     public <T> Map<String, ComponentDescriptor<T>> getComponentDescriptorMap(final Class<T> type, final String role) {
-        final Map<String, ComponentDescriptor<T>> tempMap = new LinkedHashMap<String, ComponentDescriptor<T>>();
+        final Map<String, ComponentDescriptor<T>> tempMap = new LinkedHashMap<>();
         for (final PlexusBean<T> bean : locate(role, type)) {
             tempMap.put(bean.getKey(), newComponentDescriptor(role, bean));
         }
@@ -378,7 +373,7 @@ public final class DefaultPlexusContainer implements MutablePlexusContainer {
 
     public List<ComponentDescriptor<?>> discoverComponents(final ClassRealm realm, final Module... customModules) {
         try {
-            final List<PlexusBeanModule> beanModules = new ArrayList<PlexusBeanModule>();
+            final List<PlexusBeanModule> beanModules = new ArrayList<>();
             synchronized (descriptorMap) {
                 final ClassSpace space = new URLClassSpace(realm);
                 final List<ComponentDescriptor<?>> descriptors = descriptorMap.remove(realm);
@@ -407,7 +402,7 @@ public final class DefaultPlexusContainer implements MutablePlexusContainer {
 
     public Injector addPlexusInjector(
             final List<? extends PlexusBeanModule> beanModules, final Module... customModules) {
-        final List<Module> modules = new ArrayList<Module>();
+        final List<Module> modules = new ArrayList<>();
 
         modules.add(containerModule);
         Collections.addAll(modules, customModules);
