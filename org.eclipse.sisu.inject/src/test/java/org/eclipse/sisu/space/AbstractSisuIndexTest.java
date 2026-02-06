@@ -26,7 +26,7 @@ import org.eclipse.sisu.BaseTests;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @BaseTests
@@ -86,7 +86,7 @@ class AbstractSisuIndexTest
         index.flushIndex();
 
         final StringWriter writer = index.outputData.get( "META-INF/sisu/javax.inject.Named" );
-        assertTrue( writer != null );
+        assertNotNull( writer );
         final String output = writer.toString();
         assertTrue( output.contains( "com.example.Bar" ) );
         assertTrue( output.contains( "com.example.Foo" ) );

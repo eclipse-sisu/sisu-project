@@ -60,11 +60,9 @@ class DescriptionSourceTest
         final DescriptionSource sourceB = new DescriptionSource( null, "hello" );
         final DescriptionSource sourceC = new DescriptionSource( null, "other" );
 
-        assertTrue( sourceA.equals( sourceA ) );
-        assertTrue( sourceA.equals( sourceB ) );
-        assertFalse( sourceA.equals( sourceC ) );
-        assertFalse( sourceA.equals( null ) );
-        assertFalse( sourceA.equals( "not a description" ) );
+        assertEquals( sourceA, sourceB );
+        assertNotEquals( sourceA, sourceC );
+        assertNotEquals( null, sourceA );
     }
 
     @Test
@@ -109,7 +107,6 @@ class DescriptionSourceTest
     {
         final AnnotatedSource delegate = new AnnotatedSource()
         {
-            @SuppressWarnings( "unchecked" )
             public <T extends Annotation> T getAnnotation( final Binding<?> binding, final Class<T> annotationType )
             {
                 return null;

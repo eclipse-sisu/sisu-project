@@ -18,46 +18,50 @@ import java.util.Enumeration;
 import org.eclipse.sisu.BaseTests;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @BaseTests
 class DefaultClassFinderTest
 {
-    @Test
-    void testDefaultConstructor()
+    private void performTest( String pkg, boolean expectedToFindClasses )
     {
-        final DefaultClassFinder finder = new DefaultClassFinder();
+        final DefaultClassFinder finder = pkg == null ? new DefaultClassFinder() : new DefaultClassFinder( pkg );
         final ClassSpace space = new URLClassSpace( getClass().getClassLoader() );
         final Enumeration<URL> classes = finder.findClasses( space );
         assertNotNull( classes );
-        assertTrue( classes.hasMoreElements() );
+        if ( expectedToFindClasses )
+        {
+            assertTrue( classes.hasMoreElements() );
+        }
+        else
+        {
+            assertFalse( classes.hasMoreElements() );
+        }
+    }
+
+    @Test
+    void testDefaultConstructor()
+    {
+        performTest( null, true );
     }
 
     @Test
     void testPackageConstructorNonRecursive()
     {
-        final DefaultClassFinder finder = new DefaultClassFinder( "org.eclipse.sisu.space" );
-        final ClassSpace space = new URLClassSpace( getClass().getClassLoader() );
-        final Enumeration<URL> classes = finder.findClasses( space );
-        assertNotNull( classes );
+        performTest( "org.eclipse.sisu.space", true );
     }
 
     @Test
     void testPackageConstructorRecursive()
     {
-        final DefaultClassFinder finder = new DefaultClassFinder( "org.eclipse.sisu.space.*" );
-        final ClassSpace space = new URLClassSpace( getClass().getClassLoader() );
-        final Enumeration<URL> classes = finder.findClasses( space );
-        assertNotNull( classes );
+        performTest( "org.eclipse.sisu.space.*", true );
     }
 
     @Test
     void testEmptyPackage()
     {
-        final DefaultClassFinder finder = new DefaultClassFinder( "org.eclipse.sisu.nonexistent.*" );
-        final ClassSpace space = new URLClassSpace( getClass().getClassLoader() );
-        final Enumeration<URL> classes = finder.findClasses( space );
-        assertNotNull( classes );
+        performTest( "org.eclipse.sisu.nonexistent.*", false );
     }
 }

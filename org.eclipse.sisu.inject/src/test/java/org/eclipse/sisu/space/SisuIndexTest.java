@@ -13,12 +13,12 @@
 package org.eclipse.sisu.space;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.eclipse.sisu.BaseTests;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -88,5 +88,9 @@ class SisuIndexTest
 
         sisuIndex.leaveSpace();
         sisuIndex.flushIndex();
+
+        // check that the index file was not created
+        final File indexFile = new File( tempDir, "META-INF/sisu/javax.inject.Named" );
+        assertFalse( indexFile.exists() );
     }
 }

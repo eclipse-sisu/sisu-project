@@ -12,10 +12,8 @@
  */
 package org.eclipse.sisu.inject;
 
-import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Map;
 
 import javax.inject.Named;
 

@@ -22,7 +22,6 @@ import com.google.inject.Module;
 import com.google.inject.name.Names;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ElementMergerTest
 {

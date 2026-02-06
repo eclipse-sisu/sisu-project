@@ -20,7 +20,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

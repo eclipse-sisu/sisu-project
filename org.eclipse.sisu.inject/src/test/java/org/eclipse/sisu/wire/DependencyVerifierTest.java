@@ -16,16 +16,12 @@ import org.junit.jupiter.api.Test;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Binding;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
 import com.google.inject.spi.Element;
 import com.google.inject.spi.Elements;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DependencyVerifierTest
 {
@@ -39,7 +35,7 @@ class DependencyVerifierTest
     }
 
     @Test
-    void testConcreteUntargettedBindingVerifies()
+    void testConcreteUntargetedBindingVerifies()
     {
         final DependencyVerifier verifier = new DependencyVerifier();
         final Module module = new AbstractModule()

@@ -25,7 +25,7 @@ class BeanSchedulerTest
     static class TestScheduler
         extends BeanScheduler
     {
-        final List<Object> activatedBeans = new ArrayList<Object>();
+        final List<Object> activatedBeans = new ArrayList<>();
 
         @Override
         protected void activate( final Object bean )

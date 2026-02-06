@@ -12,9 +12,6 @@
  */
 package org.eclipse.sisu.bean;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 

@@ -27,6 +27,7 @@ class CloningClassSpaceTest
     {
         public SimpleBean()
         {
+            // no-op
         }
     }
 

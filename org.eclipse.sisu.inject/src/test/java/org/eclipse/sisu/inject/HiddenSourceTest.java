@@ -22,6 +22,7 @@ import com.google.inject.Binding;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -49,9 +50,9 @@ class HiddenSourceTest
         final HiddenSource sourceA = new HiddenSource( null );
         final HiddenSource sourceB = new HiddenSource( "other" );
 
-        assertTrue( sourceA.equals( sourceB ) );
-        assertFalse( sourceA.equals( null ) );
-        assertFalse( sourceA.equals( "not hidden" ) );
+        assertEquals( sourceA, sourceB );
+        assertNotEquals( null, sourceA );
+        assertNotEquals( "not hidden", sourceA );
     }
 
     @Test
@@ -96,7 +97,6 @@ class HiddenSourceTest
     {
         final AnnotatedSource delegate = new AnnotatedSource()
         {
-            @SuppressWarnings( "unchecked" )
             public <T extends Annotation> T getAnnotation( final Binding<?> binding, final Class<T> annotationType )
             {
                 return null;

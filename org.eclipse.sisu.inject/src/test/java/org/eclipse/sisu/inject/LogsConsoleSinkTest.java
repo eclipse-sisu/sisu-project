@@ -13,6 +13,7 @@
 package org.eclipse.sisu.inject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 
 import org.eclipse.sisu.BaseTests;
@@ -22,7 +23,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.ProvisionException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -41,12 +41,12 @@ class LogsConsoleSinkTest
 
     @Test
     void testConsoleSinkTrace()
+        throws IOException
     {
         final Logs.ConsoleSink consoleSink = new Logs.ConsoleSink();
         final PrintStream originalOut = System.out;
-        try
+        try ( final ByteArrayOutputStream outputStream = new ByteArrayOutputStream() )
         {
-            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             System.setOut( new PrintStream( outputStream ) );
             consoleSink.trace( "test trace message", null );
             final String output = outputStream.toString();
@@ -61,12 +61,12 @@ class LogsConsoleSinkTest
 
     @Test
     void testConsoleSinkTraceWithCause()
+        throws IOException
     {
         final Logs.ConsoleSink consoleSink = new Logs.ConsoleSink();
         final PrintStream originalOut = System.out;
-        try
+        try ( final ByteArrayOutputStream outputStream = new ByteArrayOutputStream() )
         {
-            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             System.setOut( new PrintStream( outputStream ) );
             consoleSink.trace( "trace with cause", new RuntimeException( "test error" ) );
             final String output = outputStream.toString();
@@ -81,12 +81,12 @@ class LogsConsoleSinkTest
 
     @Test
     void testConsoleSinkDebug()
+        throws IOException
     {
         final Logs.ConsoleSink consoleSink = new Logs.ConsoleSink();
         final PrintStream originalOut = System.out;
-        try
+        try ( final ByteArrayOutputStream outputStream = new ByteArrayOutputStream() )
         {
-            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             System.setOut( new PrintStream( outputStream ) );
             consoleSink.debug( "test debug message", null );
             final String output = outputStream.toString();
@@ -101,12 +101,12 @@ class LogsConsoleSinkTest
 
     @Test
     void testConsoleSinkWarn()
+        throws IOException
     {
         final Logs.ConsoleSink consoleSink = new Logs.ConsoleSink();
         final PrintStream originalErr = System.err;
-        try
+        try ( final ByteArrayOutputStream outputStream = new ByteArrayOutputStream() )
         {
-            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             System.setErr( new PrintStream( outputStream ) );
             consoleSink.warn( "test warn message", null );
             final String output = outputStream.toString();
@@ -121,12 +121,12 @@ class LogsConsoleSinkTest
 
     @Test
     void testConsoleSinkWarnWithCause()
+        throws IOException
     {
         final Logs.ConsoleSink consoleSink = new Logs.ConsoleSink();
         final PrintStream originalErr = System.err;
-        try
+        try ( final ByteArrayOutputStream outputStream = new ByteArrayOutputStream() )
         {
-            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             System.setErr( new PrintStream( outputStream ) );
             consoleSink.warn( "warn with cause", new RuntimeException( "warn error" ) );
             final String output = outputStream.toString();
