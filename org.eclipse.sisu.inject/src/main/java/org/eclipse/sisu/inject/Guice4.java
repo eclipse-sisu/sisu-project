@@ -139,7 +139,7 @@ public final class Guice4 {
                     // attempt to invoke the @Provides Method statically via reflection
                     final ProvidesMethodBinding providesMethod = (ProvidesMethodBinding) provider;
                     if (!providesMethod.getMethod().isAccessible()) {
-                        AccessController.doPrivileged(new PrivilegedAction<Void>() {
+                        AccessController.doPrivileged(new PrivilegedAction<Void>() { // NOSONAR
                             @Override
                             public Void run() {
                                 providesMethod.getMethod().setAccessible(true);

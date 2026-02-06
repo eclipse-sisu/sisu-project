@@ -61,7 +61,7 @@ final class BeanPropertyField<T> implements BeanProperty<T>, PrivilegedAction<Vo
     public <B> void set(final B bean, final T value) {
         if (!field.isAccessible()) {
             // make sure we can apply the binding
-            AccessController.doPrivileged(this);
+            AccessController.doPrivileged(this); // NOSONAR
         }
 
         BeanScheduler.detectCycle(value);

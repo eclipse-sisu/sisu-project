@@ -55,7 +55,7 @@ final class BeanLifecycle implements PrivilegedAction<Void> {
         this.stopMethods = toArray(stopMethods);
 
         // ensure we can invoke all methods
-        AccessController.doPrivileged(this);
+        AccessController.doPrivileged(this); // NOSONAR
     }
 
     // ----------------------------------------------------------------------
@@ -134,8 +134,8 @@ final class BeanLifecycle implements PrivilegedAction<Void> {
 
     @Override
     public Void run() {
-        AccessibleObject.setAccessible(startMethods, true);
-        AccessibleObject.setAccessible(stopMethods, true);
+        AccessibleObject.setAccessible(startMethods, true); // NOSONAR
+        AccessibleObject.setAccessible(stopMethods, true); // NOSONAR
 
         return null;
     }

@@ -65,7 +65,7 @@ final class BeanPropertySetter<T> implements BeanProperty<T>, PrivilegedAction<V
     public <B> void set(final B bean, final T value) {
         if (!method.isAccessible()) {
             // ensure we can update the property
-            AccessController.doPrivileged(this);
+            AccessController.doPrivileged(this); // NOSONAR
         }
 
         BeanScheduler.detectCycle(value);
