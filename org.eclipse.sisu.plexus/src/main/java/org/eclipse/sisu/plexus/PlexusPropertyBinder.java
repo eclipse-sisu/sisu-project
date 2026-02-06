@@ -75,6 +75,7 @@ final class PlexusPropertyBinder implements PropertyBinder {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public <T> PropertyBinding bindProperty(final BeanProperty<T> property) {
         if (metadata.isEmpty()) {
             return PropertyBinder.LAST_BINDING;

@@ -35,6 +35,7 @@ public final class LifecycleModule implements Module {
     /* These classes map the Guice SPI to the BeanManager SPI */
 
     private final Matcher<TypeLiteral<?>> matcher = new AbstractMatcher<TypeLiteral<?>>() {
+        @Override
         public boolean matches(final TypeLiteral<?> type) {
             return manager.manage(type.getRawType());
         }
@@ -42,11 +43,13 @@ public final class LifecycleModule implements Module {
 
     private final TypeListener typeListener = new TypeListener() {
         private final InjectionListener<Object> listener = new InjectionListener<Object>() {
+            @Override
             public void afterInjection(final Object bean) {
                 manager.manage(bean);
             }
         };
 
+        @Override
         public <B> void hear(final TypeLiteral<B> type, final TypeEncounter<B> encounter) {
             encounter.register(listener);
         }
@@ -70,6 +73,7 @@ public final class LifecycleModule implements Module {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public void configure(final Binder binder) {
         binder.bind(BeanManager.class).toInstance(manager);
         binder.bindListener(matcher, typeListener);

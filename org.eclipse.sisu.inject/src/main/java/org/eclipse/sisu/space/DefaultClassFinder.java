@@ -51,6 +51,7 @@ public final class DefaultClassFinder implements ClassFinder {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public Enumeration<URL> findClasses(final ClassSpace space) {
         return space.findEntries(path, "*.class", recurse);
     }

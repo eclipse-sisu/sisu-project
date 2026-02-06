@@ -33,10 +33,12 @@ abstract class AbstractDeferredClass<T> implements DeferredClass<T>, DeferredPro
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public final DeferredProvider<T> asProvider() {
         return this;
     }
 
+    @Override
     public final T get() {
         try {
             // load class and bootstrap injection
@@ -53,6 +55,7 @@ abstract class AbstractDeferredClass<T> implements DeferredClass<T>, DeferredPro
         return null; // not used
     }
 
+    @Override
     public final DeferredClass<T> getImplementationClass() {
         return this;
     }

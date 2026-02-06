@@ -219,11 +219,13 @@ public class PlexusBeanLocatorTest extends TestCase {
                     @Override
                     protected void configure() {
                         bind(Bean.class).annotatedWith(Names.named("M1")).toProvider(new Provider<Bean>() {
+                            @Override
                             public Bean get() {
                                 return null;
                             }
                         });
                         bind(Bean.class).annotatedWith(Names.named("M3")).toProvider(new Provider<Bean>() {
+                            @Override
                             public Bean get() {
                                 return null;
                             }
@@ -287,6 +289,7 @@ public class PlexusBeanLocatorTest extends TestCase {
         publishInjector(
                 locator,
                 Guice.createInjector(new Module() {
+                    @Override
                     public void configure(final Binder binder) {
                         try {
                             binder.withSource(world.newRealm("A"))
@@ -303,6 +306,7 @@ public class PlexusBeanLocatorTest extends TestCase {
         publishInjector(
                 locator,
                 Guice.createInjector(new Module() {
+                    @Override
                     public void configure(final Binder binder) {
                         try {
                             binder.withSource(world.newRealm("B"))
@@ -319,6 +323,7 @@ public class PlexusBeanLocatorTest extends TestCase {
         publishInjector(
                 locator,
                 Guice.createInjector(new Module() {
+                    @Override
                     public void configure(final Binder binder) {
                         try {
                             binder.withSource(world.newRealm("C"))
@@ -335,6 +340,7 @@ public class PlexusBeanLocatorTest extends TestCase {
         publishInjector(
                 locator,
                 Guice.createInjector(new Module() {
+                    @Override
                     public void configure(final Binder binder) {
                         try {
                             binder.withSource(world.getRealm("B").createChildRealm("B1"))
@@ -351,6 +357,7 @@ public class PlexusBeanLocatorTest extends TestCase {
         publishInjector(
                 locator,
                 Guice.createInjector(new Module() {
+                    @Override
                     public void configure(final Binder binder) {
                         try {
                             binder.withSource(world.getRealm("B").createChildRealm("B2"))
@@ -367,6 +374,7 @@ public class PlexusBeanLocatorTest extends TestCase {
         publishInjector(
                 locator,
                 Guice.createInjector(new Module() {
+                    @Override
                     public void configure(final Binder binder) {
                         try {
                             binder.withSource(world.getRealm("B").createChildRealm("B3"))
@@ -383,6 +391,7 @@ public class PlexusBeanLocatorTest extends TestCase {
         publishInjector(
                 locator,
                 Guice.createInjector(new Module() {
+                    @Override
                     public void configure(final Binder binder) {
                         try {
                             binder.withSource(world.getRealm("B2").createChildRealm("B2B"))
@@ -399,6 +408,7 @@ public class PlexusBeanLocatorTest extends TestCase {
         publishInjector(
                 locator,
                 Guice.createInjector(new Module() {
+                    @Override
                     public void configure(final Binder binder) {
                         try {
                             binder.withSource(world.newRealm("?"))

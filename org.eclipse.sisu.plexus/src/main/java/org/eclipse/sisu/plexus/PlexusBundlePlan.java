@@ -53,6 +53,7 @@ public class PlexusBundlePlan implements BundlePlan {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public BindingPublisher prepare(final Bundle bundle) {
         if (!SUPPORT_BUNDLE_NAME.equals(bundle.getSymbolicName())) {
             if (hasPlexusAnnotations(bundle) || hasPlexusXml(bundle)) {

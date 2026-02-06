@@ -143,6 +143,7 @@ public final class SpaceModule implements Module {
         return this;
     }
 
+    @Override
     public void configure(final Binder binder) {
         binder.bind(ClassSpace.class).toInstance(space);
 
@@ -173,6 +174,7 @@ public final class SpaceModule implements Module {
          * Default visitor strategy; scan and bind implementations with {@link Qualifier}s.
          */
         Strategy DEFAULT = new Strategy() {
+            @Override
             public SpaceVisitor visitor(final Binder binder) {
                 return new QualifiedTypeVisitor(new QualifiedTypeBinder(binder));
             }
@@ -182,6 +184,7 @@ public final class SpaceModule implements Module {
          * Same as {@link #DEFAULT} but throwing {@link RuntimeException} in case class cannot be scanned.
          */
         Strategy DEFAULT_STRICT = new Strategy() {
+            @Override
             public SpaceVisitor visitor(final Binder binder) {
                 return new QualifiedTypeVisitor(new QualifiedTypeBinder(binder), true);
             }
@@ -202,6 +205,7 @@ public final class SpaceModule implements Module {
         if (null == elements) {
             // record results of scanning plus any custom module bindings
             final List<Element> recording = Elements.getElements(new Module() {
+                @Override
                 public void configure(final Binder recorder) {
                     scanForElements(recorder);
                 }

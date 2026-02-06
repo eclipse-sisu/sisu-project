@@ -39,24 +39,28 @@ final class MildConcurrentKeys<K, V> extends MildKeys<K, V> implements Concurren
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public V putIfAbsent(final K key, final V value) {
         compact();
 
         return concurrentMap.putIfAbsent(mildKey(key), value);
     }
 
+    @Override
     public V replace(final K key, final V value) {
         compact();
 
         return concurrentMap.replace(mildKey(key), value);
     }
 
+    @Override
     public boolean replace(final K key, final V oldValue, final V newValue) {
         compact();
 
         return concurrentMap.replace(mildKey(key), oldValue, newValue);
     }
 
+    @Override
     public boolean remove(final Object key, final Object value) {
         compact();
 

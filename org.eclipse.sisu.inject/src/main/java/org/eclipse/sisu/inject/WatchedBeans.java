@@ -57,10 +57,12 @@ final class WatchedBeans<Q extends Annotation, T, W> implements BindingSubscribe
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public TypeLiteral<T> type() {
         return key.getTypeLiteral();
     }
 
+    @Override
     public void add(final Binding<T> binding, final int rank) {
         @SuppressWarnings("unchecked")
         final Q qualifier = (Q) strategy.qualifies(key, binding);
@@ -79,6 +81,7 @@ final class WatchedBeans<Q extends Annotation, T, W> implements BindingSubscribe
         }
     }
 
+    @Override
     public void remove(final Binding<T> binding) {
         final BeanEntry<Q, T> bean = beans.remove(binding);
         if (null != bean) {
@@ -95,6 +98,7 @@ final class WatchedBeans<Q extends Annotation, T, W> implements BindingSubscribe
         }
     }
 
+    @Override
     public Iterable<Binding<T>> bindings() {
         return beans.bindings();
     }

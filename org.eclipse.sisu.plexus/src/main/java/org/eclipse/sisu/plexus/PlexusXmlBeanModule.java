@@ -72,6 +72,7 @@ public final class PlexusXmlBeanModule implements PlexusBeanModule {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public PlexusBeanSource configure(final Binder binder) {
         binder.bind(ClassSpace.class).toInstance(space);
 
@@ -114,6 +115,7 @@ public final class PlexusXmlBeanModule implements PlexusBeanModule {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public PlexusBeanMetadata getBeanMetadata(final Class<?> implementation) {
             if (null == metadataMap) {
                 return null;

@@ -24,14 +24,17 @@ import org.slf4j.LoggerFactory;
 
 public class PlexusLoggingTest extends TestCase {
     static class LoggerManager implements BeanManager {
+        @Override
         public boolean manage(final Class<?> clazz) {
             return false;
         }
 
+        @Override
         @SuppressWarnings("rawtypes")
         public PropertyBinding manage(final BeanProperty property) {
             if (Logger.class.equals(property.getType().getRawType())) {
                 return new PropertyBinding() {
+                    @Override
                     @SuppressWarnings("unchecked")
                     public <B> void injectProperty(final B bean) {
                         property.set(bean, LoggerFactory.getLogger(bean.getClass()));
@@ -41,14 +44,17 @@ public class PlexusLoggingTest extends TestCase {
             return null;
         }
 
+        @Override
         public boolean manage(final Object bean) {
             return false;
         }
 
+        @Override
         public boolean unmanage(final Object bean) {
             return false;
         }
 
+        @Override
         public boolean unmanage() {
             return false;
         }

@@ -38,6 +38,7 @@ public final class ContextMapAdapter implements Map<Object, Object> {
     /*
      * Only method used when interpolating Plexus configuration
      */
+    @Override
     public Object get(final Object key) {
         final Object value = contextData.get(key);
         return value instanceof String ? value : null;
@@ -47,46 +48,57 @@ public final class ContextMapAdapter implements Map<Object, Object> {
     // Unsupported methods
     // ----------------------------------------------------------------------
 
+    @Override
     public int size() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public boolean isEmpty() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public boolean containsKey(final Object key) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public boolean containsValue(final Object value) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public Object put(final Object key, final Object value) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public void putAll(final Map<?, ?> map) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public Object remove(final Object key) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public void clear() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public Set<Object> keySet() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public Collection<Object> values() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public Set<Entry<Object, Object>> entrySet() {
         throw new UnsupportedOperationException();
     }

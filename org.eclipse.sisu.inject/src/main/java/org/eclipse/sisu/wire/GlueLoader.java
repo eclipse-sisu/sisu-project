@@ -161,6 +161,7 @@ final class GlueLoader extends ClassLoader {
      */
     private static GlueLoader createGlue(final ClassLoader parent) {
         return AccessController.doPrivileged(new PrivilegedAction<GlueLoader>() {
+            @Override
             public GlueLoader run() {
                 return null != parent ? new GlueLoader(parent) : new GlueLoader();
             }

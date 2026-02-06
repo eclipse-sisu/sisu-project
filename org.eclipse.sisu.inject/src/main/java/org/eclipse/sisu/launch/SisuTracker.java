@@ -149,6 +149,7 @@ public class SisuTracker extends BundleTracker<Object> implements BundlePlan {
     // Customizable methods
     // ----------------------------------------------------------------------
 
+    @Override
     public BindingPublisher prepare(final Bundle bundle) {
         if (SUPPORT_BUNDLE_NAMES.contains(bundle.getSymbolicName())) {
             return null; // ignore our main support bundles

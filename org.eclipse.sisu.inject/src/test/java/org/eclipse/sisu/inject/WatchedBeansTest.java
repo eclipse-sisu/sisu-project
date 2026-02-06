@@ -75,10 +75,12 @@ class WatchedBeansTest {
     }
 
     static class RankingMediator implements Mediator<Named, Bean, RankedSequence<String>> {
+        @Override
         public void add(final BeanEntry<Named, Bean> entry, final RankedSequence<String> names) {
             names.insert(entry.getKey().value(), entry.getRank());
         }
 
+        @Override
         public void remove(final BeanEntry<Named, Bean> entry, final RankedSequence<String> names) {
             assertNotNull(names.remove(entry.getKey().value()));
         }
@@ -104,18 +106,22 @@ class WatchedBeansTest {
 
         final BindingSubscriber[] subscriberHolder = new BindingSubscriber[1];
         final BindingPublisher subscriberHook = new BindingPublisher() {
+            @Override
             public <T> void subscribe(final BindingSubscriber<T> subscriber) {
                 subscriberHolder[0] = subscriber;
             }
 
+            @Override
             public <T> void unsubscribe(final BindingSubscriber<T> subscriber) {
                 subscriberHolder[0] = null;
             }
 
+            @Override
             public int maxBindingRank() {
                 return Integer.MIN_VALUE;
             }
 
+            @Override
             public <T> T adapt(final Class<T> type) {
                 return null;
             }
@@ -169,10 +175,12 @@ class WatchedBeansTest {
     }
 
     static class BrokenMediator implements Mediator<Named, Bean, Object> {
+        @Override
         public void add(final BeanEntry<Named, Bean> entry, final Object watcher) {
             throw new LinkageError();
         }
 
+        @Override
         public void remove(final BeanEntry<Named, Bean> entry, final Object watcher) {
             throw new LinkageError();
         }
@@ -191,18 +199,22 @@ class WatchedBeansTest {
 
         final BindingSubscriber[] subscriberHolder = new BindingSubscriber[1];
         final BindingPublisher subscriberHook = new BindingPublisher() {
+            @Override
             public <T> void subscribe(final BindingSubscriber<T> subscriber) {
                 subscriberHolder[0] = subscriber;
             }
 
+            @Override
             public <T> void unsubscribe(final BindingSubscriber<T> subscriber) {
                 subscriberHolder[0] = null;
             }
 
+            @Override
             public int maxBindingRank() {
                 return 0;
             }
 
+            @Override
             public <T> T adapt(final Class<T> type) {
                 return null;
             }

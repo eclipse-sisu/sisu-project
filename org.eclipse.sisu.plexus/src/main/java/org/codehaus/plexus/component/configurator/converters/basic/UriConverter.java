@@ -17,6 +17,7 @@ import java.net.URISyntaxException;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 
 public class UriConverter extends AbstractBasicConverter {
+    @Override
     public boolean canConvert(final Class<?> type) {
         return URI.class.equals(type);
     }

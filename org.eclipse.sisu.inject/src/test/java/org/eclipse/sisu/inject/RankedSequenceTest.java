@@ -180,6 +180,7 @@ class RankedSequenceTest {
     }
 
     static class Push implements Runnable {
+        @Override
         public void run() {
             while (active.get()) {
                 Thread.yield();
@@ -193,6 +194,7 @@ class RankedSequenceTest {
     }
 
     static class Pull implements Runnable {
+        @Override
         public void run() {
             try {
                 while (active.get() || !rankedList.isEmpty()) {
@@ -212,6 +214,7 @@ class RankedSequenceTest {
     }
 
     static class Read implements Runnable {
+        @Override
         public void run() {
             try {
                 while (active.get()) {

@@ -80,6 +80,7 @@ public final class ComponentDescriptorBeanModule implements PlexusBeanModule {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public PlexusBeanSource configure(final Binder binder) {
         final String source = space.toString();
         final PlexusTypeBinder plexusTypeBinder = new PlexusTypeBinder(binder);
@@ -138,19 +139,23 @@ public final class ComponentDescriptorBeanModule implements PlexusBeanModule {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         @SuppressWarnings({"unchecked", "rawtypes"})
         public Class load() throws TypeNotPresentException {
             return cd.getImplementationClass();
         }
 
+        @Override
         public String getName() {
             return cd.getImplementation();
         }
 
+        @Override
         public DeferredProvider<Object> asProvider() {
             return this;
         }
 
+        @Override
         public Object get() {
             try {
                 ClassRealm contextRealm = container.getLookupRealm();
@@ -171,6 +176,7 @@ public final class ComponentDescriptorBeanModule implements PlexusBeanModule {
             }
         }
 
+        @Override
         public DeferredClass<Object> getImplementationClass() {
             return this;
         }
@@ -201,10 +207,12 @@ public final class ComponentDescriptorBeanModule implements PlexusBeanModule {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public boolean isEmpty() {
             return requirementMap.isEmpty();
         }
 
+        @Override
         public Requirement getRequirement(final BeanProperty<?> property) {
             final Requirement requirement = requirementMap.get(property.getName());
             if (null != requirement && requirementMap.isEmpty()) {
@@ -213,6 +221,7 @@ public final class ComponentDescriptorBeanModule implements PlexusBeanModule {
             return requirement;
         }
 
+        @Override
         public Configuration getConfiguration(final BeanProperty<?> property) {
             return null;
         }
@@ -240,6 +249,7 @@ public final class ComponentDescriptorBeanModule implements PlexusBeanModule {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public PlexusBeanMetadata getBeanMetadata(final Class<?> implementation) {
             if (null == metadataMap) {
                 return null;

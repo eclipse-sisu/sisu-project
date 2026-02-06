@@ -47,14 +47,17 @@ final class RankedBindings<T> implements Iterable<Binding<T>>, BindingSubscriber
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public TypeLiteral<T> type() {
         return type;
     }
 
+    @Override
     public void add(final Binding<T> binding, final int rank) {
         bindings.insert(binding, rank);
     }
 
+    @Override
     public void remove(final Binding<T> binding) {
         if (bindings.removeThis(binding)) {
             synchronized (cachedBeans) {
@@ -65,10 +68,12 @@ final class RankedBindings<T> implements Iterable<Binding<T>>, BindingSubscriber
         }
     }
 
+    @Override
     public Iterable<Binding<T>> bindings() {
         return bindings.snapshot();
     }
 
+    @Override
     public Itr iterator() {
         return new Itr();
     }
@@ -122,6 +127,7 @@ final class RankedBindings<T> implements Iterable<Binding<T>>, BindingSubscriber
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public boolean hasNext() {
             // apply any publishers that could add bindings before the current position
             BindingPublisher publisher = pendingPublishers.peek();
@@ -139,6 +145,7 @@ final class RankedBindings<T> implements Iterable<Binding<T>>, BindingSubscriber
             return itr.hasNext();
         }
 
+        @Override
         public Binding<T> next() {
             return itr.next();
         }
@@ -147,6 +154,7 @@ final class RankedBindings<T> implements Iterable<Binding<T>>, BindingSubscriber
             return itr.rank();
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }

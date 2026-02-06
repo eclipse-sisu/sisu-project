@@ -267,6 +267,7 @@ public final class CompositeBeanHelper {
     private static void setField(final Object bean, final Field field, final Object value) throws Exception {
         if (!field.isAccessible()) {
             AccessController.doPrivileged(new PrivilegedAction<Void>() {
+                @Override
                 public Void run() {
                     field.setAccessible(true);
                     return null;

@@ -50,15 +50,18 @@ public final class PlexusDateTypeConverter extends AbstractMatcher<TypeLiteral<?
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public void configure(final Binder binder) {
         // we're both matcher and converter
         binder.convertToTypes(this, this);
     }
 
+    @Override
     public boolean matches(final TypeLiteral<?> type) {
         return Date.class == type.getRawType();
     }
 
+    @Override
     public Object convert(final String value, final TypeLiteral<?> toType) {
         for (final DateFormat f : PLEXUS_DATE_FORMATS) {
             try {

@@ -53,15 +53,18 @@ class DeferredClassTest {
         assertEquals(new NamedClass<>(space, clazzName), clazz);
 
         assertFalse(clazz.equals(new DeferredClass<Object>() {
+            @Override
             @SuppressWarnings("unchecked")
             public Class<Object> load() throws TypeNotPresentException {
                 return (Class<Object>) clazz.load();
             }
 
+            @Override
             public String getName() {
                 return clazz.getName();
             }
 
+            @Override
             public DeferredProvider<Object> asProvider() {
                 throw new UnsupportedOperationException();
             }

@@ -47,15 +47,18 @@ final class QualifierCache implements ClassVisitor {
         this.isStrict = isStrict;
     }
 
+    @Override
     public void enterClass(final int modifiers, final String name, final String _extends, final String[] _implements) {
         // no-op
     }
 
+    @Override
     public AnnotationVisitor visitAnnotation(final String desc) {
         isQualified |= QUALIFIER_DESC.equals(desc);
         return null;
     }
 
+    @Override
     public void leaveClass() {
         // no-op
     }

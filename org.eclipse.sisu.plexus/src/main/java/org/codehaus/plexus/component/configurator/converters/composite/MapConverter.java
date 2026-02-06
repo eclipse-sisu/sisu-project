@@ -29,10 +29,12 @@ import org.eclipse.sisu.inject.Logs;
 import org.eclipse.sisu.plexus.TypeArguments;
 
 public class MapConverter extends AbstractConfigurationConverter implements ParameterizedConfigurationConverter {
+    @Override
     public boolean canConvert(final Class<?> type) {
         return Map.class.isAssignableFrom(type) && !Properties.class.isAssignableFrom(type);
     }
 
+    @Override
     public Object fromConfiguration(
             final ConverterLookup lookup,
             final PlexusConfiguration configuration,
@@ -45,6 +47,7 @@ public class MapConverter extends AbstractConfigurationConverter implements Para
         return fromConfiguration(lookup, configuration, type, null, enclosingType, loader, evaluator, listener);
     }
 
+    @Override
     public Object fromConfiguration(
             final ConverterLookup lookup,
             final PlexusConfiguration configuration,

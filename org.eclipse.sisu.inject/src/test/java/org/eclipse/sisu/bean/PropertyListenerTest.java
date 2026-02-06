@@ -80,6 +80,7 @@ class PropertyListenerTest {
     }
 
     class NamedPropertyBinder implements PropertyBinder {
+        @Override
         public <T> PropertyBinding bindProperty(final BeanProperty<T> property) {
             if ("last".equals(property.getName())) {
                 return PropertyBinder.LAST_BINDING;
@@ -92,12 +93,14 @@ class PropertyListenerTest {
             }
             if ("bean".equals(property.getName())) {
                 return new PropertyBinding() {
+                    @Override
                     public void injectProperty(final Object bean) {
                         property.set(bean, injector.getInstance(Key.get(property.getType())));
                     }
                 };
             }
             return new PropertyBinding() {
+                @Override
                 @SuppressWarnings("unchecked")
                 public void injectProperty(final Object bean) {
                     property.set(bean, (T) (property.getName() + "Value"));
@@ -117,11 +120,13 @@ class PropertyListenerTest {
             protected void configure() {
                 bindListener(
                         new AbstractMatcher<TypeLiteral<?>>() {
+                            @Override
                             public boolean matches(final TypeLiteral<?> type) {
                                 return Base.class.isAssignableFrom(type.getRawType());
                             }
                         },
                         new BeanListener(new BeanBinder() {
+                            @Override
                             public <T> PropertyBinder bindBean(
                                     final TypeLiteral<T> type, final TypeEncounter<T> encounter) {
                                 return type.getRawType().getName().contains("Bean") ? namedPropertyBinder : null;

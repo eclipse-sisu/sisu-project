@@ -61,36 +61,44 @@ final class LazyBeanEntry<Q extends Annotation, T> implements BeanEntry<Q, T> {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public Q getKey() {
         return qualifier;
     }
 
+    @Override
     public T getValue() {
         return lazyValue.get();
     }
 
+    @Override
     public T setValue(final T value) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public Provider<T> getProvider() {
         return binding.getProvider();
     }
 
+    @Override
     public String getDescription() {
         final Description description = Sources.getAnnotation(binding, Description.class);
         return null != description ? description.value() : null;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Class<T> getImplementationClass() {
         return (Class<T>) Implementations.find(binding);
     }
 
+    @Override
     public Object getSource() {
         return Guice4.getDeclaringSource(binding);
     }
 
+    @Override
     public int getRank() {
         return rank;
     }
@@ -133,10 +141,12 @@ final class LazyBeanEntry<Q extends Annotation, T> implements BeanEntry<Q, T> {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public String value() {
             return value;
         }
 
+        @Override
         public Class<? extends Annotation> annotationType() {
             return javax.inject.Named.class;
         }

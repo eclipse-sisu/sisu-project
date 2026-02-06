@@ -21,6 +21,7 @@ import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
 public class PathConverter extends FileConverter {
+    @Override
     public boolean canConvert(final Class<?> type) {
         return Path.class.equals(type);
     }

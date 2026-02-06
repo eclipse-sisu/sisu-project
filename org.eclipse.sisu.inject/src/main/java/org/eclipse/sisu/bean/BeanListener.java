@@ -43,6 +43,7 @@ public final class BeanListener implements TypeListener {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public <B> void hear(final TypeLiteral<B> type, final TypeEncounter<B> encounter) {
         final PropertyBinder propertyBinder = beanBinder.bindBean(type, encounter);
         if (null == propertyBinder) {

@@ -66,6 +66,7 @@ class BeanImportTest {
     public @interface Fuzzy {}
 
     static class FuzzyImpl implements Fuzzy {
+        @Override
         public Class<? extends Annotation> annotationType() {
             return Fuzzy.class;
         }
@@ -96,6 +97,7 @@ class BeanImportTest {
     public interface ImplicitY extends Y {}
 
     static class XProvider implements Provider<ImplicitX> {
+        @Override
         public ImplicitX get() {
             return new ImplicitX() {};
         }
@@ -105,6 +107,7 @@ class BeanImportTest {
     public static class ImplWithName {}
 
     public abstract static class AbstractY implements Y {
+        @Override
         public double fn(final double x, final double y) {
             return x + y;
         }

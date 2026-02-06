@@ -41,6 +41,7 @@ final class OptionalPropertyBinding<T> implements PropertyBinding {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public <B> void injectProperty(final B bean) {
         try {
             property.set(bean, provider.get());

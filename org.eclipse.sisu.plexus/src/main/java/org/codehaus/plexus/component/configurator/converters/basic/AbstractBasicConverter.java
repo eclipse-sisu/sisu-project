@@ -22,6 +22,7 @@ import org.codehaus.plexus.component.configurator.expression.TypeAwareExpression
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
 public abstract class AbstractBasicConverter extends AbstractConfigurationConverter {
+    @Override
     public Object fromConfiguration(
             final ConverterLookup lookup,
             final PlexusConfiguration configuration,

@@ -34,6 +34,7 @@ class DeclaredMembersTest {
 
         char b = 'b';
 
+        @Override
         public void a() {}
     }
 
@@ -48,6 +49,7 @@ class DeclaredMembersTest {
 
         char d = 'd';
 
+        @Override
         public void c() {}
     }
 

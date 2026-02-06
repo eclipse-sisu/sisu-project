@@ -42,6 +42,7 @@ final class BeanInjector<B> implements MembersInjector<B> {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public void injectMembers(final B bean) {
         for (final PropertyBinding b : bindings) {
             b.injectProperty(bean);

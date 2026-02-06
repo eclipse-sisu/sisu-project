@@ -41,6 +41,7 @@ final class HiddenSource implements Hidden, AnnotatedSource {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public Class<? extends Annotation> annotationType() {
         return Hidden.class;
     }
@@ -60,6 +61,7 @@ final class HiddenSource implements Hidden, AnnotatedSource {
         return null != source ? source.toString() : "@" + Hidden.class.getName();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <T extends Annotation> T getAnnotation(final Binding<?> binding, final Class<T> annotationType) {
         if (Hidden.class.equals(annotationType)) {

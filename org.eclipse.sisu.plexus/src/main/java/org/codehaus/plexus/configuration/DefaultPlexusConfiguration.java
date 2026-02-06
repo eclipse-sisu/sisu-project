@@ -57,35 +57,43 @@ public class DefaultPlexusConfiguration implements PlexusConfiguration {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public final String getName() {
         return name;
     }
 
+    @Override
     public final String getValue() {
         return value;
     }
 
+    @Override
     public final String getValue(final String defaultValue) {
         return null != value ? value : defaultValue;
     }
 
+    @Override
     public final void setValue(final String value) {
         this.value = value;
     }
 
+    @Override
     public final String[] getAttributeNames() {
         return attributeMap.keySet().toArray(new String[attributeMap.size()]);
     }
 
+    @Override
     public final String getAttribute(final String attributeName) {
         return attributeMap.get(attributeName);
     }
 
+    @Override
     public final String getAttribute(final String attributeName, final String defaultValue) {
         final String attributeValue = attributeMap.get(attributeName);
         return null != attributeValue ? attributeValue : defaultValue;
     }
 
+    @Override
     public final void setAttribute(final String attributeName, final String attributeValue) {
         if (attributeMap.isEmpty()) {
             attributeMap = new HashMap<>();
@@ -93,10 +101,12 @@ public class DefaultPlexusConfiguration implements PlexusConfiguration {
         attributeMap.put(attributeName, attributeValue);
     }
 
+    @Override
     public final PlexusConfiguration getChild(final String childName) {
         return getChild(childName, true);
     }
 
+    @Override
     public final PlexusConfiguration getChild(final String childName, final boolean create) {
         final List<PlexusConfiguration> children = childMap.get(childName);
         if (null != children) {
@@ -105,10 +115,12 @@ public class DefaultPlexusConfiguration implements PlexusConfiguration {
         return create ? add(createChild(childName)) : null;
     }
 
+    @Override
     public final PlexusConfiguration[] getChildren() {
         return childIndex.toArray(new PlexusConfiguration[childIndex.size()]);
     }
 
+    @Override
     public final PlexusConfiguration[] getChildren(final String childName) {
         final List<PlexusConfiguration> children = childMap.get(childName);
         if (null != children) {
@@ -117,18 +129,22 @@ public class DefaultPlexusConfiguration implements PlexusConfiguration {
         return NO_CHILDREN;
     }
 
+    @Override
     public final int getChildCount() {
         return childIndex.size();
     }
 
+    @Override
     public final PlexusConfiguration getChild(final int index) {
         return childIndex.get(index);
     }
 
+    @Override
     public final void addChild(final PlexusConfiguration child) {
         add(child);
     }
 
+    @Override
     public final PlexusConfiguration addChild(final String childName, final String childValue) {
         add(createChild(childName)).setValue(childValue);
         return this;

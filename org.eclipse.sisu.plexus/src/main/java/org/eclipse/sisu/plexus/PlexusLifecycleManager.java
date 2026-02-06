@@ -83,10 +83,12 @@ public final class PlexusLifecycleManager extends BeanScheduler implements BeanM
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public void configure(final Binder binder) {
         BeanScheduler.MODULE.configure(binder);
     }
 
+    @Override
     public boolean manage(final Class<?> clazz) {
         for (final Class<?> lifecycleType : LIFECYCLE_TYPES) {
             if (lifecycleType.isAssignableFrom(clazz)) {
@@ -96,12 +98,14 @@ public final class PlexusLifecycleManager extends BeanScheduler implements BeanM
         return null != delegate ? delegate.manage(clazz) : false;
     }
 
+    @Override
     @SuppressWarnings("rawtypes")
     public PropertyBinding manage(final BeanProperty property) {
         final Class clazz = property.getType().getRawType();
         if ("org.slf4j.Logger".equals(clazz.getName())) // NOSONAR
         {
             return new PropertyBinding() {
+                @Override
                 @SuppressWarnings("unchecked")
                 public <B> void injectProperty(final B bean) {
                     property.set(bean, getSLF4JLogger(bean));
@@ -110,6 +114,7 @@ public final class PlexusLifecycleManager extends BeanScheduler implements BeanM
         }
         if (Logger.class.equals(clazz)) {
             return new PropertyBinding() {
+                @Override
                 @SuppressWarnings("unchecked")
                 public <B> void injectProperty(final B bean) {
                     property.set(bean, getPlexusLogger(bean));
@@ -119,6 +124,7 @@ public final class PlexusLifecycleManager extends BeanScheduler implements BeanM
         return null != delegate ? delegate.manage(property) : null;
     }
 
+    @Override
     public boolean manage(final Object bean) {
         if (bean instanceof Disposable) {
             synchronizedPush(disposableBeans, (Disposable) bean);
@@ -132,6 +138,7 @@ public final class PlexusLifecycleManager extends BeanScheduler implements BeanM
         return null != delegate ? delegate.manage(bean) : true;
     }
 
+    @Override
     public boolean unmanage(final Object bean) {
         if (synchronizedRemove(startableBeans, bean)) {
             stop((Startable) bean);
@@ -142,6 +149,7 @@ public final class PlexusLifecycleManager extends BeanScheduler implements BeanM
         return null != delegate ? delegate.unmanage(bean) : true;
     }
 
+    @Override
     public boolean unmanage() {
         for (Startable bean; (bean = synchronizedPop(startableBeans)) != null; ) {
             stop(bean);

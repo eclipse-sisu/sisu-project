@@ -63,6 +63,7 @@ public class BundleModule implements Module {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public void configure(final Binder binder) {
         // apply auto-wiring analysis across all bindings from this bundle
         new WireModule(modules()).with(extensions).configure(binder);
@@ -97,6 +98,7 @@ public class BundleModule implements Module {
      */
     protected Module extensionsModule() {
         return new Module() {
+            @Override
             public void configure(final Binder binder) {
                 extensions.install(binder, Bundle.class, space.getBundle());
             }
@@ -110,6 +112,7 @@ public class BundleModule implements Module {
      */
     protected Module contextModule() {
         return new Module() {
+            @Override
             public void configure(final Binder binder) {
                 // This instance binding will also auto-register the injector with the locator as a publisher.
                 // If you don't want this feature, replace the binding with toProvider(Providers.of(locator))

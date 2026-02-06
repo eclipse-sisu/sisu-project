@@ -84,14 +84,17 @@ public final class EntrySetAdapter<V> extends AbstractSet<V> {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public boolean hasNext() {
             return iterator.hasNext();
         }
 
+        @Override
         public V next() {
             return iterator.next().getValue();
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }

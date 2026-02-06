@@ -221,12 +221,14 @@ class TypeArgumentsTest {
     }
 
     static class CallableImpl<T> implements Callable<T> {
+        @Override
         public T call() throws Exception {
             return null;
         }
     }
 
     static class CallableNumberImpl<T extends Number> implements CallableNumber<T> {
+        @Override
         public T call() throws Exception {
             return null;
         }
@@ -234,6 +236,7 @@ class TypeArgumentsTest {
 
     @SuppressWarnings("rawtypes")
     static class CallableListImpl implements Callable<List> {
+        @Override
         public List call() throws Exception {
             return null;
         }
@@ -317,6 +320,7 @@ class TypeArgumentsTest {
 
         final Type T = (Type) Proxy.newProxyInstance(
                 getClass().getClassLoader(), new Class<?>[] {TypeVariable.class}, new InvocationHandler() {
+                    @Override
                     public Object invoke(final Object proxy, final Method method, final Object[] args)
                             throws Throwable {
                         final String name = method.getName();
@@ -338,6 +342,7 @@ class TypeArgumentsTest {
 
         final Type callableT = (Type) Proxy.newProxyInstance(
                 getClass().getClassLoader(), new Class<?>[] {ParameterizedType.class}, new InvocationHandler() {
+                    @Override
                     public Object invoke(final Object proxy, final Method method, final Object[] args)
                             throws Throwable {
                         final String name = method.getName();
@@ -378,6 +383,7 @@ class TypeArgumentsTest {
     static interface Implicit1<T> {}
 
     static class SomeProvider implements Provider<Object> {
+        @Override
         public Object get() {
             return null;
         }

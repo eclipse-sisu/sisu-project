@@ -39,23 +39,28 @@ public class PlexusConfigurationTest extends TestCase {
     static class ComponentManager implements BeanManager {
         static int SEEN;
 
+        @Override
         public boolean manage(final Class<?> clazz) {
             return ConfiguredComponent.class.isAssignableFrom(clazz);
         }
 
+        @Override
         public PropertyBinding manage(final BeanProperty<?> property) {
             return null;
         }
 
+        @Override
         public boolean manage(final Object bean) {
             SEEN++;
             return true;
         }
 
+        @Override
         public boolean unmanage(final Object bean) {
             return false;
         }
 
+        @Override
         public boolean unmanage() {
             return false;
         }

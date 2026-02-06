@@ -25,38 +25,47 @@ public final class PlexusContainerLocator implements ServiceLocator {
         this.container = container;
     }
 
+    @Override
     public Object lookup(final String role) throws ComponentLookupException {
         return container.lookup(role);
     }
 
+    @Override
     public Object lookup(final String role, final String hint) throws ComponentLookupException {
         return container.lookup(role, hint);
     }
 
+    @Override
     public Map<String, Object> lookupMap(final String role) throws ComponentLookupException {
         return container.lookupMap(role);
     }
 
+    @Override
     public List<Object> lookupList(final String role) throws ComponentLookupException {
         return container.lookupList(role);
     }
 
+    @Override
     public void release(final Object component) throws ComponentLifecycleException {
         container.release(component);
     }
 
+    @Override
     public void releaseAll(final Map<String, ?> components) throws ComponentLifecycleException {
         container.releaseAll(components);
     }
 
+    @Override
     public void releaseAll(final List<?> components) throws ComponentLifecycleException {
         container.releaseAll(components);
     }
 
+    @Override
     public boolean hasComponent(final String role) {
         return container.hasComponent(role);
     }
 
+    @Override
     public boolean hasComponent(final String role, final String hint) {
         return container.hasComponent(role, hint);
     }

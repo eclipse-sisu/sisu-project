@@ -296,10 +296,12 @@ class EntryListAdapterTest {
             return new Iterator<T>() {
                 int index;
 
+                @Override
                 public boolean hasNext() {
                     return index < size();
                 }
 
+                @Override
                 public T next() {
                     if (hasNext()) {
                         return get(index++);
@@ -307,6 +309,7 @@ class EntryListAdapterTest {
                     throw new NoSuchElementException();
                 }
 
+                @Override
                 public void remove() {
                     IndexList.this.remove(index);
                 }

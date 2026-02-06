@@ -44,6 +44,7 @@ public final class MergedModule implements Module {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public void configure(final Binder binder) {
         final ElementMerger merger = new ElementMerger(binder);
         for (final Element e : Elements.getElements(modules)) {

@@ -41,22 +41,27 @@ final class MissingPlexusBean<T> implements PlexusBean<T> {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public String getKey() {
         return hint;
     }
 
+    @Override
     public T getValue() {
         return Roles.throwMissingComponentException(role, hint);
     }
 
+    @Override
     public T setValue(final T value) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public String getDescription() {
         return null;
     }
 
+    @Override
     public Class<T> getImplementationClass() {
         return null;
     }

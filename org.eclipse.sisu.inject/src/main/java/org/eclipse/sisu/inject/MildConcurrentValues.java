@@ -39,6 +39,7 @@ final class MildConcurrentValues<K, V> extends MildValues<K, V> implements Concu
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public V putIfAbsent(final K key, final V value) {
         compact();
 
@@ -57,6 +58,7 @@ final class MildConcurrentValues<K, V> extends MildValues<K, V> implements Concu
         return null;
     }
 
+    @Override
     public V replace(final K key, final V value) {
         compact();
 
@@ -64,12 +66,14 @@ final class MildConcurrentValues<K, V> extends MildValues<K, V> implements Concu
         return null != ref ? ref.get() : null;
     }
 
+    @Override
     public boolean replace(final K key, final V oldValue, final V newValue) {
         compact();
 
         return concurrentMap.replace(key, tempValue(oldValue), mildValue(key, newValue));
     }
 
+    @Override
     public boolean remove(final Object key, final Object value) {
         compact(); // NOSONAR ignore nullable false-positive
 

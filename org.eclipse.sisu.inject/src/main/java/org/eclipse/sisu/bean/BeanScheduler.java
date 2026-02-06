@@ -72,6 +72,7 @@ public abstract class BeanScheduler {
      * Enables deferred activation of component cycles, only needed in legacy systems like Plexus.
      */
     public static final Module MODULE = new Module() {
+        @Override
         public void configure(final Binder binder) {
             if (null != CYCLE_ACTIVATOR) {
                 binder.bindListener(Matchers.any(), (com.google.inject.spi.ProvisionListener) CYCLE_ACTIVATOR);
@@ -175,6 +176,7 @@ public abstract class BeanScheduler {
             }
         };
 
+        @Override
         public <T> void onProvision(final ProvisionInvocation<T> pi) {
             // Only scoped dependencies like singletons are candidates for dependency cycles
             if (Boolean.TRUE.equals(pi.getBinding().acceptScopingVisitor(IS_SCOPED))) {

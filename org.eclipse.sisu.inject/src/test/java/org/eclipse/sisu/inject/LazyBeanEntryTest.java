@@ -91,6 +91,7 @@ class LazyBeanEntryTest {
     static class CountingProvider implements Provider<Object> {
         static int count;
 
+        @Override
         public Object get() {
             count++;
             return "";
@@ -172,16 +173,19 @@ class LazyBeanEntryTest {
     }
 
     static class StringProvider implements DeferredProvider<String> {
+        @Override
         public String get() {
             throw new ProvisionException("OOPS");
         }
 
+        @Override
         public DeferredClass<String> getImplementationClass() {
             return new LoadedClass<>(String.class);
         }
     }
 
     static class OpaqueProvider implements Provider<String> {
+        @Override
         public String get() {
             throw new ProvisionException("OOPS");
         }

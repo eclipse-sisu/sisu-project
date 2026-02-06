@@ -59,6 +59,7 @@ final class PseudoPlexusContainer implements PlexusContainer {
     // Context methods
     // ----------------------------------------------------------------------
 
+    @Override
     public Context getContext() {
         return context;
     }
@@ -67,22 +68,27 @@ final class PseudoPlexusContainer implements PlexusContainer {
     // Lookup methods
     // ----------------------------------------------------------------------
 
+    @Override
     public Object lookup(final String role) throws ComponentLookupException {
         return lookup(role, "");
     }
 
+    @Override
     public Object lookup(final String role, final String hint) throws ComponentLookupException {
         return lookup(null, role, hint);
     }
 
+    @Override
     public <T> T lookup(final Class<T> role) throws ComponentLookupException {
         return lookup(role, "");
     }
 
+    @Override
     public <T> T lookup(final Class<T> role, final String hint) throws ComponentLookupException {
         return lookup(role, null, hint);
     }
 
+    @Override
     public <T> T lookup(final Class<T> type, final String role, final String hint) throws ComponentLookupException {
         try {
             return locate(role, type, hint).iterator().next().getValue();
@@ -91,18 +97,22 @@ final class PseudoPlexusContainer implements PlexusContainer {
         }
     }
 
+    @Override
     public List<Object> lookupList(final String role) throws ComponentLookupException {
         return new EntryListAdapter<>(locate(role, null));
     }
 
+    @Override
     public <T> List<T> lookupList(final Class<T> role) throws ComponentLookupException {
         return new EntryListAdapter<>(locate(null, role));
     }
 
+    @Override
     public Map<String, Object> lookupMap(final String role) throws ComponentLookupException {
         return new EntryMapAdapter<>(locate(role, null));
     }
 
+    @Override
     public <T> Map<String, T> lookupMap(final Class<T> role) throws ComponentLookupException {
         return new EntryMapAdapter<>(locate(null, role));
     }
@@ -111,22 +121,27 @@ final class PseudoPlexusContainer implements PlexusContainer {
     // Query methods
     // ----------------------------------------------------------------------
 
+    @Override
     public boolean hasComponent(final String role) {
         return hasComponent(role, "");
     }
 
+    @Override
     public boolean hasComponent(final String role, final String hint) {
         return hasComponent(null, role, hint);
     }
 
+    @Override
     public boolean hasComponent(final Class role) {
         return hasComponent(role, "");
     }
 
+    @Override
     public boolean hasComponent(final Class role, final String hint) {
         return hasComponent(role, null, hint);
     }
 
+    @Override
     public boolean hasComponent(final Class type, final String role, final String hint) {
         return hasPlexusBeans(locate(role, type, hint));
     }
@@ -135,43 +150,53 @@ final class PseudoPlexusContainer implements PlexusContainer {
     // Component descriptor methods
     // ----------------------------------------------------------------------
 
+    @Override
     public void addComponent(final Object component, final String role) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public <T> void addComponent(final T component, final Class<?> role, final String hint) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public <T> void addComponentDescriptor(final ComponentDescriptor<T> descriptor) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public ComponentDescriptor<?> getComponentDescriptor(final String role, final String hint) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public <T> ComponentDescriptor<T> getComponentDescriptor(
             final Class<T> type, final String role, final String hint) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public List getComponentDescriptorList(final String role) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public <T> List<ComponentDescriptor<T>> getComponentDescriptorList(final Class<T> type, final String role) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public Map getComponentDescriptorMap(final String role) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public <T> Map<String, ComponentDescriptor<T>> getComponentDescriptorMap(final Class<T> type, final String role) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public List<ComponentDescriptor<?>> discoverComponents(final ClassRealm realm) {
         throw new UnsupportedOperationException();
     }
@@ -180,18 +205,22 @@ final class PseudoPlexusContainer implements PlexusContainer {
     // Class realm methods
     // ----------------------------------------------------------------------
 
+    @Override
     public ClassRealm getContainerRealm() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public ClassRealm setLookupRealm(final ClassRealm realm) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public ClassRealm getLookupRealm() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public ClassRealm createChildRealm(final String id) {
         throw new UnsupportedOperationException();
     }
@@ -200,22 +229,26 @@ final class PseudoPlexusContainer implements PlexusContainer {
     // Shutdown methods
     // ----------------------------------------------------------------------
 
+    @Override
     public void release(final Object component) {
         manager.unmanage(component);
     }
 
+    @Override
     public void releaseAll(final Map<String, ?> components) {
         for (final Object o : components.values()) {
             release(o);
         }
     }
 
+    @Override
     public void releaseAll(final List<?> components) {
         for (final Object o : components) {
             release(o);
         }
     }
 
+    @Override
     public void dispose() {
         manager.unmanage();
     }

@@ -36,6 +36,7 @@ public interface BeanEntry<Q extends Annotation, T> extends Entry<Q, T> {
      *
      * @return Qualifier annotation
      */
+    @Override
     Q getKey();
 
     /**
@@ -43,6 +44,7 @@ public interface BeanEntry<Q extends Annotation, T> extends Entry<Q, T> {
      *
      * @return Bean instance (lazily-created)
      */
+    @Override
     T getValue();
 
     /**

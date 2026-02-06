@@ -73,6 +73,7 @@ public final class QualifiedTypeVisitor implements SpaceVisitor, ClassVisitor {
         return true;
     }
 
+    @Override
     public void enterSpace(final ClassSpace _space) {
         space = _space;
         source = null;
@@ -82,6 +83,7 @@ public final class QualifiedTypeVisitor implements SpaceVisitor, ClassVisitor {
         }
     }
 
+    @Override
     public ClassVisitor visitClass(final URL url) {
         location = url;
         clazzName = null;
@@ -90,12 +92,14 @@ public final class QualifiedTypeVisitor implements SpaceVisitor, ClassVisitor {
         return this;
     }
 
+    @Override
     public void enterClass(final int modifiers, final String name, final String _extends, final String[] _implements) {
         if ((modifiers & NON_INSTANTIABLE) == 0) {
             clazzName = name; // concrete type
         }
     }
 
+    @Override
     public AnnotationVisitor visitAnnotation(final String desc) {
         if (null != clazzName) {
             qualified = qualified || qualifierCache.qualify(space, desc);
@@ -107,12 +111,14 @@ public final class QualifiedTypeVisitor implements SpaceVisitor, ClassVisitor {
         qualified = false;
     }
 
+    @Override
     public void leaveClass() {
         if (qualified) {
             listener.hear(space.loadClass(clazzName.replace('/', '.')), findSource());
         }
     }
 
+    @Override
     public void leaveSpace() {
         // no-op
     }

@@ -49,64 +49,78 @@ public final class DefaultContainerConfiguration implements ContainerConfigurati
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public ContainerConfiguration setName(final String name) {
         return this;
     }
 
+    @Override
     public ContainerConfiguration setContainerConfiguration(final String configurationPath) {
         this.configurationPath = configurationPath;
         return this;
     }
 
+    @Override
     public String getContainerConfiguration() {
         return configurationPath;
     }
 
+    @Override
     public ContainerConfiguration setContainerConfigurationURL(final URL configurationUrl) {
         this.configurationUrl = configurationUrl;
         return this;
     }
 
+    @Override
     public URL getContainerConfigurationURL() {
         return configurationUrl;
     }
 
+    @Override
     public ContainerConfiguration setClassWorld(final ClassWorld classWorld) {
         this.classWorld = classWorld;
         return this;
     }
 
+    @Override
     public ClassWorld getClassWorld() {
         return classWorld;
     }
 
+    @Override
     public ContainerConfiguration setRealm(final ClassRealm classRealm) {
         this.classRealm = classRealm;
         return this;
     }
 
+    @Override
     public ClassRealm getRealm() {
         return classRealm;
     }
 
+    @Override
     public ContainerConfiguration setContext(final Map<Object, Object> contextData) {
         this.contextData = contextData;
         return this;
     }
 
+    @Override
     public Map<Object, Object> getContext() {
         return contextData;
     }
 
+    @Override
     public ContainerConfiguration setComponentVisibility(final String componentVisibility) {
         this.componentVisibility = componentVisibility;
         return this;
     }
 
+    @Override
     public String getComponentVisibility() {
         return componentVisibility;
     }
 
+    @Override
     public ContainerConfiguration setClassPathScanning(final String classPathScanning) {
         this.classPathScanning = classPathScanning;
         if (!PlexusConstants.SCANNING_OFF.equalsIgnoreCase(classPathScanning)) {
@@ -115,33 +129,40 @@ public final class DefaultContainerConfiguration implements ContainerConfigurati
         return this;
     }
 
+    @Override
     public String getClassPathScanning() {
         return classPathScanning;
     }
 
+    @Override
     public ContainerConfiguration setAutoWiring(final boolean autoWiring) {
         this.autoWiring = autoWiring;
         return this;
     }
 
+    @Override
     public boolean getAutoWiring() {
         return autoWiring;
     }
 
+    @Override
     public ContainerConfiguration setContextComponent(final Context contextComponent) {
         this.contextComponent = contextComponent;
         return this;
     }
 
+    @Override
     public Context getContextComponent() {
         return contextComponent;
     }
 
+    @Override
     public ContainerConfiguration setJSR250Lifecycle(final boolean jsr250Lifecycle) {
         this.jsr250Lifecycle = jsr250Lifecycle;
         return this;
     }
 
+    @Override
     public boolean getJSR250Lifecycle() {
         return jsr250Lifecycle;
     }

@@ -25,12 +25,14 @@ import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.eclipse.sisu.plexus.CompositeBeanHelper;
 
 public class ObjectWithFieldsConverter extends AbstractConfigurationConverter {
+    @Override
     public boolean canConvert(final Class<?> type) {
         return !Map.class.isAssignableFrom(type) //
                 && !Collection.class.isAssignableFrom(type) //
                 && !Dictionary.class.isAssignableFrom(type);
     }
 
+    @Override
     public Object fromConfiguration(
             final ConverterLookup lookup,
             final PlexusConfiguration configuration,

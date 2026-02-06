@@ -132,6 +132,7 @@ final class BeanLifecycle implements PrivilegedAction<Void> {
     // PrivilegedAction methods
     // ----------------------------------------------------------------------
 
+    @Override
     public Void run() {
         AccessibleObject.setAccessible(startMethods, true);
         AccessibleObject.setAccessible(stopMethods, true);

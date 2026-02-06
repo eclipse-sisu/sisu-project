@@ -13,6 +13,7 @@
 package org.codehaus.plexus.component.configurator.converters.basic;
 
 public class StringBuilderConverter extends AbstractBasicConverter {
+    @Override
     public boolean canConvert(final Class<?> type) {
         return StringBuilder.class.equals(type);
     }

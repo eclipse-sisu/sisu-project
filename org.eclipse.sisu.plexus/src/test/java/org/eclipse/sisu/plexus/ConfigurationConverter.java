@@ -29,11 +29,13 @@ public class ConfigurationConverter extends AbstractMatcher<TypeLiteral<?>> impl
 
     private boolean available = true;
 
+    @Override
     public void configure(final Binder binder) {
         binder.convertToTypes(this, this);
         binder.requestInjection(this);
     }
 
+    @Override
     public boolean matches(final TypeLiteral<?> type) {
         for (final TypeConverterBinding b : otherConverterBindings) {
             if (b.getTypeMatcher().matches(type)) {
@@ -43,6 +45,7 @@ public class ConfigurationConverter extends AbstractMatcher<TypeLiteral<?>> impl
         return available;
     }
 
+    @Override
     public Object convert(final String value, final TypeLiteral<?> toType) {
         available = false;
         try {

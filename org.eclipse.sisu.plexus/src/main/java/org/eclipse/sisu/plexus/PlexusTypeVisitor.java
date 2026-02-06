@@ -62,6 +62,7 @@ public final class PlexusTypeVisitor implements SpaceVisitor, ClassVisitor {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public void enterSpace(final ClassSpace _space) {
         space = _space;
         source = _space.toString();
@@ -72,6 +73,7 @@ public final class PlexusTypeVisitor implements SpaceVisitor, ClassVisitor {
         }
     }
 
+    @Override
     public ClassVisitor visitClass(final URL url) {
         componentVisitor.reset();
         implementation = null;
@@ -79,6 +81,7 @@ public final class PlexusTypeVisitor implements SpaceVisitor, ClassVisitor {
         return this;
     }
 
+    @Override
     public void enterClass(final int modifiers, final String name, final String _extends, final String[] _implements) {
         if ((modifiers & NON_INSTANTIABLE) == 0) {
             implementation = name;
@@ -86,6 +89,7 @@ public final class PlexusTypeVisitor implements SpaceVisitor, ClassVisitor {
         qualifiedTypeVisitor.enterClass(modifiers, name, _extends, _implements);
     }
 
+    @Override
     public AnnotationVisitor visitAnnotation(final String desc) {
         if (COMPONENT_DESC.equals(desc)) {
             return componentVisitor;
@@ -93,6 +97,7 @@ public final class PlexusTypeVisitor implements SpaceVisitor, ClassVisitor {
         return qualifiedTypeVisitor.visitAnnotation(desc);
     }
 
+    @Override
     public void leaveClass() {
         if (null != implementation) {
             final Component component = componentVisitor.getComponent(space);
@@ -105,6 +110,7 @@ public final class PlexusTypeVisitor implements SpaceVisitor, ClassVisitor {
         qualifiedTypeVisitor.leaveClass();
     }
 
+    @Override
     public void leaveSpace() {
         qualifiedTypeVisitor.leaveSpace();
     }
@@ -140,10 +146,12 @@ public final class PlexusTypeVisitor implements SpaceVisitor, ClassVisitor {
             description = "";
         }
 
+        @Override
         public void enterAnnotation() {
             // no-op; maintain results outside of individual annotation scan
         }
 
+        @Override
         public void visitElement(final String name, final Object value) {
             if ("role".equals(name)) {
                 role = (String) value;
@@ -156,6 +164,7 @@ public final class PlexusTypeVisitor implements SpaceVisitor, ClassVisitor {
             }
         }
 
+        @Override
         public void leaveAnnotation() {
             // no-op; maintain results outside of individual annotation scan
         }

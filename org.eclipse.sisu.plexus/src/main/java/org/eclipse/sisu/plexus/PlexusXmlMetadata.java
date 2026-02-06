@@ -44,14 +44,17 @@ final class PlexusXmlMetadata implements PlexusBeanMetadata {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public boolean isEmpty() {
         return configurationMap.isEmpty() && requirementMap.isEmpty();
     }
 
+    @Override
     public Configuration getConfiguration(final BeanProperty<?> property) {
         return configurationMap.remove(property.getName());
     }
 
+    @Override
     public Requirement getRequirement(final BeanProperty<?> property) {
         Requirement requirement = requirementMap.remove(property.getName());
         if (null == requirement) {

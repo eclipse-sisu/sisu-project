@@ -86,6 +86,7 @@ class DeferredProviderTest {
                         protected void configure() {
                             bind(C.class).toProvider(new LoadedClass<C>(CImpl.class).asProvider());
                             bind(CImpl.class).toProvider(new Provider<CImpl>() {
+                                @Override
                                 public CImpl get() {
                                     throw new ProvisionException("Broken Provider");
                                 }
@@ -104,6 +105,7 @@ class DeferredProviderTest {
                         protected void configure() {
                             bind(C.class).toProvider(new LoadedClass<C>(CImpl.class).asProvider());
                             bind(CImpl.class).toProvider(new Provider<CImpl>() {
+                                @Override
                                 public CImpl get() {
                                     throw new LinkageError("Broken Provider");
                                 }
@@ -123,6 +125,7 @@ class DeferredProviderTest {
                         protected void configure() {
                             bind(C.class).toProvider(new LoadedClass<C>(CImpl.class).asProvider());
                             bind(CImpl.class).toProvider(new Provider<CImpl>() {
+                                @Override
                                 public CImpl get() {
                                     throw new IllegalArgumentException(new IllegalStateException(new ThreadDeath()));
                                 }
@@ -142,6 +145,7 @@ class DeferredProviderTest {
                         protected void configure() {
                             bind(C.class).toProvider(new NamedClass<C>(space, CImpl.class.getName()).asProvider());
                             bind(CImpl.class).toProvider(new Provider<CImpl>() {
+                                @Override
                                 public CImpl get() {
                                     throw new ProvisionException("Broken Provider");
                                 }

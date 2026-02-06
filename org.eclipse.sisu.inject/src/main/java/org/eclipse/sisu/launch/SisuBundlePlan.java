@@ -43,6 +43,7 @@ public class SisuBundlePlan implements BundlePlan {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public BindingPublisher prepare(final Bundle bundle) {
         return appliesTo(bundle) ? InjectorBindings.findBindingPublisher(inject(compose(bundle))) : null;
     }

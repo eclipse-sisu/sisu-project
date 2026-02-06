@@ -23,6 +23,7 @@ public abstract class AbstractLogEnabled implements LogEnabled {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public void enableLogging(final Logger theLogger) {
         logger = theLogger;
     }

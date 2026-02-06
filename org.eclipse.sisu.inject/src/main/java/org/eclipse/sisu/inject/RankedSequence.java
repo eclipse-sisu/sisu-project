@@ -134,6 +134,7 @@ final class RankedSequence<T> implements Iterable<T> {
         return null != snapshot ? snapshot.objs.length : 0;
     }
 
+    @Override
     public Itr iterator() {
         return new Itr();
     }
@@ -321,6 +322,7 @@ final class RankedSequence<T> implements Iterable<T> {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         @SuppressWarnings("unchecked")
         public boolean hasNext() {
             if (null != nextObj) {
@@ -359,6 +361,7 @@ final class RankedSequence<T> implements Iterable<T> {
             return false;
         }
 
+        @Override
         public T next() {
             if (hasNext()) {
                 nextUID++; // guarantees progress when re-positioning
@@ -376,6 +379,7 @@ final class RankedSequence<T> implements Iterable<T> {
             return uid2rank(nextUID);
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }

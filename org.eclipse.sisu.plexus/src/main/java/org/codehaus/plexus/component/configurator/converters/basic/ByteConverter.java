@@ -15,6 +15,7 @@ package org.codehaus.plexus.component.configurator.converters.basic;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 
 public class ByteConverter extends AbstractBasicConverter {
+    @Override
     public boolean canConvert(final Class<?> type) {
         return byte.class.equals(type) || Byte.class.equals(type);
     }

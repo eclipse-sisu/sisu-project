@@ -22,6 +22,7 @@ import java.nio.file.Path;
  * {@link TypeConverter} {@link Module} that converts constants to {@link Path}s.
  */
 final class PathTypeConverter extends AbstractTypeConverter<Path> {
+    @Override
     public Object convert(final String value, final TypeLiteral<?> toType) {
         return new File(value).toPath();
     }

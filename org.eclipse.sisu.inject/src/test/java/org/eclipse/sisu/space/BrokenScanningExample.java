@@ -22,22 +22,27 @@ public class BrokenScanningExample {
 
         final URL badURL = new URL("oops:bad/");
         final ClassSpace brokenResourceSpace = new ClassSpace() {
+            @Override
             public Class<?> loadClass(final String name) {
                 return space.loadClass(name);
             }
 
+            @Override
             public DeferredClass<?> deferLoadClass(final String name) {
                 return space.deferLoadClass(name);
             }
 
+            @Override
             public Enumeration<URL> getResources(final String name) {
                 return space.getResources(name);
             }
 
+            @Override
             public URL getResource(final String name) {
                 return badURL;
             }
 
+            @Override
             public Enumeration<URL> findEntries(final String path, final String glob, final boolean recurse) {
                 return space.findEntries(path, glob, recurse);
             }

@@ -45,10 +45,12 @@ final class PrioritySource implements Priority, AnnotatedSource {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public int value() {
         return value;
     }
 
+    @Override
     public Class<? extends Annotation> annotationType() {
         return Priority.class;
     }
@@ -68,6 +70,7 @@ final class PrioritySource implements Priority, AnnotatedSource {
         return null != source ? source.toString() : "@" + Priority.class.getName() + "(value=" + value + ")";
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <T extends Annotation> T getAnnotation(final Binding<?> binding, final Class<T> annotationType) {
         if (Priority.class.equals(annotationType)) {

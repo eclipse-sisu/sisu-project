@@ -15,6 +15,7 @@ package org.codehaus.plexus.component.configurator.converters.basic;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 
 public class DoubleConverter extends AbstractBasicConverter {
+    @Override
     public boolean canConvert(final Class<?> type) {
         return double.class.equals(type) || Double.class.equals(type);
     }

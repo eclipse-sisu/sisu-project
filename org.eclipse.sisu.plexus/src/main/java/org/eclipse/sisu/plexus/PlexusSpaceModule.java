@@ -61,6 +61,7 @@ public final class PlexusSpaceModule implements Module {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public void configure(final Binder binder) {
         final Context context = new ParameterizedContext();
         binder.bind(Context.class).toInstance(context);

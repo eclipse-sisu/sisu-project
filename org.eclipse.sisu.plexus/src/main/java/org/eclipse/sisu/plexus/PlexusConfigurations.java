@@ -85,6 +85,7 @@ final class PlexusConfigurations {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public T get() {
             return converterProvider.get().convert(type, value);
         }

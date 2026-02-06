@@ -41,6 +41,7 @@ public final class DeclaredMembers implements Iterable<Member> {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public Iterator<Member> iterator() {
         return new MemberIterator(clazz, views);
     }
@@ -87,6 +88,7 @@ public final class DeclaredMembers implements Iterable<Member> {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public boolean hasNext() {
             while (memberIndex <= 0) {
                 if (viewIndex >= views.length) {
@@ -107,6 +109,7 @@ public final class DeclaredMembers implements Iterable<Member> {
             return true;
         }
 
+        @Override
         public Member next() {
             if (hasNext()) {
                 // initialized by hasNext()
@@ -115,6 +118,7 @@ public final class DeclaredMembers implements Iterable<Member> {
             throw new NoSuchElementException();
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }

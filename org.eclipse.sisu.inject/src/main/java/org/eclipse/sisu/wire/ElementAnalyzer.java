@@ -73,6 +73,7 @@ final class ElementAnalyzer extends DefaultElementVisitor<Void> {
     private static final Map<Key<?>, Key<?>> LEGACY_KEY_ALIASES;
 
     private static final List<Element> JIT_BINDINGS = Elements.getElements(new Module() {
+        @Override
         public void configure(final Binder binder) {
             binder.bind(BeanLocator.class).to(MutableBeanLocator.class);
             binder.bind(MutableBeanLocator.class).to(DefaultBeanLocator.class);

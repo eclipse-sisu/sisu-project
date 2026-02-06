@@ -41,19 +41,23 @@ final class BeanPropertyField<T> implements BeanProperty<T>, PrivilegedAction<Vo
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public <A extends Annotation> A getAnnotation(final Class<A> annotationType) {
         return field.getAnnotation(annotationType);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public TypeLiteral<T> getType() {
         return (TypeLiteral<T>) TypeLiteral.get(field.getGenericType());
     }
 
+    @Override
     public String getName() {
         return field.getName();
     }
 
+    @Override
     public <B> void set(final B bean, final T value) {
         if (!field.isAccessible()) {
             // make sure we can apply the binding
@@ -94,6 +98,7 @@ final class BeanPropertyField<T> implements BeanProperty<T>, PrivilegedAction<Vo
     // PrivilegedAction methods
     // ----------------------------------------------------------------------
 
+    @Override
     public Void run() {
         // enable private injection
         field.setAccessible(true);

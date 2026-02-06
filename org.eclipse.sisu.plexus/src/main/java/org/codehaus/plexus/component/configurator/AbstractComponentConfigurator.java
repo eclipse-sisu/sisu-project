@@ -28,12 +28,14 @@ public abstract class AbstractComponentConfigurator implements ComponentConfigur
 
     protected ConverterLookup converterLookup = new DefaultConverterLookup();
 
+    @Override
     public void configureComponent(
             final Object component, final PlexusConfiguration configuration, final ClassRealm realm)
             throws ComponentConfigurationException {
         configureComponent(component, configuration, DEFAULT_EXPRESSION_EVALUATOR, realm);
     }
 
+    @Override
     public void configureComponent(
             final Object component,
             final PlexusConfiguration configuration,
@@ -43,6 +45,7 @@ public abstract class AbstractComponentConfigurator implements ComponentConfigur
         configureComponent(component, configuration, evaluator, realm, null);
     }
 
+    @Override
     public void configureComponent(
             final Object component,
             final PlexusConfiguration configuration,

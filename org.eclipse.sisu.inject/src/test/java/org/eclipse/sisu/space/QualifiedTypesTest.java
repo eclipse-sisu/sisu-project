@@ -79,6 +79,7 @@ class QualifiedTypesTest {
     static class B05EventListener implements Callable<String>, EventListener, Serializable {
         private static final long serialVersionUID = 1L;
 
+        @Override
         public String call() {
             return "GO";
         }
@@ -89,6 +90,7 @@ class QualifiedTypesTest {
     static class B06 implements Callable<String>, EventListener, Serializable {
         private static final long serialVersionUID = 1L;
 
+        @Override
         public String call() {
             return "GO";
         }
@@ -125,6 +127,7 @@ class QualifiedTypesTest {
     static class SubclassB07 extends SubclassB06 implements Callable<String>, Serializable {
         private static final long serialVersionUID = 1L;
 
+        @Override
         public String call() {
             return "GO";
         }
@@ -141,6 +144,7 @@ class QualifiedTypesTest {
     public @interface Legacy {}
 
     static class LegacyImpl implements Legacy {
+        @Override
         public Class<? extends Annotation> annotationType() {
             return Legacy.class;
         }
@@ -148,6 +152,7 @@ class QualifiedTypesTest {
 
     @Legacy
     static class LegacyCallable implements Callable<String> {
+        @Override
         public String call() {
             return "GO";
         }
@@ -234,14 +239,17 @@ class QualifiedTypesTest {
 
     @SuppressWarnings("rawtypes")
     static class RawMediator implements Mediator {
+        @Override
         public void add(final BeanEntry bean, final Object watcher) throws Exception {}
 
+        @Override
         public void remove(final BeanEntry bean, final Object watcher) throws Exception {}
     }
 
     abstract class AbstractNamedMediator implements Mediator<Named, Object, Object> {}
 
     static class BadBindings implements Module {
+        @Override
         public void configure(final Binder binder) {
             final QualifiedTypeListener listener = new QualifiedTypeBinder(binder);
 

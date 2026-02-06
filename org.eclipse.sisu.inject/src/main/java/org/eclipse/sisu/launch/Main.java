@@ -95,6 +95,7 @@ public final class Main implements Module {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public void configure(final Binder binder) {
         binder.bind(ParameterKeys.PROPERTIES).toInstance(properties);
         binder.bind(ShutdownThread.class).asEagerSingleton();

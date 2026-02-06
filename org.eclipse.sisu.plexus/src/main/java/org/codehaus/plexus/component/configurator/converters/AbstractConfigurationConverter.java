@@ -23,6 +23,7 @@ import org.eclipse.sisu.plexus.Roles;
 
 @SuppressWarnings("static-method")
 public abstract class AbstractConfigurationConverter implements ConfigurationConverter {
+    @Override
     public Object fromConfiguration(
             final ConverterLookup lookup,
             final PlexusConfiguration configuration,

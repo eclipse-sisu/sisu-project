@@ -28,6 +28,7 @@ public interface PropertyBinder {
      * Binders may return {@code LAST_BINDING} to indicate they are done binding a bean.
      */
     PropertyBinding LAST_BINDING = new PropertyBinding() {
+        @Override
         public <B> void injectProperty(final B bean) {
             throw new UnsupportedOperationException("LAST_BINDING");
         }

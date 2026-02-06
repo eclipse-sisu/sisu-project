@@ -23,6 +23,7 @@ import java.net.URL;
  * {@link TypeConverter} {@link Module} that converts constants to {@link URL}s.
  */
 final class URLTypeConverter extends AbstractTypeConverter<URL> {
+    @Override
     public Object convert(final String value, final TypeLiteral<?> toType) {
         try {
             return new URL(value);

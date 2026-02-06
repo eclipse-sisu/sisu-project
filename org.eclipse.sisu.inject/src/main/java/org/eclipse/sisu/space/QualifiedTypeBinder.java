@@ -83,6 +83,7 @@ public final class QualifiedTypeBinder implements QualifiedTypeListener {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     @SuppressWarnings("deprecation")
     public void hear(final Class qualifiedType, final Object source) {
         if (currentSource != source) {

@@ -73,6 +73,7 @@ class QualifiedScanningTest {
 
         final Set<Object> sources = new HashSet<>();
 
+        @Override
         public void hear(final Class<?> clazz, final Object source) {
             clazzes.add(clazz);
             sources.add(source);
@@ -123,10 +124,12 @@ class QualifiedScanningTest {
                 getClass().getClassLoader(), new URL[] {getClass().getResource("")});
         final SpaceVisitor visitor = new QualifiedTypeVisitor(listener);
         new SpaceScanner(space, true).accept(new SpaceVisitor() {
+            @Override
             public void enterSpace(final ClassSpace _space) {
                 visitor.enterSpace(_space);
             }
 
+            @Override
             public ClassVisitor visitClass(final URL url) {
                 if (url.toString().contains("$D.class")) {
                     return null;
@@ -134,6 +137,7 @@ class QualifiedScanningTest {
                 return visitor.visitClass(url);
             }
 
+            @Override
             public void leaveSpace() {
                 visitor.leaveSpace();
             }
@@ -154,6 +158,7 @@ class QualifiedScanningTest {
         new SpaceScanner(
                         space,
                         new ClassFinder() {
+                            @Override
                             public Enumeration<URL> findClasses(final ClassSpace space2) {
                                 return space2.findEntries(null, "*D.class", true);
                             }
@@ -189,22 +194,27 @@ class QualifiedScanningTest {
 
         final URL badURL = new URL("oops:bad/");
         final ClassSpace brokenResourceSpace = new ClassSpace() {
+            @Override
             public Class<?> loadClass(final String name) {
                 return space.loadClass(name);
             }
 
+            @Override
             public DeferredClass<?> deferLoadClass(final String name) {
                 return space.deferLoadClass(name);
             }
 
+            @Override
             public Enumeration<URL> getResources(final String name) {
                 return space.getResources(name);
             }
 
+            @Override
             public URL getResource(final String name) {
                 return badURL;
             }
 
+            @Override
             public Enumeration<URL> findEntries(final String path, final String glob, final boolean recurse) {
                 return Collections.enumeration(Collections.singleton(badURL));
             }
@@ -213,22 +223,27 @@ class QualifiedScanningTest {
         new SpaceScanner(brokenResourceSpace, false).accept(new QualifiedTypeVisitor(null));
 
         final ClassSpace brokenLoadSpace = new ClassSpace() {
+            @Override
             public Class<?> loadClass(final String name) {
                 throw new TypeNotPresentException(name, new ClassNotFoundException(name));
             }
 
+            @Override
             public DeferredClass<?> deferLoadClass(final String name) {
                 return space.deferLoadClass(name);
             }
 
+            @Override
             public Enumeration<URL> getResources(final String name) {
                 return space.getResources(name);
             }
 
+            @Override
             public URL getResource(final String name) {
                 return space.getResource(name);
             }
 
+            @Override
             public Enumeration<URL> findEntries(final String path, final String glob, final boolean recurse) {
                 return space.findEntries(path, glob, recurse);
             }

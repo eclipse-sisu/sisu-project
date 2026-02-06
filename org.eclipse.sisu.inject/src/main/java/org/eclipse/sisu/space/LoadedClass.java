@@ -37,10 +37,12 @@ public final class LoadedClass<T> extends AbstractDeferredClass<T> {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public Class<T> load() {
         return clazz;
     }
 
+    @Override
     public String getName() {
         return clazz.getName();
     }

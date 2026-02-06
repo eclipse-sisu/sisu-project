@@ -25,10 +25,12 @@ import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
 public class ArrayConverter extends AbstractCollectionConverter implements ParameterizedConfigurationConverter {
+    @Override
     public boolean canConvert(final Class<?> type) {
         return type.isArray();
     }
 
+    @Override
     public Object fromConfiguration(
             final ConverterLookup lookup,
             final PlexusConfiguration configuration,
@@ -41,6 +43,7 @@ public class ArrayConverter extends AbstractCollectionConverter implements Param
         return fromConfiguration(lookup, configuration, type, null, enclosingType, loader, evaluator, listener);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Object fromConfiguration(
             final ConverterLookup lookup,

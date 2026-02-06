@@ -46,6 +46,7 @@ public final class BeanProperties implements Iterable<BeanProperty<Object>> {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public Iterator<BeanProperty<Object>> iterator() {
         return new BeanPropertyIterator<>(members);
     }

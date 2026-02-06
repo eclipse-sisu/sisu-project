@@ -24,10 +24,12 @@ public class PlexusLifecycleTest extends TestCase {
     static class PlexusBean implements Startable {
         private final StringBuilder results = new StringBuilder();
 
+        @Override
         public void start() {
             results.append("<");
         }
 
+        @Override
         public void stop() {
             results.append(">");
         }

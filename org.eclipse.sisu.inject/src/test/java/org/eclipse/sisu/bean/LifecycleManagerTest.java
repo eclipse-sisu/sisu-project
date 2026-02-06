@@ -106,6 +106,7 @@ class LifecycleManagerTest {
         manager.manage(UnmanagedBean.class);
 
         manager.flushCacheFor(new LifecycleManager.ClassTester() {
+            @Override
             public boolean shouldFlush(final Class<?> clz) {
                 return clz == ManagedBean.class;
             }

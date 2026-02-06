@@ -62,6 +62,7 @@ public abstract class InjectedTestCase extends TestCase implements Module {
     }
 
     final class SetUpModule implements Module {
+        @Override
         public void configure(final Binder binder) {
             binder.install(InjectedTestCase.this);
 
@@ -96,6 +97,7 @@ public abstract class InjectedTestCase extends TestCase implements Module {
      *
      * @param binder The Guice binder
      */
+    @Override
     public void configure(final Binder binder) {
         // place any per-test bindings here...
     }

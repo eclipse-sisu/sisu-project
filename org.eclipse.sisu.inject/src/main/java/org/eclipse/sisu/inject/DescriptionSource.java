@@ -45,10 +45,12 @@ final class DescriptionSource implements Description, AnnotatedSource {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public String value() {
         return value;
     }
 
+    @Override
     public Class<? extends Annotation> annotationType() {
         return Description.class;
     }
@@ -68,6 +70,7 @@ final class DescriptionSource implements Description, AnnotatedSource {
         return null != source ? source.toString() : "@" + Description.class.getName() + "(value=" + value + ")";
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <T extends Annotation> T getAnnotation(final Binding<?> binding, final Class<T> annotationType) {
         if (Description.class.equals(annotationType)) {

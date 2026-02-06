@@ -85,11 +85,13 @@ public class BeanWatcherTest {
 
     @javax.inject.Named
     static class NamedItemMediator implements Mediator<javax.inject.Named, Item, NamedItemWatcher> {
+        @Override
         public void add(final BeanEntry<javax.inject.Named, Item> bean, final NamedItemWatcher watcher)
                 throws Exception {
             assertNull(watcher.items.put(bean.getKey().value(), bean.getValue()));
         }
 
+        @Override
         public void remove(final BeanEntry<javax.inject.Named, Item> bean, final NamedItemWatcher watcher)
                 throws Exception {
             assertEquals(watcher.items.remove(bean.getKey().value()), bean.getValue());
@@ -98,10 +100,12 @@ public class BeanWatcherTest {
 
     @javax.inject.Named
     static class MarkedItemMediator implements Mediator<Marked, Item, MarkedItemWatcher> {
+        @Override
         public void add(final BeanEntry<Marked, Item> bean, final MarkedItemWatcher watcher) throws Exception {
             assertNull(watcher.items.put(Integer.valueOf(bean.getKey().value()), bean.getValue()));
         }
 
+        @Override
         public void remove(final BeanEntry<Marked, Item> bean, final MarkedItemWatcher watcher) throws Exception {
             assertEquals(watcher.items.remove(Integer.valueOf(bean.getKey().value())), bean.getValue());
         }
@@ -109,10 +113,12 @@ public class BeanWatcherTest {
 
     @javax.inject.Named
     static class AnnotatedItemMediator implements Mediator<Annotation, Item, AnnotatedItemWatcher> {
+        @Override
         public void add(final BeanEntry<Annotation, Item> bean, final AnnotatedItemWatcher watcher) throws Exception {
             assertNull(watcher.items.put(bean.getKey(), bean.getValue()));
         }
 
+        @Override
         public void remove(final BeanEntry<Annotation, Item> bean, final AnnotatedItemWatcher watcher)
                 throws Exception {
             assertEquals(watcher.items.remove(bean.getKey()), bean.getValue());

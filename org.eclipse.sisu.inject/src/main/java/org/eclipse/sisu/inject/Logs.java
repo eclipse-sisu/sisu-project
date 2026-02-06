@@ -316,14 +316,17 @@ public final class Logs {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public boolean isTraceEnabled() {
             return true;
         }
 
+        @Override
         public boolean isDebugEnabled() {
             return true;
         }
 
+        @Override
         public void trace(final String message, final Throwable cause) {
             System.out.println(TRACE + message);
             if (null != cause) {
@@ -331,6 +334,7 @@ public final class Logs {
             }
         }
 
+        @Override
         public void debug(final String message, final Throwable cause) {
             System.out.println(DEBUG + message);
             if (null != cause) {
@@ -338,6 +342,7 @@ public final class Logs {
             }
         }
 
+        @Override
         public void warn(final String message, final Throwable cause) {
             System.err.println(WARN + message);
             if (null != cause) {
@@ -360,22 +365,27 @@ public final class Logs {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public boolean isTraceEnabled() {
             return logger.isLoggable(Level.FINER);
         }
 
+        @Override
         public boolean isDebugEnabled() {
             return logger.isLoggable(Level.FINE);
         }
 
+        @Override
         public void trace(final String message, final Throwable cause) {
             logger.log(Level.FINER, message, cause);
         }
 
+        @Override
         public void debug(final String message, final Throwable cause) {
             logger.log(Level.FINE, message, cause);
         }
 
+        @Override
         public void warn(final String message, final Throwable cause) {
             logger.log(Level.WARNING, message, cause);
         }
@@ -395,22 +405,27 @@ public final class Logs {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public boolean isTraceEnabled() {
             return logger.isTraceEnabled();
         }
 
+        @Override
         public boolean isDebugEnabled() {
             return logger.isDebugEnabled();
         }
 
+        @Override
         public void trace(final String message, final Throwable cause) {
             logger.trace(message, cause);
         }
 
+        @Override
         public void debug(final String message, final Throwable cause) {
             logger.debug(message, cause);
         }
 
+        @Override
         public void warn(final String message, final Throwable cause) {
             logger.warn(message, cause);
         }

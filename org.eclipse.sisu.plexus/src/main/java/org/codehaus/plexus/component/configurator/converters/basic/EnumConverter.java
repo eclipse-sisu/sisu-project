@@ -20,10 +20,12 @@ import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
 public class EnumConverter extends AbstractConfigurationConverter {
+    @Override
     public boolean canConvert(final Class<?> type) {
         return type.isEnum();
     }
 
+    @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
     public Object fromConfiguration(
             final ConverterLookup lookup,

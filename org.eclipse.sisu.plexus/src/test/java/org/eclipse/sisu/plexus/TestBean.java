@@ -19,5 +19,6 @@ import org.codehaus.plexus.component.annotations.Component;
         description = "Some Test",
         isolatedRealm = true)
 public class TestBean implements Runnable {
+    @Override
     public void run() {}
 }

@@ -17,10 +17,12 @@ import org.eclipse.sisu.plexus.Hints;
 
 @IgnoreSetters
 public abstract class AbstractLoggerManager implements LoggerManager {
+    @Override
     public final Logger getLoggerForComponent(final String role) {
         return getLoggerForComponent(role, Hints.DEFAULT_HINT);
     }
 
+    @Override
     public final void returnComponentLogger(final String role) {
         returnComponentLogger(role, Hints.DEFAULT_HINT);
     }

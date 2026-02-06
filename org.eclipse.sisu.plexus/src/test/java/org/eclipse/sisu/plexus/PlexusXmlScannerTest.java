@@ -51,18 +51,22 @@ public class PlexusXmlScannerTest extends TestCase {
             this.type = type;
         }
 
+        @Override
         public <A extends Annotation> A getAnnotation(final Class<A> annotationType) {
             return null;
         }
 
+        @Override
         public String getName() {
             return name;
         }
 
+        @Override
         public TypeLiteral<Object> getType() {
             return type;
         }
 
+        @Override
         public <B> void set(final B bean, final Object value) {}
     }
 
@@ -75,6 +79,7 @@ public class PlexusXmlScannerTest extends TestCase {
     static class AnotherBean {}
 
     static class EmptyClassSpace implements ClassSpace {
+        @Override
         public Class<?> loadClass(final String name) {
             try {
                 return Class.forName(name);
@@ -83,20 +88,24 @@ public class PlexusXmlScannerTest extends TestCase {
             }
         }
 
+        @Override
         @SuppressWarnings({"unchecked", "rawtypes"})
         public DeferredClass<?> deferLoadClass(final String name) {
             return new LoadedClass(loadClass(name));
         }
 
+        @Override
         public URL getResource(final String name) {
             return null;
         }
 
+        @Override
         public Enumeration<URL> getResources(final String name) {
             // hide components.xml so we can just test plexus.xml parsing
             return Collections.enumeration(Collections.emptyList());
         }
 
+        @Override
         public Enumeration<URL> findEntries(final String path, final String glob, final boolean recurse) {
             // hide components.xml so we can just test plexus.xml parsing
             return Collections.enumeration(Collections.emptyList());
@@ -209,6 +218,7 @@ public class PlexusXmlScannerTest extends TestCase {
             this.fixedResourceName = fixedResourceName;
         }
 
+        @Override
         public Class<?> loadClass(final String name) {
             try {
                 return Class.forName(name);
@@ -217,31 +227,38 @@ public class PlexusXmlScannerTest extends TestCase {
             }
         }
 
+        @Override
         @SuppressWarnings("rawtypes")
         public DeferredClass<?> deferLoadClass(final String name) {
             return new DeferredClass() {
+                @Override
                 public Class load() {
                     return loadClass(name);
                 }
 
+                @Override
                 public String getName() {
                     return name;
                 }
 
+                @Override
                 public DeferredProvider asProvider() {
                     throw new UnsupportedOperationException();
                 }
             };
         }
 
+        @Override
         public URL getResource(final String name) {
             return getClass().getResource(fixedResourceName);
         }
 
+        @Override
         public Enumeration<URL> getResources(final String name) {
             return Collections.enumeration(Collections.singleton(getClass().getResource(fixedResourceName)));
         }
 
+        @Override
         public Enumeration<URL> findEntries(final String path, final String glob, final boolean recurse) {
             return Collections.enumeration(Collections.singleton(getClass().getResource(fixedResourceName)));
         }

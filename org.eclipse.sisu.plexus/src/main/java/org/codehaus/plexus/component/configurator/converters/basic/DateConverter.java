@@ -20,6 +20,7 @@ import org.eclipse.sisu.plexus.PlexusDateTypeConverter;
 public class DateConverter extends AbstractBasicConverter {
     private static final TypeConverter DATE_CONVERTER = new PlexusDateTypeConverter();
 
+    @Override
     public boolean canConvert(final Class<?> type) {
         return Date.class.equals(type);
     }

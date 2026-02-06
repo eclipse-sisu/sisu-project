@@ -71,6 +71,7 @@ public class PlexusRequirementTest extends TestCase {
                 install(new PlexusBindingModule(
                         null,
                         new PlexusBeanModule() {
+                            @Override
                             public PlexusBeanSource configure(final Binder binder) {
                                 binder.bind(Alpha.class).to(AlphaImpl.class).in(Scopes.SINGLETON);
                                 binder.bind(Omega.class).to(OmegaImpl.class).in(Scopes.SINGLETON);

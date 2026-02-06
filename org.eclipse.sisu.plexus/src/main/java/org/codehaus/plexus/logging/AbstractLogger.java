@@ -37,54 +37,67 @@ public abstract class AbstractLogger implements Logger {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public final void debug(final String message) {
         debug(message, null);
     }
 
+    @Override
     public boolean isDebugEnabled() {
         return threshold <= LEVEL_DEBUG;
     }
 
+    @Override
     public final void info(final String message) {
         info(message, null);
     }
 
+    @Override
     public boolean isInfoEnabled() {
         return threshold <= LEVEL_INFO;
     }
 
+    @Override
     public final void warn(final String message) {
         warn(message, null);
     }
 
+    @Override
     public boolean isWarnEnabled() {
         return threshold <= LEVEL_WARN;
     }
 
+    @Override
     public final void error(final String message) {
         error(message, null);
     }
 
+    @Override
     public boolean isErrorEnabled() {
         return threshold <= LEVEL_ERROR;
     }
 
+    @Override
     public final void fatalError(final String message) {
         fatalError(message, null);
     }
 
+    @Override
     public boolean isFatalErrorEnabled() {
         return threshold <= LEVEL_FATAL;
     }
 
+    @Override
     public final int getThreshold() {
         return threshold;
     }
 
+    @Override
     public final void setThreshold(final int threshold) {
         this.threshold = threshold;
     }
 
+    @Override
     public final String getName() {
         return name;
     }

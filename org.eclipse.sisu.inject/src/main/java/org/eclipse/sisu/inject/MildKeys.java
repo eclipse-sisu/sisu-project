@@ -50,30 +50,35 @@ class MildKeys<K, V> implements Map<K, V> {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public final boolean containsKey(final Object key) {
         // skip compact for performance reasons
 
         return map.containsKey(tempKey(key));
     }
 
+    @Override
     public final boolean containsValue(final Object value) {
         // skip compact for performance reasons
 
         return map.containsValue(value);
     }
 
+    @Override
     public final V get(final Object key) {
         // skip compact for performance reasons
 
         return map.get(tempKey(key));
     }
 
+    @Override
     public final V put(final K key, final V value) {
         compact();
 
         return map.put(mildKey(key), value);
     }
 
+    @Override
     public final void putAll(final Map<? extends K, ? extends V> m) {
         compact();
 
@@ -82,30 +87,35 @@ class MildKeys<K, V> implements Map<K, V> {
         }
     }
 
+    @Override
     public final V remove(final Object key) {
         compact();
 
         return map.remove(tempKey(key));
     }
 
+    @Override
     public final void clear() {
         map.clear();
 
         compact();
     }
 
+    @Override
     public final boolean isEmpty() {
         compact();
 
         return map.isEmpty();
     }
 
+    @Override
     public final int size() {
         compact();
 
         return map.size();
     }
 
+    @Override
     public final Set<K> keySet() {
         compact();
 
@@ -122,12 +132,14 @@ class MildKeys<K, V> implements Map<K, V> {
         };
     }
 
+    @Override
     public final Collection<V> values() {
         compact();
 
         return map.values();
     }
 
+    @Override
     public final Set<Entry<K, V>> entrySet() {
         compact();
 
@@ -275,6 +287,7 @@ class MildKeys<K, V> implements Map<K, V> {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public boolean hasNext() {
             // find next key that is still reachable
             while (null == nextKey && itr.hasNext()) {
@@ -283,6 +296,7 @@ class MildKeys<K, V> implements Map<K, V> {
             return null != nextKey;
         }
 
+        @Override
         public K next() {
             if (hasNext()) {
                 // populated by hasNext()
@@ -293,6 +307,7 @@ class MildKeys<K, V> implements Map<K, V> {
             throw new NoSuchElementException();
         }
 
+        @Override
         public void remove() {
             itr.remove();
         }
@@ -316,6 +331,7 @@ class MildKeys<K, V> implements Map<K, V> {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public boolean hasNext() {
             // find next entry that is still reachable
             while (null == nextKey && itr.hasNext()) {
@@ -325,6 +341,7 @@ class MildKeys<K, V> implements Map<K, V> {
             return null != nextKey;
         }
 
+        @Override
         public Entry<K, V> next() {
             if (hasNext()) {
                 // populated by hasNext()
@@ -336,6 +353,7 @@ class MildKeys<K, V> implements Map<K, V> {
             throw new NoSuchElementException();
         }
 
+        @Override
         public void remove() {
             itr.remove();
         }
@@ -366,14 +384,17 @@ class MildKeys<K, V> implements Map<K, V> {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public K getKey() {
             return key;
         }
 
+        @Override
         public V getValue() {
             return entry.getValue();
         }
 
+        @Override
         public V setValue(final V value) {
             return entry.setValue(value);
         }

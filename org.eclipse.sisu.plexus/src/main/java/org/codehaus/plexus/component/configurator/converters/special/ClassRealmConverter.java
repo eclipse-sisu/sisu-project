@@ -82,11 +82,13 @@ public final class ClassRealmConverter extends AbstractConfigurationConverter {
         return realm;
     }
 
+    @Override
     public boolean canConvert(final Class<?> type) {
         return ClassRealm.class.isAssignableFrom(type)
                 || org.codehaus.classworlds.ClassRealm.class.isAssignableFrom(type);
     }
 
+    @Override
     public Object fromConfiguration(
             final ConverterLookup lookup,
             final PlexusConfiguration configuration,

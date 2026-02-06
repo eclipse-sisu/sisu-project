@@ -48,10 +48,12 @@ public final class PlexusTypeBinder implements PlexusTypeListener {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public void hear(final Class<?> qualifiedType, final Object source) {
         qualifiedTypeBinder.hear(qualifiedType, source);
     }
 
+    @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void hear(final Component component, final DeferredClass<?> clazz, final Object source) {
         final Key roleKey = Roles.componentKey(component);

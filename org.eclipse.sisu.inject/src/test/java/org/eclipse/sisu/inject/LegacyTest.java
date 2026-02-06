@@ -34,38 +34,47 @@ class LegacyTest {
             this.value = value;
         }
 
+        @Override
         public Named getKey() {
             return null;
         }
 
+        @Override
         public String getValue() {
             return value;
         }
 
+        @Override
         public String setValue(final String newValue) {
             return value;
         }
 
+        @Override
         public javax.inject.Provider<String> getProvider() {
             return new javax.inject.Provider<String>() {
+                @Override
                 public String get() {
                     return value;
                 }
             };
         }
 
+        @Override
         public String getDescription() {
             return "test";
         }
 
+        @Override
         public Object getSource() {
             return null;
         }
 
+        @Override
         public int getRank() {
             return 0;
         }
 
+        @Override
         public Class<String> getImplementationClass() {
             return String.class;
         }
@@ -110,6 +119,7 @@ class LegacyTest {
 
         final com.google.inject.Provider<Iterable<? extends org.eclipse.sisu.BeanEntry<Named, String>>> delegate =
                 new com.google.inject.Provider<Iterable<? extends org.eclipse.sisu.BeanEntry<Named, String>>>() {
+                    @Override
                     public Iterable<? extends org.eclipse.sisu.BeanEntry<Named, String>> get() {
                         return entries;
                     }
@@ -134,10 +144,12 @@ class LegacyTest {
     void testAdaptMediator() throws Exception {
         final org.sonatype.inject.Mediator<Named, String, Object> delegate =
                 new org.sonatype.inject.Mediator<Named, String, Object>() {
+                    @Override
                     public void add(final org.sonatype.inject.BeanEntry<Named, String> entry, final Object watcher) {
                         // test add
                     }
 
+                    @Override
                     public void remove(final org.sonatype.inject.BeanEntry<Named, String> entry, final Object watcher) {
                         // test remove
                     }
@@ -153,6 +165,7 @@ class LegacyTest {
         final Legacy<Runnable> legacy = Legacy.as(Runnable.class);
         assertNotNull(legacy);
         final Runnable delegate = new Runnable() {
+            @Override
             public void run() {
                 // nothing
             }

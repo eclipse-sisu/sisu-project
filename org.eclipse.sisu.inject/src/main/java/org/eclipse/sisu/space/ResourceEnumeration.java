@@ -86,6 +86,7 @@ final class ResourceEnumeration implements Enumeration<URL> {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public boolean hasMoreElements() {
         while (null == nextEntryName) {
             if (entryNames.hasNext()) {
@@ -103,6 +104,7 @@ final class ResourceEnumeration implements Enumeration<URL> {
         return true;
     }
 
+    @Override
     public URL nextElement() {
         if (hasMoreElements()) {
             // initialized by hasMoreElements()

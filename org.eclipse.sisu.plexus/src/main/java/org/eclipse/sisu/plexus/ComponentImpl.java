@@ -58,54 +58,67 @@ public final class ComponentImpl implements Component {
     // Annotation properties
     // ----------------------------------------------------------------------
 
+    @Override
     public Class<?> role() {
         return role;
     }
 
+    @Override
     public String hint() {
         return hint;
     }
 
+    @Override
     public String instantiationStrategy() {
         return instantiationStrategy;
     }
 
+    @Override
     public String description() {
         return description;
     }
 
+    @Override
     public boolean isolatedRealm() {
         return false;
     }
 
+    @Override
     public String alias() {
         return "";
     }
 
+    @Override
     public String composer() {
         return "";
     }
 
+    @Override
     public String configurator() {
         return "";
     }
 
+    @Override
     public String factory() {
         return "";
     }
 
+    @Override
     public String lifecycleHandler() {
         return "";
     }
 
+    @Override
     public String profile() {
         return "";
     }
 
+    @Override
     public String type() {
         return "";
     }
 
+    @Override
     public String version() {
         return "";
     }
@@ -162,6 +175,7 @@ public final class ComponentImpl implements Component {
                 Component.class.getName(), description, instantiationStrategy, hint, role);
     }
 
+    @Override
     public Class<? extends Annotation> annotationType() {
         return Component.class;
     }

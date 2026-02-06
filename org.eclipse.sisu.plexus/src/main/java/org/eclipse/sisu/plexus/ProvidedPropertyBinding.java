@@ -41,6 +41,7 @@ final class ProvidedPropertyBinding<T> implements PropertyBinding {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public <B> void injectProperty(final B bean) {
         property.set(bean, provider.get());
     }

@@ -21,6 +21,7 @@ import java.io.File;
  * {@link TypeConverter} {@link Module} that converts constants to {@link File}s.
  */
 final class FileTypeConverter extends AbstractTypeConverter<File> {
+    @Override
     public Object convert(final String value, final TypeLiteral<?> toType) {
         return new File(value);
     }

@@ -82,6 +82,7 @@ enum QualifyingStrategy {
                     && markerType.getDeclaredMethods().length == 0) {
                 // this stub is all we need for internal processing
                 return new Annotation() {
+                    @Override
                     public Class<? extends Annotation> annotationType() {
                         return markerType;
                     }

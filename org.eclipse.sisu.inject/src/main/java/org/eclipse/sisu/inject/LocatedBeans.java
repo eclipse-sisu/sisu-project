@@ -58,6 +58,7 @@ final class LocatedBeans<Q extends Annotation, T> implements Iterable<BeanEntry<
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public Iterator<BeanEntry<Q, T>> iterator() {
         return new Itr();
     }
@@ -86,6 +87,7 @@ final class LocatedBeans<Q extends Annotation, T> implements Iterable<BeanEntry<
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         @SuppressWarnings("unchecked")
         public boolean hasNext() {
             if (null != nextBean) {
@@ -113,6 +115,7 @@ final class LocatedBeans<Q extends Annotation, T> implements Iterable<BeanEntry<
             return false;
         }
 
+        @Override
         public BeanEntry<Q, T> next() {
             if (hasNext()) {
                 // no need to check this again
@@ -126,6 +129,7 @@ final class LocatedBeans<Q extends Annotation, T> implements Iterable<BeanEntry<
             throw new NoSuchElementException();
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }

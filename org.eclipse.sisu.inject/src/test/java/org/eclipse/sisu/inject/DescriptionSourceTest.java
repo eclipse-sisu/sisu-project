@@ -90,6 +90,7 @@ class DescriptionSourceTest {
     @Test
     void testGetAnnotationDelegatesWhenSourceIsAnnotatedSource() {
         final AnnotatedSource delegate = new AnnotatedSource() {
+            @Override
             public <T extends Annotation> T getAnnotation(final Binding<?> binding, final Class<T> annotationType) {
                 return null;
             }

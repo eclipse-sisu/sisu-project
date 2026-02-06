@@ -50,6 +50,7 @@ class LocatedBeansTest {
 
     @Marked("MarkedBean3")
     static class MarkedBeanProvider implements Provider<Bean> {
+        @Override
         public Bean get() {
             return new MarkedBeanImpl1();
         }

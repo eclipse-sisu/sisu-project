@@ -50,6 +50,7 @@ public class TemporalConverter extends AbstractBasicConverter {
                     "yyyy-MM-dd HH:mm:ss[[a][.S [a]]", Locale.US)
             .withZone(ZoneId.systemDefault());
 
+    @Override
     public boolean canConvert(final Class<?> type) {
         return Temporal.class.isAssignableFrom(type);
     }

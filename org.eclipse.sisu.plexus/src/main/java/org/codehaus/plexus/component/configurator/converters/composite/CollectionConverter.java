@@ -30,10 +30,12 @@ import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
 public class CollectionConverter extends AbstractCollectionConverter implements ParameterizedConfigurationConverter {
+    @Override
     public boolean canConvert(final Class<?> type) {
         return Collection.class.isAssignableFrom(type) && !Map.class.isAssignableFrom(type);
     }
 
+    @Override
     public Object fromConfiguration(
             final ConverterLookup lookup,
             final PlexusConfiguration configuration,
@@ -46,6 +48,7 @@ public class CollectionConverter extends AbstractCollectionConverter implements 
         return fromConfiguration(lookup, configuration, type, null, enclosingType, loader, evaluator, listener);
     }
 
+    @Override
     public Object fromConfiguration(
             final ConverterLookup lookup,
             final PlexusConfiguration configuration,

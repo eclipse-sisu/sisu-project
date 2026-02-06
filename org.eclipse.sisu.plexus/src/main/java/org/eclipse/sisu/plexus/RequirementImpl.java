@@ -72,18 +72,22 @@ public final class RequirementImpl implements Requirement {
     // Annotation properties
     // ----------------------------------------------------------------------
 
+    @Override
     public Class<?> role() {
         return role.load();
     }
 
+    @Override
     public boolean optional() {
         return optional;
     }
 
+    @Override
     public String hint() {
         return hint;
     }
 
+    @Override
     public String[] hints() {
         return hints.clone();
     }
@@ -125,6 +129,7 @@ public final class RequirementImpl implements Requirement {
                 Requirement.class.getName(), Arrays.toString(hints), Boolean.valueOf(optional), role(), hint);
     }
 
+    @Override
     public Class<? extends Annotation> annotationType() {
         return Requirement.class;
     }

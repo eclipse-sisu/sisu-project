@@ -89,6 +89,7 @@ public final class Legacy<S> {
     public static <Q extends Annotation, T> Iterable<BeanEntry<Q, T>> adapt(
             final Iterable<? extends org.eclipse.sisu.BeanEntry<Q, T>> delegate) {
         return new Iterable<BeanEntry<Q, T>>() {
+            @Override
             public Iterator<BeanEntry<Q, T>> iterator() {
                 final Iterator<? extends org.eclipse.sisu.BeanEntry<Q, T>> itr = delegate.iterator();
                 return new Iterator<BeanEntry<Q, T>>() {

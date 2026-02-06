@@ -38,6 +38,7 @@ final class DefaultPlexusBeans<T> implements Iterable<PlexusBean<T>> {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public Iterator<PlexusBean<T>> iterator() {
         return new Itr();
     }
@@ -60,14 +61,17 @@ final class DefaultPlexusBeans<T> implements Iterable<PlexusBean<T>> {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public boolean hasNext() {
             return itr.hasNext();
         }
 
+        @Override
         public PlexusBean<T> next() {
             return new LazyPlexusBean<>(itr.next());
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }

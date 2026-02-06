@@ -48,6 +48,7 @@ class TagImpl implements Tag {
         this.value = value;
     }
 
+    @Override
     public String value() {
         return value;
     }
@@ -73,6 +74,7 @@ class TagImpl implements Tag {
         return "@" + Tag.class.getName() + "(value=" + value + ")";
     }
 
+    @Override
     public Class<? extends Annotation> annotationType() {
         return Tag.class;
     }

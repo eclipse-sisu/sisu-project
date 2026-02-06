@@ -70,34 +70,42 @@ final class ServiceBinding<T> implements Binding<T>, Provider<T> {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public Key<T> getKey() {
         return key;
     }
 
+    @Override
     public Provider<T> getProvider() {
         return this;
     }
 
+    @Override
     public T get() {
         return instance;
     }
 
+    @Override
     public Object getSource() {
         return "OSGi service registry";
     }
 
+    @Override
     public void applyTo(final Binder binder) {
         // no-op
     }
 
+    @Override
     public <V> V acceptVisitor(final ElementVisitor<V> visitor) {
         return visitor.visit(this);
     }
 
+    @Override
     public <V> V acceptTargetVisitor(final BindingTargetVisitor<? super T, V> visitor) {
         return null;
     }
 
+    @Override
     public <V> V acceptScopingVisitor(final BindingScopingVisitor<V> visitor) {
         return visitor.visitScopeAnnotation(Singleton.class);
     }

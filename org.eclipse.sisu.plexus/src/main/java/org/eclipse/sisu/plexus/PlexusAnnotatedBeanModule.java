@@ -30,6 +30,7 @@ public final class PlexusAnnotatedBeanModule implements PlexusBeanModule {
     // ----------------------------------------------------------------------
 
     private static final SpaceModule.Strategy PLEXUS_STRATEGY = new SpaceModule.Strategy() {
+        @Override
         public SpaceVisitor visitor(final Binder binder) {
             return new PlexusTypeVisitor(new PlexusTypeBinder(binder));
         }
@@ -98,6 +99,7 @@ public final class PlexusAnnotatedBeanModule implements PlexusBeanModule {
         return this;
     }
 
+    @Override
     public PlexusBeanSource configure(final Binder binder) {
         if (null != spaceModule) {
             spaceModule.configure(binder);
@@ -131,6 +133,7 @@ public final class PlexusAnnotatedBeanModule implements PlexusBeanModule {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public PlexusBeanMetadata getBeanMetadata(final Class<?> implementation) {
             return implementation.isAnnotationPresent(Component.class) ? metadata : null;
         }

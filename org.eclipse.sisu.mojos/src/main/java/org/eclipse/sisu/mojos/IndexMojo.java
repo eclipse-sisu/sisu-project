@@ -171,6 +171,7 @@ public class IndexMojo extends AbstractMojo {
         this.outputDirectory = outputDirectory;
     }
 
+    @Override
     public void execute() {
         synchronized (project) {
             new SisuIndex(outputDirectory) {

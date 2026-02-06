@@ -60,22 +60,27 @@ public class PlexusBeanMetadataTest extends TestCase {
     }
 
     static class TestBeanManager implements BeanManager {
+        @Override
         public boolean manage(final Class<?> clazz) {
             return false;
         }
 
+        @Override
         public PropertyBinding manage(final BeanProperty<?> property) {
             return null;
         }
 
+        @Override
         public boolean manage(final Object bean) {
             return false;
         }
 
+        @Override
         public boolean unmanage(final Object bean) {
             return false;
         }
 
+        @Override
         public boolean unmanage() {
             return false;
         }
@@ -90,10 +95,12 @@ public class PlexusBeanMetadataTest extends TestCase {
     static class DefaultBean1 implements Bean {
         Object extraMetadata;
 
+        @Override
         public Object getExtraMetadata() {
             return extraMetadata;
         }
 
+        @Override
         public void setExtraMetadata(final Object metadata) {
             extraMetadata = metadata;
         }
@@ -106,6 +113,7 @@ public class PlexusBeanMetadataTest extends TestCase {
     }
 
     static class BeanSourceA implements PlexusBeanModule {
+        @Override
         public PlexusBeanSource configure(final Binder binder) {
             binder.withSource("A")
                     .bind(Bean.class)
@@ -117,6 +125,7 @@ public class PlexusBeanMetadataTest extends TestCase {
     }
 
     static class BeanSourceB implements PlexusBeanModule {
+        @Override
         public PlexusBeanSource configure(final Binder binder) {
             binder.withSource("B").bind(DefaultBean2.class);
             return null;
@@ -124,6 +133,7 @@ public class PlexusBeanMetadataTest extends TestCase {
     }
 
     static class BeanSourceC implements PlexusBeanModule {
+        @Override
         public PlexusBeanSource configure(final Binder binder) {
             binder.withSource("C")
                     .bind(DefaultBean2.class)
@@ -134,17 +144,21 @@ public class PlexusBeanMetadataTest extends TestCase {
     }
 
     static class CustomizedBeanSource implements PlexusBeanModule, PlexusBeanSource {
+        @Override
         public PlexusBeanSource configure(final Binder binder) {
             return this;
         }
 
+        @Override
         public PlexusBeanMetadata getBeanMetadata(final Class<?> implementation) {
             if (DefaultBean1.class.equals(implementation)) {
                 return new PlexusBeanMetadata() {
+                    @Override
                     public boolean isEmpty() {
                         return false;
                     }
 
+                    @Override
                     @SuppressWarnings("deprecation")
                     public Requirement getRequirement(final BeanProperty<?> property) {
                         if ("extraMetadata".equals(property.getName())) {
@@ -153,6 +167,7 @@ public class PlexusBeanMetadataTest extends TestCase {
                         return null;
                     }
 
+                    @Override
                     public Configuration getConfiguration(final BeanProperty<?> property) {
                         return null;
                     }
@@ -162,14 +177,17 @@ public class PlexusBeanMetadataTest extends TestCase {
                 return new PlexusBeanMetadata() {
                     private boolean used = false;
 
+                    @Override
                     public boolean isEmpty() {
                         return used;
                     }
 
+                    @Override
                     public Requirement getRequirement(final BeanProperty<?> property) {
                         return null;
                     }
 
+                    @Override
                     public Configuration getConfiguration(final BeanProperty<?> property) {
                         if ("extraMetadata".equals(property.getName())) {
                             used = true;

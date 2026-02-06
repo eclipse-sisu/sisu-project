@@ -57,6 +57,7 @@ public final class BundleClassSpace implements ClassSpace {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public Class<?> loadClass(final String name) {
         try {
             return bundle.loadClass(name);
@@ -65,14 +66,17 @@ public final class BundleClassSpace implements ClassSpace {
         }
     }
 
+    @Override
     public DeferredClass<?> deferLoadClass(final String name) {
         return new NamedClass<>(this, name);
     }
 
+    @Override
     public URL getResource(final String name) {
         return bundle.getResource(name);
     }
 
+    @Override
     public Enumeration<URL> getResources(final String name) {
         try {
             final Enumeration<URL> resources = bundle.getResources(name);
@@ -82,6 +86,7 @@ public final class BundleClassSpace implements ClassSpace {
         }
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Enumeration<URL> findEntries(final String path, final String glob, final boolean recurse) {
         final URL[] classPath = getBundleClassPath();
@@ -178,6 +183,7 @@ public final class BundleClassSpace implements ClassSpace {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public boolean hasMoreElements() {
             for (; index < enumerations.length; index++) {
                 if (null != enumerations[index] && enumerations[index].hasMoreElements()) {
@@ -187,6 +193,7 @@ public final class BundleClassSpace implements ClassSpace {
             return false;
         }
 
+        @Override
         public T nextElement() {
             if (hasMoreElements()) {
                 return enumerations[index].nextElement();

@@ -80,6 +80,7 @@ public final class SisuIndexAPT6 extends AbstractSisuIndex implements Processor 
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public void init(final ProcessingEnvironment _environment) {
         environment = _environment;
         qualifiers = _environment.getOptions().get(QUALIFIERS);
@@ -88,6 +89,7 @@ public final class SisuIndexAPT6 extends AbstractSisuIndex implements Processor 
         }
     }
 
+    @Override
     public boolean process(final Set<? extends TypeElement> annotations, final RoundEnvironment round) {
         final Elements elementUtils = environment.getElementUtils();
         for (final TypeElement anno : annotations) {
@@ -107,6 +109,7 @@ public final class SisuIndexAPT6 extends AbstractSisuIndex implements Processor 
         return false;
     }
 
+    @Override
     public Iterable<? extends Completion> getCompletions(
             final Element element,
             final AnnotationMirror annotation,
@@ -115,6 +118,7 @@ public final class SisuIndexAPT6 extends AbstractSisuIndex implements Processor 
         return Collections.emptySet();
     }
 
+    @Override
     public Set<String> getSupportedAnnotationTypes() {
         if (ALL.equalsIgnoreCase(qualifiers)) {
             return Collections.singleton("*");
@@ -132,10 +136,12 @@ public final class SisuIndexAPT6 extends AbstractSisuIndex implements Processor 
         return Collections.singleton(NAMED);
     }
 
+    @Override
     public Set<String> getSupportedOptions() {
         return Collections.singleton(QUALIFIERS);
     }
 
+    @Override
     public SourceVersion getSupportedSourceVersion() {
         return SourceVersion.latestSupported();
     }

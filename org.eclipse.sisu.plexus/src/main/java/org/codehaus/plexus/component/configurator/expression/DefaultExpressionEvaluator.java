@@ -15,10 +15,12 @@ package org.codehaus.plexus.component.configurator.expression;
 import java.io.File;
 
 public class DefaultExpressionEvaluator implements ExpressionEvaluator {
+    @Override
     public Object evaluate(final String expression) {
         return expression;
     }
 
+    @Override
     public File alignToBaseDirectory(final File path) {
         return path;
     }

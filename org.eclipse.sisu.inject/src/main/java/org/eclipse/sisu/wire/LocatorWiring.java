@@ -67,6 +67,7 @@ public final class LocatorWiring implements Wiring {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public boolean wire(final Key<?> key) {
         final Class<?> clazz = key.getTypeLiteral().getRawType();
         if (Map.class == clazz) {

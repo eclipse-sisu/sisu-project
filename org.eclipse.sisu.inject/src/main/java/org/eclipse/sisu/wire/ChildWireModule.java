@@ -63,6 +63,7 @@ public final class ChildWireModule implements Module {
         return this;
     }
 
+    @Override
     public void configure(final Binder binder) {
         // workaround to support 'autoPublish' in child injectors
         binder.requestStaticInjection(DefaultBeanLocator.class);

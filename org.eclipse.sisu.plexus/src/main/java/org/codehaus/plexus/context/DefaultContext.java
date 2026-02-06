@@ -45,10 +45,12 @@ public class DefaultContext implements Context {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public boolean contains(final Object key) {
         return contextData.containsKey(key);
     }
 
+    @Override
     public void put(final Object key, final Object value) {
         if (null == key) {
             throw new IllegalArgumentException("Key is null");
@@ -60,6 +62,7 @@ public class DefaultContext implements Context {
         }
     }
 
+    @Override
     public Object get(final Object key) throws ContextException {
         final Object data = contextData.get(key);
         if (data == null) {
@@ -68,6 +71,7 @@ public class DefaultContext implements Context {
         return data;
     }
 
+    @Override
     public Map<Object, Object> getContextData() {
         return Collections.unmodifiableMap(contextData);
     }

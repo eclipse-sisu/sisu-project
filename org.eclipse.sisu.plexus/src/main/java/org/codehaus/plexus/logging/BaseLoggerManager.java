@@ -32,10 +32,12 @@ public abstract class BaseLoggerManager extends AbstractLoggerManager implements
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public final void initialize() {
         currentThreshold = parseThreshold(threshold);
     }
 
+    @Override
     public final synchronized Logger getLoggerForComponent(final String role, final String hint) {
         final String name = Roles.canonicalRoleHint(role, hint);
         Logger logger = activeLoggers.get(name);
@@ -47,18 +49,22 @@ public abstract class BaseLoggerManager extends AbstractLoggerManager implements
         return logger;
     }
 
+    @Override
     public final synchronized void returnComponentLogger(final String role, final String hint) {
         activeLoggers.remove(Roles.canonicalRoleHint(role, hint));
     }
 
+    @Override
     public final int getThreshold() {
         return currentThreshold;
     }
 
+    @Override
     public final void setThreshold(final int currentThreshold) {
         this.currentThreshold = currentThreshold;
     }
 
+    @Override
     public final synchronized void setThresholds(final int currentThreshold) {
         this.currentThreshold = currentThreshold;
         for (final Logger logger : activeLoggers.values()) {
@@ -83,6 +89,7 @@ public abstract class BaseLoggerManager extends AbstractLoggerManager implements
         return Logger.LEVEL_DEBUG;
     }
 
+    @Override
     public final synchronized int getActiveLoggerCount() {
         return activeLoggers.size();
     }

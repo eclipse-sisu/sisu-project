@@ -128,6 +128,7 @@ final class MildElements<T> extends AbstractCollection<T> {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public boolean hasNext() {
             // find next element that is still reachable
             while (null == nextElement && index < list.size()) {
@@ -136,6 +137,7 @@ final class MildElements<T> extends AbstractCollection<T> {
             return null != nextElement;
         }
 
+        @Override
         public T next() {
             haveElement = hasNext();
             if (haveElement) {
@@ -147,6 +149,7 @@ final class MildElements<T> extends AbstractCollection<T> {
             throw new NoSuchElementException();
         }
 
+        @Override
         public void remove() {
             if (haveElement) {
                 evict(list.get(--index));
@@ -180,6 +183,7 @@ final class MildElements<T> extends AbstractCollection<T> {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public int index(final int newIndex) {
             final int oldIndex = index;
             index = newIndex;
@@ -210,6 +214,7 @@ final class MildElements<T> extends AbstractCollection<T> {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public int index(final int newIndex) {
             final int oldIndex = index;
             index = newIndex;

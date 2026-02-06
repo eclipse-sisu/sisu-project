@@ -51,6 +51,7 @@ public final class DefaultBeanLocator implements MutableBeanLocator {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public Iterable<BeanEntry> locate(final Key key) {
         final TypeLiteral type = key.getTypeLiteral();
         RankedBindings bindings = fetchBindings(type, null);
@@ -69,6 +70,7 @@ public final class DefaultBeanLocator implements MutableBeanLocator {
         return new LocatedBeans(key, bindings, isImplicit ? implicitBindings : null);
     }
 
+    @Override
     public void watch(final Key key, final Mediator mediator, final Object watcher) {
         publisherLock.readLock().lock();
         try {
@@ -85,6 +87,7 @@ public final class DefaultBeanLocator implements MutableBeanLocator {
         }
     }
 
+    @Override
     public boolean add(final BindingPublisher publisher) {
         final WatchedBeans[] currentWatchers;
         publisherLock.writeLock().lock();
@@ -120,6 +123,7 @@ public final class DefaultBeanLocator implements MutableBeanLocator {
         return true;
     }
 
+    @Override
     public boolean remove(final BindingPublisher publisher) {
         final BindingPublisher oldPublisher;
         final WatchedBeans[] currentWatchers;
@@ -157,10 +161,12 @@ public final class DefaultBeanLocator implements MutableBeanLocator {
         return true;
     }
 
+    @Override
     public Iterable<BindingPublisher> publishers() {
         return publishers.snapshot();
     }
 
+    @Override
     public void clear() {
         for (final BindingPublisher p : publishers()) {
             remove(p);

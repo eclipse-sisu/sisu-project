@@ -30,6 +30,7 @@ class QualifiedProviderTest {
 
         static int count;
 
+        @Override
         public Thread get() {
             count++;
             return new Thread(runnable);
@@ -44,6 +45,7 @@ class QualifiedProviderTest {
 
         static int count;
 
+        @Override
         public Thread get() {
             count++;
             return new Thread(runnable);
@@ -55,6 +57,7 @@ class QualifiedProviderTest {
     static class CountingRunnable implements Runnable {
         static final AtomicInteger count = new AtomicInteger();
 
+        @Override
         public void run() {
             count.incrementAndGet();
         }

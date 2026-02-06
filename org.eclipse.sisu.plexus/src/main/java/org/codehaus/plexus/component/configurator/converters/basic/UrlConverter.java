@@ -17,6 +17,7 @@ import java.net.URL;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 
 public class UrlConverter extends AbstractBasicConverter {
+    @Override
     public boolean canConvert(final Class<?> type) {
         return URL.class.equals(type);
     }

@@ -64,6 +64,7 @@ final class MediationListener extends AbstractMatcher<TypeLiteral<?>>
         mediation.add(new Mediation(key, mediator, watcherType));
     }
 
+    @Override
     public boolean matches(final TypeLiteral<?> type) {
         for (final Mediation<?, ?, ?> m : mediation) {
             if (m.watcherType.isAssignableFrom(type.getRawType())) {
@@ -73,10 +74,12 @@ final class MediationListener extends AbstractMatcher<TypeLiteral<?>>
         return false;
     }
 
+    @Override
     public <T> void hear(final TypeLiteral<T> type, final TypeEncounter<T> encounter) {
         encounter.register(this); // look out for watcher instances
     }
 
+    @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void afterInjection(final Object watcher) {
         for (final Mediation m : mediation) {

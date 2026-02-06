@@ -20,10 +20,12 @@ import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
 public class PlexusConfigurationConverter extends AbstractConfigurationConverter {
+    @Override
     public boolean canConvert(final Class<?> type) {
         return PlexusConfiguration.class.isAssignableFrom(type);
     }
 
+    @Override
     public Object fromConfiguration(
             final ConverterLookup lookup,
             final PlexusConfiguration configuration,

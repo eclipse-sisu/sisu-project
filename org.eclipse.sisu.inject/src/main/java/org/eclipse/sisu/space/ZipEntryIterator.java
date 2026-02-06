@@ -54,15 +54,18 @@ final class ZipEntryIterator implements Iterator<String> {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public boolean hasNext() {
         return index < entryNames.length;
     }
 
+    @Override
     public String next() // NOSONAR
             {
         return entryNames[index++];
     }
 
+    @Override
     public void remove() {
         throw new UnsupportedOperationException();
     }

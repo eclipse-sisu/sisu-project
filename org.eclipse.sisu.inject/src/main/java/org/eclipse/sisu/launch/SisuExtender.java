@@ -43,11 +43,13 @@ public class SisuExtender implements BundleActivator {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public void start(final BundleContext context) {
         tracker = createTracker(context);
         tracker.open();
     }
 
+    @Override
     public void stop(final BundleContext context) {
         tracker.close();
         tracker = null;

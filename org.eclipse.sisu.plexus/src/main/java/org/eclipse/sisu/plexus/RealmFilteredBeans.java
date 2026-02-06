@@ -44,6 +44,7 @@ final class RealmFilteredBeans<T> implements Iterable<BeanEntry<Named, T>> {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public Iterator<BeanEntry<Named, T>> iterator() {
         final Set<String> realmNames = realmManager.visibleRealmNames(RealmManager.contextRealm());
         if (null != realmNames && realmNames.size() > 0) {
@@ -82,6 +83,7 @@ final class RealmFilteredBeans<T> implements Iterable<BeanEntry<Named, T>> {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public boolean hasNext() {
             if (null != nextBean) {
                 return true;
@@ -97,6 +99,7 @@ final class RealmFilteredBeans<T> implements Iterable<BeanEntry<Named, T>> {
             return false;
         }
 
+        @Override
         public BeanEntry<Named, T> next() {
             if (hasNext()) {
                 // populated by hasNext()
@@ -107,6 +110,7 @@ final class RealmFilteredBeans<T> implements Iterable<BeanEntry<Named, T>> {
             throw new NoSuchElementException();
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }

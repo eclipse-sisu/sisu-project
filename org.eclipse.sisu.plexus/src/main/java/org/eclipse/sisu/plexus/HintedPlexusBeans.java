@@ -48,6 +48,7 @@ final class HintedPlexusBeans<T> implements Iterable<PlexusBean<T>> {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public Iterator<PlexusBean<T>> iterator() {
         // assume all hints are missing to begin with
         final List<PlexusBean<T>> plexusBeans = new ArrayList<>(missingPlexusBeans);

@@ -240,19 +240,23 @@ final class Implementations {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public Class<?> visit(final com.google.inject.servlet.InstanceFilterBinding binding) {
             return binding.getFilterInstance().getClass();
         }
 
+        @Override
         public Class<?> visit(final com.google.inject.servlet.InstanceServletBinding binding) {
             return binding.getServletInstance().getClass();
         }
 
+        @Override
         public Class<?> visit(final com.google.inject.servlet.LinkedFilterBinding binding) {
             // this assumes only one level of indirection: api-->impl
             return binding.getLinkedKey().getTypeLiteral().getRawType();
         }
 
+        @Override
         public Class<?> visit(final com.google.inject.servlet.LinkedServletBinding binding) {
             // this assumes only one level of indirection: api-->impl
             return binding.getLinkedKey().getTypeLiteral().getRawType();

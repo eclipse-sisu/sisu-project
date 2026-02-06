@@ -89,14 +89,17 @@ public class SisuIndex extends AbstractSisuIndex implements SpaceVisitor, ClassV
         }
     }
 
+    @Override
     public final void enterSpace(final ClassSpace _space) {
         space = _space;
     }
 
+    @Override
     public final ClassVisitor visitClass(final URL url) {
         return this;
     }
 
+    @Override
     public final void enterClass(
             final int modifiers, final String name, final String _extends, final String[] _implements) {
         if ((modifiers & NON_INSTANTIABLE) == 0) {
@@ -104,6 +107,7 @@ public class SisuIndex extends AbstractSisuIndex implements SpaceVisitor, ClassV
         }
     }
 
+    @Override
     public final AnnotationVisitor visitAnnotation(final String desc) {
         if (null != clazzName && qualifierCache.qualify(space, desc)) {
             addClassToIndex(NAMED, clazzName.replace('/', '.'));
@@ -111,10 +115,12 @@ public class SisuIndex extends AbstractSisuIndex implements SpaceVisitor, ClassV
         return null;
     }
 
+    @Override
     public final void leaveClass() {
         clazzName = null;
     }
 
+    @Override
     public final void leaveSpace() {
         space = null;
     }

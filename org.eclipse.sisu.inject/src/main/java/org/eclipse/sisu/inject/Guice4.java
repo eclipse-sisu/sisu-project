@@ -140,6 +140,7 @@ public final class Guice4 {
                     final ProvidesMethodBinding providesMethod = (ProvidesMethodBinding) provider;
                     if (!providesMethod.getMethod().isAccessible()) {
                         AccessController.doPrivileged(new PrivilegedAction<Void>() {
+                            @Override
                             public Void run() {
                                 providesMethod.getMethod().setAccessible(true);
                                 return null;
@@ -174,6 +175,7 @@ public final class Guice4 {
         return new Provider<T>() {
             private volatile Object value = NIL; // NOSONAR
 
+            @Override
             public T get() {
                 if (NIL == value) {
                     synchronized (this) {

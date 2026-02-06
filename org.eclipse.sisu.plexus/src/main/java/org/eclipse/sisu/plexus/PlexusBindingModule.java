@@ -51,6 +51,7 @@ public final class PlexusBindingModule implements Module {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public void configure(final Binder binder) {
         final List<PlexusBeanSource> sources = new ArrayList<>(modules.length);
         for (final PlexusBeanModule module : modules) {

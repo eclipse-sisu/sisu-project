@@ -58,6 +58,7 @@ public final class DefaultPlexusBeanLocator implements PlexusBeanLocator {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     @SuppressWarnings("unchecked")
     public <T> Iterable<PlexusBean<T>> locate(final TypeLiteral<T> role, final String... hints) {
         final Key<T> key = hints.length == 1 ? Key.get(role, Names.named(hints[0])) : Key.get(role, Named.class);

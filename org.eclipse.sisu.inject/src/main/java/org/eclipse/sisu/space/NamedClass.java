@@ -39,11 +39,13 @@ final class NamedClass<T> extends AbstractDeferredClass<T> {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     @SuppressWarnings("unchecked")
     public Class<T> load() {
         return (Class<T>) space.loadClass(name);
     }
 
+    @Override
     public String getName() {
         return name;
     }

@@ -104,12 +104,14 @@ public final class SisuExtensions implements SpaceModule.Strategy, WireModule.St
      * @param binder The binder
      * @return Extended wiring
      */
+    @Override
     public Wiring wiring(final Binder binder) {
         final Wiring defaultWiring = WireModule.Strategy.DEFAULT.wiring(binder);
         final List<Wiring> customWiring = create(Wiring.class, Binder.class, binder);
         return customWiring.isEmpty()
                 ? defaultWiring
                 : new Wiring() {
+                    @Override
                     public boolean wire(final Key<?> key) {
                         for (final Wiring w : customWiring) {
                             if (w.wire(key)) {
@@ -128,12 +130,14 @@ public final class SisuExtensions implements SpaceModule.Strategy, WireModule.St
      * @param binder The binder
      * @return Extended visitor
      */
+    @Override
     public SpaceVisitor visitor(final Binder binder) {
         final SpaceVisitor defaultVisitor = SpaceModule.Strategy.DEFAULT.visitor(binder);
         final List<SpaceVisitor> customVisitors = create(SpaceVisitor.class, Binder.class, binder);
         return customVisitors.isEmpty()
                 ? defaultVisitor
                 : new SpaceVisitor() {
+                    @Override
                     public void enterSpace(final ClassSpace _space) {
                         for (final SpaceVisitor v : customVisitors) {
                             v.enterSpace(_space);
@@ -141,6 +145,7 @@ public final class SisuExtensions implements SpaceModule.Strategy, WireModule.St
                         defaultVisitor.enterSpace(_space);
                     }
 
+                    @Override
                     public ClassVisitor visitClass(final URL url) {
                         for (final SpaceVisitor v : customVisitors) {
                             final ClassVisitor cv = v.visitClass(url);
@@ -151,6 +156,7 @@ public final class SisuExtensions implements SpaceModule.Strategy, WireModule.St
                         return defaultVisitor.visitClass(url);
                     }
 
+                    @Override
                     public void leaveSpace() {
                         for (final SpaceVisitor v : customVisitors) {
                             v.leaveSpace();

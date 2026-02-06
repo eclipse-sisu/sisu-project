@@ -91,14 +91,17 @@ final class WildcardKey {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public Class<?> value() {
             return value;
         }
 
+        @Override
         public Annotation get() {
             return qualifier;
         }
 
+        @Override
         public Class<? extends Annotation> annotationType() {
             return Qualified.class;
         }

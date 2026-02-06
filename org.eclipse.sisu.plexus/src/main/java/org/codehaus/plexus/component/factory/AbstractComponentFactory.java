@@ -19,6 +19,7 @@ import org.codehaus.plexus.component.repository.ComponentDescriptor;
 
 @SuppressWarnings({"rawtypes", "deprecation"})
 public abstract class AbstractComponentFactory implements ComponentFactory {
+    @Override
     public Object newInstance(final ComponentDescriptor cd, final ClassRealm realm, final PlexusContainer container)
             throws ComponentInstantiationException {
         return newInstance(cd, ClassRealmAdapter.getInstance(realm), container);

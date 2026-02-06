@@ -38,22 +38,27 @@ final class LazyPlexusBean<T> implements PlexusBean<T> {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public String getKey() {
         return bean.getKey().value();
     }
 
+    @Override
     public T getValue() {
         return bean.getValue();
     }
 
+    @Override
     public T setValue(final T value) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public String getDescription() {
         return bean.getDescription();
     }
 
+    @Override
     public Class<T> getImplementationClass() {
         return bean.getImplementationClass();
     }

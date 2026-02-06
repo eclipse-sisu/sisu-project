@@ -38,36 +38,42 @@ public final class ConsoleLogger extends AbstractLogger {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public void debug(final String message, final Throwable throwable) {
         if (isDebugEnabled()) {
             log(LEVEL_DEBUG, message, throwable);
         }
     }
 
+    @Override
     public void info(final String message, final Throwable throwable) {
         if (isInfoEnabled()) {
             log(LEVEL_INFO, message, throwable);
         }
     }
 
+    @Override
     public void warn(final String message, final Throwable throwable) {
         if (isWarnEnabled()) {
             log(LEVEL_WARN, message, throwable);
         }
     }
 
+    @Override
     public void error(final String message, final Throwable throwable) {
         if (isErrorEnabled()) {
             log(LEVEL_ERROR, message, throwable);
         }
     }
 
+    @Override
     public void fatalError(final String message, final Throwable throwable) {
         if (isFatalErrorEnabled()) {
             log(LEVEL_FATAL, message, throwable);
         }
     }
 
+    @Override
     public Logger getChildLogger(final String name) {
         return this;
     }

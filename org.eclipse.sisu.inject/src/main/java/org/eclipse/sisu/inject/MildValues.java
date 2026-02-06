@@ -49,18 +49,21 @@ class MildValues<K, V> implements Map<K, V> {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public final boolean containsKey(final Object key) {
         // skip compact for performance reasons
 
         return map.containsKey(key);
     }
 
+    @Override
     public final boolean containsValue(final Object value) {
         // skip compact for performance reasons
 
         return map.containsValue(tempValue(value));
     }
 
+    @Override
     public final V get(final Object key) {
         // skip compact for performance reasons
 
@@ -68,6 +71,7 @@ class MildValues<K, V> implements Map<K, V> {
         return null != ref ? ref.get() : null;
     }
 
+    @Override
     public final V put(final K key, final V value) {
         compact();
 
@@ -75,6 +79,7 @@ class MildValues<K, V> implements Map<K, V> {
         return null != ref ? ref.get() : null;
     }
 
+    @Override
     public final void putAll(final Map<? extends K, ? extends V> m) {
         compact();
 
@@ -83,6 +88,7 @@ class MildValues<K, V> implements Map<K, V> {
         }
     }
 
+    @Override
     public final V remove(final Object key) {
         compact();
 
@@ -90,30 +96,35 @@ class MildValues<K, V> implements Map<K, V> {
         return null != ref ? ref.get() : null;
     }
 
+    @Override
     public final void clear() {
         map.clear();
 
         compact();
     }
 
+    @Override
     public final boolean isEmpty() {
         compact();
 
         return map.isEmpty();
     }
 
+    @Override
     public final int size() {
         compact();
 
         return map.size();
     }
 
+    @Override
     public final Set<K> keySet() {
         compact();
 
         return map.keySet();
     }
 
+    @Override
     public final Collection<V> values() {
         compact();
 
@@ -130,6 +141,7 @@ class MildValues<K, V> implements Map<K, V> {
         };
     }
 
+    @Override
     public final Set<Entry<K, V>> entrySet() {
         compact();
 
@@ -211,6 +223,7 @@ class MildValues<K, V> implements Map<K, V> {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public Object key() {
             return key;
         }
@@ -239,6 +252,7 @@ class MildValues<K, V> implements Map<K, V> {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public Object key() {
             return key;
         }
@@ -260,6 +274,7 @@ class MildValues<K, V> implements Map<K, V> {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public boolean hasNext() {
             // find next value that is still reachable
             while (null == nextValue && itr.hasNext()) {
@@ -268,6 +283,7 @@ class MildValues<K, V> implements Map<K, V> {
             return null != nextValue;
         }
 
+        @Override
         public V next() {
             if (hasNext()) {
                 // populated by hasNext()
@@ -278,6 +294,7 @@ class MildValues<K, V> implements Map<K, V> {
             throw new NoSuchElementException();
         }
 
+        @Override
         public void remove() {
             itr.remove();
         }
@@ -301,6 +318,7 @@ class MildValues<K, V> implements Map<K, V> {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public boolean hasNext() {
             // find next entry that is still reachable
             while (null == nextValue && itr.hasNext()) {
@@ -310,6 +328,7 @@ class MildValues<K, V> implements Map<K, V> {
             return null != nextValue;
         }
 
+        @Override
         public Entry<K, V> next() {
             if (hasNext()) {
                 // populated by hasNext()
@@ -321,6 +340,7 @@ class MildValues<K, V> implements Map<K, V> {
             throw new NoSuchElementException();
         }
 
+        @Override
         public void remove() {
             itr.remove();
         }
@@ -351,14 +371,17 @@ class MildValues<K, V> implements Map<K, V> {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public K getKey() {
             return entry.getKey();
         }
 
+        @Override
         public V getValue() {
             return value;
         }
 
+        @Override
         public V setValue(final V newValue) {
             final V oldValue = value;
             entry.setValue(mildValue(getKey(), newValue));

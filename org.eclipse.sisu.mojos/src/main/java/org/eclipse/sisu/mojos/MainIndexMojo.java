@@ -51,6 +51,7 @@ public class MainIndexMojo extends AbstractMojo {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public void execute() {
         final IndexMojo mojo = new IndexMojo(buildContext);
         mojo.setLog(getLog());

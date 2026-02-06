@@ -50,10 +50,12 @@ public final class DefaultRankingFunction implements RankingFunction {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public int maxRank() {
         return Integer.MAX_VALUE; // since bindings can use @Priority to escalate their rank to MAX_VALUE
     }
 
+    @Override
     public <T> int rank(final Binding<T> binding) {
         final Priority priority = Sources.getAnnotation(binding, Priority.class);
         if (null != priority) {

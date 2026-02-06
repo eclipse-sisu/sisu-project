@@ -70,10 +70,12 @@ class ImplementationsTest {
                 bind(Bean.class).annotatedWith(Names.named("provider")).toProvider(Providers.of(new BeanImpl()));
 
                 bind(Bean.class).annotatedWith(Names.named("broken")).toProvider(new DeferredProvider<Bean>() {
+                    @Override
                     public Bean get() {
                         throw new TypeNotPresentException("", null);
                     }
 
+                    @Override
                     public DeferredClass<Bean> getImplementationClass() {
                         throw new TypeNotPresentException("", null);
                     }
@@ -85,30 +87,37 @@ class ImplementationsTest {
     @Test
     void testImplementationVisitor() {
         assertEquals(BeanImpl.class, Implementations.find(new UntargettedBinding<BeanImpl>() {
+            @Override
             public Key<BeanImpl> getKey() {
                 return Key.get(BeanImpl.class);
             }
 
+            @Override
             public Provider<BeanImpl> getProvider() {
                 return null;
             }
 
+            @Override
             public <V> V acceptTargetVisitor(final BindingTargetVisitor<? super BeanImpl, V> visitor) {
                 return visitor.visit(this);
             }
 
+            @Override
             public <V> V acceptScopingVisitor(final BindingScopingVisitor<V> visitor) {
                 return null;
             }
 
+            @Override
             public Object getSource() {
                 return null;
             }
 
+            @Override
             public <T> T acceptVisitor(final ElementVisitor<T> visitor) {
                 return null;
             }
 
+            @Override
             public void applyTo(final Binder binder) {}
         }));
 

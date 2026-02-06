@@ -117,10 +117,12 @@ public final class RealmManager implements ClassWorldListener {
         injectors.putIfAbsent(realm, injector);
     }
 
+    @Override
     public void realmCreated(final ClassRealm realm) {
         // nothing to do
     }
 
+    @Override
     public void realmDisposed(final ClassRealm realm) {
         visibility.remove(realm);
         final Injector injector = injectors.remove(realm);

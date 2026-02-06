@@ -64,6 +64,7 @@ public final class WireModule implements Module {
         return this;
     }
 
+    @Override
     public void configure(final Binder binder) {
         final ElementAnalyzer analyzer = new ElementAnalyzer(binder);
         for (final Element e : Elements.getElements(modules)) {
@@ -92,6 +93,7 @@ public final class WireModule implements Module {
          * Default wiring strategy; route all unresolved dependencies to the {@link BeanLocator}.
          */
         Strategy DEFAULT = new Strategy() {
+            @Override
             public Wiring wiring(final Binder binder) {
                 // basic File+URL type converters
                 for (final Module m : CONVERTERS) {

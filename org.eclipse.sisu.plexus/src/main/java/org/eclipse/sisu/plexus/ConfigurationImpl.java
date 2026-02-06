@@ -44,10 +44,12 @@ public final class ConfigurationImpl implements Configuration {
     // Annotation properties
     // ----------------------------------------------------------------------
 
+    @Override
     public String name() {
         return name;
     }
 
+    @Override
     public String value() {
         return value;
     }
@@ -81,6 +83,7 @@ public final class ConfigurationImpl implements Configuration {
         return String.format("@%s(name=%s, value=%s)", Configuration.class.getName(), name, value);
     }
 
+    @Override
     public Class<? extends Annotation> annotationType() {
         return Configuration.class;
     }

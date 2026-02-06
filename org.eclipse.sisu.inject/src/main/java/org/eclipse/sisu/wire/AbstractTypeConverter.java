@@ -23,6 +23,7 @@ import org.eclipse.sisu.inject.TypeArguments;
  * Abstract {@link TypeConverter} {@link Module} that automatically registers the converter based on the type argument.
  */
 public abstract class AbstractTypeConverter<T> implements TypeConverter, Module {
+    @Override
     public final void configure(final Binder binder) {
         // make sure we pick up the right super type argument, i.e. Foo from AbstractTypeConverter<Foo>
         final TypeLiteral<?> superType = TypeLiteral.get(getClass()).getSupertype(AbstractTypeConverter.class);

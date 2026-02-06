@@ -42,15 +42,18 @@ final class BeanPropertySetter<T> implements BeanProperty<T>, PrivilegedAction<V
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public <A extends Annotation> A getAnnotation(final Class<A> annotationType) {
         return method.getAnnotation(annotationType);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public TypeLiteral<T> getType() {
         return (TypeLiteral<T>) TypeLiteral.get(method.getGenericParameterTypes()[0]);
     }
 
+    @Override
     public String getName() {
         final String name = method.getName();
 
@@ -58,6 +61,7 @@ final class BeanPropertySetter<T> implements BeanProperty<T>, PrivilegedAction<V
         return Character.toLowerCase(name.charAt(3)) + name.substring(4);
     }
 
+    @Override
     public <B> void set(final B bean, final T value) {
         if (!method.isAccessible()) {
             // ensure we can update the property
@@ -99,6 +103,7 @@ final class BeanPropertySetter<T> implements BeanProperty<T>, PrivilegedAction<V
     // PrivilegedAction methods
     // ----------------------------------------------------------------------
 
+    @Override
     public Void run() {
         // enable private injection
         method.setAccessible(true);

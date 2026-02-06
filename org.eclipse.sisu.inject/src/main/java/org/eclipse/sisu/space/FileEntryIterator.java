@@ -53,10 +53,12 @@ final class FileEntryIterator implements Iterator<String> {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public boolean hasNext() {
         return entryNames.size() > 0;
     }
 
+    @Override
     public String next() // NOSONAR
             {
         final String name = entryNames.removeFirst();
@@ -66,6 +68,7 @@ final class FileEntryIterator implements Iterator<String> {
         return name;
     }
 
+    @Override
     public void remove() {
         throw new UnsupportedOperationException();
     }

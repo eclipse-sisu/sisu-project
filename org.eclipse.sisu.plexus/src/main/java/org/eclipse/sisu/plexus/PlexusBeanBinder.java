@@ -45,6 +45,7 @@ final class PlexusBeanBinder implements BeanBinder, InjectionListener<Object> {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public <B> PropertyBinder bindBean(final TypeLiteral<B> type, final TypeEncounter<B> encounter) {
         final Class<?> clazz = type.getRawType();
         if (null != manager && manager.manage(clazz)) {
@@ -60,6 +61,7 @@ final class PlexusBeanBinder implements BeanBinder, InjectionListener<Object> {
         return null; // no need to auto-bind
     }
 
+    @Override
     public void afterInjection(final Object bean) {
         manager.manage(bean);
     }

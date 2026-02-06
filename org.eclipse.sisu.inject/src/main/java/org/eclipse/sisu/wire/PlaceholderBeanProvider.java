@@ -66,6 +66,7 @@ final class PlaceholderBeanProvider<V> implements Provider<V> {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     @SuppressWarnings("unchecked")
     public V get() {
         final String template = ((Named) placeholderKey.getAnnotation()).value();

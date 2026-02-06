@@ -31,26 +31,32 @@ public final class ConsoleLoggerManager extends AbstractLoggerManager {
         logger.setThreshold(BaseLoggerManager.parseThreshold(threshold));
     }
 
+    @Override
     public Logger getLoggerForComponent(final String role, final String hint) {
         return logger;
     }
 
+    @Override
     public void returnComponentLogger(final String role, final String hint) {
         // nothing to do
     }
 
+    @Override
     public int getThreshold() {
         return logger.getThreshold();
     }
 
+    @Override
     public void setThreshold(final int currentThreshold) {
         logger.setThreshold(currentThreshold);
     }
 
+    @Override
     public void setThresholds(final int currentThreshold) {
         logger.setThreshold(currentThreshold);
     }
 
+    @Override
     public int getActiveLoggerCount() {
         return 0;
     }
