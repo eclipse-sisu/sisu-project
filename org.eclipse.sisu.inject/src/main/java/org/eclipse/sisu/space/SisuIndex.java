@@ -23,6 +23,7 @@ import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.sisu.inject.Logs;
@@ -134,7 +135,7 @@ public class SisuIndex extends AbstractSisuIndex implements SpaceVisitor, ClassV
 
     @Override
     protected Reader getReader(final String path) throws IOException {
-        return new InputStreamReader(new FileInputStream(new File(targetDirectory, path)), "UTF-8");
+        return new InputStreamReader(new FileInputStream(new File(targetDirectory, path)), StandardCharsets.UTF_8);
     }
 
     @Override
@@ -142,7 +143,7 @@ public class SisuIndex extends AbstractSisuIndex implements SpaceVisitor, ClassV
         final File index = new File(targetDirectory, path);
         final File parent = index.getParentFile();
         if (parent.isDirectory() || parent.mkdirs()) {
-            return new OutputStreamWriter(new FileOutputStream(index), "UTF-8");
+            return new OutputStreamWriter(new FileOutputStream(index), StandardCharsets.UTF_8);
         }
         throw new IOException("Error creating: " + parent);
     }

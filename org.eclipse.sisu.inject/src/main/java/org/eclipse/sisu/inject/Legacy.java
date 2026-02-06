@@ -97,10 +97,12 @@ public final class Legacy<S> {
                     public boolean hasNext() {
                         return itr.hasNext();
                     }
+
                     @Override
                     public BeanEntry<Q, T> next() {
                         return Legacy.adapt(itr.next());
                     }
+
                     @Override
                     public void remove() {
                         itr.remove();

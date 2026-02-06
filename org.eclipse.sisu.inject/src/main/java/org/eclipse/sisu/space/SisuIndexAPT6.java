@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -156,7 +157,7 @@ public final class SisuIndexAPT6 extends AbstractSisuIndex implements Processor 
     @Override
     protected Reader getReader(final String path) throws IOException {
         final FileObject file = environment.getFiler().getResource(StandardLocation.CLASS_OUTPUT, "", path);
-        return new InputStreamReader(file.openInputStream(), "UTF-8");
+        return new InputStreamReader(file.openInputStream(), StandardCharsets.UTF_8);
     }
 
     @Override
