@@ -67,8 +67,7 @@ public final class IndexedClassFinder implements ClassFinder {
         while (indices.hasMoreElements()) {
             final URL url = indices.nextElement();
             try {
-                final BufferedReader reader = new BufferedReader(new InputStreamReader(Streams.open(url), "UTF-8"));
-                try {
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(Streams.open(url), "UTF-8"))) {
                     // each index contains a list of class names, one per line with optional comment
                     for (String line = reader.readLine(); line != null; line = reader.readLine()) {
                         final int i = line.indexOf('#');
@@ -80,8 +79,6 @@ public final class IndexedClassFinder implements ClassFinder {
                             names.add(name);
                         }
                     }
-                } finally {
-                    reader.close();
                 }
             } catch (final IOException e) {
                 Logs.warn("Problem reading: {}", url, e);

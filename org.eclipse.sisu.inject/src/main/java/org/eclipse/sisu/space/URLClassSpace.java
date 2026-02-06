@@ -296,25 +296,16 @@ public class URLClassSpace implements ClassSpace {
     private static String[] getClassPathEntries(final URL url) throws IOException {
         final Manifest manifest;
         if (url.getPath().endsWith("/")) {
-            final InputStream in = Streams.open(new URL(url, MANIFEST_ENTRY));
-            try {
+            try (InputStream in = Streams.open(new URL(url, MANIFEST_ENTRY))) {
                 manifest = new Manifest(in);
-            } finally {
-                in.close();
             }
         } else if ("file".equals(url.getProtocol())) {
-            final JarFile jf = new JarFile(FileEntryIterator.toFile(url));
-            try {
+            try (JarFile jf = new JarFile(FileEntryIterator.toFile(url))) {
                 manifest = jf.getManifest();
-            } finally {
-                jf.close();
             }
         } else {
-            final JarInputStream jin = new JarInputStream(Streams.open(url));
-            try {
+            try (JarInputStream jin = new JarInputStream(Streams.open(url))) {
                 manifest = jin.getManifest();
-            } finally {
-                jin.close();
             }
         }
         if (null != manifest) {
