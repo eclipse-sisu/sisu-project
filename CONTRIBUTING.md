@@ -32,12 +32,12 @@ The Sisu build and runtime requirements are documented in [README.md](README.md)
 Coding Style
 ------------
 
-Sisu follows the **old Maven code style and code conventions**. Since then, Maven switched to modern 
-[code style and code conventions][style-guide] that are not applicable to Sisu.
+Sisu follows the **new Maven code style and code conventions**. Maven  
+[code style and code conventions][style-guide] are documented here, and the very same is applicable to Sisu.
 
-Avoid changing whitespace on lines that are unrelated to your pull request. This helps preserve the accuracy of the git blame view, and makes code reviews easier.
-
-You can use the spotless maven plugin to automatically format code to the accepted code style
+Spotless will always automatically format your code on your workstation, while on CI it just enforces the style. If your PR
+fails on CI due formatting issues, it means you did not build your changes locally. You can also explicitly invoke 
+spotless maven plugin to format code to the accepted code style
 
 ```bash
 $ mvn spotless:apply

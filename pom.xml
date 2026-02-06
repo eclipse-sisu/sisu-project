@@ -133,6 +133,9 @@
     <!-- define empty, as jacoco is only conditionally executed (https://www.eclemma.org/jacoco/trunk/doc/prepare-agent-mojo.html) -->
     <argLine />
     <njordVersion>0.9.3</njordVersion>
+    <!-- Spotless versions -->
+    <spotlessMavenPluginVersion>3.2.1</spotlessMavenPluginVersion>
+    <spotlessPalantirJavaFormatVersion>2.86.0</spotlessPalantirJavaFormatVersion>
   </properties>
 
   <dependencyManagement>
@@ -459,7 +462,6 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
           <version>0.8.14</version>
           <configuration>
             <excludes>
-              <exclude>**/asm/*</exclude>
               <exclude>Incomplete*</exclude>
             </excludes>
             <append>true</append>
@@ -575,11 +577,6 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
           <version>3.9.0</version>
         </plugin>
         <plugin>
-          <groupId>com.diffplug.spotless</groupId>
-          <artifactId>spotless-maven-plugin</artifactId>
-          <version>2.46.1</version>
-        </plugin>
-        <plugin>
           <groupId>org.eclipse.sisu</groupId>
           <artifactId>sisu-maven-plugin</artifactId>
           <version>0.9.0.M4</version>
@@ -592,6 +589,35 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
               </goals>
             </execution>
           </executions>
+        </plugin>
+        <plugin>
+          <groupId>com.diffplug.spotless</groupId>
+          <artifactId>spotless-maven-plugin</artifactId>
+          <version>${spotlessMavenPluginVersion}</version>
+          <configuration>
+            <java>
+              <!-- orders of used formatters are important MPOM-376 -->
+              <!-- eg. palantir override importOrder, so should be first -->
+              <palantirJavaFormat>
+                <!-- Declare version so that spotless does not choose a version based on JDK version -->
+                <version>${spotlessPalantirJavaFormatVersion}</version>
+              </palantirJavaFormat>
+              <removeUnusedImports />
+            </java>
+            <!-- accept all endings to support validations on top of source archives -->
+            <lineEndings>PRESERVE</lineEndings>
+            <pom>
+              <sortPom>
+                <expandEmptyElements>false</expandEmptyElements>
+                <!-- https://issues.apache.org/jira/browse/MRELEASE-1111 -->
+                <spaceBeforeCloseEmptyElement>true</spaceBeforeCloseEmptyElement>
+                <quiet>true</quiet>
+              </sortPom>
+            </pom>
+            <upToDateChecking>
+              <enabled>true</enabled>
+            </upToDateChecking>
+          </configuration>
         </plugin>
         <!--
         Plugin is set to work in "aggregate" mode, so invoke it from root directory of checkout combined with -N:
@@ -700,27 +726,51 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
 
   <profiles>
     <profile>
-      <id>spotless</id>
+      <id>spotless-check</id>
       <activation>
-        <file>
-          <exists>${basedir}/../sisu-eclipse-codestyle.xml</exists>
-        </file>
+        <property>
+          <name>env.CI</name>
+        </property>
       </activation>
       <build>
         <plugins>
           <plugin>
             <groupId>com.diffplug.spotless</groupId>
             <artifactId>spotless-maven-plugin</artifactId>
-            <configuration>
-              <java>
-                <eclipse>
-                  <file>${basedir}/../sisu-eclipse-codestyle.xml</file>
-                </eclipse>
-                <includes>
-                  <include>src/**/*.java</include>
-                </includes>
-              </java>
-            </configuration>
+            <executions>
+              <execution>
+                <id>spotless-check</id>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+                <phase>process-sources</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>spotless-apply</id>
+      <activation>
+        <property>
+          <name>!env.CI</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.diffplug.spotless</groupId>
+            <artifactId>spotless-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>spotless-apply</id>
+                <goals>
+                  <goal>apply</goal>
+                </goals>
+                <phase>process-sources</phase>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>
@@ -744,7 +794,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         </plugins>
       </build>
     </profile>
-    <!-- not all sub modules have tests yet, but those additional executions don't do any harm -->
+    <!-- not all submodules have tests yet, but those additional executions don't do any harm -->
     <profile>
       <id>code-coverage</id>
       <build>
