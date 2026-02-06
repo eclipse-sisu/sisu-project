@@ -627,7 +627,6 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
                   <exclude>bin/**</exclude>
                   <exclude>docs/**</exclude>
                   <exclude>leftovers/**</exclude>
-                  <exlude>**/src/main/java/org/eclipse/sisu/space/asm/**</exlude>
                   <exclude>**/target/**</exclude>
                   <exclude>**/conf/**</exclude>
                   <exclude>**/.*</exclude>
@@ -720,9 +719,6 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
                 <includes>
                   <include>src/**/*.java</include>
                 </includes>
-                <excludes>
-                  <exclude>src/**/asm/*.java</exclude>
-                </excludes>
               </java>
             </configuration>
           </plugin>

@@ -59,11 +59,7 @@ public abstract class BeanScheduler
                 candidateCycle = cycleConfirmed;
             }
         }
-        catch ( final Exception e )
-        {
-            cycleActivator = null;
-        }
-        catch ( final LinkageError e )
+        catch ( Exception | LinkageError e )
         {
             cycleActivator = null;
         }
@@ -171,7 +167,6 @@ public abstract class BeanScheduler
     /**
      * Collects pending beans waiting for activation.
      */
-    @SuppressWarnings( "serial" )
     private final class Pending
         extends ArrayList<Object>
     {
