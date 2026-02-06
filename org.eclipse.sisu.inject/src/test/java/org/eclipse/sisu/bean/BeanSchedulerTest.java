@@ -38,25 +38,39 @@ class BeanSchedulerTest
     void testSchedulerWithNoCycleActivator()
     {
         System.setProperty( "sisu.detect.cycles", "false" );
-        final TestScheduler scheduler = new TestScheduler();
-        assertNull( TestScheduler.CYCLE_ACTIVATOR );
+        try
+        {
+            final TestScheduler scheduler = new TestScheduler();
+            assertNull( TestScheduler.CYCLE_ACTIVATOR );
 
-        scheduler.schedule( "bean1" );
-        // without cycle detection, schedule should activate immediately
-        assertEquals( 1, scheduler.activatedBeans.size() );
-        assertEquals( "bean1", scheduler.activatedBeans.get( 0 ) );
+            scheduler.schedule( "bean1" );
+            // without cycle detection, schedule should activate immediately
+            assertEquals( 1, scheduler.activatedBeans.size() );
+            assertEquals( "bean1", scheduler.activatedBeans.get( 0 ) );
+        }
+        finally
+        {
+            System.clearProperty( "sisu.detect.cycles" );
+        }
     }
 
     @Test
     void testSchedulerMultipleBeansWithNoCycleActivator()
     {
         System.setProperty( "sisu.detect.cycles", "false" );
-        final TestScheduler scheduler = new TestScheduler();
-        assertNull( TestScheduler.CYCLE_ACTIVATOR );
+        try
+        {
+            final TestScheduler scheduler = new TestScheduler();
+            assertNull( TestScheduler.CYCLE_ACTIVATOR );
 
-        scheduler.schedule( "beanA" );
-        scheduler.schedule( "beanB" );
-        scheduler.schedule( "beanC" );
-        assertEquals( 3, scheduler.activatedBeans.size() );
+            scheduler.schedule( "beanA" );
+            scheduler.schedule( "beanB" );
+            scheduler.schedule( "beanC" );
+            assertEquals( 3, scheduler.activatedBeans.size() );
+        }
+        finally
+        {
+            System.clearProperty( "sisu.detect.cycles" );
+        }
     }
 }
