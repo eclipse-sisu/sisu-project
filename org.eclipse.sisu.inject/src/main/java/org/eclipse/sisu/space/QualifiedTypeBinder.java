@@ -259,10 +259,11 @@ public final class QualifiedTypeBinder implements QualifiedTypeListener {
             // slightly roundabout approach, but it might be private
             final Constructor<T> ctor = type.getDeclaredConstructor();
             if (!ctor.isAccessible()) {
-                AccessController.doPrivileged((PrivilegedAction<Void>) () -> { // NOSONAR
-                    ctor.setAccessible(true);
-                    return null;
-                });
+                AccessController.doPrivileged((PrivilegedAction<Void>) // NOSONAR
+                        () -> {
+                            ctor.setAccessible(true);
+                            return null;
+                        });
             }
 
             // record this instance was created

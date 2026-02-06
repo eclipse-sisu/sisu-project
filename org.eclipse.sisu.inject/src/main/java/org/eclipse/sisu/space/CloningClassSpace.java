@@ -42,12 +42,13 @@ public final class CloningClassSpace extends URLClassSpace {
 
     public CloningClassSpace(final ClassSpace parent) {
         super(
-                AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() { // NOSONAR
-                    @Override
-                    public ClassLoader run() {
-                        return new CloningClassLoader(parent);
-                    }
-                }),
+                AccessController.doPrivileged(
+                        new PrivilegedAction<ClassLoader>() { // NOSONAR
+                            @Override
+                            public ClassLoader run() {
+                                return new CloningClassLoader(parent);
+                            }
+                        }),
                 null);
     }
 
