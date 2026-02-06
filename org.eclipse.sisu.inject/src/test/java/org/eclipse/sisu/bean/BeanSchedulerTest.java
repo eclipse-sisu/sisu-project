@@ -18,7 +18,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 class BeanSchedulerTest
 {
@@ -35,42 +34,24 @@ class BeanSchedulerTest
     }
 
     @Test
-    void testSchedulerWithNoCycleActivator()
+    void testSchedulerOneBean()
     {
-        System.setProperty( "sisu.detect.cycles", "false" );
-        try
-        {
-            final TestScheduler scheduler = new TestScheduler();
-            assertNull( TestScheduler.CYCLE_ACTIVATOR );
+        final TestScheduler scheduler = new TestScheduler();
 
-            scheduler.schedule( "bean1" );
-            // without cycle detection, schedule should activate immediately
-            assertEquals( 1, scheduler.activatedBeans.size() );
-            assertEquals( "bean1", scheduler.activatedBeans.get( 0 ) );
-        }
-        finally
-        {
-            System.clearProperty( "sisu.detect.cycles" );
-        }
+        scheduler.schedule( "bean1" );
+        // without cycle detection, schedule should activate immediately
+        assertEquals( 1, scheduler.activatedBeans.size() );
+        assertEquals( "bean1", scheduler.activatedBeans.get( 0 ) );
     }
 
     @Test
-    void testSchedulerMultipleBeansWithNoCycleActivator()
+    void testSchedulerMultipleBeans()
     {
-        System.setProperty( "sisu.detect.cycles", "false" );
-        try
-        {
-            final TestScheduler scheduler = new TestScheduler();
-            assertNull( TestScheduler.CYCLE_ACTIVATOR );
+        final TestScheduler scheduler = new TestScheduler();
 
-            scheduler.schedule( "beanA" );
-            scheduler.schedule( "beanB" );
-            scheduler.schedule( "beanC" );
-            assertEquals( 3, scheduler.activatedBeans.size() );
-        }
-        finally
-        {
-            System.clearProperty( "sisu.detect.cycles" );
-        }
+        scheduler.schedule( "beanA" );
+        scheduler.schedule( "beanB" );
+        scheduler.schedule( "beanC" );
+        assertEquals( 3, scheduler.activatedBeans.size() );
     }
 }
