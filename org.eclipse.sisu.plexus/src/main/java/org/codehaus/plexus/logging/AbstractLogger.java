@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,7 @@
  */
 package org.codehaus.plexus.logging;
 
-public abstract class AbstractLogger
-    implements Logger
-{
+public abstract class AbstractLogger implements Logger {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -27,12 +25,10 @@ public abstract class AbstractLogger
     // Constructors
     // ----------------------------------------------------------------------
 
-    public AbstractLogger( final int threshold, final String name )
-    {
+    public AbstractLogger(final int threshold, final String name) {
         this.name = name;
-        if ( threshold < LEVEL_DEBUG || LEVEL_DISABLED < threshold )
-        {
-            throw new IllegalArgumentException( "Threshold " + threshold + " is not valid" );
+        if (threshold < LEVEL_DEBUG || LEVEL_DISABLED < threshold) {
+            throw new IllegalArgumentException("Threshold " + threshold + " is not valid");
         }
         this.threshold = threshold;
     }
@@ -41,68 +37,55 @@ public abstract class AbstractLogger
     // Public methods
     // ----------------------------------------------------------------------
 
-    public final void debug( final String message )
-    {
-        debug( message, null );
+    public final void debug(final String message) {
+        debug(message, null);
     }
 
-    public boolean isDebugEnabled()
-    {
+    public boolean isDebugEnabled() {
         return threshold <= LEVEL_DEBUG;
     }
 
-    public final void info( final String message )
-    {
-        info( message, null );
+    public final void info(final String message) {
+        info(message, null);
     }
 
-    public boolean isInfoEnabled()
-    {
+    public boolean isInfoEnabled() {
         return threshold <= LEVEL_INFO;
     }
 
-    public final void warn( final String message )
-    {
-        warn( message, null );
+    public final void warn(final String message) {
+        warn(message, null);
     }
 
-    public boolean isWarnEnabled()
-    {
+    public boolean isWarnEnabled() {
         return threshold <= LEVEL_WARN;
     }
 
-    public final void error( final String message )
-    {
-        error( message, null );
+    public final void error(final String message) {
+        error(message, null);
     }
 
-    public boolean isErrorEnabled()
-    {
+    public boolean isErrorEnabled() {
         return threshold <= LEVEL_ERROR;
     }
 
-    public final void fatalError( final String message )
-    {
-        fatalError( message, null );
+    public final void fatalError(final String message) {
+        fatalError(message, null);
     }
 
-    public boolean isFatalErrorEnabled()
-    {
+    public boolean isFatalErrorEnabled() {
         return threshold <= LEVEL_FATAL;
     }
 
-    public final int getThreshold()
-    {
+    public final int getThreshold() {
         return threshold;
     }
 
-    public final void setThreshold( final int threshold )
-    {
+    public final void setThreshold(final int threshold) {
         this.threshold = threshold;
     }
 
-    public final String getName()
-    {
+    public final String getName() {
         return name;
     }
 }

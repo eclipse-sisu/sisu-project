@@ -13,18 +13,14 @@ package org.eclipse.sisu.bean.alpha;
 import javax.inject.Singleton;
 
 @Singleton
-public class HiddenPublic
-    extends Private
-{
+public class HiddenPublic extends Private {
     @Override
-    public void a()
-    {
-        results.append( "!" );
+    public void a() {
+        results.append("!");
     }
 
     @Override
-    public void z()
-    {
-        results.append( "!" );
+    public void z() {
+        results.append("!");
     }
 }

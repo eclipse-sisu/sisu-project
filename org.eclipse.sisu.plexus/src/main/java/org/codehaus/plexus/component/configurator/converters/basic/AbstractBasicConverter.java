@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -21,32 +21,28 @@ import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator
 import org.codehaus.plexus.component.configurator.expression.TypeAwareExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
-public abstract class AbstractBasicConverter
-    extends AbstractConfigurationConverter
-{
-    public Object fromConfiguration( final ConverterLookup lookup, final PlexusConfiguration configuration,
-                                     final Class<?> type, final Class<?> enclosingType, final ClassLoader loader,
-                                     final ExpressionEvaluator evaluator, final ConfigurationListener listener )
-        throws ComponentConfigurationException
-    {
-        if ( configuration.getChildCount() > 0 )
-        {
-            throw new ComponentConfigurationException( "Basic element '" + configuration.getName()
-                + "' must not contain child elements" );
+public abstract class AbstractBasicConverter extends AbstractConfigurationConverter {
+    public Object fromConfiguration(
+            final ConverterLookup lookup,
+            final PlexusConfiguration configuration,
+            final Class<?> type,
+            final Class<?> enclosingType,
+            final ClassLoader loader,
+            final ExpressionEvaluator evaluator,
+            final ConfigurationListener listener)
+            throws ComponentConfigurationException {
+        if (configuration.getChildCount() > 0) {
+            throw new ComponentConfigurationException(
+                    "Basic element '" + configuration.getName() + "' must not contain child elements");
         }
 
-        Object result = fromExpression( configuration, evaluator, type );
-        if ( result instanceof String )
-        {
-            try
-            {
-                result = fromString( (String) result, type );
-            }
-            catch ( final ComponentConfigurationException e )
-            {
-                if ( null == e.getFailedConfiguration() )
-                {
-                    e.setFailedConfiguration( configuration );
+        Object result = fromExpression(configuration, evaluator, type);
+        if (result instanceof String) {
+            try {
+                result = fromString((String) result, type);
+            } catch (final ComponentConfigurationException e) {
+                if (null == e.getFailedConfiguration()) {
+                    e.setFailedConfiguration(configuration);
                 }
                 throw e;
             }
@@ -58,17 +54,13 @@ public abstract class AbstractBasicConverter
     // Customizable methods
     // ----------------------------------------------------------------------
 
-    protected Object fromString( final String str, final Class<?> type )
-        throws ComponentConfigurationException
-    {
-        return fromString( str );
+    protected Object fromString(final String str, final Class<?> type) throws ComponentConfigurationException {
+        return fromString(str);
     }
 
-    protected Object fromString( final String str )
-        throws ComponentConfigurationException
-    {
-        throw new UnsupportedOperationException( "The class " + this.getClass().getName()
-            + " must implement one of the fromString(...) methods, but it doesn't" );
+    protected Object fromString(final String str) throws ComponentConfigurationException {
+        throw new UnsupportedOperationException("The class " + this.getClass().getName()
+                + " must implement one of the fromString(...) methods, but it doesn't");
     }
 
     // ----------------------------------------------------------------------
@@ -76,48 +68,35 @@ public abstract class AbstractBasicConverter
     // ----------------------------------------------------------------------
 
     @Override
-    protected Object fromExpression( final PlexusConfiguration configuration, final ExpressionEvaluator evaluator,
-                                     final Class<?> type )
-        throws ComponentConfigurationException
-    {
+    protected Object fromExpression(
+            final PlexusConfiguration configuration, final ExpressionEvaluator evaluator, final Class<?> type)
+            throws ComponentConfigurationException {
         String value = configuration.getValue();
-        try
-        {
+        try {
             Object result = null;
-            if ( null != value && value.length() > 0 )
-            {
-                if ( evaluator instanceof TypeAwareExpressionEvaluator )
-                {
-                    result = ( (TypeAwareExpressionEvaluator) evaluator ).evaluate( value, type );
-                }
-                else
-                {
-                    result = evaluator.evaluate( value );
+            if (null != value && value.length() > 0) {
+                if (evaluator instanceof TypeAwareExpressionEvaluator) {
+                    result = ((TypeAwareExpressionEvaluator) evaluator).evaluate(value, type);
+                } else {
+                    result = evaluator.evaluate(value);
                 }
             }
-            if ( null == result )
-            {
-                value = configuration.getAttribute( "default-value" );
-                if ( null != value && value.length() > 0 )
-                {
-                    if ( evaluator instanceof TypeAwareExpressionEvaluator )
-                    {
-                        result = ( (TypeAwareExpressionEvaluator) evaluator ).evaluate( value, type );
-                    }
-                    else
-                    {
-                        result = evaluator.evaluate( value );
+            if (null == result) {
+                value = configuration.getAttribute("default-value");
+                if (null != value && value.length() > 0) {
+                    if (evaluator instanceof TypeAwareExpressionEvaluator) {
+                        result = ((TypeAwareExpressionEvaluator) evaluator).evaluate(value, type);
+                    } else {
+                        result = evaluator.evaluate(value);
                     }
                 }
             }
             return result;
-        }
-        catch ( final ExpressionEvaluationException e )
-        {
-            final String reason = String.format( "Cannot evaluate expression '%s' for configuration entry '%s'", value,
-                                                 configuration.getName() );
+        } catch (final ExpressionEvaluationException e) {
+            final String reason = String.format(
+                    "Cannot evaluate expression '%s' for configuration entry '%s'", value, configuration.getName());
 
-            throw new ComponentConfigurationException( configuration, reason, e );
+            throw new ComponentConfigurationException(configuration, reason, e);
         }
     }
 }

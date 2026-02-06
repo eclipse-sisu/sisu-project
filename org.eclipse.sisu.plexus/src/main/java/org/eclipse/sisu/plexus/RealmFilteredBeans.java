@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,21 +12,17 @@
  */
 package org.eclipse.sisu.plexus;
 
+import com.google.inject.name.Named;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
-
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.eclipse.sisu.BeanEntry;
-
-import com.google.inject.name.Named;
 
 /**
  * Sequence of {@link BeanEntry}s filtered according to whether they are visible from the current {@link ClassRealm}.
  */
-final class RealmFilteredBeans<T>
-    implements Iterable<BeanEntry<Named, T>>
-{
+final class RealmFilteredBeans<T> implements Iterable<BeanEntry<Named, T>> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -39,8 +35,7 @@ final class RealmFilteredBeans<T>
     // Constructors
     // ----------------------------------------------------------------------
 
-    RealmFilteredBeans( final RealmManager realmManager, final Iterable<BeanEntry<Named, T>> beans )
-    {
+    RealmFilteredBeans(final RealmManager realmManager, final Iterable<BeanEntry<Named, T>> beans) {
         this.realmManager = realmManager;
         this.beans = beans;
     }
@@ -49,12 +44,10 @@ final class RealmFilteredBeans<T>
     // Public methods
     // ----------------------------------------------------------------------
 
-    public Iterator<BeanEntry<Named, T>> iterator()
-    {
-        final Set<String> realmNames = realmManager.visibleRealmNames( RealmManager.contextRealm() );
-        if ( null != realmNames && realmNames.size() > 0 )
-        {
-            return new FilteredItr( realmNames );
+    public Iterator<BeanEntry<Named, T>> iterator() {
+        final Set<String> realmNames = realmManager.visibleRealmNames(RealmManager.contextRealm());
+        if (null != realmNames && realmNames.size() > 0) {
+            return new FilteredItr(realmNames);
         }
         return beans.iterator();
     }
@@ -66,9 +59,7 @@ final class RealmFilteredBeans<T>
     /**
      * {@link BeanEntry} iterator that only returns entries visible from the given set of named realms.
      */
-    final class FilteredItr
-        implements Iterator<BeanEntry<Named, T>>
-    {
+    final class FilteredItr implements Iterator<BeanEntry<Named, T>> {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -83,8 +74,7 @@ final class RealmFilteredBeans<T>
         // Constructors
         // ----------------------------------------------------------------------
 
-        public FilteredItr( final Set<String> realmNames )
-        {
+        public FilteredItr(final Set<String> realmNames) {
             this.realmNames = realmNames;
         }
 
@@ -92,18 +82,14 @@ final class RealmFilteredBeans<T>
         // Public methods
         // ----------------------------------------------------------------------
 
-        public boolean hasNext()
-        {
-            if ( null != nextBean )
-            {
+        public boolean hasNext() {
+            if (null != nextBean) {
                 return true;
             }
-            while ( itr.hasNext() )
-            {
+            while (itr.hasNext()) {
                 nextBean = itr.next();
-                final String source = String.valueOf( nextBean.getSource() );
-                if ( !source.startsWith( "ClassRealm" ) || realmNames.contains( source ) )
-                {
+                final String source = String.valueOf(nextBean.getSource());
+                if (!source.startsWith("ClassRealm") || realmNames.contains(source)) {
                     return true;
                 }
             }
@@ -111,10 +97,8 @@ final class RealmFilteredBeans<T>
             return false;
         }
 
-        public BeanEntry<Named, T> next()
-        {
-            if ( hasNext() )
-            {
+        public BeanEntry<Named, T> next() {
+            if (hasNext()) {
                 // populated by hasNext()
                 final BeanEntry<Named, T> bean = nextBean;
                 nextBean = null;
@@ -123,8 +107,7 @@ final class RealmFilteredBeans<T>
             throw new NoSuchElementException();
         }
 
-        public void remove()
-        {
+        public void remove() {
             throw new UnsupportedOperationException();
         }
     }

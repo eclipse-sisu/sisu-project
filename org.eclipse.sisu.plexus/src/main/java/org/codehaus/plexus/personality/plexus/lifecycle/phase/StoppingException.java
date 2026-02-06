@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,18 +12,14 @@
  */
 package org.codehaus.plexus.personality.plexus.lifecycle.phase;
 
-public final class StoppingException
-    extends Exception
-{
+public final class StoppingException extends Exception {
     private static final long serialVersionUID = 1L;
 
-    public StoppingException( final String message )
-    {
-        super( message );
+    public StoppingException(final String message) {
+        super(message);
     }
 
-    public StoppingException( final String message, final Throwable cause )
-    {
-        super( message, cause );
+    public StoppingException(final String message, final Throwable cause) {
+        super(message, cause);
     }
 }

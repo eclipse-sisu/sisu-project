@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -25,9 +25,7 @@ import java.util.zip.ZipInputStream;
 /**
  * {@link Iterator} that iterates over named entries inside JAR or ZIP resources.
  */
-final class ZipEntryIterator
-    implements Iterator<String>
-{
+final class ZipEntryIterator implements Iterator<String> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -40,21 +38,14 @@ final class ZipEntryIterator
     // Constructors
     // ----------------------------------------------------------------------
 
-    ZipEntryIterator( final URL url )
-    {
-        try
-        {
-            if ( "file".equals( url.getProtocol() ) )
-            {
-                entryNames = getEntryNames( new ZipFile( FileEntryIterator.toFile( url ) ) );
+    ZipEntryIterator(final URL url) {
+        try {
+            if ("file".equals(url.getProtocol())) {
+                entryNames = getEntryNames(new ZipFile(FileEntryIterator.toFile(url)));
+            } else {
+                entryNames = getEntryNames(new ZipInputStream(Streams.open(url)));
             }
-            else
-            {
-                entryNames = getEntryNames( new ZipInputStream( Streams.open( url ) ) );
-            }
-        }
-        catch ( final IOException e )
-        {
+        } catch (final IOException e) {
             entryNames = new String[0];
         }
     }
@@ -63,18 +54,16 @@ final class ZipEntryIterator
     // Public methods
     // ----------------------------------------------------------------------
 
-    public boolean hasNext()
-    {
+    public boolean hasNext() {
         return index < entryNames.length;
     }
 
     public String next() // NOSONAR
-    {
+            {
         return entryNames[index++];
     }
 
-    public void remove()
-    {
+    public void remove() {
         throw new UnsupportedOperationException();
     }
 
@@ -84,49 +73,38 @@ final class ZipEntryIterator
 
     /**
      * Returns a string array listing the entries in the given zip file.
-     * 
+     *
      * @param zipFile The zip file
      * @return Array of entry names
      */
-    private static String[] getEntryNames( final ZipFile zipFile )
-        throws IOException
-    {
-        try
-        {
+    private static String[] getEntryNames(final ZipFile zipFile) throws IOException {
+        try {
             final String names[] = new String[zipFile.size()];
             final Enumeration<? extends ZipEntry> e = zipFile.entries(); // NOSONAR
-            for ( int i = 0; i < names.length; i++ )
-            {
+            for (int i = 0; i < names.length; i++) {
                 names[i] = e.nextElement().getName();
             }
             return names;
-        }
-        finally
-        {
+        } finally {
             zipFile.close();
         }
     }
 
     /**
      * Returns a string array listing the entries in the given zip stream.
-     * 
+     *
      * @param zipStream The zip stream
      * @return Array of entry names
      */
-    private static String[] getEntryNames( final ZipInputStream zipStream )
-        throws IOException
-    {
-        try
-        {
-            final List<String> names = new ArrayList<String>( 64 );
-            for ( ZipEntry e = zipStream.getNextEntry(); e != null; e = zipStream.getNextEntry() ) // NOSONAR
+    private static String[] getEntryNames(final ZipInputStream zipStream) throws IOException {
+        try {
+            final List<String> names = new ArrayList<String>(64);
+            for (ZipEntry e = zipStream.getNextEntry(); e != null; e = zipStream.getNextEntry()) // NOSONAR
             {
-                names.add( e.getName() );
+                names.add(e.getName());
             }
-            return names.toArray( new String[names.size()] );
-        }
-        finally
-        {
+            return names.toArray(new String[names.size()]);
+        } finally {
             zipStream.close();
         }
     }

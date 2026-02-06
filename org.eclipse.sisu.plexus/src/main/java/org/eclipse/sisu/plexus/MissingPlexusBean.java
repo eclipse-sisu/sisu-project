@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,17 +12,14 @@
  */
 package org.eclipse.sisu.plexus;
 
-import java.util.Map.Entry;
-
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Named;
+import java.util.Map.Entry;
 
 /**
  * {@link Entry} representing a missing @{@link Named} Plexus bean.
  */
-final class MissingPlexusBean<T>
-    implements PlexusBean<T>
-{
+final class MissingPlexusBean<T> implements PlexusBean<T> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -35,8 +32,7 @@ final class MissingPlexusBean<T>
     // Constructors
     // ----------------------------------------------------------------------
 
-    MissingPlexusBean( final TypeLiteral<T> role, final String hint )
-    {
+    MissingPlexusBean(final TypeLiteral<T> role, final String hint) {
         this.role = role;
         this.hint = hint;
     }
@@ -45,34 +41,28 @@ final class MissingPlexusBean<T>
     // Public methods
     // ----------------------------------------------------------------------
 
-    public String getKey()
-    {
+    public String getKey() {
         return hint;
     }
 
-    public T getValue()
-    {
-        return Roles.throwMissingComponentException( role, hint );
+    public T getValue() {
+        return Roles.throwMissingComponentException(role, hint);
     }
 
-    public T setValue( final T value )
-    {
+    public T setValue(final T value) {
         throw new UnsupportedOperationException();
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return null;
     }
 
-    public Class<T> getImplementationClass()
-    {
+    public Class<T> getImplementationClass() {
         return null;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return getKey() + "=<missing>";
     }
 }

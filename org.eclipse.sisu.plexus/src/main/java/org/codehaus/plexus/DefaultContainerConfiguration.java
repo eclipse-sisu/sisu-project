@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -14,14 +14,11 @@ package org.codehaus.plexus;
 
 import java.net.URL;
 import java.util.Map;
-
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.context.Context;
 
-public final class DefaultContainerConfiguration
-    implements ContainerConfiguration
-{
+public final class DefaultContainerConfiguration implements ContainerConfiguration {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -52,135 +49,111 @@ public final class DefaultContainerConfiguration
     // Public methods
     // ----------------------------------------------------------------------
 
-    public ContainerConfiguration setName( final String name )
-    {
+    public ContainerConfiguration setName(final String name) {
         return this;
     }
 
-    public ContainerConfiguration setContainerConfiguration( final String configurationPath )
-    {
+    public ContainerConfiguration setContainerConfiguration(final String configurationPath) {
         this.configurationPath = configurationPath;
         return this;
     }
 
-    public String getContainerConfiguration()
-    {
+    public String getContainerConfiguration() {
         return configurationPath;
     }
 
-    public ContainerConfiguration setContainerConfigurationURL( final URL configurationUrl )
-    {
+    public ContainerConfiguration setContainerConfigurationURL(final URL configurationUrl) {
         this.configurationUrl = configurationUrl;
         return this;
     }
 
-    public URL getContainerConfigurationURL()
-    {
+    public URL getContainerConfigurationURL() {
         return configurationUrl;
     }
 
-    public ContainerConfiguration setClassWorld( final ClassWorld classWorld )
-    {
+    public ContainerConfiguration setClassWorld(final ClassWorld classWorld) {
         this.classWorld = classWorld;
         return this;
     }
 
-    public ClassWorld getClassWorld()
-    {
+    public ClassWorld getClassWorld() {
         return classWorld;
     }
 
-    public ContainerConfiguration setRealm( final ClassRealm classRealm )
-    {
+    public ContainerConfiguration setRealm(final ClassRealm classRealm) {
         this.classRealm = classRealm;
         return this;
     }
 
-    public ClassRealm getRealm()
-    {
+    public ClassRealm getRealm() {
         return classRealm;
     }
 
-    public ContainerConfiguration setContext( final Map<Object, Object> contextData )
-    {
+    public ContainerConfiguration setContext(final Map<Object, Object> contextData) {
         this.contextData = contextData;
         return this;
     }
 
-    public Map<Object, Object> getContext()
-    {
+    public Map<Object, Object> getContext() {
         return contextData;
     }
 
-    public ContainerConfiguration setComponentVisibility( final String componentVisibility )
-    {
+    public ContainerConfiguration setComponentVisibility(final String componentVisibility) {
         this.componentVisibility = componentVisibility;
         return this;
     }
 
-    public String getComponentVisibility()
-    {
+    public String getComponentVisibility() {
         return componentVisibility;
     }
 
-    public ContainerConfiguration setClassPathScanning( final String classPathScanning )
-    {
+    public ContainerConfiguration setClassPathScanning(final String classPathScanning) {
         this.classPathScanning = classPathScanning;
-        if ( !PlexusConstants.SCANNING_OFF.equalsIgnoreCase( classPathScanning ) )
-        {
+        if (!PlexusConstants.SCANNING_OFF.equalsIgnoreCase(classPathScanning)) {
             autoWiring = true;
         }
         return this;
     }
 
-    public String getClassPathScanning()
-    {
+    public String getClassPathScanning() {
         return classPathScanning;
     }
 
-    public ContainerConfiguration setAutoWiring( final boolean autoWiring )
-    {
+    public ContainerConfiguration setAutoWiring(final boolean autoWiring) {
         this.autoWiring = autoWiring;
         return this;
     }
 
-    public boolean getAutoWiring()
-    {
+    public boolean getAutoWiring() {
         return autoWiring;
     }
 
-    public ContainerConfiguration setContextComponent( final Context contextComponent )
-    {
+    public ContainerConfiguration setContextComponent(final Context contextComponent) {
         this.contextComponent = contextComponent;
         return this;
     }
 
-    public Context getContextComponent()
-    {
+    public Context getContextComponent() {
         return contextComponent;
     }
 
-    public ContainerConfiguration setJSR250Lifecycle( final boolean jsr250Lifecycle )
-    {
+    public ContainerConfiguration setJSR250Lifecycle(final boolean jsr250Lifecycle) {
         this.jsr250Lifecycle = jsr250Lifecycle;
         return this;
     }
 
-    public boolean getJSR250Lifecycle()
-    {
+    public boolean getJSR250Lifecycle() {
         return jsr250Lifecycle;
     }
 
     @Override
-    public ContainerConfiguration setStrictClassPathScanning( boolean strictScanning )
-    {
+    public ContainerConfiguration setStrictClassPathScanning(boolean strictScanning) {
         this.strictClassPathScanning = strictScanning;
         return this;
     }
 
     @Override
-    public boolean getStrictClassPathScanning()
-    {
+    public boolean getStrictClassPathScanning() {
         return strictClassPathScanning;
     }
 }

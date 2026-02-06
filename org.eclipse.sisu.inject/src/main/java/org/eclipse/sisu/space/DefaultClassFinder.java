@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -18,9 +18,7 @@ import java.util.Enumeration;
 /**
  * {@link ClassFinder} that finds {@link Class} resources under a given package name.
  */
-public final class DefaultClassFinder
-    implements ClassFinder
-{
+public final class DefaultClassFinder implements ClassFinder {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -33,23 +31,18 @@ public final class DefaultClassFinder
     // Constructors
     // ----------------------------------------------------------------------
 
-    public DefaultClassFinder( final String pkg )
-    {
-        final String tempPath = pkg.replace( '.', '/' );
-        if ( tempPath.endsWith( "*" ) )
-        {
-            path = tempPath.substring( 0, tempPath.length() - 1 );
+    public DefaultClassFinder(final String pkg) {
+        final String tempPath = pkg.replace('.', '/');
+        if (tempPath.endsWith("*")) {
+            path = tempPath.substring(0, tempPath.length() - 1);
             recurse = true;
-        }
-        else
-        {
+        } else {
             path = tempPath;
             recurse = false;
         }
     }
 
-    public DefaultClassFinder()
-    {
+    public DefaultClassFinder() {
         path = null;
         recurse = true;
     }
@@ -58,8 +51,7 @@ public final class DefaultClassFinder
     // Public methods
     // ----------------------------------------------------------------------
 
-    public Enumeration<URL> findClasses( final ClassSpace space )
-    {
-        return space.findEntries( path, "*.class", recurse );
+    public Enumeration<URL> findClasses(final ClassSpace space) {
+        return space.findEntries(path, "*.class", recurse);
     }
 }

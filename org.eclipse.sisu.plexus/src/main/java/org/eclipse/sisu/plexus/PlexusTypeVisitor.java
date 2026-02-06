@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 package org.eclipse.sisu.plexus;
 
 import java.net.URL;
-
 import org.codehaus.plexus.component.annotations.Component;
 import org.eclipse.sisu.inject.Logs;
 import org.eclipse.sisu.space.AnnotationVisitor;
@@ -27,14 +26,12 @@ import org.eclipse.sisu.space.SpaceVisitor;
 /**
  * {@link SpaceVisitor} that reports Plexus bean classes annotated with @{@link Component}.
  */
-public final class PlexusTypeVisitor
-    implements SpaceVisitor, ClassVisitor
-{
+public final class PlexusTypeVisitor implements SpaceVisitor, ClassVisitor {
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final String COMPONENT_DESC = SpaceScanner.jvmDescriptor( Component.class );
+    private static final String COMPONENT_DESC = SpaceScanner.jvmDescriptor(Component.class);
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -56,71 +53,59 @@ public final class PlexusTypeVisitor
     // Constructors
     // ----------------------------------------------------------------------
 
-    public PlexusTypeVisitor( final PlexusTypeListener listener )
-    {
+    public PlexusTypeVisitor(final PlexusTypeListener listener) {
         plexusTypeListener = listener;
-        qualifiedTypeVisitor = new QualifiedTypeVisitor( listener );
+        qualifiedTypeVisitor = new QualifiedTypeVisitor(listener);
     }
 
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
 
-    public void enterSpace( final ClassSpace _space )
-    {
+    public void enterSpace(final ClassSpace _space) {
         space = _space;
         source = _space.toString();
-        qualifiedTypeVisitor.enterSpace( _space );
+        qualifiedTypeVisitor.enterSpace(_space);
 
-        if ( Logs.TRACE_ENABLED )
-        {
-            QualifiedTypeVisitor.verify( _space, Component.class );
+        if (Logs.TRACE_ENABLED) {
+            QualifiedTypeVisitor.verify(_space, Component.class);
         }
     }
 
-    public ClassVisitor visitClass( final URL url )
-    {
+    public ClassVisitor visitClass(final URL url) {
         componentVisitor.reset();
         implementation = null;
-        qualifiedTypeVisitor.visitClass( null ); // disable detailed source location (see realm filtering)
+        qualifiedTypeVisitor.visitClass(null); // disable detailed source location (see realm filtering)
         return this;
     }
 
-    public void enterClass( final int modifiers, final String name, final String _extends, final String[] _implements )
-    {
-        if ( ( modifiers & NON_INSTANTIABLE ) == 0 )
-        {
+    public void enterClass(final int modifiers, final String name, final String _extends, final String[] _implements) {
+        if ((modifiers & NON_INSTANTIABLE) == 0) {
             implementation = name;
         }
-        qualifiedTypeVisitor.enterClass( modifiers, name, _extends, _implements );
+        qualifiedTypeVisitor.enterClass(modifiers, name, _extends, _implements);
     }
 
-    public AnnotationVisitor visitAnnotation( final String desc )
-    {
-        if ( COMPONENT_DESC.equals( desc ) )
-        {
+    public AnnotationVisitor visitAnnotation(final String desc) {
+        if (COMPONENT_DESC.equals(desc)) {
             return componentVisitor;
         }
-        return qualifiedTypeVisitor.visitAnnotation( desc );
+        return qualifiedTypeVisitor.visitAnnotation(desc);
     }
 
-    public void leaveClass()
-    {
-        if ( null != implementation )
-        {
-            final Component component = componentVisitor.getComponent( space );
-            if ( null != component )
-            {
-                final Class<?> clazz = space.loadClass( implementation.replace( '/', '.' ) );
-                plexusTypeListener.hear( component, new LoadedClass<Object>( clazz ), source );
+    public void leaveClass() {
+        if (null != implementation) {
+            final Component component = componentVisitor.getComponent(space);
+            if (null != component) {
+                final Class<?> clazz = space.loadClass(implementation.replace('/', '.'));
+                plexusTypeListener.hear(component, new LoadedClass<Object>(clazz), source);
                 qualifiedTypeVisitor.disqualify();
             }
         }
         qualifiedTypeVisitor.leaveClass();
     }
 
-    public void leaveSpace()
-    {
+    public void leaveSpace() {
         qualifiedTypeVisitor.leaveSpace();
     }
 
@@ -131,9 +116,7 @@ public final class PlexusTypeVisitor
     /**
      * {@link AnnotationVisitor} that records details of @{@link Component} annotations.
      */
-    static final class ComponentAnnotationVisitor
-        implements AnnotationVisitor
-    {
+    static final class ComponentAnnotationVisitor implements AnnotationVisitor {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -150,47 +133,35 @@ public final class PlexusTypeVisitor
         // Public methods
         // ----------------------------------------------------------------------
 
-        public void reset()
-        {
+        public void reset() {
             role = null;
             hint = Hints.DEFAULT_HINT;
             strategy = Strategies.SINGLETON;
             description = "";
         }
 
-        public void enterAnnotation()
-        {
+        public void enterAnnotation() {
             // no-op; maintain results outside of individual annotation scan
         }
 
-        public void visitElement( final String name, final Object value )
-        {
-            if ( "role".equals( name ) )
-            {
+        public void visitElement(final String name, final Object value) {
+            if ("role".equals(name)) {
                 role = (String) value;
-            }
-            else if ( "hint".equals( name ) )
-            {
-                hint = Hints.canonicalHint( (String) value );
-            }
-            else if ( "instantiationStrategy".equals( name ) )
-            {
+            } else if ("hint".equals(name)) {
+                hint = Hints.canonicalHint((String) value);
+            } else if ("instantiationStrategy".equals(name)) {
                 strategy = (String) value;
-            }
-            else if ( "description".equals( name ) )
-            {
+            } else if ("description".equals(name)) {
                 description = (String) value;
             }
         }
 
-        public void leaveAnnotation()
-        {
+        public void leaveAnnotation() {
             // no-op; maintain results outside of individual annotation scan
         }
 
-        public Component getComponent( final ClassSpace space )
-        {
-            return null != role ? new ComponentImpl( space.loadClass( role ), hint, strategy, description ) : null;
+        public Component getComponent(final ClassSpace space) {
+            return null != role ? new ComponentImpl(space.loadClass(role), hint, strategy, description) : null;
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -15,8 +15,7 @@ package org.eclipse.sisu.plexus;
 /**
  * Constants representing supported Plexus instantiation strategies.
  */
-public interface Strategies
-{
+public interface Strategies {
     String LOAD_ON_START = "load-on-start";
 
     String PER_LOOKUP = "per-lookup";

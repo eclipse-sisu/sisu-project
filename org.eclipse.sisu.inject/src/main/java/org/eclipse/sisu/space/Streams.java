@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -21,30 +21,22 @@ import java.util.Locale;
 /**
  * Utility methods for dealing with streams.
  */
-public final class Streams
-{
+public final class Streams {
     // ----------------------------------------------------------------------
     // Static initialization
     // ----------------------------------------------------------------------
 
-    static
-    {
+    static {
         boolean useCaches;
-        try
-        {
-            String urlCaches = System.getProperty( "sisu.url.caches" );
-            if ( null != urlCaches && !urlCaches.isEmpty() )
-            {
-                useCaches = Boolean.parseBoolean( urlCaches );
+        try {
+            String urlCaches = System.getProperty("sisu.url.caches");
+            if (null != urlCaches && !urlCaches.isEmpty()) {
+                useCaches = Boolean.parseBoolean(urlCaches);
+            } else {
+                String osName = System.getProperty("os.name").toLowerCase(Locale.US);
+                useCaches = !osName.contains("windows");
             }
-            else
-            {
-                String osName = System.getProperty( "os.name" ).toLowerCase( Locale.US );
-                useCaches = !osName.contains( "windows" );
-            }
-        }
-        catch ( final RuntimeException e )
-        {
+        } catch (final RuntimeException e) {
             useCaches = true;
         }
         USE_CACHES = useCaches;
@@ -60,8 +52,7 @@ public final class Streams
     // Constructors
     // ----------------------------------------------------------------------
 
-    private Streams()
-    {
+    private Streams() {
         // static utility class, not allowed to create instances
     }
 
@@ -73,16 +64,13 @@ public final class Streams
      * Opens an input stream to the given URL; disables JAR caching on Windows
      * or when the 'sisu.url.caches' system property is set to {@code false}.
      */
-    public static InputStream open( final URL url )
-        throws IOException
-    {
-        if ( USE_CACHES )
-        {
+    public static InputStream open(final URL url) throws IOException {
+        if (USE_CACHES) {
             return url.openStream();
         }
 
         final URLConnection conn = url.openConnection();
-        conn.setUseCaches( false );
+        conn.setUseCaches(false);
         return conn.getInputStream();
     }
 }

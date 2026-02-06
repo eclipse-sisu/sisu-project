@@ -14,9 +14,6 @@ import javax.inject.Singleton;
 
 @Named
 @Singleton
-public class Jsr330Component2
-{
-    public Jsr330Component2()
-    {
-    }
+public class Jsr330Component2 {
+    public Jsr330Component2() {}
 }

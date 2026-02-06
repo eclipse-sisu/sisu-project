@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,18 +12,14 @@
  */
 package org.eclipse.sisu.inject;
 
-import java.lang.annotation.Annotation;
-
-import org.eclipse.sisu.Description;
-
 import com.google.inject.Binding;
+import java.lang.annotation.Annotation;
+import org.eclipse.sisu.Description;
 
 /**
  * Implementation of @{@link Description} that can also act as an @{@link AnnotatedSource}.
  */
-final class DescriptionSource
-    implements Description, AnnotatedSource
-{
+final class DescriptionSource implements Description, AnnotatedSource {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -40,8 +36,7 @@ final class DescriptionSource
      * @param source The owning source
      * @param value The description
      */
-    DescriptionSource( final Object source, final String value )
-    {
+    DescriptionSource(final Object source, final String value) {
         this.source = source;
         this.value = value;
     }
@@ -50,44 +45,36 @@ final class DescriptionSource
     // Public methods
     // ----------------------------------------------------------------------
 
-    public String value()
-    {
+    public String value() {
         return value;
     }
 
-    public Class<? extends Annotation> annotationType()
-    {
+    public Class<? extends Annotation> annotationType() {
         return Description.class;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return 127 * "value".hashCode() ^ value.hashCode();
     }
 
     @Override
-    public boolean equals( final Object rhs )
-    {
-        return this == rhs || ( rhs instanceof Description && value.equals( ( (Description) rhs ).value() ) );
+    public boolean equals(final Object rhs) {
+        return this == rhs || (rhs instanceof Description && value.equals(((Description) rhs).value()));
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return null != source ? source.toString() : "@" + Description.class.getName() + "(value=" + value + ")";
     }
 
-    @SuppressWarnings( "unchecked" )
-    public <T extends Annotation> T getAnnotation( final Binding<?> binding, final Class<T> annotationType )
-    {
-        if ( Description.class.equals( annotationType ) )
-        {
+    @SuppressWarnings("unchecked")
+    public <T extends Annotation> T getAnnotation(final Binding<?> binding, final Class<T> annotationType) {
+        if (Description.class.equals(annotationType)) {
             return (T) this;
         }
-        if ( source instanceof AnnotatedSource )
-        {
-            return ( (AnnotatedSource) source ).getAnnotation( binding, annotationType );
+        if (source instanceof AnnotatedSource) {
+            return ((AnnotatedSource) source).getAnnotation(binding, annotationType);
         }
         return null;
     }

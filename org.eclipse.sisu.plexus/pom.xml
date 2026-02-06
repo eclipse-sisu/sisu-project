@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (c) 2010-2024 Sonatype, Inc. and others.
+    Copyright (c) 2010-2026 Sonatype, Inc. and others.
     All rights reserved. This program and the accompanying materials
     are made available under the terms of the Eclipse Public License 2.0
     which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
       Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
 
 -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -36,8 +35,8 @@
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
-      <scope>provided</scope>
       <classifier>classes</classifier>
+      <scope>provided</scope>
     </dependency>
     <!--
      | @PostConstruct and @PreDestroy help with Plexus->JSR330 migration
@@ -107,7 +106,8 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-test</artifactId>
-      <version>2.7.18</version><!-- <3 to be Java 8 compatible -->
+      <version>2.7.18</version>
+      <!-- <3 to be Java 8 compatible -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -140,10 +140,10 @@
         <executions>
           <execution>
             <id>guice3</id>
-            <phase>test</phase>
             <goals>
               <goal>copy</goal>
             </goals>
+            <phase>test</phase>
             <configuration>
               <artifactItems>
                 <artifactItem>
@@ -158,10 +158,10 @@
           </execution>
           <execution>
             <id>guice4</id>
-            <phase>test</phase>
             <goals>
               <goal>copy</goal>
             </goals>
+            <phase>test</phase>
             <configuration>
               <artifactItems>
                 <artifactItem>
@@ -181,10 +181,10 @@
           </execution>
           <execution>
             <id>guice423</id>
-            <phase>test</phase>
             <goals>
               <goal>copy</goal>
             </goals>
+            <phase>test</phase>
             <configuration>
               <artifactItems>
                 <artifactItem>
@@ -209,10 +209,10 @@
           </execution>
           <execution>
             <id>guice5</id>
-            <phase>test</phase>
             <goals>
               <goal>copy</goal>
             </goals>
+            <phase>test</phase>
             <configuration>
               <artifactItems>
                 <artifactItem>
@@ -242,10 +242,10 @@
           </execution>
           <execution>
             <id>guice6</id>
-            <phase>test</phase>
             <goals>
               <goal>copy</goal>
             </goals>
+            <phase>test</phase>
             <configuration>
               <artifactItems>
                 <artifactItem>
@@ -280,10 +280,10 @@
           </execution>
           <execution>
             <id>copy-old-annotations</id>
-            <phase>process-resources</phase>
             <goals>
               <goal>copy</goal>
             </goals>
+            <phase>process-resources</phase>
             <configuration>
               <stripVersion>false</stripVersion>
               <artifactItems>
@@ -426,10 +426,10 @@
         <executions>
           <execution>
             <id>remove-missing-class</id>
-            <phase>process-test-classes</phase>
             <goals>
               <goal>clean</goal>
             </goals>
+            <phase>process-test-classes</phase>
             <configuration>
               <excludeDefaultDirectories>true</excludeDefaultDirectories>
               <filesets>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,18 +12,14 @@
  */
 package org.eclipse.sisu.plexus;
 
-import java.util.Map.Entry;
-
-import org.eclipse.sisu.BeanEntry;
-
 import com.google.inject.name.Named;
+import java.util.Map.Entry;
+import org.eclipse.sisu.BeanEntry;
 
 /**
  * {@link Entry} representing a lazy @{@link Named} Plexus bean; the bean is only retrieved when the value is requested.
  */
-final class LazyPlexusBean<T>
-    implements PlexusBean<T>
-{
+final class LazyPlexusBean<T> implements PlexusBean<T> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -34,8 +30,7 @@ final class LazyPlexusBean<T>
     // Constructors
     // ----------------------------------------------------------------------
 
-    LazyPlexusBean( final BeanEntry<Named, T> bean )
-    {
+    LazyPlexusBean(final BeanEntry<Named, T> bean) {
         this.bean = bean;
     }
 
@@ -43,34 +38,28 @@ final class LazyPlexusBean<T>
     // Public methods
     // ----------------------------------------------------------------------
 
-    public String getKey()
-    {
+    public String getKey() {
         return bean.getKey().value();
     }
 
-    public T getValue()
-    {
+    public T getValue() {
         return bean.getValue();
     }
 
-    public T setValue( final T value )
-    {
+    public T setValue(final T value) {
         throw new UnsupportedOperationException();
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return bean.getDescription();
     }
 
-    public Class<T> getImplementationClass()
-    {
+    public Class<T> getImplementationClass() {
         return bean.getImplementationClass();
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return getKey() + "=" + getValue();
     }
 }

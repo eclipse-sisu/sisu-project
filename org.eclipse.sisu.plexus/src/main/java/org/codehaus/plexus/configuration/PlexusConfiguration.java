@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,37 +12,36 @@
  */
 package org.codehaus.plexus.configuration;
 
-public interface PlexusConfiguration
-{
+public interface PlexusConfiguration {
     String getName();
 
     String getValue();
 
-    String getValue( String defaultValue );
+    String getValue(String defaultValue);
 
-    void setValue( String value );
+    void setValue(String value);
 
     String[] getAttributeNames();
 
-    String getAttribute( String attributeName );
+    String getAttribute(String attributeName);
 
-    String getAttribute( String attributeName, String defaultValue );
+    String getAttribute(String attributeName, String defaultValue);
 
-    void setAttribute( String name, String value );
+    void setAttribute(String name, String value);
 
-    PlexusConfiguration getChild( String childName );
+    PlexusConfiguration getChild(String childName);
 
-    PlexusConfiguration getChild( String childName, boolean create );
+    PlexusConfiguration getChild(String childName, boolean create);
 
     PlexusConfiguration[] getChildren();
 
-    PlexusConfiguration[] getChildren( String childName );
+    PlexusConfiguration[] getChildren(String childName);
 
     int getChildCount();
 
-    PlexusConfiguration getChild( int index );
+    PlexusConfiguration getChild(int index);
 
-    void addChild( PlexusConfiguration child );
+    void addChild(PlexusConfiguration child);
 
-    PlexusConfiguration addChild( String name, String value );
+    PlexusConfiguration addChild(String name, String value);
 }

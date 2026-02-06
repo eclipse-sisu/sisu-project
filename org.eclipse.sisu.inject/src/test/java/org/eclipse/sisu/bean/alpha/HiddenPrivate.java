@@ -13,16 +13,12 @@ package org.eclipse.sisu.bean.alpha;
 import javax.inject.Singleton;
 
 @Singleton
-public class HiddenPrivate
-    extends HiddenPackage
-{
-    private void d()
-    {
-        results.append( "!" );
+public class HiddenPrivate extends HiddenPackage {
+    private void d() {
+        results.append("!");
     }
 
-    private void w()
-    {
-        results.append( "!" );
+    private void w() {
+        results.append("!");
     }
 }

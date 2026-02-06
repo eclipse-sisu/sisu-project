@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
-class MissingClass
-{
+class MissingClass {
     // MissingClass.class will be deleted at test time
 }

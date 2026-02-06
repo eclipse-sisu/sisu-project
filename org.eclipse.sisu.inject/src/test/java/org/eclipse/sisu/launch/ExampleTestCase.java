@@ -10,33 +10,28 @@
  *******************************************************************************/
 package org.eclipse.sisu.launch;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-
+import com.google.inject.name.Names;
 import java.io.File;
 import java.util.Map;
-
-import com.google.inject.name.Names;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  * Still JUnit3 based test
  * Execute with JUnit3 runner.
  */
-public final class ExampleTestCase
-    extends InjectedTestCase
-{
+public final class ExampleTestCase extends InjectedTestCase {
     @Inject
-    @Named( "${basedir}" )
+    @Named("${basedir}")
     String basedir;
 
     @Inject
-    @Named( "${basedir}/target/test-classes/org/eclipse/sisu/launch/inject.properties" )
+    @Named("${basedir}/target/test-classes/org/eclipse/sisu/launch/inject.properties")
     File propertiesFile;
 
-    public void testBasedir()
-    {
-        assertEquals( getBasedir(), basedir );
-        assertTrue( propertiesFile.isFile() );
+    public void testBasedir() {
+        assertEquals(getBasedir(), basedir);
+        assertTrue(propertiesFile.isFile());
     }
 
     @Inject
@@ -45,29 +40,27 @@ public final class ExampleTestCase
     @Inject
     Map<String, Foo> beans;
 
-    public void testInjection()
-    {
-        assertTrue( bean instanceof DefaultFoo );
+    public void testInjection() {
+        assertTrue(bean instanceof DefaultFoo);
 
-        assertEquals( 4, beans.size() );
+        assertEquals(4, beans.size());
 
-        assertTrue( beans.get( "default" ) instanceof DefaultFoo );
-        assertTrue( beans.get( NamedFoo.class.getName() ) instanceof NamedFoo );
-        assertTrue( beans.get( TaggedFoo.class.getName() ) instanceof TaggedFoo );
-        assertTrue( beans.get( "NameTag" ) instanceof NamedAndTaggedFoo );
+        assertTrue(beans.get("default") instanceof DefaultFoo);
+        assertTrue(beans.get(NamedFoo.class.getName()) instanceof NamedFoo);
+        assertTrue(beans.get(TaggedFoo.class.getName()) instanceof TaggedFoo);
+        assertTrue(beans.get("NameTag") instanceof NamedAndTaggedFoo);
 
-        assertTrue( bean == beans.get( "default" ) );
+        assertTrue(bean == beans.get("default"));
     }
 
-    public void testContainerLookup()
-    {
-        assertTrue( lookup( Foo.class ) instanceof DefaultFoo );
-        assertTrue( lookup( Foo.class, Named.class ) instanceof DefaultFoo );
-        assertTrue( lookup( Foo.class, "NameTag" ) instanceof NamedAndTaggedFoo );
-        assertTrue( lookup( Foo.class, Names.named( "NameTag" ) ) instanceof NamedAndTaggedFoo );
-        assertTrue( lookup( Foo.class, Tag.class ).getClass().isAnnotationPresent( Tag.class ) );
-        assertTrue( lookup( Foo.class, new TagImpl( "A" ) ) instanceof TaggedFoo );
-        assertNull( lookup( Foo.class, new TagImpl( "X" ) ) );
-        assertNull( lookup( Integer.class ) );
+    public void testContainerLookup() {
+        assertTrue(lookup(Foo.class) instanceof DefaultFoo);
+        assertTrue(lookup(Foo.class, Named.class) instanceof DefaultFoo);
+        assertTrue(lookup(Foo.class, "NameTag") instanceof NamedAndTaggedFoo);
+        assertTrue(lookup(Foo.class, Names.named("NameTag")) instanceof NamedAndTaggedFoo);
+        assertTrue(lookup(Foo.class, Tag.class).getClass().isAnnotationPresent(Tag.class));
+        assertTrue(lookup(Foo.class, new TagImpl("A")) instanceof TaggedFoo);
+        assertNull(lookup(Foo.class, new TagImpl("X")));
+        assertNull(lookup(Integer.class));
     }
 }

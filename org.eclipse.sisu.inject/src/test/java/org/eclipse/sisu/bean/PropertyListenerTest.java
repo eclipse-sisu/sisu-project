@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.sisu.bean;
 
-import javax.inject.Named;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.ConfigurationException;
@@ -21,38 +24,26 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.AbstractMatcher;
 import com.google.inject.name.Names;
 import com.google.inject.spi.TypeEncounter;
+import javax.inject.Named;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.fail;
-
-class PropertyListenerTest
-{
-    static class Base
-    {
+class PropertyListenerTest {
+    static class Base {
         String a;
     }
 
-    static class Bean0
-        extends Base
-    {
+    static class Bean0 extends Base {
         String last;
     }
 
-    static class Bean1
-        extends Base
-    {
+    static class Bean1 extends Base {
         String b;
 
         Bean2 bean;
     }
 
-    static class Bean2
-        extends Base
-    {
+    static class Bean2 extends Base {
         String b;
 
         String last;
@@ -61,20 +52,18 @@ class PropertyListenerTest
 
         String ignore;
 
-        @Named( "injected" )
+        @Named("injected")
         @javax.inject.Inject
         int jsr330;
 
-        @Named( "injected" )
+        @Named("injected")
         @com.google.inject.Inject
         int guice;
 
         String d;
     }
 
-    static class Bean3
-        extends Base
-    {
+    static class Bean3 extends Base {
         String b;
 
         String error;
@@ -82,50 +71,36 @@ class PropertyListenerTest
         String c;
     }
 
-    static class Bean4
-        extends Bean1
-    {
-        void setA( @SuppressWarnings( "unused" ) final String unused )
-        {
-            assertNull( a ); // hidden by our setter method
-            assertNotNull( b ); // should be injected first
+    static class Bean4 extends Bean1 {
+        void setA(@SuppressWarnings("unused") final String unused) {
+            assertNull(a); // hidden by our setter method
+            assertNotNull(b); // should be injected first
             a = "correct order";
         }
     }
 
-    class NamedPropertyBinder
-        implements PropertyBinder
-    {
-        public <T> PropertyBinding bindProperty( final BeanProperty<T> property )
-        {
-            if ( "last".equals( property.getName() ) )
-            {
+    class NamedPropertyBinder implements PropertyBinder {
+        public <T> PropertyBinding bindProperty(final BeanProperty<T> property) {
+            if ("last".equals(property.getName())) {
                 return PropertyBinder.LAST_BINDING;
             }
-            if ( "ignore".equals( property.getName() ) )
-            {
+            if ("ignore".equals(property.getName())) {
                 return null;
             }
-            if ( "error".equals( property.getName() ) )
-            {
-                throw new RuntimeException( "Broken binding" );
+            if ("error".equals(property.getName())) {
+                throw new RuntimeException("Broken binding");
             }
-            if ( "bean".equals( property.getName() ) )
-            {
-                return new PropertyBinding()
-                {
-                    public void injectProperty( final Object bean )
-                    {
-                        property.set( bean, injector.getInstance( Key.get( property.getType() ) ) );
+            if ("bean".equals(property.getName())) {
+                return new PropertyBinding() {
+                    public void injectProperty(final Object bean) {
+                        property.set(bean, injector.getInstance(Key.get(property.getType())));
                     }
                 };
             }
-            return new PropertyBinding()
-            {
-                @SuppressWarnings( "unchecked" )
-                public void injectProperty( final Object bean )
-                {
-                    property.set( bean, (T) ( property.getName() + "Value" ) );
+            return new PropertyBinding() {
+                @SuppressWarnings("unchecked")
+                public void injectProperty(final Object bean) {
+                    property.set(bean, (T) (property.getName() + "Value"));
                 }
             };
         }
@@ -136,91 +111,75 @@ class PropertyListenerTest
     Injector injector;
 
     @BeforeEach
-    void setUp()
-    {
-        injector = Guice.createInjector( new AbstractModule()
-        {
+    void setUp() {
+        injector = Guice.createInjector(new AbstractModule() {
             @Override
-            protected void configure()
-            {
-                bindListener( new AbstractMatcher<TypeLiteral<?>>()
-                {
-                    public boolean matches( final TypeLiteral<?> type )
-                    {
-                        return Base.class.isAssignableFrom( type.getRawType() );
-                    }
-                }, new BeanListener( new BeanBinder()
-                {
-                    public <T> PropertyBinder bindBean( final TypeLiteral<T> type, final TypeEncounter<T> encounter )
-                    {
-                        return type.getRawType().getName().contains( "Bean" ) ? namedPropertyBinder : null;
-                    }
-                } ) );
+            protected void configure() {
+                bindListener(
+                        new AbstractMatcher<TypeLiteral<?>>() {
+                            public boolean matches(final TypeLiteral<?> type) {
+                                return Base.class.isAssignableFrom(type.getRawType());
+                            }
+                        },
+                        new BeanListener(new BeanBinder() {
+                            public <T> PropertyBinder bindBean(
+                                    final TypeLiteral<T> type, final TypeEncounter<T> encounter) {
+                                return type.getRawType().getName().contains("Bean") ? namedPropertyBinder : null;
+                            }
+                        }));
 
-                bindConstant().annotatedWith( Names.named( "injected" ) ).to( 42 );
+                bindConstant().annotatedWith(Names.named("injected")).to(42);
             }
-        } );
+        });
     }
 
-    public void testNoBean()
-    {
-        final Base base = injector.getInstance( Base.class );
-        assertNull( base.a );
-    }
-
-    @Test
-    void testNoBindings()
-    {
-        final Bean0 bean0 = injector.getInstance( Bean0.class );
-        assertNull( bean0.a );
+    public void testNoBean() {
+        final Base base = injector.getInstance(Base.class);
+        assertNull(base.a);
     }
 
     @Test
-    void testPropertyBindings()
-    {
-        final Bean1 bean1 = injector.getInstance( Bean1.class );
-        assertEquals( "bValue", bean1.b );
-        assertEquals( "aValue", bean1.a );
+    void testNoBindings() {
+        final Bean0 bean0 = injector.getInstance(Bean0.class);
+        assertNull(bean0.a);
     }
 
     @Test
-    void testSpecialProperties()
-    {
-        final Bean2 bean2 = injector.getInstance( Bean2.class );
-        assertEquals( "dValue", bean2.d );
-        assertEquals( 42, bean2.guice );
-        assertEquals( 42, bean2.jsr330 );
-        assertEquals( "cValue", bean2.c );
-        assertNull( bean2.b );
-        assertNull( bean2.a );
+    void testPropertyBindings() {
+        final Bean1 bean1 = injector.getInstance(Bean1.class);
+        assertEquals("bValue", bean1.b);
+        assertEquals("aValue", bean1.a);
+    }
 
-        try
-        {
-            PropertyBinder.LAST_BINDING.injectProperty( bean2 );
-            fail( "Expected UnsupportedOperationException" );
-        }
-        catch ( final UnsupportedOperationException e )
-        {
+    @Test
+    void testSpecialProperties() {
+        final Bean2 bean2 = injector.getInstance(Bean2.class);
+        assertEquals("dValue", bean2.d);
+        assertEquals(42, bean2.guice);
+        assertEquals(42, bean2.jsr330);
+        assertEquals("cValue", bean2.c);
+        assertNull(bean2.b);
+        assertNull(bean2.a);
+
+        try {
+            PropertyBinder.LAST_BINDING.injectProperty(bean2);
+            fail("Expected UnsupportedOperationException");
+        } catch (final UnsupportedOperationException e) {
         }
     }
 
     @Test
-    void testBrokenBinding()
-    {
-        try
-        {
-            injector.getInstance( Bean3.class );
-            fail( "Expected ConfigurationException" );
-        }
-        catch ( final ConfigurationException e )
-        {
+    void testBrokenBinding() {
+        try {
+            injector.getInstance(Bean3.class);
+            fail("Expected ConfigurationException");
+        } catch (final ConfigurationException e) {
             e.printStackTrace();
         }
     }
 
     @Test
-    void testInjectionOrder()
-    {
-        assertEquals( "correct order", injector.getInstance( Bean4.class ).a );
+    void testInjectionOrder() {
+        assertEquals("correct order", injector.getInstance(Bean4.class).a);
     }
 }

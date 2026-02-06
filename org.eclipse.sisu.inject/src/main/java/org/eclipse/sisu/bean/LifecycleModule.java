@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -27,36 +27,28 @@ import com.google.inject.spi.TypeListener;
  * and {@link javax.annotation.PreDestroy} annotations. The lifecycle can be controlled with the associated
  * {@link BeanManager}.
  */
-public final class LifecycleModule
-    implements Module
-{
+public final class LifecycleModule implements Module {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
     /* These classes map the Guice SPI to the BeanManager SPI */
 
-    private final Matcher<TypeLiteral<?>> matcher = new AbstractMatcher<TypeLiteral<?>>()
-    {
-        public boolean matches( final TypeLiteral<?> type )
-        {
-            return manager.manage( type.getRawType() );
+    private final Matcher<TypeLiteral<?>> matcher = new AbstractMatcher<TypeLiteral<?>>() {
+        public boolean matches(final TypeLiteral<?> type) {
+            return manager.manage(type.getRawType());
         }
     };
 
-    private final TypeListener typeListener = new TypeListener()
-    {
-        private final InjectionListener<Object> listener = new InjectionListener<Object>()
-        {
-            public void afterInjection( final Object bean )
-            {
-                manager.manage( bean );
+    private final TypeListener typeListener = new TypeListener() {
+        private final InjectionListener<Object> listener = new InjectionListener<Object>() {
+            public void afterInjection(final Object bean) {
+                manager.manage(bean);
             }
         };
 
-        public <B> void hear( final TypeLiteral<B> type, final TypeEncounter<B> encounter )
-        {
-            encounter.register( listener );
+        public <B> void hear(final TypeLiteral<B> type, final TypeEncounter<B> encounter) {
+            encounter.register(listener);
         }
     };
 
@@ -66,13 +58,11 @@ public final class LifecycleModule
     // Constructors
     // ----------------------------------------------------------------------
 
-    public LifecycleModule()
-    {
-        this( new LifecycleManager() );
+    public LifecycleModule() {
+        this(new LifecycleManager());
     }
 
-    public LifecycleModule( final BeanManager manager )
-    {
+    public LifecycleModule(final BeanManager manager) {
         this.manager = manager;
     }
 
@@ -80,9 +70,8 @@ public final class LifecycleModule
     // Public methods
     // ----------------------------------------------------------------------
 
-    public void configure( final Binder binder )
-    {
-        binder.bind( BeanManager.class ).toInstance( manager );
-        binder.bindListener( matcher, typeListener );
+    public void configure(final Binder binder) {
+        binder.bind(BeanManager.class).toInstance(manager);
+        binder.bindListener(matcher, typeListener);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,16 +12,13 @@
  */
 package org.eclipse.sisu.bean;
 
-import java.util.List;
-
 import com.google.inject.MembersInjector;
+import java.util.List;
 
 /**
  * {@link MembersInjector} that takes {@link PropertyBinding}s and applies them to bean instances.
  */
-final class BeanInjector<B>
-    implements MembersInjector<B>
-{
+final class BeanInjector<B> implements MembersInjector<B> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -32,14 +29,12 @@ final class BeanInjector<B>
     // Constructors
     // ----------------------------------------------------------------------
 
-    BeanInjector( final List<PropertyBinding> bindings )
-    {
+    BeanInjector(final List<PropertyBinding> bindings) {
         final int size = bindings.size();
         this.bindings = new PropertyBinding[size];
-        for ( int i = 0, n = size; i < size; )
-        {
+        for (int i = 0, n = size; i < size; ) {
             // reverse: inject superclass before sub
-            this.bindings[i++] = bindings.get( --n );
+            this.bindings[i++] = bindings.get(--n);
         }
     }
 
@@ -47,11 +42,9 @@ final class BeanInjector<B>
     // Public methods
     // ----------------------------------------------------------------------
 
-    public void injectMembers( final B bean )
-    {
-        for ( final PropertyBinding b : bindings )
-        {
-            b.injectProperty( bean );
+    public void injectMembers(final B bean) {
+        for (final PropertyBinding b : bindings) {
+            b.injectProperty(bean);
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,22 +12,19 @@
  */
 package org.eclipse.sisu.bean;
 
+import com.google.inject.ProvisionException;
+import com.google.inject.TypeLiteral;
+import com.google.inject.spi.TypeEncounter;
+import com.google.inject.spi.TypeListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.google.inject.ProvisionException;
-import com.google.inject.TypeLiteral;
-import com.google.inject.spi.TypeEncounter;
-import com.google.inject.spi.TypeListener;
-
 /**
  * {@link TypeListener} that listens for bean types and arranges for their properties to be injected.
  */
-public final class BeanListener
-    implements TypeListener
-{
+public final class BeanListener implements TypeListener {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -38,8 +35,7 @@ public final class BeanListener
     // Constructors
     // ----------------------------------------------------------------------
 
-    public BeanListener( final BeanBinder beanBinder )
-    {
+    public BeanListener(final BeanBinder beanBinder) {
         this.beanBinder = beanBinder;
     }
 
@@ -47,53 +43,40 @@ public final class BeanListener
     // Public methods
     // ----------------------------------------------------------------------
 
-    public <B> void hear( final TypeLiteral<B> type, final TypeEncounter<B> encounter )
-    {
-        final PropertyBinder propertyBinder = beanBinder.bindBean( type, encounter );
-        if ( null == propertyBinder )
-        {
+    public <B> void hear(final TypeLiteral<B> type, final TypeEncounter<B> encounter) {
+        final PropertyBinder propertyBinder = beanBinder.bindBean(type, encounter);
+        if (null == propertyBinder) {
             return; // no properties to bind
         }
 
         final List<PropertyBinding> bindings = new ArrayList<PropertyBinding>();
         final Set<String> visited = new HashSet<String>();
 
-        for ( final BeanProperty<?> property : new BeanProperties( type.getRawType() ) )
-        {
-            if ( property.getAnnotation( javax.inject.Inject.class ) != null
-                || property.getAnnotation( com.google.inject.Inject.class ) != null )
-            {
+        for (final BeanProperty<?> property : new BeanProperties(type.getRawType())) {
+            if (property.getAnnotation(javax.inject.Inject.class) != null
+                    || property.getAnnotation(com.google.inject.Inject.class) != null) {
                 continue; // these properties will have already been injected by Guice
             }
             final String name = property.getName();
-            if ( visited.add( name ) )
-            {
-                try
-                {
-                    final PropertyBinding binding = propertyBinder.bindProperty( property );
-                    if ( binding == PropertyBinder.LAST_BINDING )
-                    {
+            if (visited.add(name)) {
+                try {
+                    final PropertyBinding binding = propertyBinder.bindProperty(property);
+                    if (binding == PropertyBinder.LAST_BINDING) {
                         break; // no more bindings
                     }
-                    if ( binding != null )
-                    {
-                        bindings.add( binding );
+                    if (binding != null) {
+                        bindings.add(binding);
+                    } else {
+                        visited.remove(name);
                     }
-                    else
-                    {
-                        visited.remove( name );
-                    }
-                }
-                catch ( final RuntimeException e )
-                {
-                    encounter.addError( new ProvisionException( "Error binding: " + property, e ) );
+                } catch (final RuntimeException e) {
+                    encounter.addError(new ProvisionException("Error binding: " + property, e));
                 }
             }
         }
 
-        if ( bindings.size() > 0 )
-        {
-            encounter.register( new BeanInjector<B>( bindings ) );
+        if (bindings.size() > 0) {
+            encounter.register(new BeanInjector<B>(bindings));
         }
     }
 }

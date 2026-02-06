@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -23,9 +23,7 @@ import java.util.Set;
 /**
  * Delegating {@link Map} that merges a series of {@link Map}s into one consistent view.
  */
-final class MergedProperties
-    extends AbstractMap<Object, Object>
-{
+final class MergedProperties extends AbstractMap<Object, Object> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -38,9 +36,8 @@ final class MergedProperties
     // Constructors
     // ----------------------------------------------------------------------
 
-    MergedProperties( final List<Map<?, ?>> properties )
-    {
-        this.properties = properties.toArray( new Map[properties.size()] );
+    MergedProperties(final List<Map<?, ?>> properties) {
+        this.properties = properties.toArray(new Map[properties.size()]);
     }
 
     // ----------------------------------------------------------------------
@@ -48,13 +45,10 @@ final class MergedProperties
     // ----------------------------------------------------------------------
 
     @Override
-    public Object get( final Object key )
-    {
-        for ( final Map<?, ?> p : properties )
-        {
-            final Object value = p.get( key );
-            if ( null != value )
-            {
+    public Object get(final Object key) {
+        for (final Map<?, ?> p : properties) {
+            final Object value = p.get(key);
+            if (null != value) {
                 return value;
             }
         }
@@ -62,12 +56,9 @@ final class MergedProperties
     }
 
     @Override
-    public boolean containsKey( final Object key )
-    {
-        for ( final Map<?, ?> p : properties )
-        {
-            if ( p.containsKey( key ) )
-            {
+    public boolean containsKey(final Object key) {
+        for (final Map<?, ?> p : properties) {
+            if (p.containsKey(key)) {
                 return true;
             }
         }
@@ -75,10 +66,8 @@ final class MergedProperties
     }
 
     @Override
-    public Set<Entry<Object, Object>> entrySet()
-    {
-        if ( null == entrySet )
-        {
+    public Set<Entry<Object, Object>> entrySet() {
+        if (null == entrySet) {
             entrySet = new MergedEntries();
         }
         return entrySet;
@@ -88,25 +77,18 @@ final class MergedProperties
     // Implementation types
     // ----------------------------------------------------------------------
 
-    final class MergedEntries
-        extends AbstractSet<Entry<Object, Object>>
-    {
+    final class MergedEntries extends AbstractSet<Entry<Object, Object>> {
         @Override
-        public Iterator<Entry<Object, Object>> iterator()
-        {
-            return new Iterator<Entry<Object, Object>>()
-            {
-                @SuppressWarnings( "rawtypes" )
+        public Iterator<Entry<Object, Object>> iterator() {
+            return new Iterator<Entry<Object, Object>>() {
+                @SuppressWarnings("rawtypes")
                 private Iterator<? extends Entry> itr;
 
                 private int index;
 
-                public boolean hasNext()
-                {
-                    while ( null == itr || !itr.hasNext() )
-                    {
-                        if ( index >= properties.length )
-                        {
+                public boolean hasNext() {
+                    while (null == itr || !itr.hasNext()) {
+                        if (index >= properties.length) {
                             return false;
                         }
                         itr = properties[index++].entrySet().iterator();
@@ -114,29 +96,24 @@ final class MergedProperties
                     return true;
                 }
 
-                @SuppressWarnings( "unchecked" )
-                public Entry<Object, Object> next()
-                {
-                    if ( hasNext() )
-                    {
+                @SuppressWarnings("unchecked")
+                public Entry<Object, Object> next() {
+                    if (hasNext()) {
                         return itr.next();
                     }
                     throw new NoSuchElementException();
                 }
 
-                public void remove()
-                {
+                public void remove() {
                     throw new UnsupportedOperationException();
                 }
             };
         }
 
         @Override
-        public int size()
-        {
+        public int size() {
             int size = 0;
-            for ( final Map<?, ?> p : properties )
-            {
+            for (final Map<?, ?> p : properties) {
                 size += p.size();
             }
             return size;

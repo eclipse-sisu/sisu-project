@@ -10,23 +10,19 @@
  *******************************************************************************/
 package org.eclipse.sisu.wire;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import javax.inject.Inject;
-
-import org.eclipse.sisu.Parameters;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Provides;
+import java.util.Arrays;
+import java.util.Map;
+import javax.inject.Inject;
+import org.eclipse.sisu.Parameters;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-class ParametersTest
-{
+class ParametersTest {
     @Inject
     @Parameters
     String[] arguments;
@@ -36,49 +32,43 @@ class ParametersTest
     Map<String, String> properties;
 
     @Test
-    void testDefaultParameters()
-    {
-        Guice.createInjector( new WireModule( new AbstractModule()
-        {
-            @Override
-            protected void configure()
-            {
-                bind( ParametersTest.class );
-            }
-        } ) ).injectMembers( this );
+    void testDefaultParameters() {
+        Guice.createInjector(new WireModule(new AbstractModule() {
+                    @Override
+                    protected void configure() {
+                        bind(ParametersTest.class);
+                    }
+                }))
+                .injectMembers(this);
 
-        assertTrue( properties.isEmpty() );
-        assertEquals( 0, arguments.length );
+        assertTrue(properties.isEmpty());
+        assertEquals(0, arguments.length);
     }
 
-    @SuppressWarnings( { "unchecked", "rawtypes" } )
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
-    void testCustomParameters()
-    {
-        Guice.createInjector( new WireModule( new AbstractModule()
-        {
-            @Override
-            protected void configure()
-            {
-                bind( ParametersTest.class );
-            }
+    void testCustomParameters() {
+        Guice.createInjector(new WireModule(new AbstractModule() {
+                    @Override
+                    protected void configure() {
+                        bind(ParametersTest.class);
+                    }
 
-            @Provides
-            @Parameters
-            String[] arguments()
-            {
-                return new String[] { "Hello", "World" };
-            }
+                    @Provides
+                    @Parameters
+                    String[] arguments() {
+                        return new String[] {"Hello", "World"};
+                    }
 
-            @Provides
-            @Parameters
-            Map<String, String> properties()
-            {
-                return (Map) System.getProperties();
-            }
-        } ) ).injectMembers( this );
+                    @Provides
+                    @Parameters
+                    Map<String, String> properties() {
+                        return (Map) System.getProperties();
+                    }
+                }))
+                .injectMembers(this);
 
-        assertEquals( System.getProperties(), properties );
-        assertTrue( Arrays.equals( new String[] { "Hello", "World" }, arguments ) );
+        assertEquals(System.getProperties(), properties);
+        assertTrue(Arrays.equals(new String[] {"Hello", "World"}, arguments));
     }
 }

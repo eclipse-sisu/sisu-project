@@ -12,76 +12,65 @@ package org.eclipse.sisu.plexus;
 
 import java.util.Arrays;
 import java.util.List;
-
+import junit.framework.TestCase;
 import org.codehaus.plexus.component.configurator.BasicComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
-import junit.framework.TestCase;
-
-public class DefaultValuesTest
-    extends TestCase
-{
-    public void testDefaultBasicValue()
-        throws ComponentConfigurationException
-    {
+public class DefaultValuesTest extends TestCase {
+    public void testDefaultBasicValue() throws ComponentConfigurationException {
         final ComponentWithInt componentWithString = new ComponentWithInt();
 
-        final PlexusConfiguration config = new XmlPlexusConfiguration( "config" );
-        final PlexusConfiguration target = new XmlPlexusConfiguration( "target" );
-        target.setAttribute( "default-value", "TEST" );
-        config.addChild( target );
+        final PlexusConfiguration config = new XmlPlexusConfiguration("config");
+        final PlexusConfiguration target = new XmlPlexusConfiguration("target");
+        target.setAttribute("default-value", "TEST");
+        config.addChild(target);
 
-        new BasicComponentConfigurator().configureComponent( componentWithString, config, null );
-        assertEquals( "TEST", componentWithString.target );
+        new BasicComponentConfigurator().configureComponent(componentWithString, config, null);
+        assertEquals("TEST", componentWithString.target);
 
-        target.setValue( "OVERRIDE" );
+        target.setValue("OVERRIDE");
 
-        new BasicComponentConfigurator().configureComponent( componentWithString, config, null );
-        assertEquals( "OVERRIDE", componentWithString.target );
+        new BasicComponentConfigurator().configureComponent(componentWithString, config, null);
+        assertEquals("OVERRIDE", componentWithString.target);
     }
 
-    public void testDefaultCollection()
-        throws ComponentConfigurationException
-    {
+    public void testDefaultCollection() throws ComponentConfigurationException {
         final ComponentWithArray componentWithArray = new ComponentWithArray();
         final ComponentWithList componentWithList = new ComponentWithList();
 
-        final PlexusConfiguration config = new XmlPlexusConfiguration( "config" );
-        final PlexusConfiguration target = new XmlPlexusConfiguration( "target" );
-        target.setAttribute( "default-value", "one,two,three" );
-        config.addChild( target );
+        final PlexusConfiguration config = new XmlPlexusConfiguration("config");
+        final PlexusConfiguration target = new XmlPlexusConfiguration("target");
+        target.setAttribute("default-value", "one,two,three");
+        config.addChild(target);
 
-        new BasicComponentConfigurator().configureComponent( componentWithArray, config, null );
-        assertTrue( Arrays.equals( new String[] { "one", "two", "three" }, componentWithArray.target ) );
+        new BasicComponentConfigurator().configureComponent(componentWithArray, config, null);
+        assertTrue(Arrays.equals(new String[] {"one", "two", "three"}, componentWithArray.target));
 
-        new BasicComponentConfigurator().configureComponent( componentWithList, config, null );
-        assertEquals( Arrays.asList( "one", "two", "three" ), componentWithList.target );
+        new BasicComponentConfigurator().configureComponent(componentWithList, config, null);
+        assertEquals(Arrays.asList("one", "two", "three"), componentWithList.target);
 
-        final PlexusConfiguration element = new XmlPlexusConfiguration( "element" );
-        element.setValue( "OVERRIDE" );
-        target.addChild( element );
+        final PlexusConfiguration element = new XmlPlexusConfiguration("element");
+        element.setValue("OVERRIDE");
+        target.addChild(element);
 
-        new BasicComponentConfigurator().configureComponent( componentWithArray, config, null );
-        assertTrue( Arrays.equals( new String[] { "OVERRIDE" }, componentWithArray.target ) );
+        new BasicComponentConfigurator().configureComponent(componentWithArray, config, null);
+        assertTrue(Arrays.equals(new String[] {"OVERRIDE"}, componentWithArray.target));
 
-        new BasicComponentConfigurator().configureComponent( componentWithList, config, null );
-        assertEquals( Arrays.asList( "OVERRIDE" ), componentWithList.target );
+        new BasicComponentConfigurator().configureComponent(componentWithList, config, null);
+        assertEquals(Arrays.asList("OVERRIDE"), componentWithList.target);
     }
 
-    static class ComponentWithInt
-    {
+    static class ComponentWithInt {
         String target;
     }
 
-    static class ComponentWithArray
-    {
+    static class ComponentWithArray {
         String[] target;
     }
 
-    static class ComponentWithList
-    {
+    static class ComponentWithList {
         List<String> target;
     }
 }

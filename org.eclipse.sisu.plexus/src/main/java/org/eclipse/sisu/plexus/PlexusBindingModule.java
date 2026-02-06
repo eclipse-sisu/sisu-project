@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,23 +12,19 @@
  */
 package org.eclipse.sisu.plexus;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.eclipse.sisu.bean.BeanListener;
-import org.eclipse.sisu.bean.BeanManager;
-
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.matcher.Matchers;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import org.eclipse.sisu.bean.BeanListener;
+import org.eclipse.sisu.bean.BeanManager;
 
 /**
  * Guice {@link Module} that supports registration, injection, and management of Plexus beans.
  */
-public final class PlexusBindingModule
-    implements Module
-{
+public final class PlexusBindingModule implements Module {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -41,40 +37,34 @@ public final class PlexusBindingModule
     // Constructors
     // ----------------------------------------------------------------------
 
-    public PlexusBindingModule( final BeanManager manager, final PlexusBeanModule... modules )
-    {
+    public PlexusBindingModule(final BeanManager manager, final PlexusBeanModule... modules) {
         this.manager = manager;
         this.modules = modules.clone();
     }
 
-    public PlexusBindingModule( final BeanManager manager, final Collection<? extends PlexusBeanModule> modules )
-    {
+    public PlexusBindingModule(final BeanManager manager, final Collection<? extends PlexusBeanModule> modules) {
         this.manager = manager;
-        this.modules = modules.toArray( new PlexusBeanModule[modules.size()] );
+        this.modules = modules.toArray(new PlexusBeanModule[modules.size()]);
     }
 
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
 
-    public void configure( final Binder binder )
-    {
-        final List<PlexusBeanSource> sources = new ArrayList<PlexusBeanSource>( modules.length );
-        for ( final PlexusBeanModule module : modules )
-        {
-            final PlexusBeanSource source = module.configure( binder );
-            if ( null != source )
-            {
-                sources.add( source );
+    public void configure(final Binder binder) {
+        final List<PlexusBeanSource> sources = new ArrayList<PlexusBeanSource>(modules.length);
+        for (final PlexusBeanModule module : modules) {
+            final PlexusBeanSource source = module.configure(binder);
+            if (null != source) {
+                sources.add(source);
             }
         }
 
         // attach custom logic to support Plexus requirements/configuration/lifecycle
-        final PlexusBeanBinder plexusBinder = new PlexusBeanBinder( manager, sources );
-        binder.bindListener( Matchers.any(), new BeanListener( plexusBinder ) );
-        if ( manager instanceof Module )
-        {
-            ( (Module) manager ).configure( binder );
+        final PlexusBeanBinder plexusBinder = new PlexusBeanBinder(manager, sources);
+        binder.bindListener(Matchers.any(), new BeanListener(plexusBinder));
+        if (manager instanceof Module) {
+            ((Module) manager).configure(binder);
         }
     }
 }

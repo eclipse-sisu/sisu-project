@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -19,10 +19,7 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * Thread-safe {@link Map} whose keys are kept alive by soft/weak {@link Reference}s.
  */
-final class MildConcurrentKeys<K, V>
-    extends MildKeys<K, V>
-    implements ConcurrentMap<K, V>
-{
+final class MildConcurrentKeys<K, V> extends MildKeys<K, V> implements ConcurrentMap<K, V> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -33,9 +30,8 @@ final class MildConcurrentKeys<K, V>
     // Constructors
     // ----------------------------------------------------------------------
 
-    MildConcurrentKeys( final ConcurrentMap<Reference<K>, V> map, final boolean soft )
-    {
-        super( map, soft );
+    MildConcurrentKeys(final ConcurrentMap<Reference<K>, V> map, final boolean soft) {
+        super(map, soft);
         this.concurrentMap = map;
     }
 
@@ -43,31 +39,27 @@ final class MildConcurrentKeys<K, V>
     // Public methods
     // ----------------------------------------------------------------------
 
-    public V putIfAbsent( final K key, final V value )
-    {
+    public V putIfAbsent(final K key, final V value) {
         compact();
 
-        return concurrentMap.putIfAbsent( mildKey( key ), value );
+        return concurrentMap.putIfAbsent(mildKey(key), value);
     }
 
-    public V replace( final K key, final V value )
-    {
+    public V replace(final K key, final V value) {
         compact();
 
-        return concurrentMap.replace( mildKey( key ), value );
+        return concurrentMap.replace(mildKey(key), value);
     }
 
-    public boolean replace( final K key, final V oldValue, final V newValue )
-    {
+    public boolean replace(final K key, final V oldValue, final V newValue) {
         compact();
 
-        return concurrentMap.replace( mildKey( key ), oldValue, newValue );
+        return concurrentMap.replace(mildKey(key), oldValue, newValue);
     }
 
-    public boolean remove( final Object key, final Object value )
-    {
+    public boolean remove(final Object key, final Object value) {
         compact();
 
-        return concurrentMap.remove( tempKey( key ), value );
+        return concurrentMap.remove(tempKey(key), value);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -21,9 +21,7 @@ import java.util.Set;
 /**
  * {@link Map} backed by an {@link Iterable} sequence of map entries.
  */
-public final class EntryMapAdapter<K, V>
-    extends AbstractMap<K, V>
-{
+public final class EntryMapAdapter<K, V> extends AbstractMap<K, V> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -34,9 +32,8 @@ public final class EntryMapAdapter<K, V>
     // Constructors
     // ----------------------------------------------------------------------
 
-    public EntryMapAdapter( final Iterable<? extends Entry<K, V>> iterable )
-    {
-        entrySet = new EntrySet<K, V>( iterable );
+    public EntryMapAdapter(final Iterable<? extends Entry<K, V>> iterable) {
+        entrySet = new EntrySet<K, V>(iterable);
     }
 
     // ----------------------------------------------------------------------
@@ -44,14 +41,12 @@ public final class EntryMapAdapter<K, V>
     // ----------------------------------------------------------------------
 
     @Override
-    public Set<Entry<K, V>> entrySet()
-    {
+    public Set<Entry<K, V>> entrySet() {
         return entrySet;
     }
 
     @Override
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return entrySet.isEmpty();
     }
 
@@ -62,9 +57,7 @@ public final class EntryMapAdapter<K, V>
     /**
      * Entry {@link Set} backed by an {@link Iterable} sequence of map entries.
      */
-    private static final class EntrySet<K, V>
-        extends AbstractSet<Entry<K, V>>
-    {
+    private static final class EntrySet<K, V> extends AbstractSet<Entry<K, V>> {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -75,9 +68,8 @@ public final class EntryMapAdapter<K, V>
         // Constructors
         // ----------------------------------------------------------------------
 
-        @SuppressWarnings( "unchecked" )
-        EntrySet( final Iterable<? extends Entry<K, V>> iterable )
-        {
+        @SuppressWarnings("unchecked")
+        EntrySet(final Iterable<? extends Entry<K, V>> iterable) {
             this.iterable = (Iterable<Entry<K, V>>) iterable;
         }
 
@@ -86,23 +78,19 @@ public final class EntryMapAdapter<K, V>
         // ----------------------------------------------------------------------
 
         @Override
-        public Iterator<Entry<K, V>> iterator()
-        {
+        public Iterator<Entry<K, V>> iterator() {
             return iterable.iterator();
         }
 
         @Override
-        public boolean isEmpty()
-        {
+        public boolean isEmpty() {
             return false == iterator().hasNext();
         }
 
         @Override
-        public int size()
-        {
+        public int size() {
             int size = 0;
-            for ( final Iterator<?> i = iterable.iterator(); i.hasNext(); i.next() )
-            {
+            for (final Iterator<?> i = iterable.iterator(); i.hasNext(); i.next()) {
                 size++;
             }
             return size;

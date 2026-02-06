@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,19 +12,16 @@
  */
 package org.eclipse.sisu.plexus;
 
-import javax.inject.Provider;
-
-import org.codehaus.plexus.component.annotations.Configuration;
-import org.eclipse.sisu.bean.BeanProperty;
-
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeEncounter;
+import javax.inject.Provider;
+import org.codehaus.plexus.component.annotations.Configuration;
+import org.eclipse.sisu.bean.BeanProperty;
 
 /**
  * Creates {@link Provider}s for properties with @{@link Configuration} metadata.
  */
-final class PlexusConfigurations
-{
+final class PlexusConfigurations {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -35,9 +32,8 @@ final class PlexusConfigurations
     // Constructors
     // ----------------------------------------------------------------------
 
-    PlexusConfigurations( final TypeEncounter<?> encounter )
-    {
-        converterProvider = encounter.getProvider( PlexusBeanConverter.class );
+    PlexusConfigurations(final TypeEncounter<?> encounter) {
+        converterProvider = encounter.getProvider(PlexusBeanConverter.class);
     }
 
     // ----------------------------------------------------------------------
@@ -46,14 +42,13 @@ final class PlexusConfigurations
 
     /**
      * Creates a {@link Provider} that provides values that match the given property configuration.
-     * 
+     *
      * @param configuration The Plexus configuration
      * @param property The bean property
      * @return Provider that provides configured values for the given property
      */
-    public <T> Provider<T> lookup( final Configuration configuration, final BeanProperty<T> property )
-    {
-        return new ConfigurationProvider<T>( converterProvider, property.getType(), configuration.value() );
+    public <T> Provider<T> lookup(final Configuration configuration, final BeanProperty<T> property) {
+        return new ConfigurationProvider<T>(converterProvider, property.getType(), configuration.value());
     }
 
     // ----------------------------------------------------------------------
@@ -63,9 +58,7 @@ final class PlexusConfigurations
     /**
      * {@link Provider} of Plexus configurations.
      */
-    private static final class ConfigurationProvider<T>
-        implements Provider<T>
-    {
+    private static final class ConfigurationProvider<T> implements Provider<T> {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -80,9 +73,8 @@ final class PlexusConfigurations
         // Constructors
         // ----------------------------------------------------------------------
 
-        ConfigurationProvider( final Provider<PlexusBeanConverter> converterProvider, final TypeLiteral<T> type,
-                               final String value )
-        {
+        ConfigurationProvider(
+                final Provider<PlexusBeanConverter> converterProvider, final TypeLiteral<T> type, final String value) {
             this.converterProvider = converterProvider;
 
             this.type = type;
@@ -93,9 +85,8 @@ final class PlexusConfigurations
         // Public methods
         // ----------------------------------------------------------------------
 
-        public T get()
-        {
-            return converterProvider.get().convert( type, value );
+        public T get() {
+            return converterProvider.get().convert(type, value);
         }
     }
 }

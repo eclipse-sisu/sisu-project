@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.codehaus.plexus.component.configurator.converters.lookup;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
-
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.converters.ConfigurationConverter;
 import org.codehaus.plexus.component.configurator.converters.basic.BooleanConverter;
@@ -45,9 +44,7 @@ import org.codehaus.plexus.component.configurator.converters.composite.Propertie
 import org.codehaus.plexus.component.configurator.converters.special.ClassRealmConverter;
 import org.eclipse.sisu.inject.Weak;
 
-public final class DefaultConverterLookup
-    implements ConverterLookup
-{
+public final class DefaultConverterLookup implements ConverterLookup {
     private static final ConfigurationConverter[] DEFAULT_CONVERTERS = {
         // optimized ordering...
         new FileConverter(), //
@@ -75,53 +72,45 @@ public final class DefaultConverterLookup
         new StringBufferConverter(), //
         new StringBuilderConverter(), //
         new TemporalConverter(), //
-        new ObjectWithFieldsConverter() };
+        new ObjectWithFieldsConverter()
+    };
 
     private final Map<Class<?>, ConfigurationConverter> lookupCache = //
-        Weak.concurrentKeys(); // entries will expire on class unload
+            Weak.concurrentKeys(); // entries will expire on class unload
 
     private final List<ConfigurationConverter> customConverters = //
-        new CopyOnWriteArrayList<ConfigurationConverter>();
+            new CopyOnWriteArrayList<ConfigurationConverter>();
 
-    public void registerConverter( final ConfigurationConverter converter )
-    {
-        customConverters.add( converter );
+    public void registerConverter(final ConfigurationConverter converter) {
+        customConverters.add(converter);
     }
 
-    public ConfigurationConverter lookupConverterForType( final Class<?> type )
-        throws ComponentConfigurationException
-    {
-        ConfigurationConverter converter = lookupCache.get( type );
-        if ( null != converter )
-        {
+    public ConfigurationConverter lookupConverterForType(final Class<?> type) throws ComponentConfigurationException {
+        ConfigurationConverter converter = lookupCache.get(type);
+        if (null != converter) {
             return converter;
         }
-        for ( int i = 0; i < customConverters.size(); i++ )
-        {
-            converter = customConverters.get( i );
-            if ( converter.canConvert( type ) )
-            {
-                lookupCache.put( type, converter );
+        for (int i = 0; i < customConverters.size(); i++) {
+            converter = customConverters.get(i);
+            if (converter.canConvert(type)) {
+                lookupCache.put(type, converter);
                 return converter;
             }
         }
-        for ( int i = 0; i < DEFAULT_CONVERTERS.length; i++ )
-        {
+        for (int i = 0; i < DEFAULT_CONVERTERS.length; i++) {
             converter = DEFAULT_CONVERTERS[i];
-            if ( converter.canConvert( type ) )
-            {
-                lookupCache.put( type, converter );
+            if (converter.canConvert(type)) {
+                lookupCache.put(type, converter);
                 return converter;
             }
         }
-        throw new ComponentConfigurationException( "Cannot find converter for type: " + type );
+        throw new ComponentConfigurationException("Cannot find converter for type: " + type);
     }
 
     /*
      * Referenced by some external XML configurations
      */
-    void setCustomConverters( final List<ConfigurationConverter> converters )
-    {
-        customConverters.addAll( converters );
+    void setCustomConverters(final List<ConfigurationConverter> converters) {
+        customConverters.addAll(converters);
     }
 }

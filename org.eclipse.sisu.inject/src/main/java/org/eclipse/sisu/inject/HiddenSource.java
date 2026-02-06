@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,18 +12,14 @@
  */
 package org.eclipse.sisu.inject;
 
-import java.lang.annotation.Annotation;
-
-import org.eclipse.sisu.Hidden;
-
 import com.google.inject.Binding;
+import java.lang.annotation.Annotation;
+import org.eclipse.sisu.Hidden;
 
 /**
  * Implementation of @{@link Hidden} that can also act as an @{@link AnnotatedSource}.
  */
-final class HiddenSource
-    implements Hidden, AnnotatedSource
-{
+final class HiddenSource implements Hidden, AnnotatedSource {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -37,8 +33,7 @@ final class HiddenSource
     /**
      * @param source The owning source
      */
-    HiddenSource( final Object source )
-    {
+    HiddenSource(final Object source) {
         this.source = source;
     }
 
@@ -46,39 +41,32 @@ final class HiddenSource
     // Public methods
     // ----------------------------------------------------------------------
 
-    public Class<? extends Annotation> annotationType()
-    {
+    public Class<? extends Annotation> annotationType() {
         return Hidden.class;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return 0;
     }
 
     @Override
-    public boolean equals( final Object rhs )
-    {
+    public boolean equals(final Object rhs) {
         return rhs instanceof Hidden;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return null != source ? source.toString() : "@" + Hidden.class.getName();
     }
 
-    @SuppressWarnings( "unchecked" )
-    public <T extends Annotation> T getAnnotation( final Binding<?> binding, final Class<T> annotationType )
-    {
-        if ( Hidden.class.equals( annotationType ) )
-        {
+    @SuppressWarnings("unchecked")
+    public <T extends Annotation> T getAnnotation(final Binding<?> binding, final Class<T> annotationType) {
+        if (Hidden.class.equals(annotationType)) {
             return (T) this;
         }
-        if ( source instanceof AnnotatedSource )
-        {
-            return ( (AnnotatedSource) source ).getAnnotation( binding, annotationType );
+        if (source instanceof AnnotatedSource) {
+            return ((AnnotatedSource) source).getAnnotation(binding, annotationType);
         }
         return null;
     }

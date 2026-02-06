@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,18 +12,14 @@
  */
 package org.eclipse.sisu.plexus;
 
-import java.util.Iterator;
-
-import org.eclipse.sisu.BeanEntry;
-
 import com.google.inject.name.Named;
+import java.util.Iterator;
+import org.eclipse.sisu.BeanEntry;
 
 /**
  * Sequence of {@link PlexusBean}s backed by {@link BeanEntry}s.
  */
-final class DefaultPlexusBeans<T>
-    implements Iterable<PlexusBean<T>>
-{
+final class DefaultPlexusBeans<T> implements Iterable<PlexusBean<T>> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -34,8 +30,7 @@ final class DefaultPlexusBeans<T>
     // Constructors
     // ----------------------------------------------------------------------
 
-    DefaultPlexusBeans( final Iterable<BeanEntry<Named, T>> beans )
-    {
+    DefaultPlexusBeans(final Iterable<BeanEntry<Named, T>> beans) {
         this.beans = beans;
     }
 
@@ -43,8 +38,7 @@ final class DefaultPlexusBeans<T>
     // Public methods
     // ----------------------------------------------------------------------
 
-    public Iterator<PlexusBean<T>> iterator()
-    {
+    public Iterator<PlexusBean<T>> iterator() {
         return new Itr();
     }
 
@@ -55,9 +49,7 @@ final class DefaultPlexusBeans<T>
     /**
      * {@link PlexusBean} iterator backed by {@link BeanEntry}s.
      */
-    final class Itr
-        implements Iterator<PlexusBean<T>>
-    {
+    final class Itr implements Iterator<PlexusBean<T>> {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -68,18 +60,15 @@ final class DefaultPlexusBeans<T>
         // Public methods
         // ----------------------------------------------------------------------
 
-        public boolean hasNext()
-        {
+        public boolean hasNext() {
             return itr.hasNext();
         }
 
-        public PlexusBean<T> next()
-        {
-            return new LazyPlexusBean<T>( itr.next() );
+        public PlexusBean<T> next() {
+            return new LazyPlexusBean<T>(itr.next());
         }
 
-        public void remove()
-        {
+        public void remove() {
             throw new UnsupportedOperationException();
         }
     }

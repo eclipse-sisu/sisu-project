@@ -10,212 +10,164 @@
  *******************************************************************************/
 package org.eclipse.sisu.space;
 
-import javax.inject.Inject;
-
-import org.eclipse.sisu.inject.DeferredClass;
-import org.eclipse.sisu.inject.DeferredProvider;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Provider;
 import com.google.inject.ProvisionException;
+import javax.inject.Inject;
+import org.eclipse.sisu.inject.DeferredClass;
+import org.eclipse.sisu.inject.DeferredProvider;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+class DeferredProviderTest {
+    interface A {}
 
-class DeferredProviderTest
-{
-    interface A
-    {
-    }
+    interface B {}
 
-    interface B
-    {
-    }
+    interface C {}
 
-    interface C
-    {
-    }
+    static class AImpl implements A {}
 
-    static class AImpl
-        implements A
-    {
-    }
-
-    static class BImpl
-        implements B
-    {
+    static class BImpl implements B {
         @Inject
         A a;
     }
 
-    static class CImpl
-        implements C
-    {
+    static class CImpl implements C {
         @Inject
         B b;
     }
 
     @Test
-    void testRootDeferredProvider()
-    {
-        Guice.createInjector( new AbstractModule()
-        {
-            @Override
-            protected void configure()
-            {
-                bind( C.class ).toProvider( new LoadedClass<C>( CImpl.class ).asProvider() );
-                bind( B.class ).to( BImpl.class );
-                bind( A.class ).to( AImpl.class );
-            }
-        } ).getInstance( C.class );
+    void testRootDeferredProvider() {
+        Guice.createInjector(new AbstractModule() {
+                    @Override
+                    protected void configure() {
+                        bind(C.class).toProvider(new LoadedClass<C>(CImpl.class).asProvider());
+                        bind(B.class).to(BImpl.class);
+                        bind(A.class).to(AImpl.class);
+                    }
+                })
+                .getInstance(C.class);
     }
 
     @Test
-    void testChildDeferredProvider()
-    {
-        Guice.createInjector( new AbstractModule()
-        {
-            @Override
-            protected void configure()
-            {
-                bind( A.class ).to( AImpl.class );
-            }
-        } ).createChildInjector( new AbstractModule()
-        {
-            @Override
-            protected void configure()
-            {
-                bind( B.class ).to( BImpl.class );
-            }
-        } ).createChildInjector( new AbstractModule()
-        {
-            @Override
-            protected void configure()
-            {
-                bind( C.class ).toProvider( new LoadedClass<C>( CImpl.class ).asProvider() );
-            }
-        } ).getInstance( C.class );
+    void testChildDeferredProvider() {
+        Guice.createInjector(new AbstractModule() {
+                    @Override
+                    protected void configure() {
+                        bind(A.class).to(AImpl.class);
+                    }
+                })
+                .createChildInjector(new AbstractModule() {
+                    @Override
+                    protected void configure() {
+                        bind(B.class).to(BImpl.class);
+                    }
+                })
+                .createChildInjector(new AbstractModule() {
+                    @Override
+                    protected void configure() {
+                        bind(C.class).toProvider(new LoadedClass<C>(CImpl.class).asProvider());
+                    }
+                })
+                .getInstance(C.class);
     }
 
     @Test
-    void testBrokenDeferredProvider()
-    {
-        try
-        {
-            Guice.createInjector( new AbstractModule()
-            {
-                @Override
-                protected void configure()
-                {
-                    bind( C.class ).toProvider( new LoadedClass<C>( CImpl.class ).asProvider() );
-                    bind( CImpl.class ).toProvider( new Provider<CImpl>()
-                    {
-                        public CImpl get()
-                        {
-                            throw new ProvisionException( "Broken Provider" );
+    void testBrokenDeferredProvider() {
+        try {
+            Guice.createInjector(new AbstractModule() {
+                        @Override
+                        protected void configure() {
+                            bind(C.class).toProvider(new LoadedClass<C>(CImpl.class).asProvider());
+                            bind(CImpl.class).toProvider(new Provider<CImpl>() {
+                                public CImpl get() {
+                                    throw new ProvisionException("Broken Provider");
+                                }
+                            });
                         }
-                    } );
-                }
-            } ).getInstance( C.class );
+                    })
+                    .getInstance(C.class);
 
-            fail( "Expected ProvisionException" );
-        }
-        catch ( final ProvisionException e )
-        {
+            fail("Expected ProvisionException");
+        } catch (final ProvisionException e) {
         }
 
-        try
-        {
-            Guice.createInjector( new AbstractModule()
-            {
-                @Override
-                protected void configure()
-                {
-                    bind( C.class ).toProvider( new LoadedClass<C>( CImpl.class ).asProvider() );
-                    bind( CImpl.class ).toProvider( new Provider<CImpl>()
-                    {
-                        public CImpl get()
-                        {
-                            throw new LinkageError( "Broken Provider" );
+        try {
+            Guice.createInjector(new AbstractModule() {
+                        @Override
+                        protected void configure() {
+                            bind(C.class).toProvider(new LoadedClass<C>(CImpl.class).asProvider());
+                            bind(CImpl.class).toProvider(new Provider<CImpl>() {
+                                public CImpl get() {
+                                    throw new LinkageError("Broken Provider");
+                                }
+                            });
                         }
-                    } );
-                }
-            } ).getInstance( C.class );
+                    })
+                    .getInstance(C.class);
 
-            fail( "Expected LinkageError" );
-        }
-        catch ( final LinkageError e )
-        {
+            fail("Expected LinkageError");
+        } catch (final LinkageError e) {
         }
 
-        try
-        {
-            Guice.createInjector( new AbstractModule()
-            {
-                @Override
-                protected void configure()
-                {
-                    bind( C.class ).toProvider( new LoadedClass<C>( CImpl.class ).asProvider() );
-                    bind( CImpl.class ).toProvider( new Provider<CImpl>()
-                    {
-                        public CImpl get()
-                        {
-                            throw new IllegalArgumentException( new IllegalStateException( new ThreadDeath() ) );
+        try {
+            Guice.createInjector(new AbstractModule() {
+                        @Override
+                        protected void configure() {
+                            bind(C.class).toProvider(new LoadedClass<C>(CImpl.class).asProvider());
+                            bind(CImpl.class).toProvider(new Provider<CImpl>() {
+                                public CImpl get() {
+                                    throw new IllegalArgumentException(new IllegalStateException(new ThreadDeath()));
+                                }
+                            });
                         }
-                    } );
-                }
-            } ).getInstance( C.class );
+                    })
+                    .getInstance(C.class);
 
-            fail( "Expected ThreadDeath" );
-        }
-        catch ( final ThreadDeath e )
-        {
+            fail("Expected ThreadDeath");
+        } catch (final ThreadDeath e) {
         }
 
-        final ClassSpace space = new URLClassSpace( C.class.getClassLoader(), null );
-        try
-        {
-            Guice.createInjector( new AbstractModule()
-            {
-                @Override
-                protected void configure()
-                {
-                    bind( C.class ).toProvider( new NamedClass<C>( space, CImpl.class.getName() ).asProvider() );
-                    bind( CImpl.class ).toProvider( new Provider<CImpl>()
-                    {
-                        public CImpl get()
-                        {
-                            throw new ProvisionException( "Broken Provider" );
+        final ClassSpace space = new URLClassSpace(C.class.getClassLoader(), null);
+        try {
+            Guice.createInjector(new AbstractModule() {
+                        @Override
+                        protected void configure() {
+                            bind(C.class).toProvider(new NamedClass<C>(space, CImpl.class.getName()).asProvider());
+                            bind(CImpl.class).toProvider(new Provider<CImpl>() {
+                                public CImpl get() {
+                                    throw new ProvisionException("Broken Provider");
+                                }
+                            });
                         }
-                    } );
-                }
-            } ).getInstance( C.class );
+                    })
+                    .getInstance(C.class);
 
-            fail( "Expected ProvisionException" );
-        }
-        catch ( final ProvisionException e )
-        {
+            fail("Expected ProvisionException");
+        } catch (final ProvisionException e) {
         }
     }
 
     @Test
-    void testDeferredImplementationClass()
-    {
-        final ClassSpace space = new URLClassSpace( C.class.getClassLoader(), null );
+    void testDeferredImplementationClass() {
+        final ClassSpace space = new URLClassSpace(C.class.getClassLoader(), null);
 
-        final DeferredClass<C> clazz1 = new NamedClass<C>( space, CImpl.class.getName() );
-        final DeferredClass<C> clazz2 = new LoadedClass<C>( CImpl.class );
+        final DeferredClass<C> clazz1 = new NamedClass<C>(space, CImpl.class.getName());
+        final DeferredClass<C> clazz2 = new LoadedClass<C>(CImpl.class);
 
         final DeferredProvider<C> provider1 = clazz1.asProvider();
         final DeferredProvider<C> provider2 = clazz2.asProvider();
 
-        assertSame( clazz1, provider1.getImplementationClass() );
-        assertSame( clazz2, provider2.getImplementationClass() );
+        assertSame(clazz1, provider1.getImplementationClass());
+        assertSame(clazz2, provider2.getImplementationClass());
 
-        assertTrue( provider1.toString().contains( clazz1.toString() ) );
-        assertTrue( provider2.toString().contains( clazz2.toString() ) );
+        assertTrue(provider1.toString().contains(clazz1.toString()));
+        assertTrue(provider2.toString().contains(clazz2.toString()));
     }
 }

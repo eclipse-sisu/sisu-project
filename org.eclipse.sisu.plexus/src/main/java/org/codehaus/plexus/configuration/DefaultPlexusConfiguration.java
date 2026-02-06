@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -19,9 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DefaultPlexusConfiguration
-    implements PlexusConfiguration
-{
+public class DefaultPlexusConfiguration implements PlexusConfiguration {
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
@@ -46,13 +44,11 @@ public class DefaultPlexusConfiguration
     // Constructors
     // ----------------------------------------------------------------------
 
-    public DefaultPlexusConfiguration( final String name )
-    {
-        this( name, null );
+    public DefaultPlexusConfiguration(final String name) {
+        this(name, null);
     }
 
-    public DefaultPlexusConfiguration( final String name, final String value )
-    {
+    public DefaultPlexusConfiguration(final String name, final String value) {
         this.name = name;
         this.value = value;
     }
@@ -61,99 +57,80 @@ public class DefaultPlexusConfiguration
     // Public methods
     // ----------------------------------------------------------------------
 
-    public final String getName()
-    {
+    public final String getName() {
         return name;
     }
 
-    public final String getValue()
-    {
+    public final String getValue() {
         return value;
     }
 
-    public final String getValue( final String defaultValue )
-    {
+    public final String getValue(final String defaultValue) {
         return null != value ? value : defaultValue;
     }
 
-    public final void setValue( final String value )
-    {
+    public final void setValue(final String value) {
         this.value = value;
     }
 
-    public final String[] getAttributeNames()
-    {
-        return attributeMap.keySet().toArray( new String[attributeMap.size()] );
+    public final String[] getAttributeNames() {
+        return attributeMap.keySet().toArray(new String[attributeMap.size()]);
     }
 
-    public final String getAttribute( final String attributeName )
-    {
-        return attributeMap.get( attributeName );
+    public final String getAttribute(final String attributeName) {
+        return attributeMap.get(attributeName);
     }
 
-    public final String getAttribute( final String attributeName, final String defaultValue )
-    {
-        final String attributeValue = attributeMap.get( attributeName );
+    public final String getAttribute(final String attributeName, final String defaultValue) {
+        final String attributeValue = attributeMap.get(attributeName);
         return null != attributeValue ? attributeValue : defaultValue;
     }
 
-    public final void setAttribute( final String attributeName, final String attributeValue )
-    {
-        if ( attributeMap.isEmpty() )
-        {
+    public final void setAttribute(final String attributeName, final String attributeValue) {
+        if (attributeMap.isEmpty()) {
             attributeMap = new HashMap<String, String>();
         }
-        attributeMap.put( attributeName, attributeValue );
+        attributeMap.put(attributeName, attributeValue);
     }
 
-    public final PlexusConfiguration getChild( final String childName )
-    {
-        return getChild( childName, true );
+    public final PlexusConfiguration getChild(final String childName) {
+        return getChild(childName, true);
     }
 
-    public final PlexusConfiguration getChild( final String childName, final boolean create )
-    {
-        final List<PlexusConfiguration> children = childMap.get( childName );
-        if ( null != children )
-        {
-            return children.get( 0 );
+    public final PlexusConfiguration getChild(final String childName, final boolean create) {
+        final List<PlexusConfiguration> children = childMap.get(childName);
+        if (null != children) {
+            return children.get(0);
         }
-        return create ? add( createChild( childName ) ) : null;
+        return create ? add(createChild(childName)) : null;
     }
 
-    public final PlexusConfiguration[] getChildren()
-    {
-        return childIndex.toArray( new PlexusConfiguration[childIndex.size()] );
+    public final PlexusConfiguration[] getChildren() {
+        return childIndex.toArray(new PlexusConfiguration[childIndex.size()]);
     }
 
-    public final PlexusConfiguration[] getChildren( final String childName )
-    {
-        final List<PlexusConfiguration> children = childMap.get( childName );
-        if ( null != children )
-        {
-            return children.toArray( new PlexusConfiguration[children.size()] );
+    public final PlexusConfiguration[] getChildren(final String childName) {
+        final List<PlexusConfiguration> children = childMap.get(childName);
+        if (null != children) {
+            return children.toArray(new PlexusConfiguration[children.size()]);
         }
         return NO_CHILDREN;
     }
 
-    public final int getChildCount()
-    {
+    public final int getChildCount() {
         return childIndex.size();
     }
 
-    public final PlexusConfiguration getChild( final int index )
-    {
-        return childIndex.get( index );
+    public final PlexusConfiguration getChild(final int index) {
+        return childIndex.get(index);
     }
 
-    public final void addChild( final PlexusConfiguration child )
-    {
-        add( child );
+    public final void addChild(final PlexusConfiguration child) {
+        add(child);
     }
 
-    public final PlexusConfiguration addChild( final String childName, final String childValue )
-    {
-        add( createChild( childName ) ).setValue( childValue );
+    public final PlexusConfiguration addChild(final String childName, final String childValue) {
+        add(createChild(childName)).setValue(childValue);
         return this;
     }
 
@@ -161,34 +138,30 @@ public class DefaultPlexusConfiguration
     // Customizable methods
     // ----------------------------------------------------------------------
 
-    protected PlexusConfiguration createChild( final String childName )
-    {
-        return new DefaultPlexusConfiguration( childName );
+    protected PlexusConfiguration createChild(final String childName) {
+        return new DefaultPlexusConfiguration(childName);
     }
 
     // ----------------------------------------------------------------------
     // Shared methods
     // ----------------------------------------------------------------------
 
-    protected final PlexusConfiguration add( final PlexusConfiguration child )
-    {
+    protected final PlexusConfiguration add(final PlexusConfiguration child) {
         final String childName = child.getName();
 
-        List<PlexusConfiguration> children = childMap.get( childName );
-        if ( null == children )
-        {
+        List<PlexusConfiguration> children = childMap.get(childName);
+        if (null == children) {
             children = new ArrayList<PlexusConfiguration>();
-            if ( childMap.isEmpty() )
-            {
+            if (childMap.isEmpty()) {
                 // create mutable map and index at the same time
                 childMap = new LinkedHashMap<String, List<PlexusConfiguration>>();
                 childIndex = new ArrayList<PlexusConfiguration>();
             }
-            childMap.put( childName, children );
+            childMap.put(childName, children);
         }
 
-        childIndex.add( child );
-        children.add( child );
+        childIndex.add(child);
+        children.add(child);
 
         return child;
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,18 +12,14 @@
  */
 package org.codehaus.plexus.component.repository.exception;
 
-public final class ComponentLifecycleException
-    extends Exception
-{
+public final class ComponentLifecycleException extends Exception {
     private static final long serialVersionUID = 1L;
 
-    public ComponentLifecycleException( final String message )
-    {
-        super( message );
+    public ComponentLifecycleException(final String message) {
+        super(message);
     }
 
-    public ComponentLifecycleException( final String message, final Throwable detail )
-    {
-        super( message, detail );
+    public ComponentLifecycleException(final String message, final Throwable detail) {
+        super(message, detail);
     }
 }

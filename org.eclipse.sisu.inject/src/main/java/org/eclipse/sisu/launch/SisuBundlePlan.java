@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,22 +12,19 @@
  */
 package org.eclipse.sisu.launch;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Module;
 import org.eclipse.sisu.inject.BindingPublisher;
 import org.eclipse.sisu.inject.InjectorBindings;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Module;
-
 /**
  * {@link BundlePlan} that prepares {@link BindingPublisher}s for JSR330 bundles.
  */
-public class SisuBundlePlan
-    implements BundlePlan
-{
+public class SisuBundlePlan implements BundlePlan {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -38,8 +35,7 @@ public class SisuBundlePlan
     // Constructors
     // ----------------------------------------------------------------------
 
-    public SisuBundlePlan( final MutableBeanLocator locator )
-    {
+    public SisuBundlePlan(final MutableBeanLocator locator) {
         this.locator = locator;
     }
 
@@ -47,9 +43,8 @@ public class SisuBundlePlan
     // Public methods
     // ----------------------------------------------------------------------
 
-    public BindingPublisher prepare( final Bundle bundle )
-    {
-        return appliesTo( bundle ) ? InjectorBindings.findBindingPublisher( inject( compose( bundle ) ) ) : null;
+    public BindingPublisher prepare(final Bundle bundle) {
+        return appliesTo(bundle) ? InjectorBindings.findBindingPublisher(inject(compose(bundle))) : null;
     }
 
     // ----------------------------------------------------------------------
@@ -59,35 +54,31 @@ public class SisuBundlePlan
     /**
      * @return {@code true} if plan applies to the bundle; otherwise {@code false}
      */
-    protected boolean appliesTo( final Bundle bundle )
-    {
-        if ( bundle.getHeaders().get( "Bundle-Blueprint" ) != null )
-        {
+    protected boolean appliesTo(final Bundle bundle) {
+        if (bundle.getHeaders().get("Bundle-Blueprint") != null) {
             return false;
         }
-        final String imports = bundle.getHeaders().get( Constants.IMPORT_PACKAGE );
-        return null != imports && ( imports.contains( "javax.inject" ) || imports.contains( "com.google.inject" ) );
+        final String imports = bundle.getHeaders().get(Constants.IMPORT_PACKAGE);
+        return null != imports && (imports.contains("javax.inject") || imports.contains("com.google.inject"));
     }
 
     /**
      * Creates an {@link Injector} from the composed {@link Module} configuration.
-     * 
+     *
      * @param module The module
      * @return Bundle injector
      */
-    protected Injector inject( final Module module )
-    {
-        return Guice.createInjector( module );
+    protected Injector inject(final Module module) {
+        return Guice.createInjector(module);
     }
 
     /**
      * Composes a {@link Module} that configures components from the given bundle.
-     * 
+     *
      * @param bundle The bundle
      * @return Bundle module
      */
-    protected Module compose( final Bundle bundle )
-    {
-        return new BundleModule( bundle, locator );
+    protected Module compose(final Bundle bundle) {
+        return new BundleModule(bundle, locator);
     }
 }

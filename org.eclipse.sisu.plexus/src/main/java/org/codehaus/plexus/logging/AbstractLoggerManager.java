@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -16,16 +16,12 @@ import org.eclipse.sisu.bean.IgnoreSetters;
 import org.eclipse.sisu.plexus.Hints;
 
 @IgnoreSetters
-public abstract class AbstractLoggerManager
-    implements LoggerManager
-{
-    public final Logger getLoggerForComponent( final String role )
-    {
-        return getLoggerForComponent( role, Hints.DEFAULT_HINT );
+public abstract class AbstractLoggerManager implements LoggerManager {
+    public final Logger getLoggerForComponent(final String role) {
+        return getLoggerForComponent(role, Hints.DEFAULT_HINT);
     }
 
-    public final void returnComponentLogger( final String role )
-    {
-        returnComponentLogger( role, Hints.DEFAULT_HINT );
+    public final void returnComponentLogger(final String role) {
+        returnComponentLogger(role, Hints.DEFAULT_HINT);
     }
 }

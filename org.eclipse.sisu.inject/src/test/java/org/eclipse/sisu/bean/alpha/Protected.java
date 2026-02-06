@@ -15,18 +15,14 @@ import javax.annotation.PreDestroy;
 import javax.inject.Singleton;
 
 @Singleton
-public class Protected
-    extends Public
-{
+public class Protected extends Public {
     @PostConstruct
-    protected void b()
-    {
-        results.append( "b" );
+    protected void b() {
+        results.append("b");
     }
 
     @PreDestroy
-    protected void y()
-    {
-        results.append( "y" );
+    protected void y() {
+        results.append("y");
     }
 }

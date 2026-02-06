@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -22,9 +22,7 @@ import java.util.NoSuchElementException;
 /**
  * Read-only {@link Iterator} that picks out potential bean properties from declared members.
  */
-final class BeanPropertyIterator<T>
-    implements Iterator<BeanProperty<T>>
-{
+final class BeanPropertyIterator<T> implements Iterator<BeanProperty<T>> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -38,8 +36,7 @@ final class BeanPropertyIterator<T>
     // Constructors
     // ----------------------------------------------------------------------
 
-    BeanPropertyIterator( final Iterable<Member> members )
-    {
+    BeanPropertyIterator(final Iterable<Member> members) {
         memberIterator = members.iterator();
     }
 
@@ -47,12 +44,9 @@ final class BeanPropertyIterator<T>
     // Public methods
     // ----------------------------------------------------------------------
 
-    public boolean hasNext()
-    {
-        while ( null == nextProperty )
-        {
-            if ( !memberIterator.hasNext() )
-            {
+    public boolean hasNext() {
+        while (null == nextProperty) {
+            if (!memberIterator.hasNext()) {
                 return false; // no more properties
             }
 
@@ -60,31 +54,24 @@ final class BeanPropertyIterator<T>
             final int modifiers = member.getModifiers();
 
             // static members can't be properties, abstracts and synthetics are just noise so we ignore them
-            if ( Modifier.isStatic( modifiers ) || Modifier.isAbstract( modifiers ) || member.isSynthetic() )
-            {
+            if (Modifier.isStatic(modifiers) || Modifier.isAbstract(modifiers) || member.isSynthetic()) {
                 continue;
             }
 
-            if ( member instanceof Method )
-            {
-                if ( isSetter( member ) )
-                {
-                    nextProperty = new BeanPropertySetter<T>( (Method) member );
+            if (member instanceof Method) {
+                if (isSetter(member)) {
+                    nextProperty = new BeanPropertySetter<T>((Method) member);
                 }
-            }
-            else if ( member instanceof Field )
-            {
-                nextProperty = new BeanPropertyField<T>( (Field) member );
+            } else if (member instanceof Field) {
+                nextProperty = new BeanPropertyField<T>((Field) member);
             }
         }
 
         return true;
     }
 
-    public BeanProperty<T> next()
-    {
-        if ( hasNext() )
-        {
+    public BeanProperty<T> next() {
+        if (hasNext()) {
             // initialized by hasNext()
             final BeanProperty<T> property = nextProperty;
             nextProperty = null;
@@ -93,8 +80,7 @@ final class BeanPropertyIterator<T>
         throw new NoSuchElementException();
     }
 
-    public void remove()
-    {
+    public void remove() {
         throw new UnsupportedOperationException();
     }
 
@@ -102,10 +88,11 @@ final class BeanPropertyIterator<T>
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    private static boolean isSetter( final Member member )
-    {
+    private static boolean isSetter(final Member member) {
         final String name = member.getName();
-        return name.startsWith( "set" ) && name.length() > 3 && Character.isUpperCase( name.charAt( 3 ) )
-            && ( (Method) member ).getParameterTypes().length == 1;
+        return name.startsWith("set")
+                && name.length() > 3
+                && Character.isUpperCase(name.charAt(3))
+                && ((Method) member).getParameterTypes().length == 1;
     }
 }

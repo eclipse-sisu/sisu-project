@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -14,28 +14,19 @@ package org.codehaus.plexus.component.configurator.converters.basic;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 
-public class UriConverter
-    extends AbstractBasicConverter
-{
-    public boolean canConvert( final Class<?> type )
-    {
-        return URI.class.equals( type );
+public class UriConverter extends AbstractBasicConverter {
+    public boolean canConvert(final Class<?> type) {
+        return URI.class.equals(type);
     }
 
     @Override
-    public Object fromString( final String value )
-        throws ComponentConfigurationException
-    {
-        try
-        {
-            return new URI( value );
-        }
-        catch ( final URISyntaxException e )
-        {
-            throw new ComponentConfigurationException( "Cannot convert '" + value + "' to URI", e );
+    public Object fromString(final String value) throws ComponentConfigurationException {
+        try {
+            return new URI(value);
+        } catch (final URISyntaxException e) {
+            throw new ComponentConfigurationException("Cannot convert '" + value + "' to URI", e);
         }
     }
 }

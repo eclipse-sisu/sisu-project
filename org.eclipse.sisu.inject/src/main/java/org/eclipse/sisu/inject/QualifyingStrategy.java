@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,64 +12,54 @@
  */
 package org.eclipse.sisu.inject;
 
-import java.lang.annotation.Annotation;
-
-import javax.inject.Provider;
-import javax.inject.Qualifier;
-
 import com.google.inject.Binding;
 import com.google.inject.Key;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 import com.google.inject.spi.ConstructorBinding;
 import com.google.inject.spi.ProviderKeyBinding;
+import java.lang.annotation.Annotation;
+import javax.inject.Provider;
+import javax.inject.Qualifier;
 
 /**
  * Enumerates the different strategies for qualifying {@link Binding}s against requirement {@link Key}s.
  */
-enum QualifyingStrategy
-{
+enum QualifyingStrategy {
     // ----------------------------------------------------------------------
     // Enumerated values
     // ----------------------------------------------------------------------
 
-    UNRESTRICTED
-    {
+    UNRESTRICTED {
         @Override
-        final Annotation qualifies( final Key<?> requirement, final Binding<?> binding )
-        {
-            final Annotation qualifier = qualify( binding.getKey() );
+        final Annotation qualifies(final Key<?> requirement, final Binding<?> binding) {
+            final Annotation qualifier = qualify(binding.getKey());
             return null != qualifier ? qualifier : BLANK_QUALIFIER;
         }
     },
-    NAMED
-    {
+    NAMED {
         @Override
-        final Annotation qualifies( final Key<?> requirement, final Binding<?> binding )
-        {
-            final Annotation qualifier = qualify( binding.getKey() );
+        final Annotation qualifies(final Key<?> requirement, final Binding<?> binding) {
+            final Annotation qualifier = qualify(binding.getKey());
             return qualifier instanceof Named ? qualifier : null;
         }
     },
-    NAMED_WITH_ATTRIBUTES
-    {
+    NAMED_WITH_ATTRIBUTES {
         @Override
-        final Annotation qualifies( final Key<?> requirement, final Binding<?> binding )
-        {
-            final Annotation qualifier = qualify( binding.getKey() );
-            if ( requirement.getAnnotation().equals( qualifier ) )
-            {
+        final Annotation qualifies(final Key<?> requirement, final Binding<?> binding) {
+            final Annotation qualifier = qualify(binding.getKey());
+            if (requirement.getAnnotation().equals(qualifier)) {
                 return qualifier;
             }
 
             // special case for untargeted constructor binding: treat @Named on implementation as an alias
-            if ( binding instanceof ConstructorBinding<?> && null == binding.getKey().getAnnotationType() )
-            {
+            if (binding instanceof ConstructorBinding<?>
+                    && null == binding.getKey().getAnnotationType()) {
                 final Class<?> clazz = binding.getKey().getTypeLiteral().getRawType();
-                final javax.inject.Named alias = clazz.getAnnotation( javax.inject.Named.class );
-                if ( null != alias && alias.value().equals( ( (Named) requirement.getAnnotation() ).value() )
-                    && clazz.equals( Implementations.find( binding ) ) )
-                {
+                final javax.inject.Named alias = clazz.getAnnotation(javax.inject.Named.class);
+                if (null != alias
+                        && alias.value().equals(((Named) requirement.getAnnotation()).value())
+                        && clazz.equals(Implementations.find(binding))) {
                     return requirement.getAnnotation();
                 }
             }
@@ -77,50 +67,41 @@ enum QualifyingStrategy
             return null;
         }
     },
-    MARKED
-    {
+    MARKED {
         @Override
-        final Annotation qualifies( final Key<?> requirement, final Binding<?> binding )
-        {
+        final Annotation qualifies(final Key<?> requirement, final Binding<?> binding) {
             final Class<? extends Annotation> markerType = requirement.getAnnotationType();
 
-            final Annotation qualifier = qualify( binding.getKey() );
-            if ( markerType.isInstance( qualifier ) )
-            {
+            final Annotation qualifier = qualify(binding.getKey());
+            if (markerType.isInstance(qualifier)) {
                 return qualifier;
             }
 
             // binding only has marker type; upgrade to pseudo-instance
-            if ( markerType.equals( binding.getKey().getAnnotationType() )
-                && markerType.getDeclaredMethods().length == 0 )
-            {
+            if (markerType.equals(binding.getKey().getAnnotationType())
+                    && markerType.getDeclaredMethods().length == 0) {
                 // this stub is all we need for internal processing
-                return new Annotation()
-                {
-                    public Class<? extends Annotation> annotationType()
-                    {
+                return new Annotation() {
+                    public Class<? extends Annotation> annotationType() {
                         return markerType;
                     }
                 };
             }
 
-            if ( binding instanceof ProviderKeyBinding<?> )
-            {
-                final Key<?> providerKey = ( (ProviderKeyBinding<?>) binding ).getProviderKey();
-                return providerKey.getTypeLiteral().getRawType().getAnnotation( markerType );
+            if (binding instanceof ProviderKeyBinding<?>) {
+                final Key<?> providerKey = ((ProviderKeyBinding<?>) binding).getProviderKey();
+                return providerKey.getTypeLiteral().getRawType().getAnnotation(markerType);
             }
 
-            final Class<?> implementation = Implementations.find( binding );
-            return null != implementation ? implementation.getAnnotation( markerType ) : null;
+            final Class<?> implementation = Implementations.find(binding);
+            return null != implementation ? implementation.getAnnotation(markerType) : null;
         }
     },
-    MARKED_WITH_ATTRIBUTES
-    {
+    MARKED_WITH_ATTRIBUTES {
         @Override
-        final Annotation qualifies( final Key<?> requirement, final Binding<?> binding )
-        {
-            final Annotation qualifier = MARKED.qualifies( requirement, binding );
-            return requirement.getAnnotation().equals( qualifier ) ? qualifier : null;
+        final Annotation qualifies(final Key<?> requirement, final Binding<?> binding) {
+            final Annotation qualifier = MARKED.qualifies(requirement, binding);
+            return requirement.getAnnotation().equals(qualifier) ? qualifier : null;
         }
     };
 
@@ -128,9 +109,9 @@ enum QualifyingStrategy
     // Constants
     // ----------------------------------------------------------------------
 
-    static final Annotation DEFAULT_QUALIFIER = Names.named( "default" );
+    static final Annotation DEFAULT_QUALIFIER = Names.named("default");
 
-    static final Annotation BLANK_QUALIFIER = Names.named( "" );
+    static final Annotation BLANK_QUALIFIER = Names.named("");
 
     // ----------------------------------------------------------------------
     // Local methods
@@ -138,28 +119,25 @@ enum QualifyingStrategy
 
     /**
      * Attempts to qualify the given {@link Binding} against the requirement {@link Key}.
-     * 
+     *
      * @param requirement The requirement key
      * @param binding The binding to qualify
      * @return Qualifier annotation when the binding qualifies; otherwise {@code null}
      */
-    abstract Annotation qualifies( final Key<?> requirement, final Binding<?> binding );
+    abstract Annotation qualifies(final Key<?> requirement, final Binding<?> binding);
 
     /**
      * Selects the appropriate qualifying strategy for the given requirement {@link Key}.
-     * 
+     *
      * @param key The requirement key
      * @return Qualifying strategy
      */
-    static final QualifyingStrategy selectFor( final Key<?> key )
-    {
+    static final QualifyingStrategy selectFor(final Key<?> key) {
         final Class<?> qualifierType = key.getAnnotationType();
-        if ( null == qualifierType )
-        {
+        if (null == qualifierType) {
             return QualifyingStrategy.UNRESTRICTED;
         }
-        if ( Named.class == qualifierType )
-        {
+        if (Named.class == qualifierType) {
             return key.hasAttributes() ? QualifyingStrategy.NAMED_WITH_ATTRIBUTES : QualifyingStrategy.NAMED;
         }
         return key.hasAttributes() ? QualifyingStrategy.MARKED_WITH_ATTRIBUTES : QualifyingStrategy.MARKED;
@@ -167,21 +145,18 @@ enum QualifyingStrategy
 
     /**
      * Computes a canonical {@link Qualifier} annotation for the given binding {@link Key}.
-     * 
+     *
      * @param key The key to qualify
      * @return Qualifier for the key
      */
-    static final Annotation qualify( final Key<?> key )
-    {
-        if ( null == key.getAnnotationType() )
-        {
+    static final Annotation qualify(final Key<?> key) {
+        if (null == key.getAnnotationType()) {
             return DEFAULT_QUALIFIER;
         }
         final Annotation qualifier = key.getAnnotation();
-        if ( qualifier instanceof Provider<?> )
-        {
+        if (qualifier instanceof Provider<?>) {
             // the qualifier is actually a wrapper around the original
-            final Object original = ( (Provider<?>) qualifier ).get();
+            final Object original = ((Provider<?>) qualifier).get();
             return original instanceof Annotation ? (Annotation) original : DEFAULT_QUALIFIER;
         }
         return qualifier;

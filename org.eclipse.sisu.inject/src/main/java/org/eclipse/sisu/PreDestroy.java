@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -19,9 +19,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The PreDestroy annotation is used on methods as a callback notification to 
- * signal that the instance is in the process of being removed by the 
- * container. The method annotated with PreDestroy is typically used to 
+ * The PreDestroy annotation is used on methods as a callback notification to
+ * signal that the instance is in the process of being removed by the
+ * container. The method annotated with PreDestroy is typically used to
  * release resources that it has been holding.
  * <p>
  * This annotation is Sisu specific annotation, that has same semantics as
@@ -33,10 +33,7 @@ import java.lang.annotation.Target;
  *
  * @since 0.9.0.M2
  */
-
-@Target( value = { ElementType.METHOD } )
-@Retention( RetentionPolicy.RUNTIME )
+@Target(value = {ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface PreDestroy
-{
-}
+public @interface PreDestroy {}

@@ -10,48 +10,38 @@
  *******************************************************************************/
 package org.eclipse.sisu.space;
 
-import java.net.URL;
-
-import javax.inject.Named;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.PrivateModule;
-
+import java.net.URL;
+import javax.inject.Named;
 import org.junit.jupiter.api.Test;
 
-class CachingModuleTest
-{
+class CachingModuleTest {
     @Named
-    static class CustomModule
-        extends AbstractModule
-    {
+    static class CustomModule extends AbstractModule {
         @Override
-        protected void configure()
-        {
-            requireBinding( CachingModuleTest.class );
-            getMembersInjector( CachingModuleTest.class );
+        protected void configure() {
+            requireBinding(CachingModuleTest.class);
+            getMembersInjector(CachingModuleTest.class);
 
-            install( new PrivateModule()
-            {
+            install(new PrivateModule() {
                 @Override
-                protected void configure()
-                {
-                    requireBinding( CachingModuleTest.class );
-                    getMembersInjector( CachingModuleTest.class );
+                protected void configure() {
+                    requireBinding(CachingModuleTest.class);
+                    getMembersInjector(CachingModuleTest.class);
                 }
-            } );
+            });
         }
     }
 
     @Test
-    void testQualifiedModule()
-    {
-        final ClassSpace space =
-            new URLClassSpace( getClass().getClassLoader(), new URL[] { getClass().getResource( "" ) } );
+    void testQualifiedModule() {
+        final ClassSpace space = new URLClassSpace(
+                getClass().getClassLoader(), new URL[] {getClass().getResource("")});
 
-        Guice.createInjector( new SpaceModule( space, BeanScanning.CACHE, false ) );
-        Guice.createInjector( new SpaceModule( space, BeanScanning.CACHE, false ) );
-        Guice.createInjector( new SpaceModule( space, BeanScanning.CACHE, false ) );
+        Guice.createInjector(new SpaceModule(space, BeanScanning.CACHE, false));
+        Guice.createInjector(new SpaceModule(space, BeanScanning.CACHE, false));
+        Guice.createInjector(new SpaceModule(space, BeanScanning.CACHE, false));
     }
 }

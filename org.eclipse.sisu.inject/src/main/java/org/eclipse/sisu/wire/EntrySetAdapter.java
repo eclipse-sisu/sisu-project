@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -20,9 +20,7 @@ import java.util.Set;
 /**
  * {@link Set} backed by an {@link Iterable} sequence of map entries.
  */
-public final class EntrySetAdapter<V>
-    extends AbstractSet<V>
-{
+public final class EntrySetAdapter<V> extends AbstractSet<V> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -33,8 +31,7 @@ public final class EntrySetAdapter<V>
     // Constructors
     // ----------------------------------------------------------------------
 
-    public EntrySetAdapter( final Iterable<? extends Entry<?, V>> iterable )
-    {
+    public EntrySetAdapter(final Iterable<? extends Entry<?, V>> iterable) {
         this.iterable = iterable;
     }
 
@@ -43,23 +40,19 @@ public final class EntrySetAdapter<V>
     // ----------------------------------------------------------------------
 
     @Override
-    public Iterator<V> iterator()
-    {
-        return new ValueIterator<V>( iterable );
+    public Iterator<V> iterator() {
+        return new ValueIterator<V>(iterable);
     }
 
     @Override
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return false == iterator().hasNext();
     }
 
     @Override
-    public int size()
-    {
+    public int size() {
         int size = 0;
-        for ( final Iterator<?> i = iterable.iterator(); i.hasNext(); i.next() )
-        {
+        for (final Iterator<?> i = iterable.iterator(); i.hasNext(); i.next()) {
             size++;
         }
         return size;
@@ -72,9 +65,7 @@ public final class EntrySetAdapter<V>
     /**
      * Value {@link Iterator} backed by a Key:Value {@link Iterator}.
      */
-    private static final class ValueIterator<V>
-        implements Iterator<V>
-    {
+    private static final class ValueIterator<V> implements Iterator<V> {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -85,8 +76,7 @@ public final class EntrySetAdapter<V>
         // Constructors
         // ----------------------------------------------------------------------
 
-        ValueIterator( final Iterable<? extends Entry<?, V>> iterable )
-        {
+        ValueIterator(final Iterable<? extends Entry<?, V>> iterable) {
             this.iterator = iterable.iterator();
         }
 
@@ -94,18 +84,15 @@ public final class EntrySetAdapter<V>
         // Public methods
         // ----------------------------------------------------------------------
 
-        public boolean hasNext()
-        {
+        public boolean hasNext() {
             return iterator.hasNext();
         }
 
-        public V next()
-        {
+        public V next() {
             return iterator.next().getValue();
         }
 
-        public void remove()
-        {
+        public void remove() {
             throw new UnsupportedOperationException();
         }
     }

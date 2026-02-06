@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,22 +12,18 @@
  */
 package org.eclipse.sisu.plexus;
 
+import com.google.inject.TypeLiteral;
+import com.google.inject.spi.InjectionListener;
+import com.google.inject.spi.TypeEncounter;
 import java.util.List;
-
 import org.eclipse.sisu.bean.BeanBinder;
 import org.eclipse.sisu.bean.BeanManager;
 import org.eclipse.sisu.bean.PropertyBinder;
 
-import com.google.inject.TypeLiteral;
-import com.google.inject.spi.InjectionListener;
-import com.google.inject.spi.TypeEncounter;
-
 /**
  * {@link BeanBinder} that binds bean properties according to Plexus metadata.
  */
-final class PlexusBeanBinder
-    implements BeanBinder, InjectionListener<Object>
-{
+final class PlexusBeanBinder implements BeanBinder, InjectionListener<Object> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -40,37 +36,31 @@ final class PlexusBeanBinder
     // Constructors
     // ----------------------------------------------------------------------
 
-    PlexusBeanBinder( final BeanManager manager, final List<PlexusBeanSource> sources )
-    {
+    PlexusBeanBinder(final BeanManager manager, final List<PlexusBeanSource> sources) {
         this.manager = manager;
-        this.sources = sources.toArray( new PlexusBeanSource[sources.size()] );
+        this.sources = sources.toArray(new PlexusBeanSource[sources.size()]);
     }
 
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
 
-    public <B> PropertyBinder bindBean( final TypeLiteral<B> type, final TypeEncounter<B> encounter )
-    {
+    public <B> PropertyBinder bindBean(final TypeLiteral<B> type, final TypeEncounter<B> encounter) {
         final Class<?> clazz = type.getRawType();
-        if ( null != manager && manager.manage( clazz ) )
-        {
-            encounter.register( this );
+        if (null != manager && manager.manage(clazz)) {
+            encounter.register(this);
         }
-        for ( final PlexusBeanSource source : sources )
-        {
+        for (final PlexusBeanSource source : sources) {
             // use first source that has metadata for the given implementation
-            final PlexusBeanMetadata metadata = source.getBeanMetadata( clazz );
-            if ( metadata != null )
-            {
-                return new PlexusPropertyBinder( manager, encounter, metadata );
+            final PlexusBeanMetadata metadata = source.getBeanMetadata(clazz);
+            if (metadata != null) {
+                return new PlexusPropertyBinder(manager, encounter, metadata);
             }
         }
         return null; // no need to auto-bind
     }
 
-    public void afterInjection( final Object bean )
-    {
-        manager.manage( bean );
+    public void afterInjection(final Object bean) {
+        manager.manage(bean);
     }
 }

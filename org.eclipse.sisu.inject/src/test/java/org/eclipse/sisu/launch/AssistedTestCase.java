@@ -10,56 +10,47 @@
  *******************************************************************************/
 package org.eclipse.sisu.launch;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-
-import java.util.Properties;
-
 import com.google.inject.Binder;
 import com.google.inject.Key;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import java.util.Properties;
+import javax.inject.Inject;
+import javax.inject.Named;
 import org.eclipse.sisu.inject.BeanLocator;
 
 /**
  * Still JUnit3 based test
  * Execute with JUnit3 runner.
  */
-public final class AssistedTestCase
-    extends InjectedTestCase
-{
-    interface FooFactory
-    {
-        Foo create( int port );
+public final class AssistedTestCase extends InjectedTestCase {
+    interface FooFactory {
+        Foo create(int port);
     }
 
     @Named
-    static class AssistedFoo
-        implements Foo
-    {
+    static class AssistedFoo implements Foo {
         final int port;
 
         final String host;
 
         @Inject
-        public AssistedFoo( @Assisted final int port, @Named( "${host}" ) final String host )
-        {
+        public AssistedFoo(@Assisted final int port, @Named("${host}") final String host) {
             this.port = port;
             this.host = host;
         }
     }
 
     @Override
-    public void configure( final Binder binder )
-    {
-        binder.install( new FactoryModuleBuilder().implement( Foo.class,
-                                                              AssistedFoo.class ).build( FooFactory.class ) );
+    public void configure(final Binder binder) {
+        binder.install(new FactoryModuleBuilder()
+                .implement(Foo.class, AssistedFoo.class)
+                .build(FooFactory.class));
     }
 
     @Override
-    public void configure( final Properties properties )
-    {
-        properties.setProperty( "host", "localhost" );
+    public void configure(final Properties properties) {
+        properties.setProperty("host", "localhost");
     }
 
     @Inject
@@ -68,21 +59,25 @@ public final class AssistedTestCase
     @Inject
     BeanLocator beanLocator;
 
-    public void testAssistedInject()
-    {
-        Foo bean = beanFactory.create( 8080 );
-        assertTrue( bean instanceof AssistedFoo );
+    public void testAssistedInject() {
+        Foo bean = beanFactory.create(8080);
+        assertTrue(bean instanceof AssistedFoo);
 
-        assertEquals( 8080, ( (AssistedFoo) bean ).port );
-        assertEquals( "localhost", ( (AssistedFoo) bean ).host );
+        assertEquals(8080, ((AssistedFoo) bean).port);
+        assertEquals("localhost", ((AssistedFoo) bean).host);
 
-        bean = beanLocator.locate( Key.get( FooFactory.class ) ).iterator().next().getValue().create( 42 );
+        bean = beanLocator
+                .locate(Key.get(FooFactory.class))
+                .iterator()
+                .next()
+                .getValue()
+                .create(42);
 
-        assertEquals( 42, ( (AssistedFoo) bean ).port );
-        assertEquals( "localhost", ( (AssistedFoo) bean ).host );
+        assertEquals(42, ((AssistedFoo) bean).port);
+        assertEquals("localhost", ((AssistedFoo) bean).host);
 
-        bean = beanLocator.locate( Key.get( Foo.class ) ).iterator().next().getValue();
+        bean = beanLocator.locate(Key.get(Foo.class)).iterator().next().getValue();
 
-        assertTrue( bean instanceof DefaultFoo );
+        assertTrue(bean instanceof DefaultFoo);
     }
 }

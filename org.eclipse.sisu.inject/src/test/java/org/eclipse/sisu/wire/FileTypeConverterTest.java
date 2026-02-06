@@ -10,31 +10,26 @@
  *******************************************************************************/
 package org.eclipse.sisu.wire;
 
-import java.io.File;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
-
+import java.io.File;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-class FileTypeConverterTest
-{
+class FileTypeConverterTest {
     @Test
-    void testFileConversion()
-    {
-        final File file = Guice.createInjector( new FileTypeConverter(), new AbstractModule()
-        {
-            @Override
-            protected void configure()
-            {
-                bindConstant().annotatedWith( Names.named( "file" ) ).to( "work/temp" );
-            }
-        } ).getInstance( Key.get( File.class, Names.named( "file" ) ) );
+    void testFileConversion() {
+        final File file = Guice.createInjector(new FileTypeConverter(), new AbstractModule() {
+                    @Override
+                    protected void configure() {
+                        bindConstant().annotatedWith(Names.named("file")).to("work/temp");
+                    }
+                })
+                .getInstance(Key.get(File.class, Names.named("file")));
 
-        assertEquals( "work" + File.separator + "temp", file.getPath() );
+        assertEquals("work" + File.separator + "temp", file.getPath());
     }
 }

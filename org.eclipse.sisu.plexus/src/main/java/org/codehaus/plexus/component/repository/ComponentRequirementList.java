@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -14,9 +14,7 @@ package org.codehaus.plexus.component.repository;
 
 import java.util.List;
 
-public final class ComponentRequirementList
-    extends ComponentRequirement
-{
+public final class ComponentRequirementList extends ComponentRequirement {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -27,13 +25,11 @@ public final class ComponentRequirementList
     // Public methods
     // ----------------------------------------------------------------------
 
-    public void setRoleHints( final List<String> hints )
-    {
+    public void setRoleHints(final List<String> hints) {
         this.hints = hints;
     }
 
-    public List<String> getRoleHints()
-    {
+    public List<String> getRoleHints() {
         return hints;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,18 +12,14 @@
  */
 package org.eclipse.sisu.inject;
 
-import java.lang.annotation.Annotation;
-
-import org.eclipse.sisu.Priority;
-
 import com.google.inject.Binding;
+import java.lang.annotation.Annotation;
+import org.eclipse.sisu.Priority;
 
 /**
  * Implementation of @{@link Priority} that can also act as an @{@link AnnotatedSource}.
  */
-final class PrioritySource
-    implements Priority, AnnotatedSource
-{
+final class PrioritySource implements Priority, AnnotatedSource {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -40,8 +36,7 @@ final class PrioritySource
      * @param source The owning source
      * @param value The priority
      */
-    PrioritySource( final Object source, final int value )
-    {
+    PrioritySource(final Object source, final int value) {
         this.source = source;
         this.value = value;
     }
@@ -50,44 +45,36 @@ final class PrioritySource
     // Public methods
     // ----------------------------------------------------------------------
 
-    public int value()
-    {
+    public int value() {
         return value;
     }
 
-    public Class<? extends Annotation> annotationType()
-    {
+    public Class<? extends Annotation> annotationType() {
         return Priority.class;
     }
 
     @Override
-    public int hashCode()
-    {
-        return 127 * "value".hashCode() ^ Integer.valueOf( value ).hashCode();
+    public int hashCode() {
+        return 127 * "value".hashCode() ^ Integer.valueOf(value).hashCode();
     }
 
     @Override
-    public boolean equals( final Object rhs )
-    {
-        return this == rhs || ( rhs instanceof Priority && value == ( (Priority) rhs ).value() );
+    public boolean equals(final Object rhs) {
+        return this == rhs || (rhs instanceof Priority && value == ((Priority) rhs).value());
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return null != source ? source.toString() : "@" + Priority.class.getName() + "(value=" + value + ")";
     }
 
-    @SuppressWarnings( "unchecked" )
-    public <T extends Annotation> T getAnnotation( final Binding<?> binding, final Class<T> annotationType )
-    {
-        if ( Priority.class.equals( annotationType ) )
-        {
+    @SuppressWarnings("unchecked")
+    public <T extends Annotation> T getAnnotation(final Binding<?> binding, final Class<T> annotationType) {
+        if (Priority.class.equals(annotationType)) {
             return (T) this;
         }
-        if ( source instanceof AnnotatedSource )
-        {
-            return ( (AnnotatedSource) source ).getAnnotation( binding, annotationType );
+        if (source instanceof AnnotatedSource) {
+            return ((AnnotatedSource) source).getAnnotation(binding, annotationType);
         }
         return null;
     }

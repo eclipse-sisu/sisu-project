@@ -16,20 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.lang.annotation.Annotation;
-import java.lang.annotation.Retention;
-import java.util.Iterator;
-
-import javax.inject.Named;
-import javax.inject.Provider;
-import javax.inject.Qualifier;
-
-import org.eclipse.sisu.BeanEntry;
-import org.eclipse.sisu.inject.RankedBindingsTest.Bean;
-import org.eclipse.sisu.inject.RankedBindingsTest.BeanImpl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Binding;
 import com.google.inject.Guice;
@@ -37,34 +23,34 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
 import com.google.inject.util.Providers;
+import java.lang.annotation.Annotation;
+import java.lang.annotation.Retention;
+import java.util.Iterator;
+import javax.inject.Named;
+import javax.inject.Provider;
+import javax.inject.Qualifier;
+import org.eclipse.sisu.BeanEntry;
+import org.eclipse.sisu.inject.RankedBindingsTest.Bean;
+import org.eclipse.sisu.inject.RankedBindingsTest.BeanImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-class LocatedBeansTest
-{
+class LocatedBeansTest {
     @Qualifier
-    @Retention( RUNTIME )
-    public @interface Marked
-    {
+    @Retention(RUNTIME)
+    public @interface Marked {
         String value();
     }
 
-    @Marked( "MarkedBean1" )
-    static class MarkedBeanImpl1
-        implements Bean
-    {
-    }
+    @Marked("MarkedBean1")
+    static class MarkedBeanImpl1 implements Bean {}
 
-    @Marked( "MarkedBean2" )
-    static class MarkedBeanImpl2
-        implements Bean
-    {
-    }
+    @Marked("MarkedBean2")
+    static class MarkedBeanImpl2 implements Bean {}
 
-    @Marked( "MarkedBean3" )
-    static class MarkedBeanProvider
-        implements Provider<Bean>
-    {
-        public Bean get()
-        {
+    @Marked("MarkedBean3")
+    static class MarkedBeanProvider implements Provider<Bean> {
+        public Bean get() {
             return new MarkedBeanImpl1();
         }
     }
@@ -72,34 +58,31 @@ class LocatedBeansTest
     Injector injector;
 
     @BeforeEach
-    void setUp()
-        throws Exception
-    {
-        injector = Guice.createInjector( new AbstractModule()
-        {
+    void setUp() throws Exception {
+        injector = Guice.createInjector(new AbstractModule() {
             @Override
-            protected void configure()
-            {
-                bind( Bean.class ).to( BeanImpl.class ); // also seen as @Named("default")
+            protected void configure() {
+                bind(Bean.class).to(BeanImpl.class); // also seen as @Named("default")
 
-                bind( Bean.class ).annotatedWith( Named.class ).to( BeanImpl.class ); // only in unrestricted search
+                bind(Bean.class).annotatedWith(Named.class).to(BeanImpl.class); // only in unrestricted search
 
-                bind( Bean.class ).annotatedWith( Names.named( "Named1" ) ).toProvider( Providers.of( new BeanImpl() ) );
-                bind( Bean.class ).annotatedWith( Names.named( "Named2" ) ).to( BeanImpl.class );
+                bind(Bean.class).annotatedWith(Names.named("Named1")).toProvider(Providers.of(new BeanImpl()));
+                bind(Bean.class).annotatedWith(Names.named("Named2")).to(BeanImpl.class);
 
-                bind( Bean.class ).annotatedWith( Marked.class ).to( BeanImpl.class ); // only in unrestricted search
+                bind(Bean.class).annotatedWith(Marked.class).to(BeanImpl.class); // only in unrestricted search
 
-                bind( Bean.class ).annotatedWith( MarkedBeanImpl1.class.getAnnotation( Marked.class ) ).to( MarkedBeanImpl1.class );
-                bind( Bean.class ).annotatedWith( Names.named( "Marked2" ) ).to( MarkedBeanImpl2.class );
-                bind( Bean.class ).annotatedWith( Names.named( "Marked3" ) ).toProvider( MarkedBeanProvider.class );
+                bind(Bean.class)
+                        .annotatedWith(MarkedBeanImpl1.class.getAnnotation(Marked.class))
+                        .to(MarkedBeanImpl1.class);
+                bind(Bean.class).annotatedWith(Names.named("Marked2")).to(MarkedBeanImpl2.class);
+                bind(Bean.class).annotatedWith(Names.named("Marked3")).toProvider(MarkedBeanProvider.class);
             }
-        } );
+        });
     }
 
     @Test
-    void testCacheConcurrency()
-    {
-        final LocatedBeans<Annotation, Bean> beans = locate( Key.get( Bean.class ) );
+    void testCacheConcurrency() {
+        final LocatedBeans<Annotation, Bean> beans = locate(Key.get(Bean.class));
 
         final Iterator<BeanEntry<Annotation, Bean>> itr1 = beans.iterator();
         final Iterator<BeanEntry<Annotation, Bean>> itr2 = beans.iterator();
@@ -107,120 +90,117 @@ class LocatedBeansTest
         Bean a, b;
 
         a = itr1.next().getValue();
-        assertSame( a, itr2.next().getValue() );
+        assertSame(a, itr2.next().getValue());
         a = itr1.next().getValue();
-        assertSame( a, itr2.next().getValue() );
+        assertSame(a, itr2.next().getValue());
         a = itr1.next().getValue();
-        assertSame( a, itr2.next().getValue() );
+        assertSame(a, itr2.next().getValue());
 
         a = itr1.next().getValue();
 
-        for ( final Binding<Bean> binding : beans.beans.bindings() )
-        {
-            beans.beans.remove( binding );
+        for (final Binding<Bean> binding : beans.beans.bindings()) {
+            beans.beans.remove(binding);
         }
 
         b = itr2.next().getValue();
 
-        assertFalse( a == b );
+        assertFalse(a == b);
 
         a = itr1.next().getValue();
-        assertSame( a, itr2.next().getValue() );
+        assertSame(a, itr2.next().getValue());
         a = itr1.next().getValue();
-        assertSame( a, itr2.next().getValue() );
+        assertSame(a, itr2.next().getValue());
         a = itr1.next().getValue();
-        assertSame( a, itr2.next().getValue() );
+        assertSame(a, itr2.next().getValue());
     }
 
     @Test
-    void testUnrestrictedSearch()
-    {
-        final LocatedBeans<Annotation, Bean> beans = locate( Key.get( Bean.class ) );
+    void testUnrestrictedSearch() {
+        final LocatedBeans<Annotation, Bean> beans = locate(Key.get(Bean.class));
         final Iterator<BeanEntry<Annotation, Bean>> itr = beans.iterator();
 
-        assertTrue( itr.hasNext() );
-        assertEquals( QualifyingStrategy.DEFAULT_QUALIFIER, itr.next().getKey() );
-        assertTrue( itr.hasNext() );
-        assertEquals( QualifyingStrategy.BLANK_QUALIFIER, itr.next().getKey() );
-        assertTrue( itr.hasNext() );
-        assertEquals( Names.named( "Named1" ), itr.next().getKey() );
-        assertTrue( itr.hasNext() );
-        assertEquals( Names.named( "Named2" ), itr.next().getKey() );
-        assertTrue( itr.hasNext() );
-        assertEquals( QualifyingStrategy.BLANK_QUALIFIER, itr.next().getKey() );
-        assertTrue( itr.hasNext() );
-        assertEquals( MarkedBeanImpl1.class.getAnnotation( Marked.class ), itr.next().getKey() );
-        assertTrue( itr.hasNext() );
-        assertEquals( Names.named( "Marked2" ), itr.next().getKey() );
-        assertTrue( itr.hasNext() );
-        assertEquals( Names.named( "Marked3" ), itr.next().getKey() );
-        assertFalse( itr.hasNext() );
+        assertTrue(itr.hasNext());
+        assertEquals(QualifyingStrategy.DEFAULT_QUALIFIER, itr.next().getKey());
+        assertTrue(itr.hasNext());
+        assertEquals(QualifyingStrategy.BLANK_QUALIFIER, itr.next().getKey());
+        assertTrue(itr.hasNext());
+        assertEquals(Names.named("Named1"), itr.next().getKey());
+        assertTrue(itr.hasNext());
+        assertEquals(Names.named("Named2"), itr.next().getKey());
+        assertTrue(itr.hasNext());
+        assertEquals(QualifyingStrategy.BLANK_QUALIFIER, itr.next().getKey());
+        assertTrue(itr.hasNext());
+        assertEquals(
+                MarkedBeanImpl1.class.getAnnotation(Marked.class), itr.next().getKey());
+        assertTrue(itr.hasNext());
+        assertEquals(Names.named("Marked2"), itr.next().getKey());
+        assertTrue(itr.hasNext());
+        assertEquals(Names.named("Marked3"), itr.next().getKey());
+        assertFalse(itr.hasNext());
     }
 
     @Test
-    void testNamedSearch()
-    {
-        final LocatedBeans<Named, Bean> beans = locate( Key.get( Bean.class, Named.class ) );
+    void testNamedSearch() {
+        final LocatedBeans<Named, Bean> beans = locate(Key.get(Bean.class, Named.class));
         final Iterator<BeanEntry<Named, Bean>> itr = beans.iterator();
 
-        assertTrue( itr.hasNext() );
-        assertEquals( QualifyingStrategy.DEFAULT_QUALIFIER, itr.next().getKey() );
-        assertTrue( itr.hasNext() );
-        assertEquals( Names.named( "Named1" ), itr.next().getKey() );
-        assertTrue( itr.hasNext() );
-        assertEquals( Names.named( "Named2" ), itr.next().getKey() );
-        assertTrue( itr.hasNext() );
-        assertEquals( Names.named( "Marked2" ), itr.next().getKey() );
-        assertTrue( itr.hasNext() );
-        assertEquals( Names.named( "Marked3" ), itr.next().getKey() );
-        assertFalse( itr.hasNext() );
+        assertTrue(itr.hasNext());
+        assertEquals(QualifyingStrategy.DEFAULT_QUALIFIER, itr.next().getKey());
+        assertTrue(itr.hasNext());
+        assertEquals(Names.named("Named1"), itr.next().getKey());
+        assertTrue(itr.hasNext());
+        assertEquals(Names.named("Named2"), itr.next().getKey());
+        assertTrue(itr.hasNext());
+        assertEquals(Names.named("Marked2"), itr.next().getKey());
+        assertTrue(itr.hasNext());
+        assertEquals(Names.named("Marked3"), itr.next().getKey());
+        assertFalse(itr.hasNext());
     }
 
     @Test
-    void testNamedWithAttributesSearch()
-    {
-        final LocatedBeans<Named, Bean> beans = locate( Key.get( Bean.class, Names.named( "Named2" ) ) );
+    void testNamedWithAttributesSearch() {
+        final LocatedBeans<Named, Bean> beans = locate(Key.get(Bean.class, Names.named("Named2")));
         final Iterator<BeanEntry<Named, Bean>> itr = beans.iterator();
 
-        assertTrue( itr.hasNext() );
-        assertEquals( Names.named( "Named2" ), itr.next().getKey() );
-        assertFalse( itr.hasNext() );
+        assertTrue(itr.hasNext());
+        assertEquals(Names.named("Named2"), itr.next().getKey());
+        assertFalse(itr.hasNext());
     }
 
     @Test
-    void testMarkedSearch()
-    {
-        final LocatedBeans<Marked, Bean> beans = locate( Key.get( Bean.class, Marked.class ) );
+    void testMarkedSearch() {
+        final LocatedBeans<Marked, Bean> beans = locate(Key.get(Bean.class, Marked.class));
         final Iterator<BeanEntry<Marked, Bean>> itr = beans.iterator();
 
-        assertTrue( itr.hasNext() );
-        assertEquals( MarkedBeanImpl1.class.getAnnotation( Marked.class ), itr.next().getKey() );
-        assertTrue( itr.hasNext() );
-        assertEquals( MarkedBeanImpl2.class.getAnnotation( Marked.class ), itr.next().getKey() );
-        assertTrue( itr.hasNext() );
-        assertEquals( MarkedBeanProvider.class.getAnnotation( Marked.class ), itr.next().getKey() );
-        assertFalse( itr.hasNext() );
+        assertTrue(itr.hasNext());
+        assertEquals(
+                MarkedBeanImpl1.class.getAnnotation(Marked.class), itr.next().getKey());
+        assertTrue(itr.hasNext());
+        assertEquals(
+                MarkedBeanImpl2.class.getAnnotation(Marked.class), itr.next().getKey());
+        assertTrue(itr.hasNext());
+        assertEquals(
+                MarkedBeanProvider.class.getAnnotation(Marked.class), itr.next().getKey());
+        assertFalse(itr.hasNext());
     }
 
     @Test
-    void testMarkedWithAttributesSearch()
-    {
+    void testMarkedWithAttributesSearch() {
         final LocatedBeans<Marked, Bean> beans =
-            locate( Key.get( Bean.class, MarkedBeanImpl2.class.getAnnotation( Marked.class ) ) );
+                locate(Key.get(Bean.class, MarkedBeanImpl2.class.getAnnotation(Marked.class)));
         final Iterator<BeanEntry<Marked, Bean>> itr = beans.iterator();
 
-        assertTrue( itr.hasNext() );
-        assertEquals( MarkedBeanImpl2.class.getAnnotation( Marked.class ), itr.next().getKey() );
-        assertFalse( itr.hasNext() );
+        assertTrue(itr.hasNext());
+        assertEquals(
+                MarkedBeanImpl2.class.getAnnotation(Marked.class), itr.next().getKey());
+        assertFalse(itr.hasNext());
     }
 
-    private <Q extends Annotation, T> LocatedBeans<Q, T> locate( final Key<T> key )
-    {
-        final RankedBindings<T> bindings = new RankedBindings<T>( key.getTypeLiteral(), null );
-        for ( final Binding<T> b : injector.findBindingsByType( key.getTypeLiteral() ) )
-        {
-            bindings.add( b, 0 );
+    private <Q extends Annotation, T> LocatedBeans<Q, T> locate(final Key<T> key) {
+        final RankedBindings<T> bindings = new RankedBindings<T>(key.getTypeLiteral(), null);
+        for (final Binding<T> b : injector.findBindingsByType(key.getTypeLiteral())) {
+            bindings.add(b, 0);
         }
-        return new LocatedBeans<Q, T>( key, bindings, null );
+        return new LocatedBeans<Q, T>(key, bindings, null);
     }
 }

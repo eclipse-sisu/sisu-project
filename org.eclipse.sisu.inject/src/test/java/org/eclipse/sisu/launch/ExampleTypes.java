@@ -13,93 +13,67 @@ package org.eclipse.sisu.launch;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-
 import javax.inject.Named;
 import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
 // various qualified types for testing
 
-interface Foo
-{
-}
+interface Foo {}
 
 @Qualifier
-@Retention( RetentionPolicy.RUNTIME )
-@interface Tag
-{
+@Retention(RetentionPolicy.RUNTIME)
+@interface Tag {
     String value();
 }
 
 @Named
-class NamedFoo
-    implements Foo
-{
-}
+class NamedFoo implements Foo {}
 
-@Tag( "A" )
-class TaggedFoo
-    implements Foo
-{
-}
+@Tag("A")
+class TaggedFoo implements Foo {}
 
-@Tag( "B" )
-@Named( "NameTag" )
-class NamedAndTaggedFoo
-    implements Foo
-{
-}
+@Tag("B")
+@Named("NameTag")
+class NamedAndTaggedFoo implements Foo {}
 
 @Named
 @Singleton
-class DefaultFoo
-    implements Foo
-{
-}
+class DefaultFoo implements Foo {}
 
-class TagImpl
-    implements Tag
-{
+class TagImpl implements Tag {
     private final String value;
 
-    public TagImpl( final String value )
-    {
+    public TagImpl(final String value) {
         this.value = value;
     }
 
-    public String value()
-    {
+    public String value() {
         return value;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return 127 * "value".hashCode() ^ value.hashCode();
     }
 
     @Override
-    public boolean equals( final Object rhs )
-    {
-        if ( this == rhs )
-        {
+    public boolean equals(final Object rhs) {
+        if (this == rhs) {
             return true;
         }
-        if ( rhs instanceof Tag )
-        {
-            return value.equals( ( (Tag) rhs ).value() );
+        if (rhs instanceof Tag) {
+            return value.equals(((Tag) rhs).value());
         }
         return false;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "@" + Tag.class.getName() + "(value=" + value + ")";
     }
 
-    public Class<? extends Annotation> annotationType()
-    {
+    public Class<? extends Annotation> annotationType() {
         return Tag.class;
     }
 }

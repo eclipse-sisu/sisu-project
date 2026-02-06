@@ -10,39 +10,34 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.name.Names;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 
-public class SimpleRequirementExample
-{
-    public SimpleRequirementExample()
-    {
-        final String requirement = Guice.createInjector( new AbstractModule()
-        {
-            @Override
-            protected void configure()
-            {
-                bind( PlexusBeanLocator.class ).to( DefaultPlexusBeanLocator.class );
-                bind( PlexusBeanConverter.class ).to( PlexusXmlBeanConverter.class );
-                install( new PlexusBindingModule( null, new PlexusAnnotatedBeanModule( null, null ) ) );
-                bindConstant().annotatedWith( Names.named( "example" ) ).to( "TEST" );
-            }
-        } ).getInstance( Bean.class ).requirement;
+public class SimpleRequirementExample {
+    public SimpleRequirementExample() {
+        final String requirement = Guice.createInjector(new AbstractModule() {
+                    @Override
+                    protected void configure() {
+                        bind(PlexusBeanLocator.class).to(DefaultPlexusBeanLocator.class);
+                        bind(PlexusBeanConverter.class).to(PlexusXmlBeanConverter.class);
+                        install(new PlexusBindingModule(null, new PlexusAnnotatedBeanModule(null, null)));
+                        bindConstant().annotatedWith(Names.named("example")).to("TEST");
+                    }
+                })
+                .getInstance(Bean.class)
+                .requirement;
 
-        if ( !requirement.equals( "TEST" ) )
-        {
+        if (!requirement.equals("TEST")) {
             throw new AssertionError();
         }
     }
 
-    @Component( role = Bean.class )
-    static class Bean
-    {
-        @Requirement( hint = "example" )
+    @Component(role = Bean.class)
+    static class Bean {
+        @Requirement(hint = "example")
         String requirement;
     }
 }

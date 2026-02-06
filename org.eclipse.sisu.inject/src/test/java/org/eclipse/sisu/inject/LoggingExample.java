@@ -14,74 +14,68 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Module;
 
-public class LoggingExample
-{
-    static class BadValue
-    {
+public class LoggingExample {
+    static class BadValue {
         @Override
-        public String toString()
-        {
-            throw new RuntimeException( "sigh" );
+        public String toString() {
+            throw new RuntimeException("sigh");
         }
     }
 
-    public LoggingExample()
-    {
-        Logs.trace( "", null, null );
-        Logs.trace( "", "a", "b" );
-        Logs.trace( "{", null, null );
-        Logs.trace( "}", "a", "b" );
-        Logs.trace( "}{", null, null );
-        Logs.trace( "{}", "a", "b" );
-        Logs.trace( "}{}", null, null );
-        Logs.trace( "{{}", "a", "b" );
-        Logs.trace( "{}{", null, null );
-        Logs.trace( "{}}", "a", "b" );
-        Logs.trace( "{{}}", null, null );
-        Logs.trace( "}{}{", "a", "b" );
-        Logs.trace( "{}{}", null, null );
-        Logs.trace( "{}{}", "a", "b" );
-        Logs.trace( "{{}}{{}}", null, null );
-        Logs.trace( "{}-{}", "a", "b" );
-        Logs.trace( "<>-{}", "a", "b" );
+    public LoggingExample() {
+        Logs.trace("", null, null);
+        Logs.trace("", "a", "b");
+        Logs.trace("{", null, null);
+        Logs.trace("}", "a", "b");
+        Logs.trace("}{", null, null);
+        Logs.trace("{}", "a", "b");
+        Logs.trace("}{}", null, null);
+        Logs.trace("{{}", "a", "b");
+        Logs.trace("{}{", null, null);
+        Logs.trace("{}}", "a", "b");
+        Logs.trace("{{}}", null, null);
+        Logs.trace("}{}{", "a", "b");
+        Logs.trace("{}{}", null, null);
+        Logs.trace("{}{}", "a", "b");
+        Logs.trace("{{}}{{}}", null, null);
+        Logs.trace("{}-{}", "a", "b");
+        Logs.trace("<>-{}", "a", "b");
 
-        Logs.trace( "{} {}", new BadValue(), new BadValue() );
+        Logs.trace("{} {}", new BadValue(), new BadValue());
 
-        Logs.trace( "Error: {} cause: {}", "oops", new Exception( "doh!" ) );
+        Logs.trace("Error: {} cause: {}", "oops", new Exception("doh!"));
 
-        Logs.warn( "", null, null );
-        Logs.warn( "", "a", "b" );
-        Logs.warn( "{", null, null );
-        Logs.warn( "}", "a", "b" );
-        Logs.warn( "}{", null, null );
-        Logs.warn( "{}", "a", "b" );
-        Logs.warn( "}{}", null, null );
-        Logs.warn( "{{}", "a", "b" );
-        Logs.warn( "{}{", null, null );
-        Logs.warn( "{}}", "a", "b" );
-        Logs.warn( "{{}}", null, null );
-        Logs.warn( "}{}{", "a", "b" );
-        Logs.warn( "{}{}", null, null );
-        Logs.warn( "{}{}", "a", "b" );
-        Logs.warn( "{{}}{{}}", null, null );
-        Logs.warn( "{}-{}", "a", "b" );
-        Logs.warn( "<>-{}", "a", "b" );
+        Logs.warn("", null, null);
+        Logs.warn("", "a", "b");
+        Logs.warn("{", null, null);
+        Logs.warn("}", "a", "b");
+        Logs.warn("}{", null, null);
+        Logs.warn("{}", "a", "b");
+        Logs.warn("}{}", null, null);
+        Logs.warn("{{}", "a", "b");
+        Logs.warn("{}{", null, null);
+        Logs.warn("{}}", "a", "b");
+        Logs.warn("{{}}", null, null);
+        Logs.warn("}{}{", "a", "b");
+        Logs.warn("{}{}", null, null);
+        Logs.warn("{}{}", "a", "b");
+        Logs.warn("{{}}{{}}", null, null);
+        Logs.warn("{}-{}", "a", "b");
+        Logs.warn("<>-{}", "a", "b");
 
-        Logs.warn( "{} {}", new BadValue(), new BadValue() );
+        Logs.warn("{} {}", new BadValue(), new BadValue());
 
-        Logs.warn( "Error: {} cause: {}", "oops", new Exception( "doh!" ) );
+        Logs.warn("Error: {} cause: {}", "oops", new Exception("doh!"));
 
-        final Module module = new AbstractModule()
-        {
+        final Module module = new AbstractModule() {
             @Override
-            protected void configure()
-            {
-                bind( Object.class ).to( BadValue.class );
+            protected void configure() {
+                bind(Object.class).to(BadValue.class);
             }
         };
 
-        Logs.trace( Logs.toString( module ), null, null );
+        Logs.trace(Logs.toString(module), null, null);
 
-        Logs.trace( Logs.toString( Guice.createInjector( module ) ), null, null );
+        Logs.trace(Logs.toString(Guice.createInjector(module)), null, null);
     }
 }

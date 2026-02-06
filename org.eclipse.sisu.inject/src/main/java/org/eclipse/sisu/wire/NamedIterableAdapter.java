@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,17 +12,14 @@
  */
 package org.eclipse.sisu.wire;
 
+import com.google.inject.name.Named;
 import java.util.Iterator;
 import java.util.Map.Entry;
-
-import com.google.inject.name.Named;
 
 /**
  * String mapping {@link Iterable} backed by a {@link Named} mapping {@link Iterable}.
  */
-final class NamedIterableAdapter<V>
-    implements Iterable<Entry<String, V>>
-{
+final class NamedIterableAdapter<V> implements Iterable<Entry<String, V>> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -33,8 +30,7 @@ final class NamedIterableAdapter<V>
     // Constructors
     // ----------------------------------------------------------------------
 
-    NamedIterableAdapter( final Iterable<Entry<Named, V>> delegate )
-    {
+    NamedIterableAdapter(final Iterable<Entry<Named, V>> delegate) {
         this.delegate = delegate;
     }
 
@@ -42,9 +38,8 @@ final class NamedIterableAdapter<V>
     // Public methods
     // ----------------------------------------------------------------------
 
-    public Iterator<Entry<String, V>> iterator()
-    {
-        return new NamedIterator<V>( delegate );
+    public Iterator<Entry<String, V>> iterator() {
+        return new NamedIterator<V>(delegate);
     }
 
     // ----------------------------------------------------------------------
@@ -54,9 +49,7 @@ final class NamedIterableAdapter<V>
     /**
      * String mapping {@link Iterator} backed by a {@link Named} mapping {@link Iterator}.
      */
-    private static final class NamedIterator<V>
-        implements Iterator<Entry<String, V>>
-    {
+    private static final class NamedIterator<V> implements Iterator<Entry<String, V>> {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -67,8 +60,7 @@ final class NamedIterableAdapter<V>
         // Constructors
         // ----------------------------------------------------------------------
 
-        NamedIterator( final Iterable<Entry<Named, V>> iterable )
-        {
+        NamedIterator(final Iterable<Entry<Named, V>> iterable) {
             iterator = iterable.iterator();
         }
 
@@ -76,18 +68,15 @@ final class NamedIterableAdapter<V>
         // Public methods
         // ----------------------------------------------------------------------
 
-        public boolean hasNext()
-        {
+        public boolean hasNext() {
             return iterator.hasNext();
         }
 
-        public Entry<String, V> next()
-        {
-            return new NamedEntry<V>( iterator.next() );
+        public Entry<String, V> next() {
+            return new NamedEntry<V>(iterator.next());
         }
 
-        public void remove()
-        {
+        public void remove() {
             throw new UnsupportedOperationException();
         }
     }
@@ -95,9 +84,7 @@ final class NamedIterableAdapter<V>
     /**
      * String mapping {@link Entry} backed by a {@link Named} mapping {@link Entry}.
      */
-    private static final class NamedEntry<V>
-        implements Entry<String, V>
-    {
+    private static final class NamedEntry<V> implements Entry<String, V> {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -108,8 +95,7 @@ final class NamedIterableAdapter<V>
         // Constructors
         // ----------------------------------------------------------------------
 
-        NamedEntry( final Entry<Named, V> entry )
-        {
+        NamedEntry(final Entry<Named, V> entry) {
             this.entry = entry;
         }
 
@@ -117,24 +103,20 @@ final class NamedIterableAdapter<V>
         // Public methods
         // ----------------------------------------------------------------------
 
-        public String getKey()
-        {
+        public String getKey() {
             return entry.getKey().value();
         }
 
-        public V getValue()
-        {
+        public V getValue() {
             return entry.getValue();
         }
 
-        public V setValue( final V value )
-        {
+        public V setValue(final V value) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return getKey() + "=" + getValue();
         }
     }

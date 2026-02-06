@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,22 +12,20 @@
  */
 package org.eclipse.sisu.space;
 
+import static java.lang.Character.isWhitespace;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
-import static java.lang.Character.isWhitespace;
 
 /**
  * Utility methods for dealing with tokens.
  */
-public final class Tokens
-{
+public final class Tokens {
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
-    private Tokens()
-    {
+    private Tokens() {
         // static utility class, not allowed to create instances
     }
 
@@ -41,14 +39,11 @@ public final class Tokens
      * @param text The text to split into tokens
      * @return Sequence of comma-separated tokens
      */
-    public static Iterable<String> splitByComma( final String text )
-    {
-        return new Iterable<String>()
-        {
+    public static Iterable<String> splitByComma(final String text) {
+        return new Iterable<String>() {
             @Override
-            public Iterator<String> iterator()
-            {
-                return new TokenIterator( text, ',', true );
+            public Iterator<String> iterator() {
+                return new TokenIterator(text, ',', true);
             }
         };
     }
@@ -59,14 +54,11 @@ public final class Tokens
      * @param text The text to split into tokens
      * @return Sequence of star-separated tokens
      */
-    public static Iterable<String> splitByStar( final String text )
-    {
-        return new Iterable<String>()
-        {
+    public static Iterable<String> splitByStar(final String text) {
+        return new Iterable<String>() {
             @Override
-            public Iterator<String> iterator()
-            {
-                return new TokenIterator( text, '*', false );
+            public Iterator<String> iterator() {
+                return new TokenIterator(text, '*', false);
             }
         };
     }
@@ -78,9 +70,7 @@ public final class Tokens
     /**
      * {@link Iterator} that lazily splits a string into tokens.
      */
-    static final class TokenIterator
-        implements Iterator<String>
-    {
+    static final class TokenIterator implements Iterator<String> {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -97,12 +87,11 @@ public final class Tokens
         // Constructors
         // ----------------------------------------------------------------------
 
-        TokenIterator( final String text, final char separator, final boolean trimming )
-        {
+        TokenIterator(final String text, final char separator, final boolean trimming) {
             this.text = text;
             this.separator = separator;
             this.trimming = trimming;
-            this.tokenIndex = nextToken( 0 );
+            this.tokenIndex = nextToken(0);
         }
 
         // ----------------------------------------------------------------------
@@ -110,28 +99,24 @@ public final class Tokens
         // ----------------------------------------------------------------------
 
         @Override
-        public boolean hasNext()
-        {
+        public boolean hasNext() {
             return tokenIndex < text.length();
         }
 
         @Override
-        public String next()
-        {
-            if ( hasNext() )
-            {
-                final int separatorIndex = nextSeparator( tokenIndex + 1 );
-                final int tokenEnd = trimming ? trimBack( separatorIndex - 1 ) + 1 : separatorIndex;
-                final String token = text.substring( tokenIndex, tokenEnd );
-                tokenIndex = nextToken( separatorIndex + 1 );
+        public String next() {
+            if (hasNext()) {
+                final int separatorIndex = nextSeparator(tokenIndex + 1);
+                final int tokenEnd = trimming ? trimBack(separatorIndex - 1) + 1 : separatorIndex;
+                final String token = text.substring(tokenIndex, tokenEnd);
+                tokenIndex = nextToken(separatorIndex + 1);
                 return token;
             }
             throw new NoSuchElementException();
         }
 
         @Override
-        public void remove()
-        {
+        public void remove() {
             throw new UnsupportedOperationException();
         }
 
@@ -142,14 +127,11 @@ public final class Tokens
         /**
          * Finds the start of the next token, i.e. not the separator or whitespace when trimming.
          */
-        private int nextToken( final int from )
-        {
+        private int nextToken(final int from) {
             final int max = text.length();
-            for ( int i = from; i < max; i++ )
-            {
-                final char c = text.charAt( i );
-                if ( c != separator && false == ( trimming && isWhitespace( c ) ) )
-                {
+            for (int i = from; i < max; i++) {
+                final char c = text.charAt(i);
+                if (c != separator && false == (trimming && isWhitespace(c))) {
                     return i;
                 }
             }
@@ -159,22 +141,18 @@ public final class Tokens
         /**
          * Finds the position of the next separator that follows the current token.
          */
-        private int nextSeparator( final int from )
-        {
-            final int i = text.indexOf( separator, from );
+        private int nextSeparator(final int from) {
+            final int i = text.indexOf(separator, from);
             return i >= 0 ? i : text.length();
         }
 
         /**
          * Backtracks to find the non-whitespace end of the current token.
          */
-        private int trimBack( final int from )
-        {
+        private int trimBack(final int from) {
             final int min = tokenIndex;
-            for ( int i = from; i > min; i-- )
-            {
-                if ( !isWhitespace( text.charAt( i ) ) )
-                {
+            for (int i = from; i > min; i--) {
+                if (!isWhitespace(text.charAt(i))) {
                     return i;
                 }
             }

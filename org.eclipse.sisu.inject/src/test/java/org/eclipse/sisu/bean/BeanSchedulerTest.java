@@ -12,46 +12,39 @@
  */
 package org.eclipse.sisu.bean;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class BeanSchedulerTest
-{
-    static class TestScheduler
-        extends BeanScheduler
-    {
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.jupiter.api.Test;
+
+class BeanSchedulerTest {
+    static class TestScheduler extends BeanScheduler {
         final List<Object> activatedBeans = new ArrayList<>();
 
         @Override
-        protected void activate( final Object bean )
-        {
-            activatedBeans.add( bean );
+        protected void activate(final Object bean) {
+            activatedBeans.add(bean);
         }
     }
 
     @Test
-    void testSchedulerOneBean()
-    {
+    void testSchedulerOneBean() {
         final TestScheduler scheduler = new TestScheduler();
 
-        scheduler.schedule( "bean1" );
+        scheduler.schedule("bean1");
         // without cycle detection, schedule should activate immediately
-        assertEquals( 1, scheduler.activatedBeans.size() );
-        assertEquals( "bean1", scheduler.activatedBeans.get( 0 ) );
+        assertEquals(1, scheduler.activatedBeans.size());
+        assertEquals("bean1", scheduler.activatedBeans.get(0));
     }
 
     @Test
-    void testSchedulerMultipleBeans()
-    {
+    void testSchedulerMultipleBeans() {
         final TestScheduler scheduler = new TestScheduler();
 
-        scheduler.schedule( "beanA" );
-        scheduler.schedule( "beanB" );
-        scheduler.schedule( "beanC" );
-        assertEquals( 3, scheduler.activatedBeans.size() );
+        scheduler.schedule("beanA");
+        scheduler.schedule("beanB");
+        scheduler.schedule("beanC");
+        assertEquals(3, scheduler.activatedBeans.size());
     }
 }

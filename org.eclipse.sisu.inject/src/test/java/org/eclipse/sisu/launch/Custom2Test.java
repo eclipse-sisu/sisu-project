@@ -10,21 +10,17 @@
  *******************************************************************************/
 package org.eclipse.sisu.launch;
 
-import javax.inject.Inject;
-
-import com.google.inject.Binder;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-final class Custom2Test
-    extends InjectedTest
-{
+import com.google.inject.Binder;
+import javax.inject.Inject;
+import org.junit.jupiter.api.Test;
+
+final class Custom2Test extends InjectedTest {
     @Override
-    public void configure( final Binder binder )
-    {
+    public void configure(final Binder binder) {
         // override automatic binding
-        binder.bind( Foo.class ).to( TaggedFoo.class );
+        binder.bind(Foo.class).to(TaggedFoo.class);
     }
 
     @Inject
@@ -33,8 +29,7 @@ final class Custom2Test
     @Test
     // @org.junit.jupiter.api.Test
     // @org.testng.annotations.Test
-    public void testPerTestCaseCustomization()
-    {
-        assertTrue( bean instanceof TaggedFoo );
+    public void testPerTestCaseCustomization() {
+        assertTrue(bean instanceof TaggedFoo);
     }
 }

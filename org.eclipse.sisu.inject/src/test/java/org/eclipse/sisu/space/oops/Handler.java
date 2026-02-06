@@ -17,48 +17,31 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
 
-public class Handler
-    extends URLStreamHandler
-{
+public class Handler extends URLStreamHandler {
     @Override
-    protected URLConnection openConnection( final URL url )
-        throws IOException
-    {
-        return new BadConnection( url );
+    protected URLConnection openConnection(final URL url) throws IOException {
+        return new BadConnection(url);
     }
 
-    static class BadConnection
-        extends URLConnection
-    {
-        BadConnection( final URL url )
-        {
-            super( url );
+    static class BadConnection extends URLConnection {
+        BadConnection(final URL url) {
+            super(url);
         }
 
         @Override
-        public void connect()
-            throws IOException
-        {
-        }
+        public void connect() throws IOException {}
 
         @Override
-        public InputStream getInputStream()
-            throws IOException
-        {
-            final InputStream in = new ByteArrayInputStream( new byte[0] );
-            return new InputStream()
-            {
+        public InputStream getInputStream() throws IOException {
+            final InputStream in = new ByteArrayInputStream(new byte[0]);
+            return new InputStream() {
                 @Override
-                public int read()
-                    throws IOException
-                {
+                public int read() throws IOException {
                     return in.read();
                 }
 
                 @Override
-                public void close()
-                    throws IOException
-                {
+                public void close() throws IOException {
                     throw new IOException();
                 }
             };

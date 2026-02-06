@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -17,11 +17,10 @@ import com.google.inject.Binding;
 /**
  * Assigns each {@link Binding} a rank according to some function; higher ranks take precedence over lower ranks.
  */
-public interface RankingFunction
-{
+public interface RankingFunction {
     /**
      * Estimates the maximum rank this function may assign to a {@link Binding}.
-     * 
+     *
      * @return Maximum rank
      * @see BindingPublisher#maxBindingRank()
      */
@@ -29,9 +28,9 @@ public interface RankingFunction
 
     /**
      * Assigns a numeric rank to the given binding.
-     * 
+     *
      * @param binding The binding
      * @return Assigned rank
      */
-    <T> int rank( Binding<T> binding );
+    <T> int rank(Binding<T> binding);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -19,15 +19,13 @@ import org.eclipse.sisu.space.QualifiedTypeListener;
 /**
  * {@link QualifiedTypeListener} that also listens for Plexus components.
  */
-public interface PlexusTypeListener
-    extends QualifiedTypeListener
-{
+public interface PlexusTypeListener extends QualifiedTypeListener {
     /**
      * Invoked when the {@link PlexusTypeListener} finds a Plexus component.
-     * 
+     *
      * @param component The Plexus component
      * @param implementation The implementation
      * @param source The source of this component
      */
-    void hear( Component component, DeferredClass<?> implementation, Object source );
+    void hear(Component component, DeferredClass<?> implementation, Object source);
 }

@@ -13,11 +13,9 @@ package org.eclipse.sisu.plexus;
 import org.eclipse.sisu.space.ClassSpace;
 import org.eclipse.sisu.space.URLClassSpace;
 
-public class SimpleScanningExample
-{
-    public SimpleScanningExample()
-    {
-        final ClassSpace space = new URLClassSpace( getClass().getClassLoader() );
-        new PlexusXmlScanner( null, null, null ).scan( space, true );
+public class SimpleScanningExample {
+    public SimpleScanningExample() {
+        final ClassSpace space = new URLClassSpace(getClass().getClassLoader());
+        new PlexusXmlScanner(null, null, null).scan(space, true);
     }
 }

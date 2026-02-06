@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,7 @@ import org.eclipse.sisu.inject.DeferredClass;
 /**
  * {@link DeferredClass} representing a named class from a {@link ClassSpace}.
  */
-final class NamedClass<T>
-    extends AbstractDeferredClass<T>
-{
+final class NamedClass<T> extends AbstractDeferredClass<T> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -32,8 +30,7 @@ final class NamedClass<T>
     // Constructors
     // ----------------------------------------------------------------------
 
-    NamedClass( final ClassSpace space, final String name )
-    {
+    NamedClass(final ClassSpace space, final String name) {
         this.space = space;
         this.name = name;
     }
@@ -42,41 +39,34 @@ final class NamedClass<T>
     // Public methods
     // ----------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
-    public Class<T> load()
-    {
-        return (Class<T>) space.loadClass( name );
+    @SuppressWarnings("unchecked")
+    public Class<T> load() {
+        return (Class<T>) space.loadClass(name);
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
     @Override
-    public int hashCode()
-    {
-        return ( 17 * 31 + name.hashCode() ) * 31 + space.hashCode();
+    public int hashCode() {
+        return (17 * 31 + name.hashCode()) * 31 + space.hashCode();
     }
 
     @Override
-    public boolean equals( final Object rhs )
-    {
-        if ( this == rhs )
-        {
+    public boolean equals(final Object rhs) {
+        if (this == rhs) {
             return true;
         }
-        if ( rhs instanceof NamedClass<?> )
-        {
+        if (rhs instanceof NamedClass<?>) {
             final NamedClass<?> clazz = (NamedClass<?>) rhs;
-            return name.equals( clazz.name ) && space.equals( clazz.space );
+            return name.equals(clazz.name) && space.equals(clazz.space);
         }
         return false;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Deferred " + name + " from " + space;
     }
 }

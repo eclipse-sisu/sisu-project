@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -25,9 +25,7 @@ import java.util.NoSuchElementException;
 /**
  * NON-thread-safe {@link Collection} of elements kept alive by soft/weak {@link Reference}s.
  */
-final class MildElements<T>
-    extends AbstractCollection<T>
-{
+final class MildElements<T> extends AbstractCollection<T> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -42,8 +40,7 @@ final class MildElements<T>
     // Constructors
     // ----------------------------------------------------------------------
 
-    MildElements( final List<Reference<T>> list, final boolean soft )
-    {
+    MildElements(final List<Reference<T>> list, final boolean soft) {
         this.list = list;
         this.soft = soft;
     }
@@ -53,25 +50,21 @@ final class MildElements<T>
     // ----------------------------------------------------------------------
 
     @Override
-    public boolean add( final T element )
-    {
+    public boolean add(final T element) {
         compact();
 
-        return list.add( soft ? new Soft<T>( element, queue, list.size() )
-                              : new Weak<T>( element, queue, list.size() ) );
+        return list.add(soft ? new Soft<T>(element, queue, list.size()) : new Weak<T>(element, queue, list.size()));
     }
 
     @Override
-    public int size()
-    {
+    public int size() {
         compact();
 
         return list.size();
     }
 
     @Override
-    public Iterator<T> iterator()
-    {
+    public Iterator<T> iterator() {
         compact();
 
         return new Itr();
@@ -84,29 +77,24 @@ final class MildElements<T>
     /**
      * Compacts the list by replacing unreachable {@link Reference}s with ones from the end.
      */
-    private void compact()
-    {
-        for ( Reference<? extends T> ref; ( ref = queue.poll() ) != null; )
-        {
-            evict( ref );
+    private void compact() {
+        for (Reference<? extends T> ref; (ref = queue.poll()) != null; ) {
+            evict(ref);
         }
     }
 
     /**
      * Evicts a single {@link Reference} from the list; replacing it with one from the end.
-     * 
+     *
      * @param ref The reference to evict
      */
-    void evict( final Reference<? extends T> ref )
-    {
-        final int index = ( (Indexable) ref ).index( -1 );
-        if ( index >= 0 )
-        {
-            final Reference<T> last = list.remove( list.size() - 1 );
-            if ( ref != last )
-            {
-                ( (Indexable) last ).index( index );
-                list.set( index, last );
+    void evict(final Reference<? extends T> ref) {
+        final int index = ((Indexable) ref).index(-1);
+        if (index >= 0) {
+            final Reference<T> last = list.remove(list.size() - 1);
+            if (ref != last) {
+                ((Indexable) last).index(index);
+                list.set(index, last);
             }
         }
     }
@@ -118,17 +106,14 @@ final class MildElements<T>
     /**
      * Represents an element that can be indexed.
      */
-    private interface Indexable
-    {
-        int index( int index );
+    private interface Indexable {
+        int index(int index);
     }
 
     /**
      * {@link Iterator} that iterates over reachable {@link Reference}s in the list.
      */
-    final class Itr
-        implements Iterator<T>
-    {
+    final class Itr implements Iterator<T> {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -143,21 +128,17 @@ final class MildElements<T>
         // Public methods
         // ----------------------------------------------------------------------
 
-        public boolean hasNext()
-        {
+        public boolean hasNext() {
             // find next element that is still reachable
-            while ( null == nextElement && index < list.size() )
-            {
-                nextElement = list.get( index++ ).get();
+            while (null == nextElement && index < list.size()) {
+                nextElement = list.get(index++).get();
             }
             return null != nextElement;
         }
 
-        public T next()
-        {
+        public T next() {
             haveElement = hasNext();
-            if ( haveElement )
-            {
+            if (haveElement) {
                 // populated by hasNext()
                 final T element = nextElement;
                 nextElement = null;
@@ -166,15 +147,11 @@ final class MildElements<T>
             throw new NoSuchElementException();
         }
 
-        public void remove()
-        {
-            if ( haveElement )
-            {
-                evict( list.get( --index ) );
+        public void remove() {
+            if (haveElement) {
+                evict(list.get(--index));
                 haveElement = false;
-            }
-            else
-            {
+            } else {
                 throw new IllegalStateException();
             }
         }
@@ -183,10 +160,7 @@ final class MildElements<T>
     /**
      * Soft {@link Indexable} element.
      */
-    private static final class Soft<T>
-        extends SoftReference<T>
-        implements Indexable
-    {
+    private static final class Soft<T> extends SoftReference<T> implements Indexable {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -197,9 +171,8 @@ final class MildElements<T>
         // Constructors
         // ----------------------------------------------------------------------
 
-        Soft( final T value, final ReferenceQueue<T> queue, final int index )
-        {
-            super( value, queue );
+        Soft(final T value, final ReferenceQueue<T> queue, final int index) {
+            super(value, queue);
             this.index = index;
         }
 
@@ -207,8 +180,7 @@ final class MildElements<T>
         // Public methods
         // ----------------------------------------------------------------------
 
-        public int index( final int newIndex )
-        {
+        public int index(final int newIndex) {
             final int oldIndex = index;
             index = newIndex;
             return oldIndex;
@@ -218,10 +190,7 @@ final class MildElements<T>
     /**
      * Weak {@link Indexable} element.
      */
-    private static final class Weak<T>
-        extends WeakReference<T>
-        implements Indexable
-    {
+    private static final class Weak<T> extends WeakReference<T> implements Indexable {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -232,9 +201,8 @@ final class MildElements<T>
         // Constructors
         // ----------------------------------------------------------------------
 
-        Weak( final T value, final ReferenceQueue<T> queue, final int index )
-        {
-            super( value, queue );
+        Weak(final T value, final ReferenceQueue<T> queue, final int index) {
+            super(value, queue);
             this.index = index;
         }
 
@@ -242,8 +210,7 @@ final class MildElements<T>
         // Public methods
         // ----------------------------------------------------------------------
 
-        public int index( final int newIndex )
-        {
+        public int index(final int newIndex) {
             final int oldIndex = index;
             index = newIndex;
             return oldIndex;

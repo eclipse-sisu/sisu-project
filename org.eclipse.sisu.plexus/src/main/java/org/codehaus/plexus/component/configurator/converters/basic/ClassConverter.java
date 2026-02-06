@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -14,29 +14,19 @@ package org.codehaus.plexus.component.configurator.converters.basic;
 
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 
-public class ClassConverter
-    extends AbstractBasicConverter
-{
-    public boolean canConvert( final Class<?> type )
-    {
-        return Class.class.equals( type );
+public class ClassConverter extends AbstractBasicConverter {
+    public boolean canConvert(final Class<?> type) {
+        return Class.class.equals(type);
     }
 
     @Override
-    public Object fromString( final String value )
-        throws ComponentConfigurationException
-    {
-        try
-        {
-            return Class.forName( value );
-        }
-        catch ( final Exception e )
-        {
-            throw new ComponentConfigurationException( "Cannot convert '" + value + "' to Class", e );
-        }
-        catch ( final LinkageError e )
-        {
-            throw new ComponentConfigurationException( "Cannot convert '" + value + "' to Class", e );
+    public Object fromString(final String value) throws ComponentConfigurationException {
+        try {
+            return Class.forName(value);
+        } catch (final Exception e) {
+            throw new ComponentConfigurationException("Cannot convert '" + value + "' to Class", e);
+        } catch (final LinkageError e) {
+            throw new ComponentConfigurationException("Cannot convert '" + value + "' to Class", e);
         }
     }
 }

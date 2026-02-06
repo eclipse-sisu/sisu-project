@@ -12,59 +12,49 @@
  */
 package org.eclipse.sisu.launch;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.eclipse.sisu.space.BeanScanning;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import java.util.HashMap;
+import java.util.Map;
+import org.eclipse.sisu.space.BeanScanning;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-class MainTest
-{
+class MainTest {
     @Test
-    void testBootWithProperties()
-    {
+    void testBootWithProperties() {
         final Map<String, String> properties = new HashMap<String, String>();
-        properties.put( "sisu.scanning", "off" );
-        final Injector injector = Main.boot( properties, new String[0] );
-        assertNotNull( injector );
+        properties.put("sisu.scanning", "off");
+        final Injector injector = Main.boot(properties, new String[0]);
+        assertNotNull(injector);
     }
 
     @Test
-    void testBootWithPropertiesAndBindings()
-    {
+    void testBootWithPropertiesAndBindings() {
         final Map<String, String> properties = new HashMap<String, String>();
-        properties.put( "sisu.scanning", "off" );
-        final Module extra = new AbstractModule()
-        {
+        properties.put("sisu.scanning", "off");
+        final Module extra = new AbstractModule() {
             @Override
-            protected void configure()
-            {
-                bind( String.class ).toInstance( "extra" );
+            protected void configure() {
+                bind(String.class).toInstance("extra");
             }
         };
-        final Injector injector = Main.boot( properties, new String[] { "--test" }, extra );
-        assertNotNull( injector );
-        assertNotNull( injector.getInstance( String.class ) );
+        final Injector injector = Main.boot(properties, new String[] {"--test"}, extra);
+        assertNotNull(injector);
+        assertNotNull(injector.getInstance(String.class));
     }
 
     @Test
-    void testWireModule()
-    {
-        final Module module = new AbstractModule()
-        {
+    void testWireModule() {
+        final Module module = new AbstractModule() {
             @Override
-            protected void configure()
-            {
-                bind( String.class ).toInstance( "wired" );
+            protected void configure() {
+                bind(String.class).toInstance("wired");
             }
         };
-        final Module wired = Main.wire( BeanScanning.OFF, module );
-        assertNotNull( wired );
+        final Module wired = Main.wire(BeanScanning.OFF, module);
+        assertNotNull(wired);
     }
 }

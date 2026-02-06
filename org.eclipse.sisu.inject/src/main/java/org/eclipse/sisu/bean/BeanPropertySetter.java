@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,21 +12,18 @@
  */
 package org.eclipse.sisu.bean;
 
+import com.google.inject.ProvisionException;
+import com.google.inject.TypeLiteral;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 
-import com.google.inject.ProvisionException;
-import com.google.inject.TypeLiteral;
-
 /**
  * {@link BeanProperty} backed by a single-parameter setter {@link Method}.
  */
-final class BeanPropertySetter<T>
-    implements BeanProperty<T>, PrivilegedAction<Void>
-{
+final class BeanPropertySetter<T> implements BeanProperty<T>, PrivilegedAction<Void> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -37,8 +34,7 @@ final class BeanPropertySetter<T>
     // Constructors
     // ----------------------------------------------------------------------
 
-    BeanPropertySetter( final Method method )
-    {
+    BeanPropertySetter(final Method method) {
         this.method = method;
     }
 
@@ -46,73 +42,58 @@ final class BeanPropertySetter<T>
     // Public methods
     // ----------------------------------------------------------------------
 
-    public <A extends Annotation> A getAnnotation( final Class<A> annotationType )
-    {
-        return method.getAnnotation( annotationType );
+    public <A extends Annotation> A getAnnotation(final Class<A> annotationType) {
+        return method.getAnnotation(annotationType);
     }
 
-    @SuppressWarnings( "unchecked" )
-    public TypeLiteral<T> getType()
-    {
-        return (TypeLiteral<T>) TypeLiteral.get( method.getGenericParameterTypes()[0] );
+    @SuppressWarnings("unchecked")
+    public TypeLiteral<T> getType() {
+        return (TypeLiteral<T>) TypeLiteral.get(method.getGenericParameterTypes()[0]);
     }
 
-    public String getName()
-    {
+    public String getName() {
         final String name = method.getName();
 
         // this is guaranteed OK by the checks made in the BeanProperties code
-        return Character.toLowerCase( name.charAt( 3 ) ) + name.substring( 4 );
+        return Character.toLowerCase(name.charAt(3)) + name.substring(4);
     }
 
-    public <B> void set( final B bean, final T value )
-    {
-        if ( !method.isAccessible() )
-        {
+    public <B> void set(final B bean, final T value) {
+        if (!method.isAccessible()) {
             // ensure we can update the property
-            AccessController.doPrivileged( this );
+            AccessController.doPrivileged(this);
         }
 
-        BeanScheduler.detectCycle( value );
+        BeanScheduler.detectCycle(value);
 
-        try
-        {
-            method.invoke( bean, value );
-        }
-        catch ( final Exception e )
-        {
+        try {
+            method.invoke(bean, value);
+        } catch (final Exception e) {
             final Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
-            throw new ProvisionException( "Error injecting: " + method, cause );
-        }
-        catch ( final LinkageError e )
-        {
-            throw new ProvisionException( "Error injecting: " + method, e );
+            throw new ProvisionException("Error injecting: " + method, cause);
+        } catch (final LinkageError e) {
+            throw new ProvisionException("Error injecting: " + method, e);
         }
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return method.hashCode();
     }
 
     @Override
-    public boolean equals( final Object rhs )
-    {
-        if ( this == rhs )
-        {
+    public boolean equals(final Object rhs) {
+        if (this == rhs) {
             return true;
         }
-        if ( rhs instanceof BeanPropertySetter<?> )
-        {
-            return method.equals( ( (BeanPropertySetter<?>) rhs ).method );
+        if (rhs instanceof BeanPropertySetter<?>) {
+            return method.equals(((BeanPropertySetter<?>) rhs).method);
         }
         return false;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return method.toString();
     }
 
@@ -120,10 +101,9 @@ final class BeanPropertySetter<T>
     // PrivilegedAction methods
     // ----------------------------------------------------------------------
 
-    public Void run()
-    {
+    public Void run() {
         // enable private injection
-        method.setAccessible( true );
+        method.setAccessible(true);
         return null;
     }
 }

@@ -12,56 +12,46 @@
  */
 package org.eclipse.sisu.space;
 
-import java.net.URL;
-import java.util.Enumeration;
-
-import org.eclipse.sisu.BaseTests;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.net.URL;
+import java.util.Enumeration;
+import org.eclipse.sisu.BaseTests;
+import org.junit.jupiter.api.Test;
+
 @BaseTests
-class DefaultClassFinderTest
-{
-    private void performTest( String pkg, boolean expectedToFindClasses )
-    {
-        final DefaultClassFinder finder = pkg == null ? new DefaultClassFinder() : new DefaultClassFinder( pkg );
-        final ClassSpace space = new URLClassSpace( getClass().getClassLoader() );
-        final Enumeration<URL> classes = finder.findClasses( space );
-        assertNotNull( classes );
-        if ( expectedToFindClasses )
-        {
-            assertTrue( classes.hasMoreElements() );
-        }
-        else
-        {
-            assertFalse( classes.hasMoreElements() );
+class DefaultClassFinderTest {
+    private void performTest(String pkg, boolean expectedToFindClasses) {
+        final DefaultClassFinder finder = pkg == null ? new DefaultClassFinder() : new DefaultClassFinder(pkg);
+        final ClassSpace space = new URLClassSpace(getClass().getClassLoader());
+        final Enumeration<URL> classes = finder.findClasses(space);
+        assertNotNull(classes);
+        if (expectedToFindClasses) {
+            assertTrue(classes.hasMoreElements());
+        } else {
+            assertFalse(classes.hasMoreElements());
         }
     }
 
     @Test
-    void testDefaultConstructor()
-    {
-        performTest( null, true );
+    void testDefaultConstructor() {
+        performTest(null, true);
     }
 
     @Test
-    void testPackageConstructorNonRecursive()
-    {
-        performTest( "org.eclipse.sisu.space", true );
+    void testPackageConstructorNonRecursive() {
+        performTest("org.eclipse.sisu.space", true);
     }
 
     @Test
-    void testPackageConstructorRecursive()
-    {
-        performTest( "org.eclipse.sisu.space.*", true );
+    void testPackageConstructorRecursive() {
+        performTest("org.eclipse.sisu.space.*", true);
     }
 
     @Test
-    void testEmptyPackage()
-    {
-        performTest( "org.eclipse.sisu.nonexistent.*", false );
+    void testEmptyPackage() {
+        performTest("org.eclipse.sisu.nonexistent.*", false);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
 import org.codehaus.plexus.component.annotations.Component;
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.inject.Logs;
@@ -27,14 +26,13 @@ import org.eclipse.sisu.space.CloningClassSpace;
 /**
  * Enhanced Plexus component map with additional book-keeping.
  */
-final class PlexusTypeRegistry
-{
+final class PlexusTypeRegistry {
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
 
     private static final Component LOAD_ON_START_PLACEHOLDER =
-        new ComponentImpl( Object.class, "", Strategies.LOAD_ON_START, "" );
+            new ComponentImpl(Object.class, "", Strategies.LOAD_ON_START, "");
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -54,8 +52,7 @@ final class PlexusTypeRegistry
     // Constructors
     // ----------------------------------------------------------------------
 
-    PlexusTypeRegistry( final ClassSpace space )
-    {
+    PlexusTypeRegistry(final ClassSpace space) {
         this.space = space;
     }
 
@@ -66,34 +63,29 @@ final class PlexusTypeRegistry
     /**
      * @return Current class space
      */
-    ClassSpace getSpace()
-    {
+    ClassSpace getSpace() {
         return space;
     }
 
     /**
      * Records that the given Plexus component should be loaded when the container starts.
-     * 
+     *
      * @param role The Plexus role
      * @param hint The Plexus hint
      */
-    void loadOnStart( final String role, final String hint )
-    {
-        final String key = Roles.canonicalRoleHint( role, hint );
-        final Component c = components.get( key );
-        if ( null == c )
-        {
-            components.put( key, LOAD_ON_START_PLACEHOLDER );
-        }
-        else if ( !Strategies.LOAD_ON_START.equals( c.instantiationStrategy() ) )
-        {
-            components.put( key, new ComponentImpl( c.role(), c.hint(), Strategies.LOAD_ON_START, c.description() ) );
+    void loadOnStart(final String role, final String hint) {
+        final String key = Roles.canonicalRoleHint(role, hint);
+        final Component c = components.get(key);
+        if (null == c) {
+            components.put(key, LOAD_ON_START_PLACEHOLDER);
+        } else if (!Strategies.LOAD_ON_START.equals(c.instantiationStrategy())) {
+            components.put(key, new ComponentImpl(c.role(), c.hint(), Strategies.LOAD_ON_START, c.description()));
         }
     }
 
     /**
      * Registers the given component, automatically disambiguating between implementations bound multiple times.
-     * 
+     *
      * @param role The Plexus role
      * @param hint The Plexus hint
      * @param instantiationStrategy The instantiation strategy
@@ -101,57 +93,51 @@ final class PlexusTypeRegistry
      * @param implementation The implementation
      * @return The implementation the component was successfully registered with; otherwise {@code null}
      */
-    String addComponent( final String role, final String hint, final String instantiationStrategy,
-                         final String description, final String implementation )
-    {
-        final Class<?> roleType = loadRole( role, implementation );
-        if ( null == roleType )
-        {
+    String addComponent(
+            final String role,
+            final String hint,
+            final String instantiationStrategy,
+            final String description,
+            final String implementation) {
+        final Class<?> roleType = loadRole(role, implementation);
+        if (null == roleType) {
             return null;
         }
 
-        final String canonicalHint = Hints.canonicalHint( hint );
-        final String key = Roles.canonicalRoleHint( role, canonicalHint );
+        final String canonicalHint = Hints.canonicalHint(hint);
+        final String key = Roles.canonicalRoleHint(role, canonicalHint);
 
         /*
          * COMPONENT...
          */
-        final Component oldComponent = components.get( key );
-        if ( null == oldComponent )
-        {
-            components.put( key, new ComponentImpl( roleType, canonicalHint, instantiationStrategy, description ) );
-        }
-        else if ( LOAD_ON_START_PLACEHOLDER == oldComponent )
-        {
-            components.put( key, new ComponentImpl( roleType, canonicalHint, Strategies.LOAD_ON_START, description ) );
+        final Component oldComponent = components.get(key);
+        if (null == oldComponent) {
+            components.put(key, new ComponentImpl(roleType, canonicalHint, instantiationStrategy, description));
+        } else if (LOAD_ON_START_PLACEHOLDER == oldComponent) {
+            components.put(key, new ComponentImpl(roleType, canonicalHint, Strategies.LOAD_ON_START, description));
         }
 
         /*
          * ...IMPLEMENTATION
          */
-        DeferredClass<?> implementationType = implementations.get( key );
-        if ( null == implementationType )
-        {
-            if ( deferredNames.add( implementation ) )
-            {
-                implementationType = space.deferLoadClass( implementation );
-            }
-            else
-            {
+        DeferredClass<?> implementationType = implementations.get(key);
+        if (null == implementationType) {
+            if (deferredNames.add(implementation)) {
+                implementationType = space.deferLoadClass(implementation);
+            } else {
                 // type already used for another role, so we must clone it
-                implementationType = cloneImplementation( implementation );
+                implementationType = cloneImplementation(implementation);
             }
-            implementations.put( key, implementationType );
+            implementations.put(key, implementationType);
             return implementationType.getName();
         }
         final String oldImplementation = implementationType.getName();
-        if ( implementation.equals( CloningClassSpace.originalName( oldImplementation ) ) )
-        {
+        if (implementation.equals(CloningClassSpace.originalName(oldImplementation))) {
             return oldImplementation; // merge configuration
         }
 
-        Logs.trace( "Duplicate implementations for Plexus role: {}", key, null );
-        Logs.trace( "Using: {} ignoring: {}", oldImplementation, implementation );
+        Logs.trace("Duplicate implementations for Plexus role: {}", key, null);
+        Logs.trace("Using: {} ignoring: {}", oldImplementation, implementation);
 
         return null;
     }
@@ -159,12 +145,10 @@ final class PlexusTypeRegistry
     /**
      * @return Plexus component map
      */
-    Map<Component, DeferredClass<?>> getComponents()
-    {
+    Map<Component, DeferredClass<?>> getComponents() {
         final Map<Component, DeferredClass<?>> map = new HashMap<Component, DeferredClass<?>>();
-        for ( final Entry<String, DeferredClass<?>> i : implementations.entrySet() )
-        {
-            map.put( components.get( i.getKey() ), i.getValue() );
+        for (final Entry<String, DeferredClass<?>> i : implementations.entrySet()) {
+            map.put(components.get(i.getKey()), i.getValue());
         }
         return map;
     }
@@ -175,36 +159,30 @@ final class PlexusTypeRegistry
 
     /**
      * Attempts to load the given Plexus role, checks constructors for concrete types.
-     * 
+     *
      * @param role The Plexus role
      * @param implementation The implementation
      * @return Loaded Plexus role
      */
-    private Class<?> loadRole( final String role, final String implementation )
-    {
-        try
-        {
-            return space.loadClass( role );
-        }
-        catch ( final TypeNotPresentException e )
-        {
-            Logs.trace( "Ignoring Plexus role: {}", role, e );
+    private Class<?> loadRole(final String role, final String implementation) {
+        try {
+            return space.loadClass(role);
+        } catch (final TypeNotPresentException e) {
+            Logs.trace("Ignoring Plexus role: {}", role, e);
         }
         return null;
     }
 
     /**
      * Clones an implementation so it can be bound again with different configuration.
-     * 
+     *
      * @param implementation The implementation
      * @return Cloned implementation
      */
-    private DeferredClass<?> cloneImplementation( final String implementation )
-    {
-        if ( null == clones )
-        {
-            clones = new CloningClassSpace( space );
+    private DeferredClass<?> cloneImplementation(final String implementation) {
+        if (null == clones) {
+            clones = new CloningClassSpace(space);
         }
-        return clones.cloneClass( implementation );
+        return clones.cloneClass(implementation);
     }
 }

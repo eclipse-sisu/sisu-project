@@ -13,7 +13,6 @@ package org.eclipse.sisu;
 /**
  * Marks base tests that don't depend on Guice or injection.
  */
-public interface BaseTests
-{
+public interface BaseTests {
     // marker
 }

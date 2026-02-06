@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -13,16 +13,13 @@
 package org.eclipse.sisu.plexus;
 
 import javax.inject.Provider;
-
 import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.bean.PropertyBinding;
 
 /**
  * Represents a {@link BeanProperty} bound to an optional {@link Provider}.
  */
-final class OptionalPropertyBinding<T>
-    implements PropertyBinding
-{
+final class OptionalPropertyBinding<T> implements PropertyBinding {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -35,8 +32,7 @@ final class OptionalPropertyBinding<T>
     // Constructors
     // ----------------------------------------------------------------------
 
-    OptionalPropertyBinding( final BeanProperty<T> property, final Provider<T> provider )
-    {
+    OptionalPropertyBinding(final BeanProperty<T> property, final Provider<T> provider) {
         this.property = property;
         this.provider = provider;
     }
@@ -45,13 +41,10 @@ final class OptionalPropertyBinding<T>
     // Public methods
     // ----------------------------------------------------------------------
 
-    public <B> void injectProperty( final B bean )
-    {
-        try
-        {
-            property.set( bean, provider.get() );
-        }
-        catch ( final RuntimeException e ) // NOPMD
+    public <B> void injectProperty(final B bean) {
+        try {
+            property.set(bean, provider.get());
+        } catch (final RuntimeException e) // NOPMD
         {
             // binding is optional, ignore failures
         }

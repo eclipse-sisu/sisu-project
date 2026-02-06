@@ -12,11 +12,12 @@ package org.eclipse.sisu.plexus;
 
 import org.codehaus.plexus.component.annotations.Component;
 
-@Component( role = Runnable.class, hint = "test", instantiationStrategy = Strategies.PER_LOOKUP, description = "Some Test", isolatedRealm = true )
-public class TestBean
-    implements Runnable
-{
-    public void run()
-    {
-    }
+@Component(
+        role = Runnable.class,
+        hint = "test",
+        instantiationStrategy = Strategies.PER_LOOKUP,
+        description = "Some Test",
+        isolatedRealm = true)
+public class TestBean implements Runnable {
+    public void run() {}
 }

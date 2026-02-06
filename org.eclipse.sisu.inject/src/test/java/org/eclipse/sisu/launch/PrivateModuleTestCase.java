@@ -10,104 +10,87 @@
  *******************************************************************************/
 package org.eclipse.sisu.launch;
 
-import java.util.Properties;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import com.google.inject.Binder;
-
 import com.google.inject.PrivateModule;
 import com.google.inject.name.Names;
+import java.util.Properties;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  * Still JUnit3 based test
  * Execute with JUnit3 runner.
  */
-public final class PrivateModuleTestCase
-    extends InjectedTestCase
-{
-    static class PrivateFoo
-        implements Foo
-    {
+public final class PrivateModuleTestCase extends InjectedTestCase {
+    static class PrivateFoo implements Foo {
         final String host;
 
         final int port;
 
         @Inject
-        public PrivateFoo( @Named( "${host}" ) final String host, @Named( "port" ) final int port )
-        {
+        public PrivateFoo(@Named("${host}") final String host, @Named("port") final int port) {
             this.host = host;
             this.port = port;
         }
     }
 
     @Override
-    public void configure( final Binder binder )
-    {
-        binder.install( new PrivateModule()
-        {
+    public void configure(final Binder binder) {
+        binder.install(new PrivateModule() {
             @Override
-            protected void configure()
-            {
-                bind( Foo.class ).to( PrivateFoo.class );
-                bindConstant().annotatedWith( Names.named( "port" ) ).to( 8081 );
-                expose( Foo.class );
+            protected void configure() {
+                bind(Foo.class).to(PrivateFoo.class);
+                bindConstant().annotatedWith(Names.named("port")).to(8081);
+                expose(Foo.class);
             }
-        } );
+        });
 
-        binder.install( new PrivateModule()
-        {
+        binder.install(new PrivateModule() {
             @Override
-            protected void configure()
-            {
-                bind( Foo.class ).annotatedWith( Names.named( "A" ) ).to( PrivateFoo.class );
-                bindConstant().annotatedWith( Names.named( "port" ) ).to( 1234 );
-                expose( Foo.class ).annotatedWith( Names.named( "A" ) );
+            protected void configure() {
+                bind(Foo.class).annotatedWith(Names.named("A")).to(PrivateFoo.class);
+                bindConstant().annotatedWith(Names.named("port")).to(1234);
+                expose(Foo.class).annotatedWith(Names.named("A"));
             }
-        } );
+        });
 
-        binder.install( new PrivateModule()
-        {
+        binder.install(new PrivateModule() {
             @Override
-            protected void configure()
-            {
-                bind( Foo.class ).annotatedWith( Names.named( "B" ) ).to( PrivateFoo.class );
-                bindConstant().annotatedWith( Names.named( "port" ) ).to( 4321 );
-                expose( Foo.class ).annotatedWith( Names.named( "B" ) );
+            protected void configure() {
+                bind(Foo.class).annotatedWith(Names.named("B")).to(PrivateFoo.class);
+                bindConstant().annotatedWith(Names.named("port")).to(4321);
+                expose(Foo.class).annotatedWith(Names.named("B"));
             }
-        } );
+        });
     }
 
     @Override
-    public void configure( final Properties properties )
-    {
-        properties.setProperty( "host", "127.0.0.1" );
+    public void configure(final Properties properties) {
+        properties.setProperty("host", "127.0.0.1");
     }
 
     @Inject
     Foo bean;
 
     @Inject
-    @Named( "A" )
+    @Named("A")
     Foo beanA;
 
     @Inject
-    @Named( "B" )
+    @Named("B")
     Foo beanB;
 
-    public void testAssistedInject()
-    {
-        assertTrue( bean instanceof PrivateFoo );
-        assertEquals( "127.0.0.1", ( (PrivateFoo) bean ).host );
-        assertEquals( 8081, ( (PrivateFoo) bean ).port );
+    public void testAssistedInject() {
+        assertTrue(bean instanceof PrivateFoo);
+        assertEquals("127.0.0.1", ((PrivateFoo) bean).host);
+        assertEquals(8081, ((PrivateFoo) bean).port);
 
-        assertTrue( beanA instanceof PrivateFoo );
-        assertEquals( "127.0.0.1", ( (PrivateFoo) beanA ).host );
-        assertEquals( 1234, ( (PrivateFoo) beanA ).port );
+        assertTrue(beanA instanceof PrivateFoo);
+        assertEquals("127.0.0.1", ((PrivateFoo) beanA).host);
+        assertEquals(1234, ((PrivateFoo) beanA).port);
 
-        assertTrue( beanB instanceof PrivateFoo );
-        assertEquals( "127.0.0.1", ( (PrivateFoo) beanB ).host );
-        assertEquals( 4321, ( (PrivateFoo) beanB ).port );
+        assertTrue(beanB instanceof PrivateFoo);
+        assertEquals("127.0.0.1", ((PrivateFoo) beanB).host);
+        assertEquals(4321, ((PrivateFoo) beanB).port);
     }
 }

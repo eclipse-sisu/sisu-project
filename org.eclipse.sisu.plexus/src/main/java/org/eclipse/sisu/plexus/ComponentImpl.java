@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -13,15 +13,12 @@
 package org.eclipse.sisu.plexus;
 
 import java.lang.annotation.Annotation;
-
 import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Partial runtime implementation of Plexus @{@link Component} annotation, supporting the most common attributes.
  */
-public final class ComponentImpl
-    implements Component
-{
+public final class ComponentImpl implements Component {
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
@@ -45,12 +42,10 @@ public final class ComponentImpl
     // Constructors
     // ----------------------------------------------------------------------
 
-    public ComponentImpl( final Class<?> role, final String hint, final String instantiationStrategy,
-                          final String description )
-    {
-        if ( null == role || null == hint || null == instantiationStrategy || null == description )
-        {
-            throw new IllegalArgumentException( "@Component cannot contain null values" );
+    public ComponentImpl(
+            final Class<?> role, final String hint, final String instantiationStrategy, final String description) {
+        if (null == role || null == hint || null == instantiationStrategy || null == description) {
+            throw new IllegalArgumentException("@Component cannot contain null values");
         }
 
         this.role = role;
@@ -63,68 +58,55 @@ public final class ComponentImpl
     // Annotation properties
     // ----------------------------------------------------------------------
 
-    public Class<?> role()
-    {
+    public Class<?> role() {
         return role;
     }
 
-    public String hint()
-    {
+    public String hint() {
         return hint;
     }
 
-    public String instantiationStrategy()
-    {
+    public String instantiationStrategy() {
         return instantiationStrategy;
     }
 
-    public String description()
-    {
+    public String description() {
         return description;
     }
 
-    public boolean isolatedRealm()
-    {
+    public boolean isolatedRealm() {
         return false;
     }
 
-    public String alias()
-    {
+    public String alias() {
         return "";
     }
 
-    public String composer()
-    {
+    public String composer() {
         return "";
     }
 
-    public String configurator()
-    {
+    public String configurator() {
         return "";
     }
 
-    public String factory()
-    {
+    public String factory() {
         return "";
     }
 
-    public String lifecycleHandler()
-    {
+    public String lifecycleHandler() {
         return "";
     }
 
-    public String profile()
-    {
+    public String profile() {
         return "";
     }
 
-    public String type()
-    {
+    public String type() {
         return "";
     }
 
-    public String version()
-    {
+    public String version() {
         return "";
     }
 
@@ -133,24 +115,27 @@ public final class ComponentImpl
     // ----------------------------------------------------------------------
 
     @Override
-    public boolean equals( final Object rhs )
-    {
-        if ( this == rhs )
-        {
+    public boolean equals(final Object rhs) {
+        if (this == rhs) {
             return true;
         }
 
-        if ( rhs instanceof Component )
-        {
+        if (rhs instanceof Component) {
             final Component cmp = (Component) rhs;
 
-            if ( role.equals( cmp.role() ) && hint.equals( cmp.hint() )
-                && instantiationStrategy.equals( cmp.instantiationStrategy() )
-                && description.equals( cmp.description() ) )
-            {
+            if (role.equals(cmp.role())
+                    && hint.equals(cmp.hint())
+                    && instantiationStrategy.equals(cmp.instantiationStrategy())
+                    && description.equals(cmp.description())) {
                 // optimization: we hard-code all these attributes to be empty
-                final String hardCodedAttributes = cmp.alias() + cmp.composer() + cmp.configurator() + cmp.factory()
-                    + cmp.lifecycleHandler() + cmp.profile() + cmp.type() + cmp.version();
+                final String hardCodedAttributes = cmp.alias()
+                        + cmp.composer()
+                        + cmp.configurator()
+                        + cmp.factory()
+                        + cmp.lifecycleHandler()
+                        + cmp.profile()
+                        + cmp.type()
+                        + cmp.version();
 
                 return hardCodedAttributes.length() == 0 && !cmp.isolatedRealm();
             }
@@ -160,24 +145,24 @@ public final class ComponentImpl
     }
 
     @Override
-    public int hashCode()
-    {
-        return HASH_CODE_OFFSET + ( 127 * "role".hashCode() ^ role.hashCode() )
-            + ( 127 * "hint".hashCode() ^ hint.hashCode() )
-            + ( 127 * "instantiationStrategy".hashCode() ^ instantiationStrategy.hashCode() )
-            + ( 127 * "description".hashCode() ^ description.hashCode() );
+    public int hashCode() {
+        return HASH_CODE_OFFSET
+                + (127 * "role".hashCode() ^ role.hashCode())
+                + (127 * "hint".hashCode() ^ hint.hashCode())
+                + (127 * "instantiationStrategy".hashCode() ^ instantiationStrategy.hashCode())
+                + (127 * "description".hashCode() ^ description.hashCode());
     }
 
     @Override
-    public String toString()
-    {
-        return String.format( "@%s(isolatedRealm=false, composer=, configurator=, alias=, description=%s, "
-            + "instantiationStrategy=%s, factory=, hint=%s, type=, lifecycleHandler=, version=, "
-            + "profile=, role=%s)", Component.class.getName(), description, instantiationStrategy, hint, role );
+    public String toString() {
+        return String.format(
+                "@%s(isolatedRealm=false, composer=, configurator=, alias=, description=%s, "
+                        + "instantiationStrategy=%s, factory=, hint=%s, type=, lifecycleHandler=, version=, "
+                        + "profile=, role=%s)",
+                Component.class.getName(), description, instantiationStrategy, hint, role);
     }
 
-    public Class<? extends Annotation> annotationType()
-    {
+    public Class<? extends Annotation> annotationType() {
         return Component.class;
     }
 }

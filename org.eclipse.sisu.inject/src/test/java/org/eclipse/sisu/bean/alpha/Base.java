@@ -10,12 +10,10 @@
  *******************************************************************************/
 package org.eclipse.sisu.bean.alpha;
 
-public class Base
-{
+public class Base {
     protected final StringBuilder results = new StringBuilder();
 
-    public String results()
-    {
+    public String results() {
         return results.toString();
     }
 }

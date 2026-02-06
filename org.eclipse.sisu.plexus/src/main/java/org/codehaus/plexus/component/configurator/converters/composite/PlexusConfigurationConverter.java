@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -19,19 +19,20 @@ import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLoo
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
-public class PlexusConfigurationConverter
-    extends AbstractConfigurationConverter
-{
-    public boolean canConvert( final Class<?> type )
-    {
-        return PlexusConfiguration.class.isAssignableFrom( type );
+public class PlexusConfigurationConverter extends AbstractConfigurationConverter {
+    public boolean canConvert(final Class<?> type) {
+        return PlexusConfiguration.class.isAssignableFrom(type);
     }
 
-    public Object fromConfiguration( final ConverterLookup lookup, final PlexusConfiguration configuration,
-                                     final Class<?> type, final Class<?> enclosingType, final ClassLoader loader,
-                                     final ExpressionEvaluator evaluator, final ConfigurationListener listener )
-        throws ComponentConfigurationException
-    {
+    public Object fromConfiguration(
+            final ConverterLookup lookup,
+            final PlexusConfiguration configuration,
+            final Class<?> type,
+            final Class<?> enclosingType,
+            final ClassLoader loader,
+            final ExpressionEvaluator evaluator,
+            final ConfigurationListener listener)
+            throws ComponentConfigurationException {
         return configuration;
     }
 }

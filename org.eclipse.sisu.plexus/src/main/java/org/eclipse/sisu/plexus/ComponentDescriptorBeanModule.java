@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,14 +12,15 @@
  */
 package org.eclipse.sisu.plexus;
 
+import com.google.inject.Binder;
+import com.google.inject.Injector;
+import com.google.inject.ProvisionException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import javax.inject.Inject;
-
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.annotations.Component;
@@ -34,16 +35,10 @@ import org.eclipse.sisu.inject.DeferredProvider;
 import org.eclipse.sisu.space.ClassSpace;
 import org.eclipse.sisu.space.LoadedClass;
 
-import com.google.inject.Binder;
-import com.google.inject.Injector;
-import com.google.inject.ProvisionException;
-
 /**
  * {@link PlexusBeanModule} that binds Plexus components according to their {@link ComponentDescriptor}s.
  */
-public final class ComponentDescriptorBeanModule
-    implements PlexusBeanModule
-{
+public final class ComponentDescriptorBeanModule implements PlexusBeanModule {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -58,34 +53,25 @@ public final class ComponentDescriptorBeanModule
     // Constructors
     // ----------------------------------------------------------------------
 
-    public ComponentDescriptorBeanModule( final ClassSpace space, final List<ComponentDescriptor<?>> descriptors )
-    {
+    public ComponentDescriptorBeanModule(final ClassSpace space, final List<ComponentDescriptor<?>> descriptors) {
         this.space = space;
 
-        for ( int i = 0, size = descriptors.size(); i < size; i++ )
-        {
-            final ComponentDescriptor<?> cd = descriptors.get( i );
-            final Component component = newComponent( cd );
+        for (int i = 0, size = descriptors.size(); i < size; i++) {
+            final ComponentDescriptor<?> cd = descriptors.get(i);
+            final Component component = newComponent(cd);
             final String factory = cd.getComponentFactory();
-            if ( null == factory || "java".equals( factory ) )
-            {
-                try
-                {
-                    componentMap.put( component, new LoadedClass<Object>( cd.getImplementationClass() ) );
+            if (null == factory || "java".equals(factory)) {
+                try {
+                    componentMap.put(component, new LoadedClass<Object>(cd.getImplementationClass()));
+                } catch (final TypeNotPresentException e) {
+                    componentMap.put(component, space.deferLoadClass(cd.getImplementation()));
                 }
-                catch ( final TypeNotPresentException e )
-                {
-                    componentMap.put( component, space.deferLoadClass( cd.getImplementation() ) );
-                }
-            }
-            else
-            {
-                componentMap.put( component, new DeferredFactoryClass( cd, factory ) );
+            } else {
+                componentMap.put(component, new DeferredFactoryClass(cd, factory));
             }
             final List<ComponentRequirement> requirements = cd.getRequirements();
-            if ( !requirements.isEmpty() )
-            {
-                metadataMap.put( cd.getImplementation(), new ComponentMetadata( space, requirements ) );
+            if (!requirements.isEmpty()) {
+                metadataMap.put(cd.getImplementation(), new ComponentMetadata(space, requirements));
             }
         }
     }
@@ -94,31 +80,27 @@ public final class ComponentDescriptorBeanModule
     // Public methods
     // ----------------------------------------------------------------------
 
-    public PlexusBeanSource configure( final Binder binder )
-    {
+    public PlexusBeanSource configure(final Binder binder) {
         final String source = space.toString();
-        final PlexusTypeBinder plexusTypeBinder = new PlexusTypeBinder( binder );
-        for ( final Entry<Component, DeferredClass<?>> entry : componentMap.entrySet() )
-        {
-            plexusTypeBinder.hear( entry.getKey(), entry.getValue(), source );
+        final PlexusTypeBinder plexusTypeBinder = new PlexusTypeBinder(binder);
+        for (final Entry<Component, DeferredClass<?>> entry : componentMap.entrySet()) {
+            plexusTypeBinder.hear(entry.getKey(), entry.getValue(), source);
         }
-        return new PlexusDescriptorBeanSource( metadataMap );
+        return new PlexusDescriptorBeanSource(metadataMap);
     }
 
     // ----------------------------------------------------------------------
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    static Component newComponent( final ComponentDescriptor<?> cd )
-    {
-        return new ComponentImpl( cd.getRoleClass(), cd.getRoleHint(), cd.getInstantiationStrategy(),
-                                  cd.getDescription() );
+    static Component newComponent(final ComponentDescriptor<?> cd) {
+        return new ComponentImpl(
+                cd.getRoleClass(), cd.getRoleHint(), cd.getInstantiationStrategy(), cd.getDescription());
     }
 
-    static Requirement newRequirement( final ClassSpace space, final ComponentRequirement cr )
-    {
-        return new RequirementImpl( space.deferLoadClass( cr.getRole() ), cr.isOptional(),
-                                    Collections.singletonList( cr.getRoleHint() ) );
+    static Requirement newRequirement(final ClassSpace space, final ComponentRequirement cr) {
+        return new RequirementImpl(
+                space.deferLoadClass(cr.getRole()), cr.isOptional(), Collections.singletonList(cr.getRoleHint()));
     }
 
     // ----------------------------------------------------------------------
@@ -128,9 +110,7 @@ public final class ComponentDescriptorBeanModule
     /**
      * {@link DeferredClass} backed by a {@link ComponentDescriptor} and {@link ComponentFactory} hint.
      */
-    private static final class DeferredFactoryClass
-        implements DeferredClass<Object>, DeferredProvider<Object>
-    {
+    private static final class DeferredFactoryClass implements DeferredClass<Object>, DeferredProvider<Object> {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -149,8 +129,7 @@ public final class ComponentDescriptorBeanModule
         // Constructors
         // ----------------------------------------------------------------------
 
-        DeferredFactoryClass( final ComponentDescriptor<?> cd, final String hint )
-        {
+        DeferredFactoryClass(final ComponentDescriptor<?> cd, final String hint) {
             this.cd = cd;
             this.hint = hint;
         }
@@ -159,52 +138,40 @@ public final class ComponentDescriptorBeanModule
         // Public methods
         // ----------------------------------------------------------------------
 
-        @SuppressWarnings( { "unchecked", "rawtypes" } )
-        public Class load()
-            throws TypeNotPresentException
-        {
+        @SuppressWarnings({"unchecked", "rawtypes"})
+        public Class load() throws TypeNotPresentException {
             return cd.getImplementationClass();
         }
 
-        public String getName()
-        {
+        public String getName() {
             return cd.getImplementation();
         }
 
-        public DeferredProvider<Object> asProvider()
-        {
+        public DeferredProvider<Object> asProvider() {
             return this;
         }
 
-        public Object get()
-        {
-            try
-            {
+        public Object get() {
+            try {
                 ClassRealm contextRealm = container.getLookupRealm();
-                if ( null == contextRealm )
-                {
+                if (null == contextRealm) {
                     contextRealm = RealmManager.contextRealm();
                 }
-                if ( null == contextRealm )
-                {
+                if (null == contextRealm) {
                     contextRealm = container.getContainerRealm();
                 }
-                final ComponentFactory factory = container.lookup( ComponentFactory.class, hint );
-                final Object o = factory.newInstance( cd, contextRealm, container );
-                if ( null != o )
-                {
-                    injector.injectMembers( o );
+                final ComponentFactory factory = container.lookup(ComponentFactory.class, hint);
+                final Object o = factory.newInstance(cd, contextRealm, container);
+                if (null != o) {
+                    injector.injectMembers(o);
                 }
                 return o;
-            }
-            catch ( final Exception e )
-            {
-                throw new ProvisionException( "Error in ComponentFactory:" + hint, e );
+            } catch (final Exception e) {
+                throw new ProvisionException("Error in ComponentFactory:" + hint, e);
             }
         }
 
-        public DeferredClass<Object> getImplementationClass()
-        {
+        public DeferredClass<Object> getImplementationClass() {
             return this;
         }
     }
@@ -212,9 +179,7 @@ public final class ComponentDescriptorBeanModule
     /**
      * {@link PlexusBeanMetadata} backed by list of {@link ComponentRequirement}s.
      */
-    private static final class ComponentMetadata
-        implements PlexusBeanMetadata
-    {
+    private static final class ComponentMetadata implements PlexusBeanMetadata {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -225,12 +190,10 @@ public final class ComponentDescriptorBeanModule
         // Constructors
         // ----------------------------------------------------------------------
 
-        ComponentMetadata( final ClassSpace space, final List<ComponentRequirement> requirements )
-        {
-            for ( int i = 0, size = requirements.size(); i < size; i++ )
-            {
-                final ComponentRequirement cr = requirements.get( i );
-                requirementMap.put( cr.getFieldName(), newRequirement( space, cr ) );
+        ComponentMetadata(final ClassSpace space, final List<ComponentRequirement> requirements) {
+            for (int i = 0, size = requirements.size(); i < size; i++) {
+                final ComponentRequirement cr = requirements.get(i);
+                requirementMap.put(cr.getFieldName(), newRequirement(space, cr));
             }
         }
 
@@ -238,23 +201,19 @@ public final class ComponentDescriptorBeanModule
         // Public methods
         // ----------------------------------------------------------------------
 
-        public boolean isEmpty()
-        {
+        public boolean isEmpty() {
             return requirementMap.isEmpty();
         }
 
-        public Requirement getRequirement( final BeanProperty<?> property )
-        {
-            final Requirement requirement = requirementMap.get( property.getName() );
-            if ( null != requirement && requirementMap.isEmpty() )
-            {
+        public Requirement getRequirement(final BeanProperty<?> property) {
+            final Requirement requirement = requirementMap.get(property.getName());
+            if (null != requirement && requirementMap.isEmpty()) {
                 requirementMap = Collections.emptyMap();
             }
             return requirement;
         }
 
-        public Configuration getConfiguration( final BeanProperty<?> property )
-        {
+        public Configuration getConfiguration(final BeanProperty<?> property) {
             return null;
         }
     }
@@ -262,9 +221,7 @@ public final class ComponentDescriptorBeanModule
     /**
      * {@link PlexusBeanSource} backed by simple map of {@link PlexusBeanMetadata}.
      */
-    private static final class PlexusDescriptorBeanSource
-        implements PlexusBeanSource
-    {
+    private static final class PlexusDescriptorBeanSource implements PlexusBeanSource {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -275,8 +232,7 @@ public final class ComponentDescriptorBeanModule
         // Constructors
         // ----------------------------------------------------------------------
 
-        PlexusDescriptorBeanSource( final Map<String, PlexusBeanMetadata> metadataMap )
-        {
+        PlexusDescriptorBeanSource(final Map<String, PlexusBeanMetadata> metadataMap) {
             this.metadataMap = metadataMap;
         }
 
@@ -284,15 +240,12 @@ public final class ComponentDescriptorBeanModule
         // Public methods
         // ----------------------------------------------------------------------
 
-        public PlexusBeanMetadata getBeanMetadata( final Class<?> implementation )
-        {
-            if ( null == metadataMap )
-            {
+        public PlexusBeanMetadata getBeanMetadata(final Class<?> implementation) {
+            if (null == metadataMap) {
                 return null;
             }
-            final PlexusBeanMetadata metadata = metadataMap.remove( implementation.getName() );
-            if ( metadataMap.isEmpty() )
-            {
+            final PlexusBeanMetadata metadata = metadataMap.remove(implementation.getName());
+            if (metadataMap.isEmpty()) {
                 metadataMap = null;
             }
             return metadata;

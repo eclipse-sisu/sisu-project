@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -26,9 +26,7 @@ import java.util.Set;
 /**
  * NON-thread-safe {@link Map} whose keys are kept alive by soft/weak {@link Reference}s.
  */
-class MildKeys<K, V>
-    implements Map<K, V>
-{
+class MildKeys<K, V> implements Map<K, V> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -43,8 +41,7 @@ class MildKeys<K, V>
     // Constructors
     // ----------------------------------------------------------------------
 
-    MildKeys( final Map<Reference<K>, V> map, final boolean soft )
-    {
+    MildKeys(final Map<Reference<K>, V> map, final boolean soft) {
         this.map = map;
         this.soft = soft;
     }
@@ -53,114 +50,95 @@ class MildKeys<K, V>
     // Public methods
     // ----------------------------------------------------------------------
 
-    public final boolean containsKey( final Object key )
-    {
+    public final boolean containsKey(final Object key) {
         // skip compact for performance reasons
 
-        return map.containsKey( tempKey( key ) );
+        return map.containsKey(tempKey(key));
     }
 
-    public final boolean containsValue( final Object value )
-    {
+    public final boolean containsValue(final Object value) {
         // skip compact for performance reasons
 
-        return map.containsValue( value );
+        return map.containsValue(value);
     }
 
-    public final V get( final Object key )
-    {
+    public final V get(final Object key) {
         // skip compact for performance reasons
 
-        return map.get( tempKey( key ) );
+        return map.get(tempKey(key));
     }
 
-    public final V put( final K key, final V value )
-    {
+    public final V put(final K key, final V value) {
         compact();
 
-        return map.put( mildKey( key ), value );
+        return map.put(mildKey(key), value);
     }
 
-    public final void putAll( final Map<? extends K, ? extends V> m )
-    {
+    public final void putAll(final Map<? extends K, ? extends V> m) {
         compact();
 
-        for ( final Entry<? extends K, ? extends V> e : m.entrySet() )
-        {
-            map.put( mildKey( e.getKey() ), e.getValue() );
+        for (final Entry<? extends K, ? extends V> e : m.entrySet()) {
+            map.put(mildKey(e.getKey()), e.getValue());
         }
     }
 
-    public final V remove( final Object key )
-    {
+    public final V remove(final Object key) {
         compact();
 
-        return map.remove( tempKey( key ) );
+        return map.remove(tempKey(key));
     }
 
-    public final void clear()
-    {
+    public final void clear() {
         map.clear();
 
         compact();
     }
 
-    public final boolean isEmpty()
-    {
+    public final boolean isEmpty() {
         compact();
 
         return map.isEmpty();
     }
 
-    public final int size()
-    {
+    public final int size() {
         compact();
 
         return map.size();
     }
 
-    public final Set<K> keySet()
-    {
+    public final Set<K> keySet() {
         compact();
 
-        return new AbstractSet<K>()
-        {
+        return new AbstractSet<K>() {
             @Override
-            public Iterator<K> iterator()
-            {
+            public Iterator<K> iterator() {
                 return new KeyItr();
             }
 
             @Override
-            public int size()
-            {
+            public int size() {
                 return map.size();
             }
         };
     }
 
-    public final Collection<V> values()
-    {
+    public final Collection<V> values() {
         compact();
 
         return map.values();
     }
 
-    public final Set<Entry<K, V>> entrySet()
-    {
+    public final Set<Entry<K, V>> entrySet() {
         compact();
 
-        return new AbstractSet<Entry<K, V>>()
-        {
+        return new AbstractSet<Entry<K, V>>() {
             @Override
-            public Iterator<Entry<K, V>> iterator()
-            {
+            public Iterator<Entry<K, V>> iterator() {
                 return new EntryItr();
             }
 
             @Override
-            public int size()
-            {
+            public int size() {
                 return map.size();
             }
         };
@@ -173,27 +151,23 @@ class MildKeys<K, V>
     /**
      * @return Soft or weak {@link Reference} for the given key.
      */
-    final Reference<K> mildKey( final K key )
-    {
-        return soft ? new Soft<K>( key, queue ) : new Weak<K>( key, queue );
+    final Reference<K> mildKey(final K key) {
+        return soft ? new Soft<K>(key, queue) : new Weak<K>(key, queue);
     }
 
     /**
      * @return Temporary {@link Reference} for the given key; used in queries.
      */
-    static final <K> Reference<K> tempKey( final K key )
-    {
-        return new Weak<K>( key, null );
+    static final <K> Reference<K> tempKey(final K key) {
+        return new Weak<K>(key, null);
     }
 
     /**
      * Compacts the map by removing cleared keys.
      */
-    final void compact()
-    {
-        for ( Reference<? extends K> ref; ( ref = queue.poll() ) != null; )
-        {
-            map.remove( ref );
+    final void compact() {
+        for (Reference<? extends K> ref; (ref = queue.poll()) != null; ) {
+            map.remove(ref);
         }
     }
 
@@ -204,9 +178,7 @@ class MildKeys<K, V>
     /**
      * Soft key that maintains a constant hash and uses referential equality.
      */
-    static class Soft<T>
-        extends SoftReference<T>
-    {
+    static class Soft<T> extends SoftReference<T> {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -217,9 +189,8 @@ class MildKeys<K, V>
         // Constructors
         // ----------------------------------------------------------------------
 
-        Soft( final T o, final ReferenceQueue<T> queue )
-        {
-            super( o, queue );
+        Soft(final T o, final ReferenceQueue<T> queue) {
+            super(o, queue);
             hash = o.hashCode();
         }
 
@@ -228,23 +199,19 @@ class MildKeys<K, V>
         // ----------------------------------------------------------------------
 
         @Override
-        public final int hashCode()
-        {
+        public final int hashCode() {
             return hash;
         }
 
         @Override
-        public final boolean equals( final Object rhs )
-        {
-            if ( this == rhs )
-            {
+        public final boolean equals(final Object rhs) {
+            if (this == rhs) {
                 return true; // exact same reference
             }
             final T o = get();
-            if ( null != o && rhs instanceof Reference<?> )
-            {
+            if (null != o && rhs instanceof Reference<?>) {
                 // different reference, but same referent
-                return o == ( (Reference<?>) rhs ).get();
+                return o == ((Reference<?>) rhs).get();
             }
             return false;
         }
@@ -253,9 +220,7 @@ class MildKeys<K, V>
     /**
      * Weak key that maintains a constant hash and uses referential equality.
      */
-    static class Weak<T>
-        extends WeakReference<T>
-    {
+    static class Weak<T> extends WeakReference<T> {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -266,9 +231,8 @@ class MildKeys<K, V>
         // Constructors
         // ----------------------------------------------------------------------
 
-        Weak( final T o, final ReferenceQueue<T> queue )
-        {
-            super( o, queue );
+        Weak(final T o, final ReferenceQueue<T> queue) {
+            super(o, queue);
             hash = o.hashCode();
         }
 
@@ -277,23 +241,19 @@ class MildKeys<K, V>
         // ----------------------------------------------------------------------
 
         @Override
-        public final int hashCode()
-        {
+        public final int hashCode() {
             return hash;
         }
 
         @Override
-        public final boolean equals( final Object rhs )
-        {
-            if ( this == rhs )
-            {
+        public final boolean equals(final Object rhs) {
+            if (this == rhs) {
                 return true; // exact same reference
             }
             final T o = get();
-            if ( null != o && rhs instanceof Reference<?> )
-            {
+            if (null != o && rhs instanceof Reference<?>) {
                 // different reference, but same referent
-                return o == ( (Reference<?>) rhs ).get();
+                return o == ((Reference<?>) rhs).get();
             }
             return false;
         }
@@ -302,9 +262,7 @@ class MildKeys<K, V>
     /**
      * {@link Iterator} that iterates over reachable keys in the map.
      */
-    final class KeyItr
-        implements Iterator<K>
-    {
+    final class KeyItr implements Iterator<K> {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -317,20 +275,16 @@ class MildKeys<K, V>
         // Public methods
         // ----------------------------------------------------------------------
 
-        public boolean hasNext()
-        {
+        public boolean hasNext() {
             // find next key that is still reachable
-            while ( null == nextKey && itr.hasNext() )
-            {
+            while (null == nextKey && itr.hasNext()) {
                 nextKey = itr.next().get();
             }
             return null != nextKey;
         }
 
-        public K next()
-        {
-            if ( hasNext() )
-            {
+        public K next() {
+            if (hasNext()) {
                 // populated by hasNext()
                 final K key = nextKey;
                 nextKey = null;
@@ -339,8 +293,7 @@ class MildKeys<K, V>
             throw new NoSuchElementException();
         }
 
-        public void remove()
-        {
+        public void remove() {
             itr.remove();
         }
     }
@@ -348,9 +301,7 @@ class MildKeys<K, V>
     /**
      * {@link Iterator} that iterates over reachable entries in the map.
      */
-    final class EntryItr
-        implements Iterator<Entry<K, V>>
-    {
+    final class EntryItr implements Iterator<Entry<K, V>> {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -365,23 +316,19 @@ class MildKeys<K, V>
         // Public methods
         // ----------------------------------------------------------------------
 
-        public boolean hasNext()
-        {
+        public boolean hasNext() {
             // find next entry that is still reachable
-            while ( null == nextKey && itr.hasNext() )
-            {
+            while (null == nextKey && itr.hasNext()) {
                 nextEntry = itr.next();
                 nextKey = nextEntry.getKey().get();
             }
             return null != nextKey;
         }
 
-        public Entry<K, V> next()
-        {
-            if ( hasNext() )
-            {
+        public Entry<K, V> next() {
+            if (hasNext()) {
                 // populated by hasNext()
-                final Entry<K, V> entry = new StrongEntry( nextEntry, nextKey );
+                final Entry<K, V> entry = new StrongEntry(nextEntry, nextKey);
                 nextEntry = null;
                 nextKey = null;
                 return entry;
@@ -389,8 +336,7 @@ class MildKeys<K, V>
             throw new NoSuchElementException();
         }
 
-        public void remove()
-        {
+        public void remove() {
             itr.remove();
         }
     }
@@ -398,9 +344,7 @@ class MildKeys<K, V>
     /**
      * {@link Entry} that delegates to the original entry, but maintains a strong reference to the key.
      */
-    final class StrongEntry
-        implements Entry<K, V>
-    {
+    final class StrongEntry implements Entry<K, V> {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -413,8 +357,7 @@ class MildKeys<K, V>
         // Constructors
         // ----------------------------------------------------------------------
 
-        StrongEntry( final Entry<Reference<K>, V> entry, final K key )
-        {
+        StrongEntry(final Entry<Reference<K>, V> entry, final K key) {
             this.entry = entry;
             this.key = key;
         }
@@ -423,19 +366,16 @@ class MildKeys<K, V>
         // Public methods
         // ----------------------------------------------------------------------
 
-        public K getKey()
-        {
+        public K getKey() {
             return key;
         }
 
-        public V getValue()
-        {
+        public V getValue() {
             return entry.getValue();
         }
 
-        public V setValue( final V value )
-        {
-            return entry.setValue( value );
+        public V setValue(final V value) {
+            return entry.setValue(value);
         }
     }
 }

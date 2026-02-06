@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -15,8 +15,6 @@ package org.codehaus.plexus.personality.plexus.lifecycle.phase;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 
-public interface Configurable
-{
-    void configure( PlexusConfiguration configuration )
-        throws PlexusConfigurationException;
+public interface Configurable {
+    void configure(PlexusConfiguration configuration) throws PlexusConfigurationException;
 }

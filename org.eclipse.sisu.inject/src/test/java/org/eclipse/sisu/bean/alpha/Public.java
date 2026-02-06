@@ -15,18 +15,14 @@ import javax.annotation.PreDestroy;
 import javax.inject.Singleton;
 
 @Singleton
-public class Public
-    extends Base
-{
+public class Public extends Base {
     @PostConstruct
-    public void a()
-    {
-        results.append( "a" );
+    public void a() {
+        results.append("a");
     }
 
     @PreDestroy
-    public void z()
-    {
-        results.append( "z" );
+    public void z() {
+        results.append("z");
     }
 }

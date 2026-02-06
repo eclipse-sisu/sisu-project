@@ -10,53 +10,43 @@
  *******************************************************************************/
 package org.eclipse.sisu.wire;
 
-import java.net.URL;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.ConfigurationException;
 import com.google.inject.Guice;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
-
+import java.net.URL;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-
-class URLTypeConverterTest
-{
+class URLTypeConverterTest {
     @Test
-    void testURLConversion()
-    {
-        final URL url = Guice.createInjector( new URLTypeConverter(), new AbstractModule()
-        {
-            @Override
-            protected void configure()
-            {
-                bindConstant().annotatedWith( Names.named( "url" ) ).to( "http://127.0.0.1/" );
-            }
-        } ).getInstance( Key.get( URL.class, Names.named( "url" ) ) );
+    void testURLConversion() {
+        final URL url = Guice.createInjector(new URLTypeConverter(), new AbstractModule() {
+                    @Override
+                    protected void configure() {
+                        bindConstant().annotatedWith(Names.named("url")).to("http://127.0.0.1/");
+                    }
+                })
+                .getInstance(Key.get(URL.class, Names.named("url")));
 
-        assertEquals( "http://127.0.0.1/", url.toString() );
+        assertEquals("http://127.0.0.1/", url.toString());
     }
 
     @Test
-    void testBrokenURLConversion()
-    {
-        try
-        {
-            Guice.createInjector( new URLTypeConverter(), new AbstractModule()
-            {
-                @Override
-                protected void configure()
-                {
-                    bindConstant().annotatedWith( Names.named( "url" ) ).to( "foo^bar" );
-                }
-            } ).getInstance( Key.get( URL.class, Names.named( "url" ) ) );
-            fail( "Expected ConfigurationException" );
-        }
-        catch ( final ConfigurationException e )
-        {
+    void testBrokenURLConversion() {
+        try {
+            Guice.createInjector(new URLTypeConverter(), new AbstractModule() {
+                        @Override
+                        protected void configure() {
+                            bindConstant().annotatedWith(Names.named("url")).to("foo^bar");
+                        }
+                    })
+                    .getInstance(Key.get(URL.class, Names.named("url")));
+            fail("Expected ConfigurationException");
+        } catch (final ConfigurationException e) {
         }
     }
 }

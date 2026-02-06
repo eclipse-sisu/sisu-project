@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,7 @@
  */
 package org.codehaus.plexus.logging;
 
-public interface Logger
-{
+public interface Logger {
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
@@ -34,33 +33,33 @@ public interface Logger
     // Logging methods
     // ----------------------------------------------------------------------
 
-    void debug( String message );
+    void debug(String message);
 
-    void debug( String message, Throwable throwable );
+    void debug(String message, Throwable throwable);
 
     boolean isDebugEnabled();
 
-    void info( String message );
+    void info(String message);
 
-    void info( String message, Throwable throwable );
+    void info(String message, Throwable throwable);
 
     boolean isInfoEnabled();
 
-    void warn( String message );
+    void warn(String message);
 
-    void warn( String message, Throwable throwable );
+    void warn(String message, Throwable throwable);
 
     boolean isWarnEnabled();
 
-    void error( String message );
+    void error(String message);
 
-    void error( String message, Throwable throwable );
+    void error(String message, Throwable throwable);
 
     boolean isErrorEnabled();
 
-    void fatalError( String message );
+    void fatalError(String message);
 
-    void fatalError( String message, Throwable throwable );
+    void fatalError(String message, Throwable throwable);
 
     boolean isFatalErrorEnabled();
 
@@ -70,9 +69,9 @@ public interface Logger
 
     int getThreshold();
 
-    void setThreshold( int threshold );
+    void setThreshold(int threshold);
 
-    Logger getChildLogger( String name );
+    Logger getChildLogger(String name);
 
     String getName();
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Map;
-
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.IOUtil;
@@ -26,14 +25,12 @@ import org.eclipse.sisu.bean.BeanProperty;
 /**
  * Runtime {@link PlexusBeanMetadata} based on {@link BeanProperty} annotations.
  */
-public final class PlexusAnnotatedMetadata
-    implements PlexusBeanMetadata
-{
+public final class PlexusAnnotatedMetadata implements PlexusBeanMetadata {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    @SuppressWarnings( "rawtypes" )
+    @SuppressWarnings("rawtypes")
     private final Map variables;
 
     // ----------------------------------------------------------------------
@@ -45,8 +42,7 @@ public final class PlexusAnnotatedMetadata
      *
      * @param variables The filter variables
      */
-    public PlexusAnnotatedMetadata( final Map<?, ?> variables )
-    {
+    public PlexusAnnotatedMetadata(final Map<?, ?> variables) {
         this.variables = variables;
     }
 
@@ -54,49 +50,39 @@ public final class PlexusAnnotatedMetadata
     // Public methods
     // ----------------------------------------------------------------------
 
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return false; // metadata comes from the properties themselves
     }
 
-    public Configuration getConfiguration( final BeanProperty<?> property )
-    {
-        final Configuration configuration = property.getAnnotation( Configuration.class );
-        if ( configuration != null && variables != null )
-        {
+    public Configuration getConfiguration(final BeanProperty<?> property) {
+        final Configuration configuration = property.getAnnotation(Configuration.class);
+        if (configuration != null && variables != null) {
             // support runtime interpolation of @Configuration values
             final String uninterpolatedValue = configuration.value();
-            final String value = interpolate( uninterpolatedValue );
-            if ( null != value && !value.equals( uninterpolatedValue ) )
-            {
-                return new ConfigurationImpl( configuration.name(), value );
+            final String value = interpolate(uninterpolatedValue);
+            if (null != value && !value.equals(uninterpolatedValue)) {
+                return new ConfigurationImpl(configuration.name(), value);
             }
         }
         return configuration;
     }
 
-    public Requirement getRequirement( final BeanProperty<?> property )
-    {
-        return property.getAnnotation( Requirement.class );
+    public Requirement getRequirement(final BeanProperty<?> property) {
+        return property.getAnnotation(Requirement.class);
     }
 
     // ----------------------------------------------------------------------
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    private String interpolate( final String text )
-    {
-        if ( null == text || !text.contains( "${" ) )
-        {
+    private String interpolate(final String text) {
+        if (null == text || !text.contains("${")) {
             return text;
         }
         // use same interpolation method as XML for sake of consistency
-        try ( Reader r = new InterpolationFilterReader( new StringReader( text ), variables ) )
-        {
-            return IOUtil.toString( r );
-        }
-        catch ( IOException e )
-        {
+        try (Reader r = new InterpolationFilterReader(new StringReader(text), variables)) {
+            return IOUtil.toString(r);
+        } catch (IOException e) {
             return text; // should never actually happen, as no actual I/O involved
         }
     }

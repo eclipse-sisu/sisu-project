@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -14,15 +14,12 @@ package org.eclipse.sisu.space;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 import javax.inject.Qualifier;
 
 /**
  * Caching {@link ClassVisitor} that maintains a map of known {@link Qualifier} annotations.
  */
-final class QualifierCache
-    implements ClassVisitor
-{
+final class QualifierCache implements ClassVisitor {
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
@@ -45,25 +42,21 @@ final class QualifierCache
     // Public methods
     // ----------------------------------------------------------------------
 
-    public QualifierCache( boolean isStrict )
-    {
+    public QualifierCache(boolean isStrict) {
         super();
         this.isStrict = isStrict;
     }
 
-    public void enterClass( final int modifiers, final String name, final String _extends, final String[] _implements )
-    {
+    public void enterClass(final int modifiers, final String name, final String _extends, final String[] _implements) {
         // no-op
     }
 
-    public AnnotationVisitor visitAnnotation( final String desc )
-    {
-        isQualified |= QUALIFIER_DESC.equals( desc );
+    public AnnotationVisitor visitAnnotation(final String desc) {
+        isQualified |= QUALIFIER_DESC.equals(desc);
         return null;
     }
 
-    public void leaveClass()
-    {
+    public void leaveClass() {
         // no-op
     }
 
@@ -73,25 +66,22 @@ final class QualifierCache
 
     /**
      * Scans the given annotation type to see if it is marked with {@link Qualifier}.
-     * 
+     *
      * @param space The class space
      * @param desc The annotation descriptor
      * @return {@code true} if the annotation is a qualifier; otherwise {@code false}
      */
-    boolean qualify( final ClassSpace space, final String desc )
-    {
-        if ( NAMED_DESC.equals( desc ) )
-        {
+    boolean qualify(final ClassSpace space, final String desc) {
+        if (NAMED_DESC.equals(desc)) {
             return true;
         }
-        final Boolean result = cachedResults.get( desc );
-        if ( null == result )
-        {
+        final Boolean result = cachedResults.get(desc);
+        if (null == result) {
             isQualified = false;
 
-            final String name = desc.substring( 1, desc.length() - 1 );
-            SpaceScanner.accept( this, space.getResource( name + ".class" ), isStrict );
-            cachedResults.put( desc, Boolean.valueOf( isQualified ) );
+            final String name = desc.substring(1, desc.length() - 1);
+            SpaceScanner.accept(this, space.getResource(name + ".class"), isStrict);
+            cachedResults.put(desc, Boolean.valueOf(isQualified));
 
             return isQualified;
         }
@@ -100,27 +90,22 @@ final class QualifierCache
 
     /**
      * Seeds the cache with the fully-qualified names listed in the 'sisu.qualifiers' system property.
-     * 
+     *
      * @return Seeded results
      */
-    private static Map<String, Boolean> seedResults()
-    {
-        final Map<String, Boolean> results = new ConcurrentHashMap<String, Boolean>( 32, 0.75f, 1 );
-        try
-        {
-            final String qualifiers = System.getProperty( "sisu.qualifiers" );
-            if ( qualifiers != null && qualifiers.length() > 0 )
-            {
-                final StringBuilder buf = new StringBuilder( "L" );
-                for ( final String q : Tokens.splitByComma( qualifiers ) )
-                {
-                    buf.append( q.replace( '.', '/' ) ).append( ';' );
-                    results.put( buf.toString(), Boolean.TRUE );
-                    buf.setLength( 1 );
+    private static Map<String, Boolean> seedResults() {
+        final Map<String, Boolean> results = new ConcurrentHashMap<String, Boolean>(32, 0.75f, 1);
+        try {
+            final String qualifiers = System.getProperty("sisu.qualifiers");
+            if (qualifiers != null && qualifiers.length() > 0) {
+                final StringBuilder buf = new StringBuilder("L");
+                for (final String q : Tokens.splitByComma(qualifiers)) {
+                    buf.append(q.replace('.', '/')).append(';');
+                    results.put(buf.toString(), Boolean.TRUE);
+                    buf.setLength(1);
                 }
             }
-        }
-        catch ( final RuntimeException e ) // NOPMD
+        } catch (final RuntimeException e) // NOPMD
         {
             // couldn't access system property, leave results unseeded
         }

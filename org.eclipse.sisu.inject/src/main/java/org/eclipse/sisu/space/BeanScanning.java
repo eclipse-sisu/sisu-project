@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -17,11 +17,10 @@ import java.util.Map;
 
 /**
  * Common techniques for discovering bean implementations.
- * 
+ *
  * @see org.eclipse.sisu.space.SpaceModule
  */
-public enum BeanScanning
-{
+public enum BeanScanning {
     /**
      * Always scan
      */
@@ -50,19 +49,16 @@ public enum BeanScanning
     /**
      * Selects the property named <i>"org.eclipse.sisu.space.BeanScanning"</i> and attempts to map its value to a
      * {@link BeanScanning} literal, ignoring case. Defaults to {@link BeanScanning#ON} for blank or null values.
-     * 
+     *
      * @param properties The properties
      * @return Selected scanning option
      * @throws IllegalArgumentException if the property value cannot be mapped
      */
-    public static BeanScanning select( final Map<?, ?> properties )
-        throws IllegalArgumentException
-    {
-        final String option = (String) properties.get( BeanScanning.class.getName() );
-        if ( null == option || option.trim().length() == 0 )
-        {
+    public static BeanScanning select(final Map<?, ?> properties) throws IllegalArgumentException {
+        final String option = (String) properties.get(BeanScanning.class.getName());
+        if (null == option || option.trim().length() == 0) {
             return BeanScanning.ON;
         }
-        return Enum.valueOf( BeanScanning.class, option.toUpperCase( Locale.ENGLISH ) );
+        return Enum.valueOf(BeanScanning.class, option.toUpperCase(Locale.ENGLISH));
     }
 }

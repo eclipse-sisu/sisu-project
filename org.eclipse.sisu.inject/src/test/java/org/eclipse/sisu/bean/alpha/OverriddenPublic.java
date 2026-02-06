@@ -15,20 +15,16 @@ import javax.annotation.PreDestroy;
 import javax.inject.Singleton;
 
 @Singleton
-public class OverriddenPublic
-    extends Private
-{
+public class OverriddenPublic extends Private {
     @Override
     @PostConstruct
-    public void a()
-    {
-        results.append( "A" );
+    public void a() {
+        results.append("A");
     }
 
     @Override
     @PreDestroy
-    public void z()
-    {
-        results.append( "Z" );
+    public void z() {
+        results.append("Z");
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.codehaus.plexus;
 
 import java.util.List;
 import java.util.Map;
-
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.composition.CycleDetectedInComponentGraphException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
@@ -23,85 +22,70 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.context.Context;
 
-public interface PlexusContainer
-{
+public interface PlexusContainer {
     Context getContext();
 
-    Object lookup( String role )
-        throws ComponentLookupException;
+    Object lookup(String role) throws ComponentLookupException;
 
-    Object lookup( String role, String hint )
-        throws ComponentLookupException;
+    Object lookup(String role, String hint) throws ComponentLookupException;
 
-    <T> T lookup( Class<T> role )
-        throws ComponentLookupException;
+    <T> T lookup(Class<T> role) throws ComponentLookupException;
 
-    <T> T lookup( Class<T> role, String hint )
-        throws ComponentLookupException;
+    <T> T lookup(Class<T> role, String hint) throws ComponentLookupException;
 
-    <T> T lookup( Class<T> type, String role, String hint )
-        throws ComponentLookupException;
+    <T> T lookup(Class<T> type, String role, String hint) throws ComponentLookupException;
 
-    List<Object> lookupList( String role )
-        throws ComponentLookupException;
+    List<Object> lookupList(String role) throws ComponentLookupException;
 
-    <T> List<T> lookupList( Class<T> role )
-        throws ComponentLookupException;
+    <T> List<T> lookupList(Class<T> role) throws ComponentLookupException;
 
-    Map<String, Object> lookupMap( String role )
-        throws ComponentLookupException;
+    Map<String, Object> lookupMap(String role) throws ComponentLookupException;
 
-    <T> Map<String, T> lookupMap( Class<T> role )
-        throws ComponentLookupException;
+    <T> Map<String, T> lookupMap(Class<T> role) throws ComponentLookupException;
 
-    boolean hasComponent( String role );
+    boolean hasComponent(String role);
 
-    boolean hasComponent( String role, String hint );
+    boolean hasComponent(String role, String hint);
 
-    boolean hasComponent( Class<?> role );
+    boolean hasComponent(Class<?> role);
 
-    boolean hasComponent( Class<?> role, String hint );
+    boolean hasComponent(Class<?> role, String hint);
 
-    boolean hasComponent( Class<?> type, String role, String hint );
+    boolean hasComponent(Class<?> type, String role, String hint);
 
-    void addComponent( Object component, String role );
+    void addComponent(Object component, String role);
 
-    <T> void addComponent( T component, Class<?> role, String hint );
+    <T> void addComponent(T component, Class<?> role, String hint);
 
-    <T> void addComponentDescriptor( ComponentDescriptor<T> descriptor )
-        throws CycleDetectedInComponentGraphException;
+    <T> void addComponentDescriptor(ComponentDescriptor<T> descriptor) throws CycleDetectedInComponentGraphException;
 
-    ComponentDescriptor<?> getComponentDescriptor( String role, String hint );
+    ComponentDescriptor<?> getComponentDescriptor(String role, String hint);
 
-    <T> ComponentDescriptor<T> getComponentDescriptor( Class<T> type, String role, String hint );
+    <T> ComponentDescriptor<T> getComponentDescriptor(Class<T> type, String role, String hint);
 
-    List<ComponentDescriptor<?>> getComponentDescriptorList( String role );
+    List<ComponentDescriptor<?>> getComponentDescriptorList(String role);
 
-    <T> List<ComponentDescriptor<T>> getComponentDescriptorList( Class<T> type, String role );
+    <T> List<ComponentDescriptor<T>> getComponentDescriptorList(Class<T> type, String role);
 
-    Map<String, ComponentDescriptor<?>> getComponentDescriptorMap( String role );
+    Map<String, ComponentDescriptor<?>> getComponentDescriptorMap(String role);
 
-    <T> Map<String, ComponentDescriptor<T>> getComponentDescriptorMap( Class<T> type, String role );
+    <T> Map<String, ComponentDescriptor<T>> getComponentDescriptorMap(Class<T> type, String role);
 
-    List<ComponentDescriptor<?>> discoverComponents( ClassRealm classRealm )
-        throws PlexusConfigurationException;
+    List<ComponentDescriptor<?>> discoverComponents(ClassRealm classRealm) throws PlexusConfigurationException;
 
     ClassRealm getContainerRealm();
 
-    ClassRealm setLookupRealm( ClassRealm realm );
+    ClassRealm setLookupRealm(ClassRealm realm);
 
     ClassRealm getLookupRealm();
 
-    ClassRealm createChildRealm( String id );
+    ClassRealm createChildRealm(String id);
 
-    void release( Object component )
-        throws ComponentLifecycleException;
+    void release(Object component) throws ComponentLifecycleException;
 
-    void releaseAll( Map<String, ?> components )
-        throws ComponentLifecycleException;
+    void releaseAll(Map<String, ?> components) throws ComponentLifecycleException;
 
-    void releaseAll( List<?> components )
-        throws ComponentLifecycleException;
+    void releaseAll(List<?> components) throws ComponentLifecycleException;
 
     void dispose();
 }

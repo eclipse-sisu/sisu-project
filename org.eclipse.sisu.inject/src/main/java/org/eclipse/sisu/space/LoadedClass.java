@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,7 @@ import org.eclipse.sisu.inject.DeferredClass;
 /**
  * Pseudo {@link DeferredClass} backed by an already loaded {@link Class}.
  */
-public final class LoadedClass<T>
-    extends AbstractDeferredClass<T>
-{
+public final class LoadedClass<T> extends AbstractDeferredClass<T> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -30,9 +28,8 @@ public final class LoadedClass<T>
     // Constructors
     // ----------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
-    public LoadedClass( final Class<? extends T> clazz )
-    {
+    @SuppressWarnings("unchecked")
+    public LoadedClass(final Class<? extends T> clazz) {
         this.clazz = (Class<T>) clazz;
     }
 
@@ -40,39 +37,32 @@ public final class LoadedClass<T>
     // Public methods
     // ----------------------------------------------------------------------
 
-    public Class<T> load()
-    {
+    public Class<T> load() {
         return clazz;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return clazz.getName();
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return clazz.hashCode();
     }
 
     @Override
-    public boolean equals( final Object rhs )
-    {
-        if ( this == rhs )
-        {
+    public boolean equals(final Object rhs) {
+        if (this == rhs) {
             return true;
         }
-        if ( rhs instanceof LoadedClass<?> )
-        {
-            return clazz == ( (LoadedClass<?>) rhs ).clazz;
+        if (rhs instanceof LoadedClass<?>) {
+            return clazz == ((LoadedClass<?>) rhs).clazz;
         }
         return false;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         final String id = "Loaded " + clazz;
         final ClassLoader space = clazz.getClassLoader();
         return null != space ? id + " from " + space : id;

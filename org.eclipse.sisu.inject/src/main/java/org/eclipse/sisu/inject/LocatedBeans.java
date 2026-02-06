@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,24 +12,20 @@
  */
 package org.eclipse.sisu.inject;
 
+import com.google.inject.Binding;
+import com.google.inject.Key;
 import java.lang.annotation.Annotation;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
 import org.eclipse.sisu.BeanEntry;
-
-import com.google.inject.Binding;
-import com.google.inject.Key;
 
 /**
  * Provides a sequence of {@link BeanEntry}s by iterating over qualified {@link Binding}s.
- * 
+ *
  * @see BeanLocator#locate(Key)
  */
-final class LocatedBeans<Q extends Annotation, T>
-    implements Iterable<BeanEntry<Q, T>>
-{
+final class LocatedBeans<Q extends Annotation, T> implements Iterable<BeanEntry<Q, T>> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -48,14 +44,13 @@ final class LocatedBeans<Q extends Annotation, T>
     // Constructors
     // ----------------------------------------------------------------------
 
-    LocatedBeans( final Key<T> key, final RankedBindings<T> explicitBindings, final ImplicitBindings implicitBindings )
-    {
+    LocatedBeans(final Key<T> key, final RankedBindings<T> explicitBindings, final ImplicitBindings implicitBindings) {
         this.key = key;
 
         this.explicitBindings = explicitBindings;
         this.implicitBindings = implicitBindings;
 
-        strategy = QualifyingStrategy.selectFor( key );
+        strategy = QualifyingStrategy.selectFor(key);
         beans = explicitBindings.newBeanCache();
     }
 
@@ -63,8 +58,7 @@ final class LocatedBeans<Q extends Annotation, T>
     // Public methods
     // ----------------------------------------------------------------------
 
-    public Iterator<BeanEntry<Q, T>> iterator()
-    {
+    public Iterator<BeanEntry<Q, T>> iterator() {
         return new Itr();
     }
 
@@ -75,9 +69,7 @@ final class LocatedBeans<Q extends Annotation, T>
     /**
      * {@link BeanEntry} iterator that creates new elements from {@link Binding}s as required.
      */
-    final class Itr
-        implements Iterator<BeanEntry<Q, T>>
-    {
+    final class Itr implements Iterator<BeanEntry<Q, T>> {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -94,44 +86,35 @@ final class LocatedBeans<Q extends Annotation, T>
         // Public methods
         // ----------------------------------------------------------------------
 
-        @SuppressWarnings( "unchecked" )
-        public boolean hasNext()
-        {
-            if ( null != nextBean )
-            {
+        @SuppressWarnings("unchecked")
+        public boolean hasNext() {
+            if (null != nextBean) {
                 return true;
             }
-            while ( itr.hasNext() )
-            {
+            while (itr.hasNext()) {
                 final Binding<T> binding = itr.next();
-                if ( null != readCache && null != ( nextBean = readCache.get( binding ) ) )
-                {
+                if (null != readCache && null != (nextBean = readCache.get(binding))) {
                     return true;
                 }
-                final Q qualifier = (Q) strategy.qualifies( key, binding );
-                if ( null != qualifier )
-                {
-                    nextBean = beans.create( qualifier, binding, itr.rank() );
+                final Q qualifier = (Q) strategy.qualifies(key, binding);
+                if (null != qualifier) {
+                    nextBean = beans.create(qualifier, binding, itr.rank());
                     return true;
                 }
             }
-            if ( checkImplicitBindings )
-            {
+            if (checkImplicitBindings) {
                 // last-chance, see if we can locate a valid implicit binding somewhere
-                final Binding<T> binding = implicitBindings.get( key.getTypeLiteral() );
-                if ( null != binding )
-                {
-                    nextBean = beans.create( (Q) QualifyingStrategy.DEFAULT_QUALIFIER, binding, Integer.MIN_VALUE );
+                final Binding<T> binding = implicitBindings.get(key.getTypeLiteral());
+                if (null != binding) {
+                    nextBean = beans.create((Q) QualifyingStrategy.DEFAULT_QUALIFIER, binding, Integer.MIN_VALUE);
                     return true;
                 }
             }
             return false;
         }
 
-        public BeanEntry<Q, T> next()
-        {
-            if ( hasNext() )
-            {
+        public BeanEntry<Q, T> next() {
+            if (hasNext()) {
                 // no need to check this again
                 checkImplicitBindings = false;
 
@@ -143,8 +126,7 @@ final class LocatedBeans<Q extends Annotation, T>
             throw new NoSuchElementException();
         }
 
-        public void remove()
-        {
+        public void remove() {
             throw new UnsupportedOperationException();
         }
     }

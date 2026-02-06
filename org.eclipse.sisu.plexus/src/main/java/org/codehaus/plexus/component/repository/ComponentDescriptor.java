@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -15,14 +15,12 @@ package org.codehaus.plexus.component.repository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.eclipse.sisu.plexus.Hints;
 import org.eclipse.sisu.plexus.Strategies;
 
-public class ComponentDescriptor<T>
-{
+public class ComponentDescriptor<T> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -67,14 +65,12 @@ public class ComponentDescriptor<T>
     // Constructors
     // ----------------------------------------------------------------------
 
-    public ComponentDescriptor()
-    {
+    public ComponentDescriptor() {
         // nothing to set
     }
 
-    public ComponentDescriptor( final Class<T> implementationClass, final ClassRealm classRealm )
-    {
-        setImplementationClass( implementationClass );
+    public ComponentDescriptor(final Class<T> implementationClass, final ClassRealm classRealm) {
+        setImplementationClass(implementationClass);
         this.classRealm = classRealm;
     }
 
@@ -82,283 +78,225 @@ public class ComponentDescriptor<T>
     // Public methods
     // ----------------------------------------------------------------------
 
-    public final void setRole( final String role )
-    {
+    public final void setRole(final String role) {
         this.role = role;
     }
 
-    public final void setRoleClass( final Class<?> roleClass )
-    {
+    public final void setRoleClass(final Class<?> roleClass) {
         role = roleClass.getName();
     }
 
-    public final void setRoleHint( final String hint )
-    {
-        this.hint = Hints.canonicalHint( hint );
+    public final void setRoleHint(final String hint) {
+        this.hint = Hints.canonicalHint(hint);
     }
 
-    public final void setDescription( final String description )
-    {
+    public final void setDescription(final String description) {
         this.description = null != description ? description : "";
     }
 
-    public final void setInstantiationStrategy( final String instantiationStrategy )
-    {
+    public final void setInstantiationStrategy(final String instantiationStrategy) {
         this.instantiationStrategy = instantiationStrategy;
     }
 
-    public final void setImplementation( final String implementation )
-    {
+    public final void setImplementation(final String implementation) {
         this.implementation = implementation;
         implementationClass = null;
     }
 
-    public final void setRealm( final ClassRealm classRealm )
-    {
+    public final void setRealm(final ClassRealm classRealm) {
         this.classRealm = classRealm;
         implementationClass = null;
     }
 
-    @SuppressWarnings( "rawtypes" )
-    public final void setImplementationClass( final Class implementationClass )
-    {
+    @SuppressWarnings("rawtypes")
+    public final void setImplementationClass(final Class implementationClass) {
         this.implementationClass = implementationClass;
         implementation = implementationClass.getName();
     }
 
-    public final void setComponentComposer( final String componentComposer )
-    {
+    public final void setComponentComposer(final String componentComposer) {
         this.componentComposer = componentComposer;
     }
 
-    public final void setComponentConfigurator( final String componentConfigurator )
-    {
+    public final void setComponentConfigurator(final String componentConfigurator) {
         this.componentConfigurator = componentConfigurator;
     }
 
-    public final void setComponentFactory( final String componentFactory )
-    {
+    public final void setComponentFactory(final String componentFactory) {
         this.componentFactory = componentFactory;
     }
 
-    public final void addRequirement( final ComponentRequirement requirement )
-    {
-        if ( requirements.isEmpty() )
-        {
+    public final void addRequirement(final ComponentRequirement requirement) {
+        if (requirements.isEmpty()) {
             requirements = new ArrayList<ComponentRequirement>();
         }
-        requirements.add( requirement );
+        requirements.add(requirement);
     }
 
-    public final void setConfiguration( final PlexusConfiguration configuration )
-    {
+    public final void setConfiguration(final PlexusConfiguration configuration) {
         this.configuration = configuration;
     }
 
-    public final void setAlias( final String alias )
-    {
+    public final void setAlias(final String alias) {
         this.alias = alias;
     }
 
-    public final void setVersion( final String version )
-    {
+    public final void setVersion(final String version) {
         this.version = version;
     }
 
-    public final void setComponentType( final String componentType )
-    {
+    public final void setComponentType(final String componentType) {
         this.componentType = componentType;
     }
 
-    public final void setComponentProfile( final String componentProfile )
-    {
+    public final void setComponentProfile(final String componentProfile) {
         this.componentProfile = componentProfile;
     }
 
-    public final void setLifecycleHandler( final String lifecycleHandler )
-    {
+    public final void setLifecycleHandler(final String lifecycleHandler) {
         this.lifecycleHandler = lifecycleHandler;
     }
 
-    public final void setIsolatedRealm( final boolean isolatedRealm )
-    {
+    public final void setIsolatedRealm(final boolean isolatedRealm) {
         this.isolatedRealm = isolatedRealm;
     }
 
-    public String getRole()
-    {
+    public String getRole() {
         return role;
     }
 
-    @SuppressWarnings( "unchecked" )
-    public final Class<T> getRoleClass()
-    {
-        try
-        {
-            return (Class<T>) classRealm.loadClass( getRole() );
-        }
-        catch ( final Exception e )
-        {
-            throw new TypeNotPresentException( getRole(), e );
-        }
-        catch ( final LinkageError e )
-        {
-            throw new TypeNotPresentException( getRole(), e );
+    @SuppressWarnings("unchecked")
+    public final Class<T> getRoleClass() {
+        try {
+            return (Class<T>) classRealm.loadClass(getRole());
+        } catch (final Exception e) {
+            throw new TypeNotPresentException(getRole(), e);
+        } catch (final LinkageError e) {
+            throw new TypeNotPresentException(getRole(), e);
         }
     }
 
-    public String getRoleHint()
-    {
+    public String getRoleHint() {
         return hint;
     }
 
-    public final String getDescription()
-    {
+    public final String getDescription() {
         return description;
     }
 
-    public final String getInstantiationStrategy()
-    {
+    public final String getInstantiationStrategy() {
         return instantiationStrategy;
     }
 
-    public final String getImplementation()
-    {
+    public final String getImplementation() {
         return implementation;
     }
 
-    public final ClassRealm getRealm()
-    {
+    public final ClassRealm getRealm() {
         return classRealm;
     }
 
-    @SuppressWarnings( "unchecked" )
-    public final Class<T> getImplementationClass()
-    {
-        if ( null == implementationClass && null != classRealm )
-        {
-            try
-            {
-                implementationClass = classRealm.loadClass( implementation );
-            }
-            catch ( final Exception e )
-            {
-                throw new TypeNotPresentException( implementation, e );
-            }
-            catch ( final LinkageError e )
-            {
-                throw new TypeNotPresentException( implementation, e );
+    @SuppressWarnings("unchecked")
+    public final Class<T> getImplementationClass() {
+        if (null == implementationClass && null != classRealm) {
+            try {
+                implementationClass = classRealm.loadClass(implementation);
+            } catch (final Exception e) {
+                throw new TypeNotPresentException(implementation, e);
+            } catch (final LinkageError e) {
+                throw new TypeNotPresentException(implementation, e);
             }
         }
         return (Class<T>) implementationClass;
     }
 
-    public final String getComponentComposer()
-    {
+    public final String getComponentComposer() {
         return componentComposer;
     }
 
-    public final String getComponentConfigurator()
-    {
+    public final String getComponentConfigurator() {
         return componentConfigurator;
     }
 
-    public final String getComponentFactory()
-    {
+    public final String getComponentFactory() {
         return componentFactory;
     }
 
-    public final List<ComponentRequirement> getRequirements()
-    {
-        return Collections.unmodifiableList( requirements );
+    public final List<ComponentRequirement> getRequirements() {
+        return Collections.unmodifiableList(requirements);
     }
 
-    public final boolean hasConfiguration()
-    {
+    public final boolean hasConfiguration() {
         return configuration != null;
     }
 
-    public final PlexusConfiguration getConfiguration()
-    {
+    public final PlexusConfiguration getConfiguration() {
         return configuration;
     }
 
-    public final String getAlias()
-    {
+    public final String getAlias() {
         return alias;
     }
 
-    public final String getVersion()
-    {
+    public final String getVersion() {
         return version;
     }
 
-    public String getComponentType()
-    {
+    public String getComponentType() {
         return componentType;
     }
 
-    public final String getComponentProfile()
-    {
+    public final String getComponentProfile() {
         return componentProfile;
     }
 
-    public final String getLifecycleHandler()
-    {
+    public final String getLifecycleHandler() {
         return lifecycleHandler;
     }
 
-    public final boolean isIsolatedRealm()
-    {
+    public final boolean isIsolatedRealm() {
         return isolatedRealm;
     }
 
-    public final String getHumanReadableKey()
-    {
+    public final String getHumanReadableKey() {
         return "role: '" + getRole() + "', implementation: '" + implementation + "', role hint: '" + getRoleHint()
-            + "'";
+                + "'";
     }
 
     @Override
-    public final String toString()
-    {
+    public final String toString() {
         return getClass().getName() + " [role: '" + getRole() + "', hint: '" + getRoleHint() + "', realm: " + classRealm
-            + "]";
+                + "]";
     }
 
     @Override
-    public boolean equals( final Object rhs )
-    {
-        if ( this == rhs )
-        {
+    public boolean equals(final Object rhs) {
+        if (this == rhs) {
             return true;
         }
-        if ( rhs instanceof ComponentDescriptor<?> )
-        {
+        if (rhs instanceof ComponentDescriptor<?>) {
             final ComponentDescriptor<?> rhsDescriptor = (ComponentDescriptor<?>) rhs;
-            return equals( getRole(), rhsDescriptor.getRole() ) && equals( getRoleHint(), rhsDescriptor.getRoleHint() )
-                && equals( classRealm, rhsDescriptor.classRealm );
+            return equals(getRole(), rhsDescriptor.getRole())
+                    && equals(getRoleHint(), rhsDescriptor.getRoleHint())
+                    && equals(classRealm, rhsDescriptor.classRealm);
         }
         return false;
     }
 
     @Override
-    public int hashCode()
-    {
-        return ( ( 17 * 31 + hash( getRole() ) ) * 31 + hash( getRoleHint() ) ) * 31 + hash( classRealm );
+    public int hashCode() {
+        return ((17 * 31 + hash(getRole())) * 31 + hash(getRoleHint())) * 31 + hash(classRealm);
     }
 
     // ----------------------------------------------------------------------
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    private static final <T> boolean equals( final T lhs, final T rhs )
-    {
-        return null != lhs ? lhs.equals( rhs ) : null == rhs;
+    private static final <T> boolean equals(final T lhs, final T rhs) {
+        return null != lhs ? lhs.equals(rhs) : null == rhs;
     }
 
-    private static final int hash( final Object obj )
-    {
+    private static final int hash(final Object obj) {
         return null != obj ? obj.hashCode() : 0;
     }
 }

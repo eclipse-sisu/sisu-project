@@ -10,28 +10,23 @@
  *******************************************************************************/
 package org.eclipse.sisu.launch;
 
-import javax.inject.Inject;
-
 import com.google.inject.Binder;
+import javax.inject.Inject;
 
 /**
  * Still JUnit3 based test
  * Execute with JUnit3 runner.
  */
-public final class RequireBindingsTestCase
-    extends InjectedTestCase
-{
+public final class RequireBindingsTestCase extends InjectedTestCase {
     @Override
-    public void configure( final Binder binder )
-    {
+    public void configure(final Binder binder) {
         binder.requireExplicitBindings();
     }
 
     @Inject
     Foo bean;
 
-    public void testRequireExplicitBindings()
-    {
-        assertNotNull( bean );
+    public void testRequireExplicitBindings() {
+        assertNotNull(bean);
     }
 }

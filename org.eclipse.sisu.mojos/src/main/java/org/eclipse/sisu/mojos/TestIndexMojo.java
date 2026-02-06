@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 package org.eclipse.sisu.mojos;
 
 import java.io.File;
-
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -26,10 +25,12 @@ import org.codehaus.plexus.build.BuildContext;
 /**
  * Generates a qualified class index for test classes compiled by the current project.
  */
-@Mojo( name = "test-index", defaultPhase = LifecyclePhase.PROCESS_TEST_CLASSES, requiresDependencyResolution = ResolutionScope.TEST, threadSafe = true )
-public class TestIndexMojo
-    extends AbstractMojo
-{
+@Mojo(
+        name = "test-index",
+        defaultPhase = LifecyclePhase.PROCESS_TEST_CLASSES,
+        requiresDependencyResolution = ResolutionScope.TEST,
+        threadSafe = true)
+public class TestIndexMojo extends AbstractMojo {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -37,7 +38,7 @@ public class TestIndexMojo
     /**
      * The Maven project to index.
      */
-    @Parameter( property = "project", required = true, readonly = true )
+    @Parameter(property = "project", required = true, readonly = true)
     private MavenProject project;
 
     /**
@@ -50,12 +51,11 @@ public class TestIndexMojo
     // Public methods
     // ----------------------------------------------------------------------
 
-    public void execute()
-    {
-        final IndexMojo mojo = new IndexMojo( buildContext );
-        mojo.setLog( getLog() );
-        mojo.setProject( project );
-        mojo.setOutputDirectory( new File( project.getBuild().getTestOutputDirectory() ) );
+    public void execute() {
+        final IndexMojo mojo = new IndexMojo(buildContext);
+        mojo.setLog(getLog());
+        mojo.setProject(project);
+        mojo.setOutputDirectory(new File(project.getBuild().getTestOutputDirectory()));
         mojo.execute();
     }
 }

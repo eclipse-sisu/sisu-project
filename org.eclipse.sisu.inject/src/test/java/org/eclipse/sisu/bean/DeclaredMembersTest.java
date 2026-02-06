@@ -10,176 +10,138 @@
  *******************************************************************************/
 package org.eclipse.sisu.bean;
 
-import java.lang.reflect.Member;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@Tag( "basetests" )
-class DeclaredMembersTest
-{
-    interface A
-    {
+import java.lang.reflect.Member;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+
+@Tag("basetests")
+class DeclaredMembersTest {
+    interface A {
         char a = 'a';
 
         void a();
     }
 
-    static class B
-        implements A
-    {
-        public B()
-        {
-        }
+    static class B implements A {
+        public B() {}
 
         char b = 'b';
 
-        public void a()
-        {
-        }
+        public void a() {}
     }
 
-    interface C
-        extends A
-    {
+    interface C extends A {
         char c = 'c';
 
         void c();
     }
 
-    static class D
-        extends B
-        implements C
-    {
-        public D()
-        {
-        }
+    static class D extends B implements C {
+        public D() {}
 
         char d = 'd';
 
-        public void c()
-        {
-        }
+        public void c() {}
     }
 
     @Test
-    void testNullClass()
-    {
-        final Iterator<Member> i = new DeclaredMembers( null ).iterator();
+    void testNullClass() {
+        final Iterator<Member> i = new DeclaredMembers(null).iterator();
 
-        assertFalse( i.hasNext() );
+        assertFalse(i.hasNext());
 
-        try
-        {
+        try {
             i.next();
-            fail( "Expected NoSuchElementException" );
-        }
-        catch ( final NoSuchElementException e )
-        {
+            fail("Expected NoSuchElementException");
+        } catch (final NoSuchElementException e) {
         }
     }
 
     @Test
-    void testJavaClass()
-    {
-        final Iterator<Member> i = new DeclaredMembers( Object.class ).iterator();
+    void testJavaClass() {
+        final Iterator<Member> i = new DeclaredMembers(Object.class).iterator();
 
-        assertFalse( i.hasNext() );
+        assertFalse(i.hasNext());
 
-        try
-        {
+        try {
             i.next();
-            fail( "Expected NoSuchElementException" );
-        }
-        catch ( final NoSuchElementException e )
-        {
+            fail("Expected NoSuchElementException");
+        } catch (final NoSuchElementException e) {
         }
     }
 
     @Test
-    void testReadOnlyIterator()
-    {
-        final Iterator<Member> i = new DeclaredMembers( D.class ).iterator();
+    void testReadOnlyIterator() {
+        final Iterator<Member> i = new DeclaredMembers(D.class).iterator();
 
-        try
-        {
+        try {
             i.remove();
-            fail( "Expected UnsupportedOperationException" );
-        }
-        catch ( final UnsupportedOperationException e )
-        {
+            fail("Expected UnsupportedOperationException");
+        } catch (final UnsupportedOperationException e) {
         }
     }
 
     @Test
-    void testInterfaceHierarchy()
-        throws NoSuchMethodException, NoSuchFieldException
-    {
-        final Member[] elements = { C.class.getDeclaredMethod( "c" ), C.class.getDeclaredField( "c" ) };
+    void testInterfaceHierarchy() throws NoSuchMethodException, NoSuchFieldException {
+        final Member[] elements = {C.class.getDeclaredMethod("c"), C.class.getDeclaredField("c")};
 
         int i = 0;
-        for ( final Member e : new DeclaredMembers( C.class ) )
-        {
-            assertEquals( elements[i++], e );
+        for (final Member e : new DeclaredMembers(C.class)) {
+            assertEquals(elements[i++], e);
         }
-        assertEquals( 2, i );
+        assertEquals(2, i);
     }
 
     @Test
-    void testClassHierarchy()
-        throws NoSuchMethodException, NoSuchFieldException
-    {
-        final Member[] elements =
-            { D.class.getDeclaredConstructor(), D.class.getDeclaredMethod( "c" ), D.class.getDeclaredField( "d" ),
-                B.class.getDeclaredConstructor(), B.class.getDeclaredMethod( "a" ), B.class.getDeclaredField( "b" ) };
+    void testClassHierarchy() throws NoSuchMethodException, NoSuchFieldException {
+        final Member[] elements = {
+            D.class.getDeclaredConstructor(),
+            D.class.getDeclaredMethod("c"),
+            D.class.getDeclaredField("d"),
+            B.class.getDeclaredConstructor(),
+            B.class.getDeclaredMethod("a"),
+            B.class.getDeclaredField("b")
+        };
 
         int i = 0;
-        for ( final Member e : new DeclaredMembers( D.class ) )
-        {
-            if ( !e.getName().startsWith( "$" ) )
-            {
-                assertEquals( elements[i++], e );
+        for (final Member e : new DeclaredMembers(D.class)) {
+            if (!e.getName().startsWith("$")) {
+                assertEquals(elements[i++], e);
             }
         }
-        assertEquals( 6, i );
+        assertEquals(6, i);
     }
 
     @Test
-    void testResumableIteration()
-        throws ClassNotFoundException
-    {
-        final Iterator<Member> itr = new DeclaredMembers( Class.forName( "Incomplete" ) ).iterator();
-        assertTrue( itr.hasNext() );
-        assertEquals( "public Incomplete(java.lang.String)", itr.next().toString() );
-        try
-        {
+    void testResumableIteration() throws ClassNotFoundException {
+        final Iterator<Member> itr = new DeclaredMembers(Class.forName("Incomplete")).iterator();
+        assertTrue(itr.hasNext());
+        assertEquals("public Incomplete(java.lang.String)", itr.next().toString());
+        try {
             itr.hasNext();
-            fail( "Expected NoClassDefFoundError" );
+            fail("Expected NoClassDefFoundError");
+        } catch (final NoClassDefFoundError e) {
+            assertEquals("java.lang.NoClassDefFoundError: Param", e.toString());
         }
-        catch ( final NoClassDefFoundError e )
-        {
-            assertEquals( "java.lang.NoClassDefFoundError: Param", e.toString() );
-        }
-        assertTrue( itr.hasNext() );
-        assertEquals( "public java.lang.String Incomplete.address", itr.next().toString() );
-        try
-        {
+        assertTrue(itr.hasNext());
+        assertEquals("public java.lang.String Incomplete.address", itr.next().toString());
+        try {
             itr.hasNext();
-            fail( "Expected NoClassDefFoundError" );
+            fail("Expected NoClassDefFoundError");
+        } catch (final NoClassDefFoundError e) {
+            assertEquals("java.lang.NoClassDefFoundError: Param", e.toString());
         }
-        catch ( final NoClassDefFoundError e )
-        {
-            assertEquals( "java.lang.NoClassDefFoundError: Param", e.toString() );
-        }
-        assertTrue( itr.hasNext() );
-        assertEquals( "public void IncompleteBase.setName(java.lang.String)", itr.next().toString() );
-        assertFalse( itr.hasNext() );
+        assertTrue(itr.hasNext());
+        assertEquals(
+                "public void IncompleteBase.setName(java.lang.String)",
+                itr.next().toString());
+        assertFalse(itr.hasNext());
     }
 }

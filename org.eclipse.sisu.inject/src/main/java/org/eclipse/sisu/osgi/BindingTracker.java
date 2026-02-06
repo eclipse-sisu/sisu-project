@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 package org.eclipse.sisu.osgi;
 
 import java.util.Collection;
-
 import org.eclipse.sisu.inject.BindingSubscriber;
 import org.eclipse.sisu.inject.Logs;
 import org.eclipse.sisu.inject.Weak;
@@ -24,9 +23,7 @@ import org.osgi.util.tracker.ServiceTracker;
 /**
  * Tracker of {@link ServiceBinding}s from the OSGi service registry.
  */
-final class BindingTracker<T>
-    extends ServiceTracker<T, ServiceBinding<T>>
-{
+final class BindingTracker<T> extends ServiceTracker<T, ServiceBinding<T>> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -43,9 +40,8 @@ final class BindingTracker<T>
     // Constructors
     // ----------------------------------------------------------------------
 
-    BindingTracker( final BundleContext context, final int maxRank, final String clazzName )
-    {
-        super( context, clazzName, null );
+    BindingTracker(final BundleContext context, final int maxRank, final String clazzName) {
+        super(context, clazzName, null);
         this.clazzName = clazzName;
         this.maxRank = maxRank;
     }
@@ -54,31 +50,23 @@ final class BindingTracker<T>
     // Public methods
     // ----------------------------------------------------------------------
 
-    public void subscribe( final BindingSubscriber<T> subscriber )
-    {
-        synchronized ( subscribers )
-        {
+    public void subscribe(final BindingSubscriber<T> subscriber) {
+        synchronized (subscribers) {
             openIfNecessary();
-            for ( final ServiceBinding<T> binding : getTracked().values() )
-            {
-                if ( binding.isCompatibleWith( subscriber ) )
-                {
-                    subscriber.add( binding, binding.rank() );
+            for (final ServiceBinding<T> binding : getTracked().values()) {
+                if (binding.isCompatibleWith(subscriber)) {
+                    subscriber.add(binding, binding.rank());
                 }
             }
-            subscribers.add( subscriber );
+            subscribers.add(subscriber);
         }
     }
 
-    public void unsubscribe( final BindingSubscriber<T> subscriber )
-    {
-        synchronized ( subscribers )
-        {
-            if ( subscribers.remove( subscriber ) )
-            {
-                for ( final ServiceBinding<T> binding : getTracked().values() )
-                {
-                    subscriber.remove( binding );
+    public void unsubscribe(final BindingSubscriber<T> subscriber) {
+        synchronized (subscribers) {
+            if (subscribers.remove(subscriber)) {
+                for (final ServiceBinding<T> binding : getTracked().values()) {
+                    subscriber.remove(binding);
                 }
             }
             closeIfNecessary();
@@ -86,25 +74,18 @@ final class BindingTracker<T>
     }
 
     @Override
-    public ServiceBinding<T> addingService( final ServiceReference<T> reference )
-    {
+    public ServiceBinding<T> addingService(final ServiceReference<T> reference) {
         final ServiceBinding<T> binding;
-        try
-        {
-            binding = new ServiceBinding<T>( context, clazzName, maxRank, reference );
-        }
-        catch ( final Exception e )
-        {
-            Logs.warn( "Problem subscribing to service: {}", reference, e );
+        try {
+            binding = new ServiceBinding<T>(context, clazzName, maxRank, reference);
+        } catch (final Exception e) {
+            Logs.warn("Problem subscribing to service: {}", reference, e);
             return null;
         }
-        synchronized ( subscribers )
-        {
-            for ( final BindingSubscriber<T> subscriber : subscribers )
-            {
-                if ( binding.isCompatibleWith( subscriber ) )
-                {
-                    subscriber.add( binding, binding.rank() );
+        synchronized (subscribers) {
+            for (final BindingSubscriber<T> subscriber : subscribers) {
+                if (binding.isCompatibleWith(subscriber)) {
+                    subscriber.add(binding, binding.rank());
                 }
             }
             closeIfNecessary();
@@ -113,39 +94,32 @@ final class BindingTracker<T>
     }
 
     @Override
-    public void removedService( final ServiceReference<T> reference, final ServiceBinding<T> binding )
-    {
-        synchronized ( subscribers )
-        {
-            for ( final BindingSubscriber<T> subscriber : subscribers )
-            {
-                subscriber.remove( binding );
+    public void removedService(final ServiceReference<T> reference, final ServiceBinding<T> binding) {
+        synchronized (subscribers) {
+            for (final BindingSubscriber<T> subscriber : subscribers) {
+                subscriber.remove(binding);
             }
             closeIfNecessary();
         }
-        super.removedService( reference, binding );
+        super.removedService(reference, binding);
     }
 
     // ----------------------------------------------------------------------
     // Implementation methods
     // ----------------------------------------------------------------------
 
-    private void openIfNecessary()
-    {
-        if ( !isOpen )
-        {
-            open( true ); // calls addingService to pre-fill the tracker
-            Logs.trace( "Started tracking services: {}", filter, null );
+    private void openIfNecessary() {
+        if (!isOpen) {
+            open(true); // calls addingService to pre-fill the tracker
+            Logs.trace("Started tracking services: {}", filter, null);
             isOpen = true; // set last to avoid premature close
         }
     }
 
-    private void closeIfNecessary()
-    {
-        if ( isOpen && subscribers.isEmpty() )
-        {
+    private void closeIfNecessary() {
+        if (isOpen && subscribers.isEmpty()) {
             isOpen = false; // set first to avoid repeated close
-            Logs.trace( "Stopped tracking services: {}", filter, null );
+            Logs.trace("Stopped tracking services: {}", filter, null);
             close(); // calls removedService to clear out the tracker
         }
     }

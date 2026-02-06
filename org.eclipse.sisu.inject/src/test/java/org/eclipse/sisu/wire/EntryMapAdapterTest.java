@@ -10,54 +10,50 @@
  *******************************************************************************/
 package org.eclipse.sisu.wire;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.eclipse.sisu.BaseTests;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.HashMap;
+import java.util.Map;
+import org.eclipse.sisu.BaseTests;
+import org.junit.jupiter.api.Test;
+
 @BaseTests
-class EntryMapAdapterTest
-{
-    @SuppressWarnings( "boxing" )
+class EntryMapAdapterTest {
+    @SuppressWarnings("boxing")
     @Test
-    void testMapSize()
-    {
+    void testMapSize() {
         final Map<String, Integer> original = new HashMap<String, Integer>();
-        final Map<String, Integer> adapter = new EntryMapAdapter<String, Integer>( original.entrySet() );
+        final Map<String, Integer> adapter = new EntryMapAdapter<String, Integer>(original.entrySet());
 
-        assertTrue( adapter.isEmpty() );
-        original.put( "A", 1 );
-        assertFalse( adapter.isEmpty() );
+        assertTrue(adapter.isEmpty());
+        original.put("A", 1);
+        assertFalse(adapter.isEmpty());
 
-        assertEquals( 1, adapter.size() );
-        original.put( "C", 3 );
-        assertEquals( 2, adapter.size() );
-        original.put( "B", 2 );
-        assertEquals( 3, adapter.size() );
-        original.remove( "C" );
-        assertEquals( 2, adapter.size() );
+        assertEquals(1, adapter.size());
+        original.put("C", 3);
+        assertEquals(2, adapter.size());
+        original.put("B", 2);
+        assertEquals(3, adapter.size());
+        original.remove("C");
+        assertEquals(2, adapter.size());
     }
 
-    @SuppressWarnings( "boxing" )
+    @SuppressWarnings("boxing")
     @Test
-    void testMapEquality()
-    {
+    void testMapEquality() {
         final Map<Integer, String> original = new HashMap<Integer, String>();
-        final Map<Integer, String> adapter = new EntryMapAdapter<Integer, String>( original.entrySet() );
+        final Map<Integer, String> adapter = new EntryMapAdapter<Integer, String>(original.entrySet());
 
-        assertEquals( original, adapter );
-        original.put( 3, "C" );
-        assertEquals( original, adapter );
-        original.put( 1, "A" );
-        assertEquals( original, adapter );
-        original.put( 2, "B" );
-        assertEquals( original, adapter );
+        assertEquals(original, adapter);
+        original.put(3, "C");
+        assertEquals(original, adapter);
+        original.put(1, "A");
+        assertEquals(original, adapter);
+        original.put(2, "B");
+        assertEquals(original, adapter);
         original.clear();
-        assertEquals( original, adapter );
+        assertEquals(original, adapter);
     }
 }

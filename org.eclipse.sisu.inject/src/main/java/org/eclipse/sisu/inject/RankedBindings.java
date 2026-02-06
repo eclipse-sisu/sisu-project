@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024 Sonatype, Inc. and others.
+ * Copyright (c) 2010-2026 Sonatype, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -12,19 +12,16 @@
  */
 package org.eclipse.sisu.inject;
 
+import com.google.inject.Binding;
+import com.google.inject.TypeLiteral;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.Iterator;
 
-import com.google.inject.Binding;
-import com.google.inject.TypeLiteral;
-
 /**
  * Ordered sequence of {@link Binding}s of a given type; subscribes to {@link BindingPublisher}s on demand.
  */
-final class RankedBindings<T>
-    implements Iterable<Binding<T>>, BindingSubscriber<T>
-{
+final class RankedBindings<T> implements Iterable<Binding<T>>, BindingSubscriber<T> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -41,47 +38,38 @@ final class RankedBindings<T>
     // Constructors
     // ----------------------------------------------------------------------
 
-    RankedBindings( final TypeLiteral<T> type, final RankedSequence<BindingPublisher> publishers )
-    {
+    RankedBindings(final TypeLiteral<T> type, final RankedSequence<BindingPublisher> publishers) {
         this.type = type;
-        this.pendingPublishers = new RankedSequence<BindingPublisher>( publishers );
+        this.pendingPublishers = new RankedSequence<BindingPublisher>(publishers);
     }
 
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
 
-    public TypeLiteral<T> type()
-    {
+    public TypeLiteral<T> type() {
         return type;
     }
 
-    public void add( final Binding<T> binding, final int rank )
-    {
-        bindings.insert( binding, rank );
+    public void add(final Binding<T> binding, final int rank) {
+        bindings.insert(binding, rank);
     }
 
-    public void remove( final Binding<T> binding )
-    {
-        if ( bindings.removeThis( binding ) )
-        {
-            synchronized ( cachedBeans )
-            {
-                for ( final BeanCache<?, T> beans : cachedBeans )
-                {
-                    beans.remove( binding );
+    public void remove(final Binding<T> binding) {
+        if (bindings.removeThis(binding)) {
+            synchronized (cachedBeans) {
+                for (final BeanCache<?, T> beans : cachedBeans) {
+                    beans.remove(binding);
                 }
             }
         }
     }
 
-    public Iterable<Binding<T>> bindings()
-    {
+    public Iterable<Binding<T>> bindings() {
         return bindings.snapshot();
     }
 
-    public Itr iterator()
-    {
+    public Itr iterator() {
         return new Itr();
     }
 
@@ -89,34 +77,29 @@ final class RankedBindings<T>
     // Local methods
     // ----------------------------------------------------------------------
 
-    <Q extends Annotation> BeanCache<Q, T> newBeanCache()
-    {
+    <Q extends Annotation> BeanCache<Q, T> newBeanCache() {
         final BeanCache<Q, T> beans = new BeanCache<Q, T>();
-        synchronized ( cachedBeans )
-        {
-            cachedBeans.add( beans );
+        synchronized (cachedBeans) {
+            cachedBeans.add(beans);
         }
         return beans;
     }
 
-    void add( final BindingPublisher publisher, final int rank )
-    {
+    void add(final BindingPublisher publisher, final int rank) {
         /*
          * No need to lock; ranked sequence is thread-safe.
          */
-        pendingPublishers.insert( publisher, rank );
+        pendingPublishers.insert(publisher, rank);
     }
 
-    void remove( final BindingPublisher publisher )
-    {
+    void remove(final BindingPublisher publisher) {
         /*
          * Lock just to prevent subscription race condition.
          */
-        synchronized ( publisher ) // NOSONAR
+        synchronized (publisher) // NOSONAR
         {
-            if ( !pendingPublishers.removeThis( publisher ) )
-            {
-                publisher.unsubscribe( this );
+            if (!pendingPublishers.removeThis(publisher)) {
+                publisher.unsubscribe(this);
             }
         }
     }
@@ -128,9 +111,7 @@ final class RankedBindings<T>
     /**
      * {@link Binding} iterator that only subscribes to {@link BindingPublisher}s as required.
      */
-    final class Itr
-        implements Iterator<Binding<T>>
-    {
+    final class Itr implements Iterator<Binding<T>> {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -141,20 +122,16 @@ final class RankedBindings<T>
         // Public methods
         // ----------------------------------------------------------------------
 
-        public boolean hasNext()
-        {
+        public boolean hasNext() {
             // apply any publishers that could add bindings before the current position
             BindingPublisher publisher = pendingPublishers.peek();
-            while ( null != publisher && !itr.hasNext( publisher.maxBindingRank() ) )
-            {
-                synchronized ( publisher )
-                {
+            while (null != publisher && !itr.hasNext(publisher.maxBindingRank())) {
+                synchronized (publisher) {
                     // check in case subscribed by another thread
-                    if ( publisher == pendingPublishers.peek() )
-                    {
+                    if (publisher == pendingPublishers.peek()) {
                         // only update list _after_ subscription
-                        publisher.subscribe( RankedBindings.this );
-                        pendingPublishers.removeThis( publisher );
+                        publisher.subscribe(RankedBindings.this);
+                        pendingPublishers.removeThis(publisher);
                     }
                 }
                 publisher = pendingPublishers.peek();
@@ -162,18 +139,15 @@ final class RankedBindings<T>
             return itr.hasNext();
         }
 
-        public Binding<T> next()
-        {
+        public Binding<T> next() {
             return itr.next();
         }
 
-        public int rank()
-        {
+        public int rank() {
             return itr.rank();
         }
 
-        public void remove()
-        {
+        public void remove() {
             throw new UnsupportedOperationException();
         }
     }

@@ -15,18 +15,14 @@ import javax.annotation.PreDestroy;
 import javax.inject.Singleton;
 
 @Singleton
-public class OverriddenPrivate
-    extends OverriddenPackage
-{
+public class OverriddenPrivate extends OverriddenPackage {
     @PostConstruct
-    private void d()
-    {
-        results.append( "D" );
+    private void d() {
+        results.append("D");
     }
 
     @PreDestroy
-    private void w()
-    {
-        results.append( "W" );
+    private void w() {
+        results.append("W");
     }
 }

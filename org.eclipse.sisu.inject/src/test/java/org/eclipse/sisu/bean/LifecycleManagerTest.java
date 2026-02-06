@@ -12,121 +12,106 @@
  */
 package org.eclipse.sisu.bean;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class LifecycleManagerTest
-{
-    static class ManagedBean
-    {
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import org.junit.jupiter.api.Test;
+
+class LifecycleManagerTest {
+    static class ManagedBean {
         boolean started;
 
         boolean stopped;
 
         @PostConstruct
-        void start()
-        {
+        void start() {
             started = true;
         }
 
         @PreDestroy
-        void stop()
-        {
+        void stop() {
             stopped = true;
         }
     }
 
-    static class UnmanagedBean
-    {
+    static class UnmanagedBean {
         // no lifecycle annotations
     }
 
     @Test
-    void testManageClass()
-    {
+    void testManageClass() {
         final LifecycleManager manager = new LifecycleManager();
-        assertTrue( manager.manage( ManagedBean.class ) );
-        assertFalse( manager.manage( UnmanagedBean.class ) );
+        assertTrue(manager.manage(ManagedBean.class));
+        assertFalse(manager.manage(UnmanagedBean.class));
     }
 
     @Test
-    void testManageProperty()
-    {
+    void testManageProperty() {
         final LifecycleManager manager = new LifecycleManager();
-        assertNull( manager.manage( (BeanProperty<?>) null ) );
+        assertNull(manager.manage((BeanProperty<?>) null));
     }
 
     @Test
-    void testManageAndActivateBean()
-    {
+    void testManageAndActivateBean() {
         final LifecycleManager manager = new LifecycleManager();
-        manager.manage( ManagedBean.class );
+        manager.manage(ManagedBean.class);
 
         final ManagedBean bean = new ManagedBean();
-        assertTrue( manager.manage( bean ) );
-        assertTrue( bean.started );
+        assertTrue(manager.manage(bean));
+        assertTrue(bean.started);
     }
 
     @Test
-    void testUnmanageSpecificBean()
-    {
+    void testUnmanageSpecificBean() {
         final LifecycleManager manager = new LifecycleManager();
-        manager.manage( ManagedBean.class );
+        manager.manage(ManagedBean.class);
 
         final ManagedBean bean = new ManagedBean();
-        manager.manage( bean );
+        manager.manage(bean);
 
-        assertTrue( manager.unmanage( bean ) );
-        assertTrue( bean.stopped );
+        assertTrue(manager.unmanage(bean));
+        assertTrue(bean.stopped);
     }
 
     @Test
-    void testUnmanageAll()
-    {
+    void testUnmanageAll() {
         final LifecycleManager manager = new LifecycleManager();
-        manager.manage( ManagedBean.class );
+        manager.manage(ManagedBean.class);
 
         final ManagedBean beanA = new ManagedBean();
         final ManagedBean beanB = new ManagedBean();
-        manager.manage( beanA );
-        manager.manage( beanB );
+        manager.manage(beanA);
+        manager.manage(beanB);
 
-        assertTrue( manager.unmanage() );
-        assertTrue( beanA.stopped );
-        assertTrue( beanB.stopped );
+        assertTrue(manager.unmanage());
+        assertTrue(beanA.stopped);
+        assertTrue(beanB.stopped);
     }
 
     @Test
-    void testUnmanagedBeanDoesNotFail()
-    {
+    void testUnmanagedBeanDoesNotFail() {
         final LifecycleManager manager = new LifecycleManager();
         final UnmanagedBean bean = new UnmanagedBean();
-        assertTrue( manager.manage( bean ) );
-        assertTrue( manager.unmanage( bean ) );
+        assertTrue(manager.manage(bean));
+        assertTrue(manager.unmanage(bean));
     }
 
     @Test
-    void testFlushCacheFor()
-    {
+    void testFlushCacheFor() {
         final LifecycleManager manager = new LifecycleManager();
-        manager.manage( ManagedBean.class );
-        manager.manage( UnmanagedBean.class );
+        manager.manage(ManagedBean.class);
+        manager.manage(UnmanagedBean.class);
 
-        manager.flushCacheFor( new LifecycleManager.ClassTester()
-        {
-            public boolean shouldFlush( final Class<?> clz )
-            {
+        manager.flushCacheFor(new LifecycleManager.ClassTester() {
+            public boolean shouldFlush(final Class<?> clz) {
                 return clz == ManagedBean.class;
             }
-        } );
+        });
 
         // After flushing, re-managing should re-build the lifecycle
-        assertTrue( manager.manage( ManagedBean.class ) );
+        assertTrue(manager.manage(ManagedBean.class));
     }
 }

@@ -6,6 +6,11 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -24,7 +29,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.configurator.BasicComponentConfigurator;
@@ -41,205 +45,219 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
-
-public class BasicComponentConfiguratorTest
-{
+public class BasicComponentConfiguratorTest {
     @Rule
     public TemporaryFolder tmpDirectory = new TemporaryFolder();
 
     private ComponentConfigurator configurator;
 
     @Before
-    public void setUp()
-    {
+    public void setUp() {
         configurator = new BasicComponentConfigurator();
     }
 
     @Test
-    public void testSimplePathOnDefaultFileSystem()
-        throws ComponentConfigurationException
-    {
+    public void testSimplePathOnDefaultFileSystem() throws ComponentConfigurationException {
         PathTestComponent component = new PathTestComponent();
-        Path absolutePath = Paths.get( "" ).resolve( "absolute" ).toAbsolutePath();
-        configure( component, "path", "readme.txt", "absolutePath", absolutePath.toString(), "file", "readme.txt",
-                   "absoluteFile", absolutePath.toString() );
+        Path absolutePath = Paths.get("").resolve("absolute").toAbsolutePath();
+        configure(
+                component,
+                "path",
+                "readme.txt",
+                "absolutePath",
+                absolutePath.toString(),
+                "file",
+                "readme.txt",
+                "absoluteFile",
+                absolutePath.toString());
         // path must be converted to absolute one
-        assertEquals( tmpDirectory.getRoot().toPath().resolve( "readme.txt" ), component.path );
-        assertEquals( FileSystems.getDefault(), component.path.getFileSystem() );
-        assertEquals( absolutePath, component.absolutePath );
-        assertEquals( new File( tmpDirectory.getRoot(), "readme.txt" ), component.file );
-        assertEquals( absolutePath.toFile(), component.absoluteFile );
+        assertEquals(tmpDirectory.getRoot().toPath().resolve("readme.txt"), component.path);
+        assertEquals(FileSystems.getDefault(), component.path.getFileSystem());
+        assertEquals(absolutePath, component.absolutePath);
+        assertEquals(new File(tmpDirectory.getRoot(), "readme.txt"), component.file);
+        assertEquals(absolutePath.toFile(), component.absoluteFile);
     }
 
     @Test
     public void testTypeWithoutConverterButConstructorAcceptingString()
-        throws ComponentConfigurationException, IOException
-    {
+            throws ComponentConfigurationException, IOException {
         CustomTypeComponent component = new CustomTypeComponent();
-        configure( component, "custom", "hello world" );
-        assertEquals( "hello world", component.custom.toString() );
+        configure(component, "custom", "hello world");
+        assertEquals("hello world", component.custom.toString());
     }
 
     @Test
-    public void testTypePassedToExpressionEvaluator()
-        throws ComponentConfigurationException
-    {
+    public void testTypePassedToExpressionEvaluator() throws ComponentConfigurationException {
         CustomTypeComponent component = new CustomTypeComponent();
-        ExpressionEvaluator evaluator = new TypeAwareExpressionEvaluator()
-        {
+        ExpressionEvaluator evaluator = new TypeAwareExpressionEvaluator() {
             @Override
-            public Object evaluate( String expression, Class<?> type )
-                throws ExpressionEvaluationException
-            {
-                assertEquals( CustomType.class, type );
+            public Object evaluate(String expression, Class<?> type) throws ExpressionEvaluationException {
+                assertEquals(CustomType.class, type);
                 return expression;
             }
 
             @Override
-            public Object evaluate( String expression )
-                throws ExpressionEvaluationException
-            {
-                fail( "Wrong evaluate method being called (without type)" );
+            public Object evaluate(String expression) throws ExpressionEvaluationException {
+                fail("Wrong evaluate method being called (without type)");
                 return expression; // unreachable
             }
 
             @Override
-            public File alignToBaseDirectory( File path )
-            {
+            public File alignToBaseDirectory(File path) {
                 return path;
             }
         };
-        configure( evaluator, component, "custom", "hello world" );
-        assertEquals( "hello world", component.custom.toString() );
+        configure(evaluator, component, "custom", "hello world");
+        assertEquals("hello world", component.custom.toString());
     }
 
     @Test
-    public void testTemporalConvertersWithoutMillisecondsAndOffset()
-        throws ComponentConfigurationException
-    {
+    public void testTemporalConvertersWithoutMillisecondsAndOffset() throws ComponentConfigurationException {
         TemporalComponent component = new TemporalComponent();
         String dateString = "2023-01-02 03:04:05";
-        configure( component, "localDateTime", dateString, "localDate", dateString, "localTime", dateString, "instant",
-                   dateString, "offsetDateTime", dateString, "offsetTime", dateString, "zonedDateTime", dateString );
-        assertEquals( LocalDateTime.of( 2023, 1, 2, 3, 4, 5, 0 ), component.localDateTime );
-        assertEquals( LocalDate.of( 2023, 1, 2 ), component.localDate );
-        assertEquals( LocalTime.of( 3, 4, 5, 0 ), component.localTime );
-        ZoneOffset systemOffset = ZoneId.systemDefault().getRules().getOffset( component.localDateTime );
-        assertEquals( OffsetDateTime.of( component.localDateTime, systemOffset ).toInstant(), component.instant );
-        assertEquals( OffsetDateTime.of( component.localDateTime, systemOffset ), component.offsetDateTime );
-        assertEquals( OffsetTime.of( component.localTime, systemOffset ), component.offsetTime );
-        assertEquals( ZonedDateTime.of( component.localDateTime, ZoneId.systemDefault() ), component.zonedDateTime );
+        configure(
+                component,
+                "localDateTime",
+                dateString,
+                "localDate",
+                dateString,
+                "localTime",
+                dateString,
+                "instant",
+                dateString,
+                "offsetDateTime",
+                dateString,
+                "offsetTime",
+                dateString,
+                "zonedDateTime",
+                dateString);
+        assertEquals(LocalDateTime.of(2023, 1, 2, 3, 4, 5, 0), component.localDateTime);
+        assertEquals(LocalDate.of(2023, 1, 2), component.localDate);
+        assertEquals(LocalTime.of(3, 4, 5, 0), component.localTime);
+        ZoneOffset systemOffset = ZoneId.systemDefault().getRules().getOffset(component.localDateTime);
+        assertEquals(OffsetDateTime.of(component.localDateTime, systemOffset).toInstant(), component.instant);
+        assertEquals(OffsetDateTime.of(component.localDateTime, systemOffset), component.offsetDateTime);
+        assertEquals(OffsetTime.of(component.localTime, systemOffset), component.offsetTime);
+        assertEquals(ZonedDateTime.of(component.localDateTime, ZoneId.systemDefault()), component.zonedDateTime);
     }
 
     @Test
-    public void testTemporalConvertersWithISO8601StringWithOffset()
-        throws ComponentConfigurationException
-    {
+    public void testTemporalConvertersWithISO8601StringWithOffset() throws ComponentConfigurationException {
         TemporalComponent component = new TemporalComponent();
         String dateString = "2023-01-02T03:04:05.000000900+02:30";
-        configure( component, "localDateTime", dateString, "localDate", dateString, "localTime", dateString, "instant",
-                   dateString, "offsetDateTime", dateString, "offsetTime", dateString, "zonedDateTime", dateString );
-        assertEquals( LocalDateTime.of( 2023, 1, 2, 3, 4, 5, 900 ), component.localDateTime );
-        assertEquals( LocalDate.of( 2023, 1, 2 ), component.localDate );
-        assertEquals( LocalTime.of( 3, 4, 5, 900 ), component.localTime );
-        ZoneOffset offset = ZoneOffset.ofHoursMinutes( 2, 30 );
-        assertEquals( OffsetDateTime.of( component.localDateTime, offset ).toInstant(), component.instant );
-        assertEquals( OffsetDateTime.of( component.localDateTime, offset ), component.offsetDateTime );
-        assertEquals( OffsetTime.of( component.localTime, offset ), component.offsetTime );
-        assertEquals( ZonedDateTime.of( component.localDateTime, offset ), component.zonedDateTime );
+        configure(
+                component,
+                "localDateTime",
+                dateString,
+                "localDate",
+                dateString,
+                "localTime",
+                dateString,
+                "instant",
+                dateString,
+                "offsetDateTime",
+                dateString,
+                "offsetTime",
+                dateString,
+                "zonedDateTime",
+                dateString);
+        assertEquals(LocalDateTime.of(2023, 1, 2, 3, 4, 5, 900), component.localDateTime);
+        assertEquals(LocalDate.of(2023, 1, 2), component.localDate);
+        assertEquals(LocalTime.of(3, 4, 5, 900), component.localTime);
+        ZoneOffset offset = ZoneOffset.ofHoursMinutes(2, 30);
+        assertEquals(OffsetDateTime.of(component.localDateTime, offset).toInstant(), component.instant);
+        assertEquals(OffsetDateTime.of(component.localDateTime, offset), component.offsetDateTime);
+        assertEquals(OffsetTime.of(component.localTime, offset), component.offsetTime);
+        assertEquals(ZonedDateTime.of(component.localDateTime, offset), component.zonedDateTime);
     }
 
     @Test
-    public void testTemporalConvertersWithInvalidString()
-    {
+    public void testTemporalConvertersWithInvalidString() {
         TemporalComponent component = new TemporalComponent();
         String dateString = "invalid";
-        assertThrows( ComponentConfigurationException.class,
-                      () -> configure( component, "localDateTime", dateString, "localDate", dateString, "localTime",
-                                       dateString, "instant", dateString, "offsetDateTime", dateString, "offsetTime",
-                                       dateString, "zonedDateTime", dateString ) );
+        assertThrows(
+                ComponentConfigurationException.class,
+                () -> configure(
+                        component,
+                        "localDateTime",
+                        dateString,
+                        "localDate",
+                        dateString,
+                        "localTime",
+                        dateString,
+                        "instant",
+                        dateString,
+                        "offsetDateTime",
+                        dateString,
+                        "offsetTime",
+                        dateString,
+                        "zonedDateTime",
+                        dateString));
     }
 
     @Test
-    public void testConfigureComplexBean()
-        throws Exception
-    {
+    public void testConfigureComplexBean() throws Exception {
         ComplexBean complexBean = new ComplexBean();
 
         // configure( complexBean, "resources", "foo;bar" );
-        DefaultPlexusConfiguration config = new DefaultPlexusConfiguration( "testConfig" );
+        DefaultPlexusConfiguration config = new DefaultPlexusConfiguration("testConfig");
 
-        DefaultPlexusConfiguration child = new DefaultPlexusConfiguration( "resources", "foo;bar" );
-        child.setAttribute( "implementation", "java.lang.String" );
+        DefaultPlexusConfiguration child = new DefaultPlexusConfiguration("resources", "foo;bar");
+        child.setAttribute("implementation", "java.lang.String");
 
-        config.addChild( child );
+        config.addChild(child);
 
-        configure( null, complexBean, config,
-                   new ClassWorld( "foo", Thread.currentThread().getContextClassLoader() ).getClassRealm( "foo" ) );
+        configure(
+                null,
+                complexBean,
+                config,
+                new ClassWorld("foo", Thread.currentThread().getContextClassLoader()).getClassRealm("foo"));
 
-        assertEquals( complexBean.resources.size(), 2 );
-        assertTrue( complexBean.resources.toString(), complexBean.resources.contains( Resource.newResource( "foo" ) ) );
-        assertTrue( complexBean.resources.toString(), complexBean.resources.contains( Resource.newResource( "bar" ) ) );
+        assertEquals(complexBean.resources.size(), 2);
+        assertTrue(complexBean.resources.toString(), complexBean.resources.contains(Resource.newResource("foo")));
+        assertTrue(complexBean.resources.toString(), complexBean.resources.contains(Resource.newResource("bar")));
     }
 
-    private void configure( Object component, String... keysAndValues )
-        throws ComponentConfigurationException
-    {
-        configure( null, component, keysAndValues );
+    private void configure(Object component, String... keysAndValues) throws ComponentConfigurationException {
+        configure(null, component, keysAndValues);
     }
 
-    private void configure( ExpressionEvaluator evaluator, Object component, String... keysAndValues )
-        throws ComponentConfigurationException
-    {
-        final DefaultPlexusConfiguration config = new DefaultPlexusConfiguration( "testConfig" );
-        if ( keysAndValues.length % 2 != 0 )
-        {
-            throw new IllegalArgumentException( "Even number of keys and values expected" );
+    private void configure(ExpressionEvaluator evaluator, Object component, String... keysAndValues)
+            throws ComponentConfigurationException {
+        final DefaultPlexusConfiguration config = new DefaultPlexusConfiguration("testConfig");
+        if (keysAndValues.length % 2 != 0) {
+            throw new IllegalArgumentException("Even number of keys and values expected");
         }
-        for ( int i = 0; i < keysAndValues.length; i += 2 )
-        {
-            config.addChild( keysAndValues[i], keysAndValues[i + 1] );
+        for (int i = 0; i < keysAndValues.length; i += 2) {
+            config.addChild(keysAndValues[i], keysAndValues[i + 1]);
         }
-        configure( evaluator, component, config );
+        configure(evaluator, component, config);
     }
 
-    private void configure( ExpressionEvaluator evaluator, Object component, PlexusConfiguration config )
-        throws ComponentConfigurationException
-    {
-        configure( evaluator, component, config, null );
+    private void configure(ExpressionEvaluator evaluator, Object component, PlexusConfiguration config)
+            throws ComponentConfigurationException {
+        configure(evaluator, component, config, null);
     }
 
-    private void configure( ExpressionEvaluator evaluator, Object component, PlexusConfiguration config,
-                            ClassRealm loader )
-        throws ComponentConfigurationException
-    {
-        if ( evaluator == null )
-        {
-            evaluator = new DefaultExpressionEvaluator()
-            {
+    private void configure(
+            ExpressionEvaluator evaluator, Object component, PlexusConfiguration config, ClassRealm loader)
+            throws ComponentConfigurationException {
+        if (evaluator == null) {
+            evaluator = new DefaultExpressionEvaluator() {
                 @Override
-                public File alignToBaseDirectory( File path )
-                {
-                    if ( !path.isAbsolute() )
-                    {
-                        return new File( tmpDirectory.getRoot(), path.getPath() );
-                    }
-                    else
-                    {
+                public File alignToBaseDirectory(File path) {
+                    if (!path.isAbsolute()) {
+                        return new File(tmpDirectory.getRoot(), path.getPath());
+                    } else {
                         return path;
                     }
                 }
             };
         }
-        configurator.configureComponent( component, config, evaluator, loader );
+        configurator.configureComponent(component, config, evaluator, loader);
     }
 
-    static final class PathTestComponent
-    {
+    static final class PathTestComponent {
         Path path;
 
         Path absolutePath;
@@ -249,34 +267,28 @@ public class BasicComponentConfiguratorTest
         File absoluteFile;
     }
 
-    public static final class CustomType
-    {
+    public static final class CustomType {
         private final String input;
 
-        public CustomType()
-        {
+        public CustomType() {
             this.input = "invalid";
         }
 
-        public CustomType( String input )
-        {
+        public CustomType(String input) {
             this.input = input;
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return input;
         }
     }
 
-    static final class CustomTypeComponent
-    {
+    static final class CustomTypeComponent {
         CustomType custom;
     }
 
-    static final class TemporalComponent
-    {
+    static final class TemporalComponent {
         LocalDateTime localDateTime;
 
         LocalDate localDate;
@@ -292,56 +304,44 @@ public class BasicComponentConfiguratorTest
         ZonedDateTime zonedDateTime;
     }
 
-    static final class ComplexBean
-    {
+    static final class ComplexBean {
         private List<Resource> resources;
 
-        public void setResources( List<Resource> resources )
-        {
+        public void setResources(List<Resource> resources) {
             this.resources = resources;
         }
 
-        public void setResources( String resources )
-        {
-            this.resources =
-                Arrays.stream( resources.split( ";" ) ).map( Resource::newResource ).collect( Collectors.toList() );
+        public void setResources(String resources) {
+            this.resources = Arrays.stream(resources.split(";"))
+                    .map(Resource::newResource)
+                    .collect(Collectors.toList());
         }
-
     }
 
-    static abstract class Resource
-    {
+    abstract static class Resource {
         String path;
 
-        static Resource newResource( String path )
-        {
-            return new BaseResource( path );
+        static Resource newResource(String path) {
+            return new BaseResource(path);
         }
 
-        static class BaseResource
-            extends Resource
-        {
-            public BaseResource( String path )
-            {
+        static class BaseResource extends Resource {
+            public BaseResource(String path) {
                 this.path = path;
             }
         }
 
         @Override
-        public boolean equals( Object o )
-        {
-            if ( this == o )
-                return true;
-            if ( o == null || getClass() != o.getClass() )
-                return false;
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
             Resource resource = (Resource) o;
-            return Objects.equals( path, resource.path );
+            return Objects.equals(path, resource.path);
         }
 
         @Override
-        public int hashCode()
-        {
-            return Objects.hashCode( path );
+        public int hashCode() {
+            return Objects.hashCode(path);
         }
     }
 }

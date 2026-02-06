@@ -15,14 +15,12 @@ import javax.inject.Singleton;
 
 @Named
 @Singleton
-public class Jsr330Component1
-{
+public class Jsr330Component1 {
 
     protected final Jsr330Component2 component2;
 
     @Inject
-    public Jsr330Component1( Jsr330Component2 component2 )
-    {
+    public Jsr330Component1(Jsr330Component2 component2) {
         this.component2 = component2;
     }
 }

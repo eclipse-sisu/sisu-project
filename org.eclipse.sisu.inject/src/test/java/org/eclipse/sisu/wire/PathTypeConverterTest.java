@@ -10,31 +10,27 @@
  *******************************************************************************/
 package org.eclipse.sisu.wire;
 
-import java.io.File;
-import java.nio.file.Path;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
+import java.io.File;
+import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-class PathTypeConverterTest
-{
+class PathTypeConverterTest {
     @Test
-    void testPathConversion()
-    {
-        final Path path = Guice.createInjector( new PathTypeConverter(), new AbstractModule()
-        {
-            @Override
-            protected void configure()
-            {
-                bindConstant().annotatedWith( Names.named( "path" ) ).to( "work/temp" );
-            }
-        } ).getInstance( Key.get( Path.class, Names.named( "path" ) ) );
+    void testPathConversion() {
+        final Path path = Guice.createInjector(new PathTypeConverter(), new AbstractModule() {
+                    @Override
+                    protected void configure() {
+                        bindConstant().annotatedWith(Names.named("path")).to("work/temp");
+                    }
+                })
+                .getInstance(Key.get(Path.class, Names.named("path")));
 
-        assertEquals( "work" + File.separator + "temp", path.toFile().getPath() );
+        assertEquals("work" + File.separator + "temp", path.toFile().getPath());
     }
 }
