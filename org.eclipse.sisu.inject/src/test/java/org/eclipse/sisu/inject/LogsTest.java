@@ -35,7 +35,7 @@ class LogsTest
     {
         try
         {
-            System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "WARN");
+            System.setProperty( SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "WARN" );
 
             final ClassLoader productionLoader =
                 new URLClassLoader( new URLClassSpace( getClass().getClassLoader() ).getURLs(), null )
