@@ -493,7 +493,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
             <scmCommentPrefix>|</scmCommentPrefix>
             <goals>deploy</goals>
             <signTag>true</signTag>
-            <tagNameFormat>milestones/@{project.version}</tagNameFormat>
+            <tagNameFormat>releases/@{project.version}</tagNameFormat>
           </configuration>
         </plugin>
         <plugin>
