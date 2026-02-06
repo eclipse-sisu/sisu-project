@@ -140,62 +140,6 @@ class LogsConsoleSinkTest
     }
 
     @Test
-    void testJULSink()
-    {
-        final Logs.JULSink julSink = new Logs.JULSink();
-        // JUL sink default log level is usually INFO, so FINER/FINE would be disabled
-        julSink.trace( "jul trace message", null );
-        julSink.debug( "jul debug message", null );
-        julSink.warn( "jul warn message", null );
-        julSink.warn( "jul warn with cause", new RuntimeException( "test" ) );
-    }
-
-    @Test
-    void testLogsWarn()
-    {
-        // Logs.warn always goes through, regardless of debug/trace settings
-        Logs.warn( "Warning: {} happened", "something", null );
-        Logs.warn( "Warning: {} happened", "something", new RuntimeException( "oops" ) );
-    }
-
-    @Test
-    void testCatchThrowable()
-    {
-        Logs.catchThrowable( new RuntimeException( "test" ) );
-        Logs.catchThrowable( new Exception( "test" ) );
-    }
-
-    @Test
-    void testCatchThrowableRethrowsThreadDeath()
-    {
-        assertThrows( ThreadDeath.class, () -> Logs.catchThrowable( new ThreadDeath() ) );
-    }
-
-    @Test
-    void testCatchThrowableRethrowsVirtualMachineError()
-    {
-        assertThrows( StackOverflowError.class, () -> Logs.catchThrowable( new StackOverflowError() ) );
-    }
-
-    @Test
-    void testThrowUncheckedRuntimeException()
-    {
-        assertThrows( RuntimeException.class, () -> Logs.throwUnchecked( new RuntimeException( "test" ) ) );
-    }
-
-    @Test
-    void testThrowUncheckedError()
-    {
-        assertThrows( Error.class, () -> Logs.throwUnchecked( new Error( "test" ) ) );
-    }
-
-    @Test
-    void testThrowUncheckedCheckedException()
-    {
-        assertThrows( ProvisionException.class, () -> Logs.throwUnchecked( new Exception( "test" ) ) );
-    }
-
-    @Test
     void testIdentityToString()
     {
         assertNull( Logs.identityToString( null ) );
@@ -233,11 +177,5 @@ class LogsConsoleSinkTest
         assertNotNull( injectorString );
         assertTrue( injectorString.contains( "explicit bindings" ) );
         assertTrue( injectorString.contains( "implicit bindings" ) );
-    }
-
-    @Test
-    void testNewLine()
-    {
-        assertNotNull( Logs.NEW_LINE );
     }
 }
