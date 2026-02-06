@@ -137,9 +137,7 @@ public abstract class AbstractConfigurationConverter implements ConfigurationCon
                 implType = Array.newInstance(implType, 0).getClass();
             }
             return implType;
-        } catch (final Exception e) {
-            throw new ComponentConfigurationException("Cannot load implementation hint '" + hint + "'", e);
-        } catch (final LinkageError e) {
+        } catch (final LinkageError | Exception e) {
             throw new ComponentConfigurationException("Cannot load implementation hint '" + hint + "'", e);
         }
     }
@@ -147,9 +145,7 @@ public abstract class AbstractConfigurationConverter implements ConfigurationCon
     protected final Object instantiateObject(final Class<?> type) throws ComponentConfigurationException {
         try {
             return type.newInstance();
-        } catch (final Exception e) {
-            throw new ComponentConfigurationException("Cannot create instance of " + type, e);
-        } catch (final LinkageError e) {
+        } catch (final LinkageError | Exception e) {
             throw new ComponentConfigurationException("Cannot create instance of " + type, e);
         }
     }

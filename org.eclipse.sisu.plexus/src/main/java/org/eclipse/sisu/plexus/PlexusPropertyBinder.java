@@ -22,7 +22,7 @@ import org.eclipse.sisu.bean.PropertyBinder;
 import org.eclipse.sisu.bean.PropertyBinding;
 
 /**
- * {@link BeanPropertyBinder} that auto-binds properties according to Plexus metadata.
+ * {@link PropertyBinder} that auto-binds properties according to Plexus metadata.
  */
 final class PlexusPropertyBinder implements PropertyBinder {
     // ----------------------------------------------------------------------
@@ -34,9 +34,7 @@ final class PlexusPropertyBinder implements PropertyBinder {
         try {
             // support both old and new forms of @Requirement
             Requirement.class.getDeclaredMethod("optional");
-        } catch (final Exception e) {
-            optionalSupported = false;
-        } catch (final LinkageError e) {
+        } catch (final LinkageError | Exception e) {
             optionalSupported = false;
         }
         OPTIONAL_SUPPORTED = optionalSupported;

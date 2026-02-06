@@ -104,9 +104,7 @@ public final class CompositeBeanHelper {
                     listener.notifyFieldChangeUsingSetter("", value, bean);
                 }
                 setter.invoke(bean, value);
-            } catch (final Exception e) {
-                throw new ComponentConfigurationException(configuration, "Cannot set default", e);
-            } catch (final LinkageError e) {
+            } catch (final LinkageError | Exception e) {
                 throw new ComponentConfigurationException(configuration, "Cannot set default", e);
             }
         }
@@ -157,9 +155,7 @@ public final class CompositeBeanHelper {
                     setter.invoke(bean, value);
                     return;
                 }
-            } catch (final Exception e) {
-                problem = e;
-            } catch (final LinkageError e) {
+            } catch (final LinkageError | Exception e) {
                 problem = e;
             }
         }
@@ -185,11 +181,7 @@ public final class CompositeBeanHelper {
                     setField(bean, field, value);
                     return;
                 }
-            } catch (final Exception e) {
-                if (null == problem) {
-                    problem = e;
-                }
-            } catch (final LinkageError e) {
+            } catch (final LinkageError | Exception e) {
                 if (null == problem) {
                     problem = e;
                 }

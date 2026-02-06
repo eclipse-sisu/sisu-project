@@ -70,9 +70,7 @@ final class ImplicitBindings {
                         Logs.trace("Using just-in-time binding: {} from: <>", binding, injector);
                         return binding;
                     }
-                } catch (final RuntimeException e) {
-                    Logs.debug("Problem with just-in-time binding: {}", justInTimeKey, e);
-                } catch (final LinkageError e) {
+                } catch (final LinkageError | RuntimeException e) {
                     Logs.debug("Problem with just-in-time binding: {}", justInTimeKey, e);
                 }
             }

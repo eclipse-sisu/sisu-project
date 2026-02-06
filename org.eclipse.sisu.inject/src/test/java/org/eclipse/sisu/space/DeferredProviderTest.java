@@ -114,6 +114,7 @@ class DeferredProviderTest {
 
             fail("Expected LinkageError");
         } catch (final LinkageError e) {
+            // expected
         }
 
         try {

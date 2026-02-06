@@ -285,9 +285,7 @@ public final class PlexusXmlBeanConverter implements PlexusBeanConverter {
         if (tccl != null) {
             try {
                 return tccl.loadClass(name);
-            } catch (final Exception e) {
-                // drop through...
-            } catch (final LinkageError e) {
+            } catch (final LinkageError | Exception e) {
                 // drop through...
             }
         }
@@ -297,9 +295,7 @@ public final class PlexusXmlBeanConverter implements PlexusBeanConverter {
         if (peer != null) {
             try {
                 return peer.loadClass(name);
-            } catch (final Exception e) {
-                // drop through...
-            } catch (final LinkageError e) {
+            } catch (final LinkageError | Exception e) {
                 // drop through...
             }
         }
@@ -307,9 +303,7 @@ public final class PlexusXmlBeanConverter implements PlexusBeanConverter {
         try {
             // last chance - classic model
             return Class.forName(name);
-        } catch (final Exception e) {
-            throw new TypeNotPresentException(name, e);
-        } catch (final LinkageError e) {
+        } catch (final LinkageError | Exception e) {
             throw new TypeNotPresentException(name, e);
         }
     }
@@ -323,9 +317,7 @@ public final class PlexusXmlBeanConverter implements PlexusBeanConverter {
     private static <T> T newImplementation(final Class<T> clazz) {
         try {
             return clazz.newInstance();
-        } catch (final Exception e) {
-            throw new IllegalArgumentException("Cannot create instance of: " + clazz, e);
-        } catch (final LinkageError e) {
+        } catch (final LinkageError | Exception e) {
             throw new IllegalArgumentException("Cannot create instance of: " + clazz, e);
         }
     }

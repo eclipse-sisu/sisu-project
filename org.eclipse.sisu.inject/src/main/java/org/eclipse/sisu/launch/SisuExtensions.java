@@ -216,7 +216,7 @@ public final class SisuExtensions implements SpaceModule.Strategy, WireModule.St
         for (final String name : new IndexedClassFinder(index, global).indexedNames(space)) {
             try {
                 extensionTypes.add(space.loadClass(name).asSubclass(spi));
-            } catch (final Exception | LinkageError e) {
+            } catch (final LinkageError | Exception e) {
                 Logs.debug("Problem loading: {}", name, e);
             }
         }

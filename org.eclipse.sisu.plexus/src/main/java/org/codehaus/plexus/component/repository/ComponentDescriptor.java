@@ -169,9 +169,7 @@ public class ComponentDescriptor<T> {
     public final Class<T> getRoleClass() {
         try {
             return (Class<T>) classRealm.loadClass(getRole());
-        } catch (final Exception e) {
-            throw new TypeNotPresentException(getRole(), e);
-        } catch (final LinkageError e) {
+        } catch (final LinkageError | Exception e) {
             throw new TypeNotPresentException(getRole(), e);
         }
     }
@@ -201,9 +199,7 @@ public class ComponentDescriptor<T> {
         if (null == implementationClass && null != classRealm) {
             try {
                 implementationClass = classRealm.loadClass(implementation);
-            } catch (final Exception e) {
-                throw new TypeNotPresentException(implementation, e);
-            } catch (final LinkageError e) {
+            } catch (final LinkageError | Exception e) {
                 throw new TypeNotPresentException(implementation, e);
             }
         }

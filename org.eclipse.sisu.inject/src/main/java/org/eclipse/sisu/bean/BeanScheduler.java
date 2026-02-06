@@ -50,7 +50,7 @@ public abstract class BeanScheduler {
             if ("pessimistic".equalsIgnoreCase(detectCycles)) {
                 candidateCycle = cycleConfirmed;
             }
-        } catch (Exception | LinkageError e) {
+        } catch (LinkageError | Exception e) {
             cycleActivator = null;
         }
         CYCLE_ACTIVATOR = cycleActivator;

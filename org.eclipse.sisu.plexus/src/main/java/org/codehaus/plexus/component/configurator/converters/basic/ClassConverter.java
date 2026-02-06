@@ -23,9 +23,7 @@ public class ClassConverter extends AbstractBasicConverter {
     public Object fromString(final String value) throws ComponentConfigurationException {
         try {
             return Class.forName(value);
-        } catch (final Exception e) {
-            throw new ComponentConfigurationException("Cannot convert '" + value + "' to Class", e);
-        } catch (final LinkageError e) {
+        } catch (final LinkageError | Exception e) {
             throw new ComponentConfigurationException("Cannot convert '" + value + "' to Class", e);
         }
     }

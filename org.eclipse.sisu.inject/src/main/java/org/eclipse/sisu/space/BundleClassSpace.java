@@ -60,7 +60,7 @@ public final class BundleClassSpace implements ClassSpace {
     public Class<?> loadClass(final String name) {
         try {
             return bundle.loadClass(name);
-        } catch (final Exception | LinkageError e) {
+        } catch (final LinkageError | Exception e) {
             throw new TypeNotPresentException(name, e);
         }
     }

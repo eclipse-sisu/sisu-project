@@ -37,9 +37,7 @@ public final class RealmManager implements ClassWorldListener {
         try {
             // support both old and new forms of Plexus class realms
             ClassRealm.class.getDeclaredMethod("getImportRealms");
-        } catch (final Exception e) {
-            getImportRealmsSupported = false;
-        } catch (final LinkageError e) {
+        } catch (final LinkageError | Exception e) {
             getImportRealmsSupported = false;
         }
         GET_IMPORT_REALMS_SUPPORTED = getImportRealmsSupported;

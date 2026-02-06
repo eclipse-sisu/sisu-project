@@ -59,10 +59,7 @@ final class DependencyVerifier extends DefaultBindingTargetVisitor<Object, Boole
             try {
                 InjectionPoint.forInstanceMethodsAndFields(type);
                 InjectionPoint.forConstructorOf(type);
-            } catch (final RuntimeException e) {
-                Logs.debug("Potential problem: {}", type, e);
-                return Boolean.FALSE;
-            } catch (final LinkageError e) {
+            } catch (final LinkageError | RuntimeException e) {
                 Logs.debug("Potential problem: {}", type, e);
                 return Boolean.FALSE;
             }

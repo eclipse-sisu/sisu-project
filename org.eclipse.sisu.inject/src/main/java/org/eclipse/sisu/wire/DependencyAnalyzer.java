@@ -205,12 +205,7 @@ final class DependencyAnalyzer extends DefaultBindingTargetVisitor<Object, Boole
                             || !rhs) {
                         applyBinding = Boolean.FALSE;
                     }
-                } catch (final RuntimeException e) {
-                    if (reportErrors) {
-                        Logs.debug("Potential problem: {}", type, e);
-                    }
-                    applyBinding = Boolean.FALSE;
-                } catch (final LinkageError e) {
+                } catch (final LinkageError | RuntimeException e) {
                     if (reportErrors) {
                         Logs.debug("Potential problem: {}", type, e);
                     }

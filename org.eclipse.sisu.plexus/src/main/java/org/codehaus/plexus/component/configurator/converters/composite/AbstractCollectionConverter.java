@@ -124,18 +124,14 @@ public abstract class AbstractCollectionConverter extends AbstractConfigurationC
         if (null == childType && childName.indexOf('.') > 0) {
             try {
                 childType = loader.loadClass(childName);
-            } catch (final Exception e) {
-                cause = e;
-            } catch (final LinkageError e) {
+            } catch (final LinkageError | Exception e) {
                 cause = e;
             }
         }
         if (null == childType) {
             try {
                 childType = loader.loadClass(alignPackageName(enclosingType.getName(), childName));
-            } catch (final Exception e) {
-                cause = e;
-            } catch (final LinkageError e) {
+            } catch (final LinkageError | Exception e) {
                 cause = e;
             }
         }

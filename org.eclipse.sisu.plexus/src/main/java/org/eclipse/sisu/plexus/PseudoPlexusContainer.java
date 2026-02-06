@@ -235,9 +235,7 @@ final class PseudoPlexusContainer implements PlexusContainer {
             if (hasPlexusBeans(beans)) {
                 return beans;
             }
-        } catch (final Exception e) {
-            // drop through...
-        } catch (final LinkageError e) {
+        } catch (final LinkageError | Exception e) {
             // drop through...
         }
         return Collections.EMPTY_SET;

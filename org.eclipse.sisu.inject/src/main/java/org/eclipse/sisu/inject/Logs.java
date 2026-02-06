@@ -47,9 +47,7 @@ public final class Logs {
         Sink sink;
         try {
             sink = toConsole ? new ConsoleSink() : new SLF4JSink();
-        } catch (final RuntimeException e) {
-            sink = new JULSink();
-        } catch (final LinkageError e) {
+        } catch (final LinkageError | RuntimeException e) {
             sink = new JULSink();
         }
         SINK = sink;

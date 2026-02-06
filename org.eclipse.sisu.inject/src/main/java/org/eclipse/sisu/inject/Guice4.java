@@ -35,9 +35,7 @@ public final class Guice4 {
             // in Guice4 binding.getSource() returns ElementSource and not the original declaring source
             hasDeclaringSource =
                     com.google.inject.spi.ElementSource.class.getMethod("getDeclaringSource") != null; // NOSONAR
-        } catch (final Exception e) {
-            hasDeclaringSource = false;
-        } catch (final LinkageError e) {
+        } catch (final LinkageError | Exception e) {
             hasDeclaringSource = false;
         }
         HAS_DECLARING_SOURCE = hasDeclaringSource;
@@ -47,9 +45,7 @@ public final class Guice4 {
             // in Guice4 getProviderInstance() is deprecated in favour of getUserSuppliedProvider()
             hasUserSuppliedProvider =
                     ProviderInstanceBinding.class.getMethod("getUserSuppliedProvider") != null; // NOSONAR
-        } catch (final Exception e) {
-            hasUserSuppliedProvider = false;
-        } catch (final LinkageError e) {
+        } catch (final LinkageError | Exception e) {
             hasUserSuppliedProvider = false;
         }
         HAS_USER_SUPPLIED_PROVIDER = hasUserSuppliedProvider;
@@ -60,9 +56,7 @@ public final class Guice4 {
             hasOldScopesSingleton =
                     Scopes.class.equals(Scopes.SINGLETON.getClass().getEnclosingClass()) //
                             && Scopes.SINGLETON.scope(null /* key */, null /* provider */) != null;
-        } catch (final Exception e) {
-            hasOldScopesSingleton = false;
-        } catch (final LinkageError e) {
+        } catch (final LinkageError | Exception e) {
             hasOldScopesSingleton = false;
         }
         HAS_OLD_SCOPES_SINGLETON = hasOldScopesSingleton;
@@ -71,9 +65,7 @@ public final class Guice4 {
         try {
             // in Guice4 @Provides Method providers implement ProvidesMethodBinding
             hasProvidesMethodSpi = ProvidesMethodBinding.class instanceof Class<?>;
-        } catch (final Exception e) {
-            hasProvidesMethodSpi = false;
-        } catch (final LinkageError e) {
+        } catch (final LinkageError | Exception e) {
             hasProvidesMethodSpi = false;
         }
         HAS_PROVIDES_METHOD_SPI = hasProvidesMethodSpi;
@@ -155,9 +147,7 @@ public final class Guice4 {
                         });
                     }
                     return providesMethod.getMethod().invoke(providesMethod.getEnclosingInstance());
-                } catch (final Exception e) {
-                    return null;
-                } catch (final LinkageError e) {
+                } catch (final LinkageError | Exception e) {
                     return null;
                 }
             }

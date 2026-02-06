@@ -64,9 +64,7 @@ final class BeanPropertyField<T> implements BeanProperty<T>, PrivilegedAction<Vo
 
         try {
             field.set(bean, value);
-        } catch (final Exception e) {
-            throw new ProvisionException("Error injecting: " + field, e);
-        } catch (final LinkageError e) {
+        } catch (final LinkageError | Exception e) {
             throw new ProvisionException("Error injecting: " + field, e);
         }
     }

@@ -44,10 +44,7 @@ public class URLClassSpace implements ClassSpace {
         try {
             systemLoader = ClassLoader.getSystemClassLoader();
             classPath = System.getProperty("java.class.path", ".");
-        } catch (final RuntimeException e) {
-            systemLoader = null;
-            classPath = null;
-        } catch (final LinkageError e) {
+        } catch (final LinkageError | RuntimeException e) {
             systemLoader = null;
             classPath = null;
         }
@@ -274,7 +271,7 @@ public class URLClassSpace implements ClassSpace {
     /**
      * Normalizes the given class path entry by removing any extraneous "jar:"..."!/" padding.
      *
-     * @param path The URL to normalize
+     * @param url The URL to normalize
      * @return Normalized class path entry
      */
     private static URL normalizeEntry(final URL url) {

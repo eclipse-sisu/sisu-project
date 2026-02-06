@@ -59,7 +59,7 @@ final class ElementAnalyzer extends DefaultElementVisitor<Void> {
             addLegacyKeyAlias(aliases, BeanLocator.class);
             addLegacyKeyAlias(aliases, MutableBeanLocator.class);
             addLegacyKeyAlias(aliases, RankingFunction.class);
-        } catch (final Exception | LinkageError e) // NOSONAR
+        } catch (final LinkageError | Exception e) // NOSONAR
         {
             // legacy wrappers are not available
         }
