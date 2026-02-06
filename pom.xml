@@ -124,11 +124,12 @@
 
     <!-- Versions -->
     <mavenRuntimeVersion>3.3.1</mavenRuntimeVersion>
-    <mavenBuildVersion>3.9.9</mavenBuildVersion>
+    <mavenBuildVersion>3.9.12</mavenBuildVersion>
     <javaBuildVersion>17</javaBuildVersion>
     <mavenPluginToolsVersion>3.15.2</mavenPluginToolsVersion>
     <asmVersion>9.9.1</asmVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
+    <guiceVersion>4.2.3</guiceVersion>
     <!-- define empty, as jacoco is only conditionally executed (https://www.eclemma.org/jacoco/trunk/doc/prepare-agent-mojo.html) -->
     <argLine />
     <njordVersion>0.9.3</njordVersion>
@@ -165,18 +166,18 @@
       <dependency>
         <groupId>com.google.inject</groupId>
         <artifactId>guice</artifactId>
-        <version>4.2.3</version>
+        <version>${guiceVersion}</version>
         <classifier>classes</classifier>
       </dependency>
       <dependency>
         <groupId>com.google.inject.extensions</groupId>
         <artifactId>guice-servlet</artifactId>
-        <version>4.2.3</version>
+        <version>${guiceVersion}</version>
       </dependency>
       <dependency>
         <groupId>com.google.inject.extensions</groupId>
         <artifactId>guice-assistedinject</artifactId>
-        <version>4.2.3</version>
+        <version>${guiceVersion}</version>
       </dependency>
 
       <!-- To get rid of CVE warnings (is provided anyway) -->
@@ -263,13 +264,14 @@
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.13.2</version>
         <!-- older version not supported by junit-vintage runner -->
+        <version>4.13.2</version>
       </dependency>
       <dependency>
         <groupId>org.testng</groupId>
         <artifactId>testng</artifactId>
-        <version>7.5.1</version>
+        <!-- vulnerable but is not our transitive dep -->
+        <version>6.14.3</version>
       </dependency>
       <dependency>
         <groupId>org.apache.felix</groupId>
