@@ -29,7 +29,6 @@ jobs:
         shell: bash
         run: |
           if [ "${{ matrix.isMainBuildEnv }}" = "true" ]; then
-            echo "SONAR_TOKEN=${{ secrets.SONAR_TOKEN }}" >> $GITHUB_ENV
             echo "MVN_ADDITIONAL_OPTS=org.sonarsource.scanner.maven:sonar-maven-plugin:5.5.0.6356:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }} -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }} -Dsonar.scanner.skipJreProvisioning -Pcode-coverage" >> $GITHUB_ENV
             echo "GIT_FETCH_DEPTH=0" >> $GITHUB_ENV # Shallow clones should be disabled for a better relevancy of analysis
           else
@@ -48,4 +47,6 @@ jobs:
           cache: 'maven'
 
       - name: Build with Maven
+        env: 
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./mvnw verify -e -B -V ${{ env.MVN_ADDITIONAL_OPTS }}
