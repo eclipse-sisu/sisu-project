@@ -41,7 +41,7 @@ abstract class AbstractDeferredClass<T> implements DeferredClass<T>, DeferredPro
         try {
             // load class and bootstrap injection
             return injector.getInstance(load());
-        } catch (final Throwable e) // NOPMD see Logs.catchThrowable
+        } catch (final Throwable e) // NOSONAR see Logs.catchThrowable
         {
             Logs.catchThrowable(e);
             try {

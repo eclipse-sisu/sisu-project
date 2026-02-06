@@ -60,6 +60,6 @@ final class ExportedServiceProvider<T>
   }
 
   public Provider<T> direct() {
-    return new DirectProvider<T>(setup);
+    return new DirectProvider<>(setup);
   }
 }

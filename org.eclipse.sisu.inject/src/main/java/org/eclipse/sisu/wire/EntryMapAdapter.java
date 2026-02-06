@@ -33,7 +33,7 @@ public final class EntryMapAdapter<K, V> extends AbstractMap<K, V> {
     // ----------------------------------------------------------------------
 
     public EntryMapAdapter(final Iterable<? extends Entry<K, V>> iterable) {
-        entrySet = new EntrySet<K, V>(iterable);
+        entrySet = new EntrySet<>(iterable);
     }
 
     // ----------------------------------------------------------------------

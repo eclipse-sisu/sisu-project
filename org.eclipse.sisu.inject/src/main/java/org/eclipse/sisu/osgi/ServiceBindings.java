@@ -31,8 +31,7 @@ public final class ServiceBindings implements BindingPublisher {
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final ConcurrentMap<String, BindingTracker<?>> trackers =
-            new ConcurrentHashMap<String, BindingTracker<?>>(16, 0.75f, 1);
+    private final ConcurrentMap<String, BindingTracker<?>> trackers = new ConcurrentHashMap<>(16, 0.75f, 1);
 
     private final BundleContext context;
 

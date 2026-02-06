@@ -40,7 +40,7 @@ final class DecoratedServiceWatcher<S>
   public <T extends S> Export<T> add(final Import<T> service) {
 
     // wrap service to allow updates, decorate the wrapper, then publish
-    final Export<T> original = new SimpleExport<T>(service);
+    final Export<T> original = new SimpleExport<>(service);
     final Import<T> decorated = decorator.decorate(original);
     final Export<T> published = watcher.add(decorated);
 
@@ -49,7 +49,7 @@ final class DecoratedServiceWatcher<S>
       return null;
     }
 
-    return new DecoratedExport<T>(original, decorated, published);
+    return new DecoratedExport<>(original, decorated, published);
   }
 
   private static final class DecoratedExport<T>

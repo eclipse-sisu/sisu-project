@@ -54,15 +54,12 @@ final class ElementAnalyzer extends DefaultElementVisitor<Void> {
     // ----------------------------------------------------------------------
 
     static {
-        final Map<Key<?>, Key<?>> aliases = new HashMap<Key<?>, Key<?>>();
+        final Map<Key<?>, Key<?>> aliases = new HashMap<>();
         try {
             addLegacyKeyAlias(aliases, BeanLocator.class);
             addLegacyKeyAlias(aliases, MutableBeanLocator.class);
             addLegacyKeyAlias(aliases, RankingFunction.class);
-        } catch (final Exception e) // NOPMD
-        {
-            // legacy wrappers are not available
-        } catch (final LinkageError e) // NOPMD
+        } catch (final Exception | LinkageError e) // NOSONAR
         {
             // legacy wrappers are not available
         }
@@ -87,15 +84,15 @@ final class ElementAnalyzer extends DefaultElementVisitor<Void> {
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final Set<Key<?>> localKeys = new HashSet<Key<?>>();
+    private final Set<Key<?>> localKeys = new HashSet<>();
 
     private final DependencyAnalyzer analyzer = new DependencyAnalyzer();
 
-    private final List<ElementAnalyzer> privateAnalyzers = new ArrayList<ElementAnalyzer>();
+    private final List<ElementAnalyzer> privateAnalyzers = new ArrayList<>();
 
-    private final List<Map<?, ?>> properties = new ArrayList<Map<?, ?>>();
+    private final List<Map<?, ?>> properties = new ArrayList<>();
 
-    private final List<String> arguments = new ArrayList<String>();
+    private final List<String> arguments = new ArrayList<>();
 
     private final Binder binder;
 

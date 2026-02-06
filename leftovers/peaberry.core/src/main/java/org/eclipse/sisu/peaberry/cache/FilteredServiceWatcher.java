@@ -37,7 +37,7 @@ public final class FilteredServiceWatcher<S>
 
   public <T extends S> Export<T> add(final Import<T> service) {
     // service metadata can change, so must be able to re-check
-    return new FilteredExport<T>(service);
+    return new FilteredExport<>(service);
   }
 
   private final class FilteredExport<T extends S>

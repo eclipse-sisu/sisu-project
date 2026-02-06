@@ -66,8 +66,8 @@ final class ExtensionListener
     // do we need to combine elements into a single bean?
     aggregate = null != metadata && metadata.aggregate();
 
-    imports = new ArrayList<ExtensionImport>(4);
-    watchers = new ArrayList<ServiceWatcher<Object>>(2);
+    imports = new ArrayList<>(4);
+    watchers = new ArrayList<>(2);
   }
 
   synchronized void start(final IExtensionRegistry registry) {
@@ -107,7 +107,7 @@ final class ExtensionListener
   }
 
   private Set<IConfigurationElement> getExistingConfigurationElements() {
-    final Set<IConfigurationElement> elements = new HashSet<IConfigurationElement>();
+    final Set<IConfigurationElement> elements = new HashSet<>();
     for (final ExtensionImport i : imports) {
       elements.add(i.getConfigurationElement());
     }
@@ -139,7 +139,7 @@ final class ExtensionListener
   }
 
   private void insertExtension(final IExtension extension, final Set<IConfigurationElement> ignore) {
-    final List<IConfigurationElement> candidates = new ArrayList<IConfigurationElement>();
+    final List<IConfigurationElement> candidates = new ArrayList<>();
 
     if (aggregate) {
       candidates.add(new AggregatedExtension(extension));
@@ -151,7 +151,7 @@ final class ExtensionListener
 
     // create an import for each major configuration element
     for (final IConfigurationElement config : candidates) {
-      final ExtensionImport i = new ExtensionImport(++idCounter, config, clazz); // NOPMD
+      final ExtensionImport i = new ExtensionImport(++idCounter, config, clazz); // NOSONAR
       imports.add(i);
 
       // report the new import to any watching watchers

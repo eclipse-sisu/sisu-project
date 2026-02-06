@@ -220,7 +220,7 @@ final class RankedSequence<T> implements Iterable<T> {
             uniq = 1;
         }
 
-        Content(final Object[] objs, final long[] uids, final int uniq) // NOPMD
+        Content(final Object[] objs, final long[] uids, final int uniq) // NOSONAR
                 {
             this.objs = objs;
             this.uids = uids;

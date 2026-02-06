@@ -93,7 +93,7 @@ public final class Peaberry {
    * @return dynamic service builder
    */
   public static <T> DecoratedServiceBuilder<T> service(final Key<T> key) {
-    return new ServiceBuilderImpl<T>(key);
+    return new ServiceBuilderImpl<>(key);
   }
 
   /**
@@ -103,7 +103,7 @@ public final class Peaberry {
    * @return dynamic service builder
    */
   public static <T> DecoratedServiceBuilder<T> service(final TypeLiteral<T> type) {
-    return new ServiceBuilderImpl<T>(Key.get(type));
+    return new ServiceBuilderImpl<>(Key.get(type));
   }
 
   /**
@@ -113,7 +113,7 @@ public final class Peaberry {
    * @return dynamic service builder
    */
   public static <T> DecoratedServiceBuilder<T> service(final Class<T> clazz) {
-    return new ServiceBuilderImpl<T>(Key.get(clazz));
+    return new ServiceBuilderImpl<>(Key.get(clazz));
   }
 
   /**
@@ -123,7 +123,7 @@ public final class Peaberry {
    * @return dynamic service builder
    */
   public static <T> DecoratedServiceBuilder<T> service(final T instance) {
-    return new ServiceBuilderImpl<T>(instance);
+    return new ServiceBuilderImpl<>(instance);
   }
 
   /**

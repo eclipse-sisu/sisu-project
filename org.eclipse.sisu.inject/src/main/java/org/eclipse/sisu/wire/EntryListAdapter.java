@@ -44,12 +44,12 @@ public final class EntryListAdapter<V> extends AbstractSequentialList<V> {
 
     @Override
     public Iterator<V> iterator() {
-        return new ValueIterator<V>(iterable);
+        return new ValueIterator<>(iterable);
     }
 
     @Override
     public ListIterator<V> listIterator(final int index) {
-        return new ValueListIterator<V>(iterable, index);
+        return new ValueListIterator<>(iterable, index);
     }
 
     @Override
@@ -115,7 +115,7 @@ public final class EntryListAdapter<V> extends AbstractSequentialList<V> {
 
         private final Iterator<? extends Entry<?, V>> iterator;
 
-        private final List<Entry<?, V>> entryCache = new ArrayList<Entry<?, V>>();
+        private final List<Entry<?, V>> entryCache = new ArrayList<>();
 
         private int index;
 

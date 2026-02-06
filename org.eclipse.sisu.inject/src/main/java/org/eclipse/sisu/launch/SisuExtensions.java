@@ -181,14 +181,14 @@ public final class SisuExtensions implements SpaceModule.Strategy, WireModule.St
      * @return List of extensions
      */
     public <T, C> List<T> create(final Class<T> spi, final Class<C> contextType, final C context) {
-        final List<T> extensions = new ArrayList<T>();
+        final List<T> extensions = new ArrayList<>();
         for (final Class<? extends T> impl : load(spi)) {
             try {
                 T instance = null;
                 if (null != contextType) {
                     try {
                         instance = impl.getConstructor(contextType).newInstance(context);
-                    } catch (final NoSuchMethodException e) // NOPMD
+                    } catch (final NoSuchMethodException e) // NOSONAR
                     {
                         // fall-back to default constructor
                     }
@@ -216,9 +216,7 @@ public final class SisuExtensions implements SpaceModule.Strategy, WireModule.St
         for (final String name : new IndexedClassFinder(index, global).indexedNames(space)) {
             try {
                 extensionTypes.add(space.loadClass(name).asSubclass(spi));
-            } catch (final Exception e) {
-                Logs.debug("Problem loading: {}", name, e);
-            } catch (final LinkageError e) {
+            } catch (final Exception | LinkageError e) {
                 Logs.debug("Problem loading: {}", name, e);
             }
         }

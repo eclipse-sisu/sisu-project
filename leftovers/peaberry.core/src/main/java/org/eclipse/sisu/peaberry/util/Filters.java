@@ -49,7 +49,7 @@ public final class Filters {
     int numClauses = 0;
 
     for (final Class<?> i : interfaces) {
-      if (null != i && Object.class != i) { // NOPMD
+      if (null != i && Object.class != i) { // NOSONAR
         filter.append("(objectClass=").append(i.getName()).append(')');
         numClauses++;
       }

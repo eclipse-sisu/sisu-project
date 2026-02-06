@@ -52,7 +52,7 @@ final class DynamicGlue {
 
     static {
         // pre-seed common methods that should be wrapped
-        OBJECT_METHOD_MAP = new HashMap<String, Method>();
+        OBJECT_METHOD_MAP = new HashMap<>();
         for (final Method m : Object.class.getMethods()) {
             if (isWrappable(m)) {
                 OBJECT_METHOD_MAP.put(signatureKey(m), m);

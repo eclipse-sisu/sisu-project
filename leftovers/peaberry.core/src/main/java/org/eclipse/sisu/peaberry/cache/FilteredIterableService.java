@@ -38,7 +38,7 @@ final class FilteredIterableService<T>
   }
 
   public Iterator<Import<T>> iterator() {
-    return new Iterator<Import<T>>() {
+    return new Iterator<>() {
 
       // track where we've been...
       private Import<T> prevImport;

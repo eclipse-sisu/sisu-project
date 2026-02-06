@@ -37,8 +37,8 @@ public abstract class AbstractServiceListener<T> {
   private final List<ServiceWatcher<T>> watchers;
 
   protected AbstractServiceListener() {
-    imports = new ArrayList<AbstractServiceImport<T>>(4);
-    watchers = new ArrayList<ServiceWatcher<T>>(2);
+    imports = new ArrayList<>(4);
+    watchers = new ArrayList<>(2);
   }
 
   @SuppressWarnings("unchecked")

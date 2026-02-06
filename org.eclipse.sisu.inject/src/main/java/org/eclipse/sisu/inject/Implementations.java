@@ -187,7 +187,7 @@ final class Implementations {
                     return ((DeferredProvider<?>) provider)
                             .getImplementationClass()
                             .load();
-                } catch (final TypeNotPresentException e) // NOPMD
+                } catch (final TypeNotPresentException e) // NOSONAR
                 {
                     // fall-through
                 }

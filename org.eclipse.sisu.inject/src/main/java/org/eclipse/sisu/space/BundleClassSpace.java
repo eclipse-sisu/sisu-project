@@ -60,15 +60,13 @@ public final class BundleClassSpace implements ClassSpace {
     public Class<?> loadClass(final String name) {
         try {
             return bundle.loadClass(name);
-        } catch (final Exception e) {
-            throw new TypeNotPresentException(name, e);
-        } catch (final LinkageError e) {
+        } catch (final Exception | LinkageError e) {
             throw new TypeNotPresentException(name, e);
         }
     }
 
     public DeferredClass<?> deferLoadClass(final String name) {
-        return new NamedClass<Object>(this, name);
+        return new NamedClass<>(this, name);
     }
 
     public URL getResource(final String name) {

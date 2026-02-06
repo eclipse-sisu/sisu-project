@@ -53,7 +53,7 @@ final class OSGiServiceListener<T>
 
         // wrap service references to optimize sorting
         for (final ServiceReference r : refs) {
-          insertService(new OSGiServiceImport<T>(bundleContext, r)); // NOPMD
+          insertService(new OSGiServiceImport<T>(bundleContext, r)); // NOSONAR
         }
       }
 

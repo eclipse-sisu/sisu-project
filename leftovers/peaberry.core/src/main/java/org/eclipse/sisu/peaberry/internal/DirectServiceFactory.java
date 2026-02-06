@@ -34,7 +34,7 @@ final class DirectServiceFactory {
   static <T> Iterable<T> directServices(final Iterable<Import<T>> services,
       final ImportDecorator<? super T> decorator) {
 
-    final List<T> instances = new ArrayList<T>();
+    final List<T> instances = new ArrayList<>();
     final Iterator<Import<T>> i = services.iterator();
 
     while (i.hasNext()) {
@@ -69,7 +69,7 @@ final class DirectServiceFactory {
 
     try {
       return (null == decorator ? i.next() : decorator.decorate(i.next())).get();
-    } catch (final ServiceUnavailableException e) {/* default to null */} // NOPMD
+    } catch (final ServiceUnavailableException e) {/* default to null */} // NOSONAR
 
     return null;
   }

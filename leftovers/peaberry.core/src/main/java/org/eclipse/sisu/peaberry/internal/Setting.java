@@ -84,7 +84,7 @@ abstract class Setting<T> {
   }
 
   // constant null setting, safe to share between builders
-  private static final Setting<Object> NULL_SETTING = new Setting<Object>() {
+  private static final Setting<Object> NULL_SETTING = new Setting<>() {
     @Override
     Object get(final Injector injector) {
       return null;

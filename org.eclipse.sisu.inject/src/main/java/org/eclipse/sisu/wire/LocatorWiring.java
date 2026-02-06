@@ -208,10 +208,10 @@ public final class LocatorWiring implements Wiring {
                     }
                 }
             }
-        } catch (final RuntimeException e) // NOPMD
+        } catch (final RuntimeException e) // NOSONAR
         {
             // can safely ignore
-        } catch (final LinkageError e) // NOPMD
+        } catch (final LinkageError e) // NOSONAR
         {
             // can safely ignore
         }

@@ -49,8 +49,8 @@ public final class BeanListener implements TypeListener {
             return; // no properties to bind
         }
 
-        final List<PropertyBinding> bindings = new ArrayList<PropertyBinding>();
-        final Set<String> visited = new HashSet<String>();
+        final List<PropertyBinding> bindings = new ArrayList<>();
+        final Set<String> visited = new HashSet<>();
 
         for (final BeanProperty<?> property : new BeanProperties(type.getRawType())) {
             if (property.getAnnotation(javax.inject.Inject.class) != null
@@ -75,8 +75,8 @@ public final class BeanListener implements TypeListener {
             }
         }
 
-        if (bindings.size() > 0) {
-            encounter.register(new BeanInjector<B>(bindings));
+        if (!bindings.isEmpty()) {
+            encounter.register(new BeanInjector<>(bindings));
         }
     }
 }

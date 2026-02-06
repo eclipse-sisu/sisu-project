@@ -89,7 +89,7 @@ final class ConcurrentServiceWatcher<S>
     updateBestService();
 
     // every new service has a tracker
-    return new TrackingExport<T>(service);
+    return new TrackingExport<>(service);
   }
 
   void updateBestService() {

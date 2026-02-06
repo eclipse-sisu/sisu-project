@@ -35,7 +35,7 @@ public final class SisuGuice
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private static final ThreadLocal<BeanLocator> LOCATOR = new InheritableThreadLocal<BeanLocator>();
+    private static final ThreadLocal<BeanLocator> LOCATOR = new InheritableThreadLocal<>();
 
     private static volatile BeanLocator latest;
 

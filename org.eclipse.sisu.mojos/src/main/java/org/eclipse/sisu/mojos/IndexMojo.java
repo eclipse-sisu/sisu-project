@@ -203,7 +203,7 @@ public class IndexMojo extends AbstractMojo {
     // ----------------------------------------------------------------------
 
     private ClassLoader getProjectClassLoader() {
-        final List<URL> classPath = new ArrayList<URL>();
+        final List<URL> classPath = new ArrayList<>();
         appendDirectoryToClassPath(classPath, outputDirectory);
         for (final Object artifact : project.getArtifacts()) {
             appendFileToClassPath(classPath, ((Artifact) artifact).getFile());
@@ -215,7 +215,7 @@ public class IndexMojo extends AbstractMojo {
     }
 
     private URL[] getIndexPath() {
-        final List<URL> indexPath = new ArrayList<URL>();
+        final List<URL> indexPath = new ArrayList<>();
         appendDirectoryToClassPath(indexPath, outputDirectory);
         if (includeDependencies && !buildContext.isIncremental()) {
             final FilterArtifacts filter = new FilterArtifacts();

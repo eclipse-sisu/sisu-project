@@ -41,7 +41,7 @@ final class ProviderIterableAdapter<K extends Annotation, V> implements Iterable
     // ----------------------------------------------------------------------
 
     public Iterator<Entry<K, Provider<V>>> iterator() {
-        return new ProviderIterator<K, V>(delegate);
+        return new ProviderIterator<>(delegate);
     }
 
     // ----------------------------------------------------------------------
@@ -75,7 +75,7 @@ final class ProviderIterableAdapter<K extends Annotation, V> implements Iterable
         }
 
         public Entry<K, Provider<V>> next() {
-            return new ProviderEntry<K, V>(iterator.next());
+            return new ProviderEntry<>(iterator.next());
         }
 
         public void remove() {

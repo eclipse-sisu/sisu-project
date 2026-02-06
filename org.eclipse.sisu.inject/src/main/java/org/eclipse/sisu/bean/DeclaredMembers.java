@@ -77,7 +77,7 @@ public final class DeclaredMembers implements Iterable<Member> {
         // Constructors
         // ----------------------------------------------------------------------
 
-        MemberIterator(final Class<?> clazz, final View[] views) // NOPMD
+        MemberIterator(final Class<?> clazz, final View[] views) // NOSONAR
                 {
             this.clazz = clazz;
             this.views = views;

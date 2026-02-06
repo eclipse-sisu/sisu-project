@@ -116,7 +116,7 @@ final class ExtensionImport
       if (!candidates.contains(config.getDeclaringExtension())) {
         return false; /* this doesn't belong to any candidate */
       }
-    } catch (final InvalidRegistryObjectException e) {/* already invalid */} // NOPMD
+    } catch (final InvalidRegistryObjectException e) {/* already invalid */} // NOSONAR
 
     notifyWatchers();
     watchers.clear();

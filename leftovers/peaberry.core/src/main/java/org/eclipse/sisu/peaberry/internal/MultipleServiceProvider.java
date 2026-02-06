@@ -64,6 +64,6 @@ final class MultipleServiceProvider<T>
   }
 
   public Provider<Iterable<T>> direct() {
-    return new DirectProvider<T>(setup);
+    return new DirectProvider<>(setup);
   }
 }

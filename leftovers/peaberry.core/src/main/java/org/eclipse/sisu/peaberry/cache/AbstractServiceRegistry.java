@@ -33,7 +33,7 @@ public abstract class AbstractServiceRegistry
 
   // per-class/filter map of service listeners (much faster than polling)
   private final ConcurrentMap<String, AbstractServiceListener<?>> listenerMap =
-      new ConcurrentHashMap<String, AbstractServiceListener<?>>(16, 0.75f, 2);
+      new ConcurrentHashMap<>(16, 0.75f, 2);
 
   protected AbstractServiceRegistry(final boolean useNativeFilter) {
     this.useNativeFilter = useNativeFilter;
@@ -91,7 +91,7 @@ public abstract class AbstractServiceRegistry
   private String getLdapFilter(final Class<?> clazz, final AttributeFilter[] filterRef) {
     final String clazzFilter;
 
-    if (null != clazz && Object.class != clazz) { // NOPMD
+    if (null != clazz && Object.class != clazz) { // NOSONAR
       clazzFilter = "(objectClass=" + clazz.getName() + ')';
     } else {
       clazzFilter = null;
@@ -104,7 +104,7 @@ public abstract class AbstractServiceRegistry
         filterRef[0] = null; // yes, so we don't need object anymore
 
         return null == clazzFilter ? ldapFilter : "(&" + clazzFilter + ldapFilter + ')';
-      } catch (final IllegalArgumentException e) {/* not native LDAP */} // NOPMD
+      } catch (final IllegalArgumentException e) {/* not native LDAP */} // NOSONAR
     }
 
     return clazzFilter;

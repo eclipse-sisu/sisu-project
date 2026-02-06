@@ -30,8 +30,7 @@ final class TypeConverterCache {
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final Map<TypeLiteral<?>, TypeConverter> converterMap =
-            new ConcurrentHashMap<TypeLiteral<?>, TypeConverter>(16, 0.75f, 1);
+    private final Map<TypeLiteral<?>, TypeConverter> converterMap = new ConcurrentHashMap<>(16, 0.75f, 1);
 
     private final Injector injector;
 

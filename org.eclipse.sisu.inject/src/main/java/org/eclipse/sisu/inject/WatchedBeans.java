@@ -70,7 +70,7 @@ final class WatchedBeans<Q extends Annotation, T, W> implements BindingSubscribe
                 final BeanEntry<Q, T> bean = beans.create(qualifier, binding, rank);
                 try {
                     mediator.add(bean, watcher);
-                } catch (final Throwable e) // NOPMD see Logs.catchThrowable
+                } catch (final Throwable e) // NOSONAR see Logs.catchThrowable
                 {
                     Logs.catchThrowable(e);
                     Logs.warn("Problem adding: <> to: " + detail(watcher), bean, e);
@@ -86,7 +86,7 @@ final class WatchedBeans<Q extends Annotation, T, W> implements BindingSubscribe
             if (null != watcher) {
                 try {
                     mediator.remove(bean, watcher);
-                } catch (final Throwable e) // NOPMD see Logs.catchThrowable
+                } catch (final Throwable e) // NOSONAR see Logs.catchThrowable
                 {
                     Logs.catchThrowable(e);
                     Logs.warn("Problem removing: <> from: " + detail(watcher), bean, e);

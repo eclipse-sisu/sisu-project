@@ -258,11 +258,9 @@ public final class QualifiedTypeBinder implements QualifiedTypeListener {
             // slightly roundabout approach, but it might be private
             final Constructor<T> ctor = type.getDeclaredConstructor();
             if (!ctor.isAccessible()) {
-                AccessController.doPrivileged(new PrivilegedAction<Void>() {
-                    public Void run() {
-                        ctor.setAccessible(true);
-                        return null;
-                    }
+                AccessController.doPrivileged((PrivilegedAction<Void>) () -> {
+                    ctor.setAccessible(true);
+                    return null;
                 });
             }
 
@@ -304,7 +302,7 @@ public final class QualifiedTypeBinder implements QualifiedTypeListener {
                 if (name.length() > 0) {
                     return "default".equals(name) ? null : Names.named(name);
                 }
-            } catch (final IncompleteAnnotationException e) // NOPMD
+            } catch (final IncompleteAnnotationException e) // NOSONAR
             {
                 // early prototypes of JSR330 @Named declared no default value
             }

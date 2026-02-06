@@ -29,9 +29,9 @@ public final class LifecycleManager extends BeanScheduler implements BeanManager
     private final LifecycleBuilder builder = new LifecycleBuilder();
 
     private final Map<Class<?>, BeanLifecycle> lifecycles = //
-            new ConcurrentHashMap<Class<?>, BeanLifecycle>(16, 0.75f, 1);
+            new ConcurrentHashMap<>(16, 0.75f, 1);
 
-    private final Deque<Object> stoppableBeans = new ArrayDeque<Object>();
+    private final Deque<Object> stoppableBeans = new ArrayDeque<>();
 
     // ----------------------------------------------------------------------
     // Public methods

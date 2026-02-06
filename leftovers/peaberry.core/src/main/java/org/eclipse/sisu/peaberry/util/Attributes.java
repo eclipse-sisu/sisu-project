@@ -43,7 +43,7 @@ public final class Attributes {
    * @throws IllegalArgumentException if there are any non-String keys
    */
   public static Map<String, ?> properties(final Properties properties) {
-    final Map<String, Object> attributes = new HashMap<String, Object>(2 * properties.size());
+    final Map<String, Object> attributes = new HashMap<>(2 * properties.size());
 
     /*
      * Sigh, Properties is a really messed-up class... in Java5 there is only
@@ -79,11 +79,11 @@ public final class Attributes {
    * @see <a href="http://www.ietf.org/rfc/rfc2253.txt">RFC-2253</a>
    */
   public static Map<String, ?> names(final String... names) {
-    final Map<String, Object> attributes = new HashMap<String, Object>(2 * names.length);
+    final Map<String, Object> attributes = new HashMap<>(2 * names.length);
 
     for (final String n : names) {
       try {
-        for (final Rdn rdn : new LdapName(n).getRdns()) { // NOPMD
+        for (final Rdn rdn : new LdapName(n).getRdns()) { // NOSONAR
           attributes.put(rdn.getType(), rdn.getValue());
         }
       } catch (final InvalidNameException e) {
@@ -120,7 +120,7 @@ public final class Attributes {
    */
   @SuppressWarnings("unchecked")
   public static Map<String, ?> union(final Map... attributes) {
-    final Map<String, Object> unionMap = new HashMap<String, Object>();
+    final Map<String, Object> unionMap = new HashMap<>();
 
     for (final Map a : attributes) {
       if (null != a) {

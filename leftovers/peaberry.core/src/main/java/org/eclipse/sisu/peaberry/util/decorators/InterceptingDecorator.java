@@ -149,7 +149,7 @@ public final class InterceptingDecorator<S>
 
   static Class<?>[] getInterfaces(final Object instance) {
     @SuppressWarnings("unchecked")
-    final Set<Class> api = new HashSet<Class>();
+    final Set<Class> api = new HashSet<>();
     // look through the entire class hierarchy collecting all visible interfaces
     for (Class<?> clazz = instance.getClass(); null != clazz; clazz = clazz.getSuperclass()) {
       Collections.addAll(api, clazz.getInterfaces());

@@ -58,7 +58,7 @@ final class AggregatedExtension
   }
 
   public IConfigurationElement[] getChildren(final String name) {
-    final List<IConfigurationElement> children = new ArrayList<IConfigurationElement>();
+    final List<IConfigurationElement> children = new ArrayList<>();
     for (final IConfigurationElement e : extension.getConfigurationElements()) {
       children.add(e);
     }

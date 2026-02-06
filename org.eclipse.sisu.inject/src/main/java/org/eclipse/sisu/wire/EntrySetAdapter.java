@@ -41,7 +41,7 @@ public final class EntrySetAdapter<V> extends AbstractSet<V> {
 
     @Override
     public Iterator<V> iterator() {
-        return new ValueIterator<V>(iterable);
+        return new ValueIterator<>(iterable);
     }
 
     @Override

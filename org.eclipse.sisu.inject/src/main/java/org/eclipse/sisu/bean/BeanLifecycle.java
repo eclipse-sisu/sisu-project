@@ -90,7 +90,7 @@ final class BeanLifecycle implements PrivilegedAction<Void> {
             for (; i >= 0; i--) {
                 startMethods[i].invoke(bean);
             }
-        } catch (final Throwable e) // NOPMD see Logs.catchThrowable
+        } catch (final Throwable e) // NOSONAR see Logs.catchThrowable
         {
             final Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
             Logs.catchThrowable(cause);
@@ -115,7 +115,7 @@ final class BeanLifecycle implements PrivilegedAction<Void> {
         for (int i = 0; i < stopMethods.length; i++) {
             try {
                 stopMethods[i].invoke(bean);
-            } catch (final Throwable e) // NOPMD see Logs.catchThrowable
+            } catch (final Throwable e) // NOSONAR see Logs.catchThrowable
             {
                 final Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
                 Logs.catchThrowable(cause);

@@ -55,7 +55,7 @@ public abstract class AbstractServiceImport<T>
     // need accurate usage count
     count = new AtomicInteger();
 
-    watchers = new ArrayList<Export<?>>(2);
+    watchers = new ArrayList<>(2);
   }
 
   public final T get() {
@@ -130,7 +130,7 @@ public abstract class AbstractServiceImport<T>
         } else {
           try {
             releaseService(instance);
-          } catch (final RuntimeException re) {/* already gone */} // NOPMD
+          } catch (final RuntimeException re) {/* already gone */} // NOSONAR
           finally {
             instance = null;
           }

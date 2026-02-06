@@ -46,7 +46,7 @@ final class ComputedMapFactory {
    */
   static <K, V> ConcurrentMap<K, V> computedMap(final ReferenceType keyType,
       final ReferenceType valType, final int capacity, final Function<K, V> function) {
-    return new ComputedMap<K, V>(keyType, valType, capacity, function);
+    return new ComputedMap<>(keyType, valType, capacity, function);
   }
 
   private static final class ComputedMap<K, V>

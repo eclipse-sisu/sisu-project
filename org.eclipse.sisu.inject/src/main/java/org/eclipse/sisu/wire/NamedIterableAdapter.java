@@ -39,7 +39,7 @@ final class NamedIterableAdapter<V> implements Iterable<Entry<String, V>> {
     // ----------------------------------------------------------------------
 
     public Iterator<Entry<String, V>> iterator() {
-        return new NamedIterator<V>(delegate);
+        return new NamedIterator<>(delegate);
     }
 
     // ----------------------------------------------------------------------
@@ -73,7 +73,7 @@ final class NamedIterableAdapter<V> implements Iterable<Entry<String, V>> {
         }
 
         public Entry<String, V> next() {
-            return new NamedEntry<V>(iterator.next());
+            return new NamedEntry<>(iterator.next());
         }
 
         public void remove() {

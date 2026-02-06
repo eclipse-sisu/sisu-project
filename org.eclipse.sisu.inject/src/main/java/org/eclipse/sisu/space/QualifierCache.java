@@ -105,7 +105,7 @@ final class QualifierCache implements ClassVisitor {
                     buf.setLength(1);
                 }
             }
-        } catch (final RuntimeException e) // NOPMD
+        } catch (final RuntimeException e) // NOSONAR
         {
             // couldn't access system property, leave results unseeded
         }

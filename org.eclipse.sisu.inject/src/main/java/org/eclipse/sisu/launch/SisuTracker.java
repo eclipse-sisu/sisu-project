@@ -137,7 +137,7 @@ public class SisuTracker extends BundleTracker<Object> implements BundlePlan {
      */
     @SuppressWarnings("boxing")
     public final void purgeBundles() {
-        for (final long bundleId : new ArrayList<Long>(bundlePublishers.keySet())) {
+        for (final long bundleId : new ArrayList<>(bundlePublishers.keySet())) {
             final Bundle bundle = context.getBundle(bundleId);
             if (null == bundle || evictBundle(bundle)) {
                 removePublisher(bundleId);
@@ -171,7 +171,7 @@ public class SisuTracker extends BundleTracker<Object> implements BundlePlan {
      * @return List of plans
      */
     protected List<BundlePlan> discoverPlans() {
-        final List<BundlePlan> localPlans = new ArrayList<BundlePlan>();
+        final List<BundlePlan> localPlans = new ArrayList<>();
 
         localPlans.add(new SisuBundlePlan(locator));
         final SisuExtensions extensions = SisuExtensions.local(new BundleClassSpace(context.getBundle()));

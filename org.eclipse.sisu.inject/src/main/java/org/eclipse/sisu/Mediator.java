@@ -121,7 +121,8 @@ public interface Mediator<Q extends Annotation, T, W> {
      * @param entry The added bean entry
      * @param watcher The watching object
      */
-    void add(BeanEntry<Q, T> entry, W watcher) throws Exception;
+    void add(BeanEntry<Q, T> entry, W watcher)
+            throws Exception; // NOSONAR - throws Exception to allow for any translation issues
 
     /**
      * Processes the removed {@link BeanEntry} and sends the necessary updates to the watcher.
@@ -129,5 +130,6 @@ public interface Mediator<Q extends Annotation, T, W> {
      * @param entry The removed bean entry
      * @param watcher The watching object
      */
-    void remove(BeanEntry<Q, T> entry, W watcher) throws Exception;
+    void remove(BeanEntry<Q, T> entry, W watcher)
+            throws Exception; // NOSONAR - throws Exception to allow for any translation issues
 }

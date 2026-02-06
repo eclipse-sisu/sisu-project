@@ -130,7 +130,7 @@ final class ImportGlue {
 
     // for the moment only proxy the public API...
     final Method[] publicAPI = clazz.getMethods();
-    final List<Method> methods = new ArrayList<Method>(publicAPI.length + OBJECT_METHODS.length);
+    final List<Method> methods = new ArrayList<>(publicAPI.length + OBJECT_METHODS.length);
     addAll(methods, publicAPI);
 
     if (clazz.isInterface()) {

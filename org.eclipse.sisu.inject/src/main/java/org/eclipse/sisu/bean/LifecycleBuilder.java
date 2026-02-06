@@ -41,11 +41,11 @@ final class LifecycleBuilder {
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final List<Method> startMethods = new ArrayList<Method>();
+    private final List<Method> startMethods = new ArrayList<>();
 
-    private final List<Method> stopMethods = new ArrayList<Method>();
+    private final List<Method> stopMethods = new ArrayList<>();
 
-    private final List<Class<?>> hierarchy = new ArrayList<Class<?>>();
+    private final List<Class<?>> hierarchy = new ArrayList<>();
 
     // ----------------------------------------------------------------------
     // Public methods

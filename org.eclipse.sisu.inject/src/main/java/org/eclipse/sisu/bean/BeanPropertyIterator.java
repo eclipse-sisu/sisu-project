@@ -60,10 +60,10 @@ final class BeanPropertyIterator<T> implements Iterator<BeanProperty<T>> {
 
             if (member instanceof Method) {
                 if (isSetter(member)) {
-                    nextProperty = new BeanPropertySetter<T>((Method) member);
+                    nextProperty = new BeanPropertySetter<>((Method) member);
                 }
             } else if (member instanceof Field) {
-                nextProperty = new BeanPropertyField<T>((Field) member);
+                nextProperty = new BeanPropertyField<>((Field) member);
             }
         }
 

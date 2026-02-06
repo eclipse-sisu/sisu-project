@@ -131,7 +131,7 @@ public class URLClassSpace implements ClassSpace {
     }
 
     public final DeferredClass<?> deferLoadClass(final String name) {
-        return new NamedClass<Object>(this, name);
+        return new NamedClass<>(this, name);
     }
 
     public final URL getResource(final String name) {
@@ -239,11 +239,11 @@ public class URLClassSpace implements ClassSpace {
      * @return Expanded URL class path
      */
     private static URL[] expandClassPath(final URL[] classPath) {
-        final List<URL> searchPath = new ArrayList<URL>();
+        final List<URL> searchPath = new ArrayList<>();
         Collections.addAll(searchPath, classPath);
 
-        final List<URL> expandedPath = new ArrayList<URL>();
-        final Set<String> visited = new HashSet<String>();
+        final List<URL> expandedPath = new ArrayList<>();
+        final Set<String> visited = new HashSet<>();
 
         // search path may grow, so use index not iterator
         for (int i = 0; i < searchPath.size(); i++) {
@@ -261,7 +261,7 @@ public class URLClassSpace implements ClassSpace {
             for (final String entry : classPathEntries) {
                 try {
                     searchPath.add(new URL(url, entry));
-                } catch (final MalformedURLException e) // NOPMD
+                } catch (final MalformedURLException e) // NOSONAR
                 {
                     // invalid Class-Path entry
                 }

@@ -91,7 +91,7 @@ final class PlaceholderBeanProvider<V> implements Provider<V> {
 
         // ----------------- CONVERSION ------------------
 
-        if (template == value) // NOPMD we want to know if same instance
+        if (template == value) // NOSONAR we want to know if same instance
         {
             // no interpolation occurred; is this perhaps a Guice constant?
             value = nullify(lookup(lookupKey.ofType(String.class)));

@@ -147,7 +147,7 @@ final class DependencyAnalyzer extends DefaultBindingTargetVisitor<Object, Boole
                         .getImplementationClass()
                         .load();
                 analyzeImplementation(TypeLiteral.get(clazz), false);
-            } catch (final TypeNotPresentException e) // NOPMD
+            } catch (final TypeNotPresentException e) // NOSONAR
             {
                 // deferred provider, so we also defer any errors until someone actually tries to use it
             }

@@ -107,7 +107,7 @@ public final class GuiceExtensionFactory
 
   // re-use injectors for extensions with the same contributor
   private static final Map<IContributor, Injector> INJECTORS =
-      new HashMap<IContributor, Injector>();
+      new HashMap<>();
 
   private IConfigurationElement configuration;
   private IContributor contributor;
@@ -168,7 +168,7 @@ public final class GuiceExtensionFactory
       Injector injector = INJECTORS.get(contributor);
       if (null == injector) {
 
-        final List<Module> modules = new ArrayList<Module>();
+        final List<Module> modules = new ArrayList<>();
 
         // first add the OSGi service registry and Eclipse extension bindings
         modules.add(osgiModule(resolve(contributor).getBundleContext(), eclipseRegistry()));

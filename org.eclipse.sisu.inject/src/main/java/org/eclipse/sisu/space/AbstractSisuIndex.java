@@ -126,7 +126,7 @@ abstract class AbstractSisuIndex {
             } finally {
                 reader.close();
             }
-        } catch (final IOException e) // NOPMD
+        } catch (final IOException e) // NOSONAR
         {
             // ignore missing index
         }

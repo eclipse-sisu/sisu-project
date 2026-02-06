@@ -32,7 +32,7 @@ final class ElementMerger extends DefaultElementVisitor<Void> {
 
     private final DependencyVerifier verifier = new DependencyVerifier();
 
-    private final Set<Key<?>> localKeys = new HashSet<Key<?>>();
+    private final Set<Key<?>> localKeys = new HashSet<>();
 
     private final Binder binder;
 

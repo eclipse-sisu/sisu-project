@@ -69,7 +69,7 @@ final class OSGiServiceExport<T>
     if (null != reg) {
       try {
         reg.unregister();
-      } catch (final RuntimeException re) {/* already gone */} // NOPMD
+      } catch (final RuntimeException re) {/* already gone */} // NOSONAR
       reg = null;
     }
   }

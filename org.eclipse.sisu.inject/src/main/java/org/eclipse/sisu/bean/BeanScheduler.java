@@ -83,7 +83,7 @@ public abstract class BeanScheduler {
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    static final ThreadLocal<Object[]> pendingHolder = new ThreadLocal<Object[]>();
+    static final ThreadLocal<Object[]> pendingHolder = new ThreadLocal<>();
 
     // ----------------------------------------------------------------------
     // Public methods

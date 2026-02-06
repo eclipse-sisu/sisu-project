@@ -50,7 +50,7 @@ public class RegistryChain
     // support lazy lookup from multiple registries
     for (int i = 0; i < registries.length; i++) {
       final ServiceRegistry reg = registries[i];
-      lazyIterables[i] = new Iterable<Import<T>>() { // NOPMD
+      lazyIterables[i] = new Iterable<>() { // NOSONAR
             private volatile Iterable<Import<T>> iterable;
 
             // delay lookup until absolutely necessary
@@ -70,7 +70,7 @@ public class RegistryChain
     // chain the iterators together
     return new Iterable<Import<T>>() {
       public Iterator<Import<T>> iterator() {
-        return new IteratorChain<Import<T>>(lazyIterables);
+        return new IteratorChain<>(lazyIterables);
       }
     };
   }
@@ -81,7 +81,7 @@ public class RegistryChain
     for (final ServiceRegistry r : registries) {
       try {
         r.watch(clazz, filter, watcher); // attempt to watch all of them
-      } catch (final UnsupportedOperationException e) {/* unable to watch */} // NOPMD
+      } catch (final UnsupportedOperationException e) {/* unable to watch */} // NOSONAR
     }
   }
 

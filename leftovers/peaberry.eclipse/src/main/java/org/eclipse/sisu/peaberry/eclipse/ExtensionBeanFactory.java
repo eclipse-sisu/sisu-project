@@ -45,7 +45,7 @@ final class ExtensionBeanFactory {
     try {
       // first try to instantiate direct class
       return newExtensionImpl(clazz, config);
-    } catch (final RuntimeException re) {/* fall back to proxy */} // NOPMD
+    } catch (final RuntimeException re) {/* fall back to proxy */} // NOSONAR
 
     // create proxy based on the supplied interface
     final ClassLoader loader = clazz.getClassLoader();
@@ -101,7 +101,7 @@ final class ExtensionBeanFactory {
       if (clazz.isAssignableFrom(m.getReturnType())) {
         return (T) m.invoke(element);
       }
-    } catch (final Exception e) {/* no such setting */} // NOPMD
+    } catch (final Exception e) {/* no such setting */} // NOSONAR
 
     return null;
   }

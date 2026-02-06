@@ -87,7 +87,7 @@ public class ArrayConverter extends AbstractCollectionConverter implements Param
     @Override
     protected final Collection<Object> instantiateCollection(
             final PlexusConfiguration configuration, final Class<?> type, final ClassLoader loader) {
-        return new ArrayList<Object>(configuration.getChildCount());
+        return new ArrayList<>(configuration.getChildCount());
     }
 
     private static Type findElementType(final Class<?> rawArrayType, final Type[] typeArguments) {

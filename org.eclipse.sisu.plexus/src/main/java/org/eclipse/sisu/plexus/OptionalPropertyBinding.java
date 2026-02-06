@@ -44,7 +44,7 @@ final class OptionalPropertyBinding<T> implements PropertyBinding {
     public <B> void injectProperty(final B bean) {
         try {
             property.set(bean, provider.get());
-        } catch (final RuntimeException e) // NOPMD
+        } catch (final RuntimeException e) // NOSONAR
         {
             // binding is optional, ignore failures
         }

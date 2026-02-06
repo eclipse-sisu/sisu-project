@@ -89,12 +89,12 @@ public abstract class AbstractWatcher<S>
    * @param instance tracking instance
    * @param attributes service attributes
    */
-  protected void modified(final S instance, final Map<String, ?> attributes) {} // NOPMD
+  protected void modified(final S instance, final Map<String, ?> attributes) {} // NOSONAR
 
   /**
    * Notification that a service has been removed from this watcher.
    * 
    * @param instance tracking instance
    */
-  protected void removed(final S instance) {} // NOPMD
+  protected void removed(final S instance) {} // NOSONAR
 }

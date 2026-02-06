@@ -42,7 +42,7 @@ final class ExtensionBeanHandler
   private final IConfigurationElement config;
 
   ExtensionBeanHandler(final IConfigurationElement config) {
-    cache = new ConcurrentHashMap<Method, Object>();
+    cache = new ConcurrentHashMap<>();
     this.config = config;
   }
 
@@ -109,7 +109,7 @@ final class ExtensionBeanHandler
 
       try {
         return config.createExecutableExtension(key);
-      } catch (final CoreException e) {/* try nested getter */} // NOPMD
+      } catch (final CoreException e) {/* try nested getter */} // NOSONAR
     }
 
     return invokeNestedGetter(resultType, key);

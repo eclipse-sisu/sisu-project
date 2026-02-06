@@ -77,7 +77,7 @@ final class ImportProxyClassLoader
     }
 
     try {
-      return doPrivileged(new PrivilegedAction<ClassLoader>() {
+      return doPrivileged(new PrivilegedAction<>() {
         public ClassLoader run() {
           return getSystemClassLoader();
         }
@@ -91,14 +91,14 @@ final class ImportProxyClassLoader
    * @return class loader related to the given key
    */
   static ClassLoader getClassLoaderFromKey(final Object key) {
-    return NULL_CLASS_LOADER_KEY != key ? (ClassLoader) key : null; // NOPMD
+    return NULL_CLASS_LOADER_KEY != key ? (ClassLoader) key : null; // NOSONAR
   }
 
   // weak map of classloaders, to allow eager collection of proxied classes
   private static final ConcurrentMap<Object, ClassLoader> LOADER_MAP =
       computedMap(WEAK, WEAK, 32, new Function<Object, ClassLoader>() {
         public ClassLoader compute(final Object parentKey) {
-          return doPrivileged(new PrivilegedAction<ClassLoader>() {
+          return doPrivileged(new PrivilegedAction<>() {
             public ClassLoader run() {
               return new ImportProxyClassLoader(getClassLoaderFromKey(parentKey));
             }
