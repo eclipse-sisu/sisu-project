@@ -1,19 +1,17 @@
-Bundle-Name: Sisu-Inject (Incubation)
+Bundle-Name: Sisu-Inject
 Bundle-SymbolicName: org.eclipse.sisu.inject;singleton:=true
 Main-Class: org.eclipse.sisu.launch.Main
--exportcontents: !*.asm.*,\
- org.eclipse.sisu.*,\
+-exportcontents: org.eclipse.sisu.*,\
  org.sonatype.inject;x-internal:=true
 # remove annotation processor dependencies (never used at runtime)
 # mark all optional dependencies as optional
-Import-Package: javax.inject,\
- org.objectweb.asm.*,\
- com.google.inject.servlet;resolution:=optional,\
+Import-Package: com.google.inject.servlet;resolution:=optional,\
  javax.servlet.*;resolution:=optional,\
  org.slf4j.*;resolution:=optional,\
  org.junit.*;resolution:=optional,\
  junit.framework.*;resolution:=optional,\
  org.testng.*;resolution:=optional,\
+ javax.enterprise.inject;resolution:=optional,\
  !javax.annotation.processing.*,\
  !javax.lang.model.*,\
  !javax.tools.*,\

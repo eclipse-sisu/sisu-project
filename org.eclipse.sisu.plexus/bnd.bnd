@@ -1,4 +1,4 @@
-Bundle-Name: Sisu-Plexus (Incubation)
+Bundle-Name: Sisu-Plexus
 Bundle-SymbolicName: org.eclipse.sisu.plexus;singleton:=true
 -exportcontents: org.eclipse.sisu.plexus.*,\
  org.codehaus.plexus.*
