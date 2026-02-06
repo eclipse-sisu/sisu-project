@@ -44,6 +44,7 @@ final class BeanPropertyIterator<T> implements Iterator<BeanProperty<T>> {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public boolean hasNext() {
         while (null == nextProperty) {
             if (!memberIterator.hasNext()) {
@@ -70,6 +71,7 @@ final class BeanPropertyIterator<T> implements Iterator<BeanProperty<T>> {
         return true;
     }
 
+    @Override
     public BeanProperty<T> next() {
         if (hasNext()) {
             // initialized by hasNext()
@@ -80,6 +82,7 @@ final class BeanPropertyIterator<T> implements Iterator<BeanProperty<T>> {
         throw new NoSuchElementException();
     }
 
+    @Override
     public void remove() {
         throw new UnsupportedOperationException();
     }

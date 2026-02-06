@@ -92,14 +92,17 @@ public final class EntryListAdapter<V> extends AbstractSequentialList<V> {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public boolean hasNext() {
             return iterator.hasNext();
         }
 
+        @Override
         public V next() {
             return iterator.next().getValue();
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }
@@ -141,14 +144,17 @@ public final class EntryListAdapter<V> extends AbstractSequentialList<V> {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public boolean hasNext() {
             return index < entryCache.size() || iterator.hasNext();
         }
 
+        @Override
         public boolean hasPrevious() {
             return index > 0;
         }
 
+        @Override
         public V next() {
             if (index >= entryCache.size()) {
                 entryCache.add(iterator.next());
@@ -156,6 +162,7 @@ public final class EntryListAdapter<V> extends AbstractSequentialList<V> {
             return entryCache.get(index++).getValue();
         }
 
+        @Override
         public V previous() {
             if (index <= 0) {
                 throw new NoSuchElementException();
@@ -163,22 +170,27 @@ public final class EntryListAdapter<V> extends AbstractSequentialList<V> {
             return entryCache.get(--index).getValue();
         }
 
+        @Override
         public int nextIndex() {
             return index;
         }
 
+        @Override
         public int previousIndex() {
             return index - 1;
         }
 
+        @Override
         public void add(final V o) {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public void set(final V o) {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }

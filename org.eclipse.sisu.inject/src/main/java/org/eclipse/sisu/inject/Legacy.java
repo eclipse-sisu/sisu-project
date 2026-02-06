@@ -64,6 +64,7 @@ public final class Legacy<S> {
             return null == delegate
                     ? null
                     : (T) proxyConstructor.newInstance(new InvocationHandler() {
+                        @Override
                         public Object invoke(final Object proxy, final Method method, final Object[] args)
                                 throws Exception {
                             return method.invoke(delegate, args);
@@ -92,14 +93,15 @@ public final class Legacy<S> {
             public Iterator<BeanEntry<Q, T>> iterator() {
                 final Iterator<? extends org.eclipse.sisu.BeanEntry<Q, T>> itr = delegate.iterator();
                 return new Iterator<BeanEntry<Q, T>>() {
+                    @Override
                     public boolean hasNext() {
                         return itr.hasNext();
                     }
-
+                    @Override
                     public BeanEntry<Q, T> next() {
                         return Legacy.adapt(itr.next());
                     }
-
+                    @Override
                     public void remove() {
                         itr.remove();
                     }
@@ -111,6 +113,7 @@ public final class Legacy<S> {
     public static <Q extends Annotation, T> Provider<Iterable<BeanEntry<Q, T>>> adapt(
             final Provider<Iterable<? extends org.eclipse.sisu.BeanEntry<Q, T>>> delegate) {
         return new Provider<Iterable<BeanEntry<Q, T>>>() {
+            @Override
             public Iterable<BeanEntry<Q, T>> get() {
                 return Legacy.adapt(delegate.get());
             }
@@ -122,10 +125,12 @@ public final class Legacy<S> {
         return null == delegate
                 ? null
                 : new org.eclipse.sisu.Mediator<Q, T, W>() {
+                    @Override
                     public void add(final org.eclipse.sisu.BeanEntry<Q, T> entry, final W watcher) throws Exception {
                         delegate.add(Legacy.adapt(entry), watcher);
                     }
 
+                    @Override
                     public void remove(final org.eclipse.sisu.BeanEntry<Q, T> entry, final W watcher) throws Exception {
                         delegate.remove(Legacy.adapt(entry), watcher);
                     }

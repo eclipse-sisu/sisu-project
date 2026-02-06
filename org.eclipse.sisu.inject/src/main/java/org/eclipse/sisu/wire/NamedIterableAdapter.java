@@ -38,6 +38,7 @@ final class NamedIterableAdapter<V> implements Iterable<Entry<String, V>> {
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public Iterator<Entry<String, V>> iterator() {
         return new NamedIterator<>(delegate);
     }
@@ -68,14 +69,17 @@ final class NamedIterableAdapter<V> implements Iterable<Entry<String, V>> {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public boolean hasNext() {
             return iterator.hasNext();
         }
 
+        @Override
         public Entry<String, V> next() {
             return new NamedEntry<>(iterator.next());
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }
@@ -103,14 +107,17 @@ final class NamedIterableAdapter<V> implements Iterable<Entry<String, V>> {
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public String getKey() {
             return entry.getKey().value();
         }
 
+        @Override
         public V getValue() {
             return entry.getValue();
         }
 
+        @Override
         public V setValue(final V value) {
             throw new UnsupportedOperationException();
         }

@@ -40,6 +40,7 @@ final class ProviderIterableAdapter<K extends Annotation, V> implements Iterable
     // Public methods
     // ----------------------------------------------------------------------
 
+    @Override
     public Iterator<Entry<K, Provider<V>>> iterator() {
         return new ProviderIterator<>(delegate);
     }
@@ -70,14 +71,17 @@ final class ProviderIterableAdapter<K extends Annotation, V> implements Iterable
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public boolean hasNext() {
             return iterator.hasNext();
         }
 
+        @Override
         public Entry<K, Provider<V>> next() {
             return new ProviderEntry<>(iterator.next());
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }
@@ -105,14 +109,17 @@ final class ProviderIterableAdapter<K extends Annotation, V> implements Iterable
         // Public methods
         // ----------------------------------------------------------------------
 
+        @Override
         public K getKey() {
             return entry.getKey();
         }
 
+        @Override
         public Provider<V> getValue() {
             return entry.getProvider();
         }
 
+        @Override
         public Provider<V> setValue(final Provider<V> value) {
             throw new UnsupportedOperationException();
         }

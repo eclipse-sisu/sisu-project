@@ -87,12 +87,14 @@ public final class IndexedClassFinder implements ClassFinder {
         return names;
     }
 
+    @Override
     public Enumeration<URL> findClasses(final ClassSpace space) {
         final Iterator<String> itr = indexedNames(space).iterator();
 
         return new Enumeration<URL>() {
             private URL nextURL;
 
+            @Override
             public boolean hasMoreElements() {
                 while (null == nextURL && itr.hasNext()) {
                     nextURL = space.getResource(itr.next().replace('.', '/') + ".class");
@@ -100,6 +102,7 @@ public final class IndexedClassFinder implements ClassFinder {
                 return null != nextURL;
             }
 
+            @Override
             public URL nextElement() {
                 if (hasMoreElements()) {
                     final URL tempURL = nextURL;

@@ -86,6 +86,7 @@ final class MergedProperties extends AbstractMap<Object, Object> {
 
                 private int index;
 
+                @Override
                 public boolean hasNext() {
                     while (null == itr || !itr.hasNext()) {
                         if (index >= properties.length) {
@@ -97,6 +98,7 @@ final class MergedProperties extends AbstractMap<Object, Object> {
                 }
 
                 @SuppressWarnings("unchecked")
+                @Override
                 public Entry<Object, Object> next() {
                     if (hasNext()) {
                         return itr.next();
@@ -104,6 +106,7 @@ final class MergedProperties extends AbstractMap<Object, Object> {
                     throw new NoSuchElementException();
                 }
 
+                @Override
                 public void remove() {
                     throw new UnsupportedOperationException();
                 }
