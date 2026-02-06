@@ -186,8 +186,7 @@ class DefaultBeanLocatorTest {
     void testInjectorOrdering() {
         final MutableBeanLocator locator = new DefaultBeanLocator();
 
-        final Iterable<? extends Entry<Named, Bean>> roles =
-                locator.<Named, Bean>locate(Key.get(Bean.class, Named.class));
+        final Iterable<? extends Entry<Named, Bean>> roles = locator.locate(Key.get(Bean.class, Named.class));
 
         publishInjector(locator, parent, 0);
         publishInjector(locator, child1, 1);
@@ -319,7 +318,7 @@ class DefaultBeanLocatorTest {
         publishInjector(locator, parent, 0);
         publishInjector(locator, child1, 1);
 
-        Iterable<? extends Entry<Named, Bean>> roles = locator.<Named, Bean>locate(Key.get(Bean.class, Named.class));
+        Iterable<? extends Entry<Named, Bean>> roles = locator.locate(Key.get(Bean.class, Named.class));
 
         publishInjector(locator, child2, 2);
         publishInjector(locator, child3, 3);

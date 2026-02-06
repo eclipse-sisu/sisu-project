@@ -32,8 +32,7 @@ public final class Legacy<S> {
     // ----------------------------------------------------------------------
 
     @SuppressWarnings("rawtypes")
-    private static final Legacy<org.eclipse.sisu.BeanEntry<?, ?>> LEGACY_BEAN_ENTRY =
-            Legacy.<org.eclipse.sisu.BeanEntry<?, ?>, BeanEntry>as(BeanEntry.class);
+    private static final Legacy<org.eclipse.sisu.BeanEntry<?, ?>> LEGACY_BEAN_ENTRY = Legacy.as(BeanEntry.class);
 
     // ----------------------------------------------------------------------
     // Implementation fields

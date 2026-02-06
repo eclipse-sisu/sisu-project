@@ -35,7 +35,7 @@ public final class BundleClassSpace implements ClassSpace {
 
     private static final URL[] NO_URLS = {};
 
-    private static final Enumeration<URL> NO_ENTRIES = Collections.enumeration(Collections.<URL>emptySet());
+    private static final Enumeration<URL> NO_ENTRIES = Collections.enumeration(Collections.emptySet());
 
     // ----------------------------------------------------------------------
     // Implementation fields

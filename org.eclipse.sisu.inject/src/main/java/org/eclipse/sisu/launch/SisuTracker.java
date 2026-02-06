@@ -66,7 +66,7 @@ public class SisuTracker extends BundleTracker<Object> implements BundlePlan {
     // ----------------------------------------------------------------------
 
     // attempt to track publishers across extender restarts
-    private static final Map<Long, Object> bundlePublishers = Collections.synchronizedMap(Weak.<Long, Object>values());
+    private static final Map<Long, Object> bundlePublishers = Collections.synchronizedMap(Weak.values());
 
     /**
      * Mask of bundle states being tracked.

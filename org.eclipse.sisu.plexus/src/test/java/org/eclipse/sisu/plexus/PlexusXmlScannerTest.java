@@ -94,12 +94,12 @@ public class PlexusXmlScannerTest extends TestCase {
 
         public Enumeration<URL> getResources(final String name) {
             // hide components.xml so we can just test plexus.xml parsing
-            return Collections.enumeration(Collections.<URL>emptyList());
+            return Collections.enumeration(Collections.emptyList());
         }
 
         public Enumeration<URL> findEntries(final String path, final String glob, final boolean recurse) {
             // hide components.xml so we can just test plexus.xml parsing
-            return Collections.enumeration(Collections.<URL>emptyList());
+            return Collections.enumeration(Collections.emptyList());
         }
     }
 

@@ -59,7 +59,7 @@ final class DependencyAnalyzer extends DefaultBindingTargetVisitor<Object, Boole
     // ----------------------------------------------------------------------
 
     static {
-        RESTRICTED_CLASSES = new HashSet<>(Arrays.<Class<?>>asList(
+        RESTRICTED_CLASSES = new HashSet<>(Arrays.asList(
                 AbstractModule.class,
                 Binder.class,
                 Binding.class,
