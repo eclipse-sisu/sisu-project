@@ -86,11 +86,9 @@ public final class InjectorBindings implements BindingPublisher {
                     // create a new instance from the parent template, this time using the current injector
                     return (BindingPublisher)
                             impl.getConstructor(Injector.class).newInstance(injector);
-                } catch (final Exception e) {
+                } catch (final LinkageError | Exception e) {
                     final Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
                     Logs.debug("Problem creating: {}", impl, cause);
-                } catch (final LinkageError e) {
-                    Logs.debug("Problem creating: {}", impl, e);
                 }
             }
         }

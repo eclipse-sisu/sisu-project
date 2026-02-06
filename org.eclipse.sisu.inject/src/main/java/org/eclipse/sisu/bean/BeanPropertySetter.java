@@ -68,11 +68,9 @@ final class BeanPropertySetter<T> implements BeanProperty<T>, PrivilegedAction<V
 
         try {
             method.invoke(bean, value);
-        } catch (final Exception e) {
+        } catch (final LinkageError | Exception e) {
             final Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
             throw new ProvisionException("Error injecting: " + method, cause);
-        } catch (final LinkageError e) {
-            throw new ProvisionException("Error injecting: " + method, e);
         }
     }
 

@@ -120,9 +120,7 @@ public class URLClassSpace implements ClassSpace {
     public final Class<?> loadClass(final String name) {
         try {
             return loader.loadClass(name);
-        } catch (final Exception e) {
-            throw new TypeNotPresentException(name, e);
-        } catch (final LinkageError e) {
+        } catch (final LinkageError | Exception e) {
             throw new TypeNotPresentException(name, e);
         }
     }

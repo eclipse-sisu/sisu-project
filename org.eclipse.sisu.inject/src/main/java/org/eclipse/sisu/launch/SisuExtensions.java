@@ -194,11 +194,9 @@ public final class SisuExtensions implements SpaceModule.Strategy, WireModule.St
                     }
                 }
                 extensions.add(null != instance ? instance : impl.newInstance());
-            } catch (final Exception e) {
+            } catch (final LinkageError | Exception e) {
                 final Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
                 Logs.debug("Problem creating: {}", impl, cause);
-            } catch (final LinkageError e) {
-                Logs.debug("Problem creating: {}", impl, e);
             }
         }
         return extensions;

@@ -269,12 +269,9 @@ public final class QualifiedTypeBinder implements QualifiedTypeListener {
             bindQualifiedInstance(instance);
 
             return instance;
-        } catch (final Exception e) {
+        } catch (final LinkageError | Exception e) {
             final Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
             binder.addError("Error creating instance of: " + type + " reason: " + cause);
-            return null;
-        } catch (final LinkageError e) {
-            binder.addError("Error creating instance of: " + type + " reason: " + e);
             return null;
         }
     }

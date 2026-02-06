@@ -332,11 +332,9 @@ public final class PlexusXmlBeanConverter implements PlexusBeanConverter {
     private static <T> T newImplementation(final Class<T> clazz, final String value) {
         try {
             return clazz.getConstructor(String.class).newInstance(value);
-        } catch (final Exception e) {
+        } catch (final LinkageError | Exception e) {
             final Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
             throw new IllegalArgumentException(String.format(CONVERSION_ERROR, value, clazz), cause);
-        } catch (final LinkageError e) {
-            throw new IllegalArgumentException(String.format(CONVERSION_ERROR, value, clazz), e);
         }
     }
 

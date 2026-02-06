@@ -72,11 +72,9 @@ final class GlueLoader extends ClassLoader {
             return (T) dynamicGlue(type.getRawType())
                     .getConstructor(Provider.class)
                     .newInstance(provider);
-        } catch (final Exception e) {
+        } catch (final LinkageError | Exception e) {
             final Throwable cause = e instanceof InvocationTargetException ? e.getCause() : e;
             throw new ProvisionException("Error proxying: " + type, cause);
-        } catch (final LinkageError e) {
-            throw new ProvisionException("Error proxying: " + type, e);
         }
     }
 
