@@ -67,7 +67,7 @@ class RankedBindingsTest {
 
     @Test
     void testExistingPublishers() {
-        final RankedSequence<BindingPublisher> publishers = new RankedSequence<BindingPublisher>();
+        final RankedSequence<BindingPublisher> publishers = new RankedSequence<>();
 
         RankingFunction function;
 
@@ -87,7 +87,7 @@ class RankedBindingsTest {
         function = new DefaultRankingFunction(2);
         publishers.insert(new InjectorBindings(injector2, function), function.maxRank());
 
-        final RankedBindings<Bean> bindings = new RankedBindings<Bean>(TypeLiteral.get(Bean.class), publishers);
+        final RankedBindings<Bean> bindings = new RankedBindings<>(TypeLiteral.get(Bean.class), publishers);
 
         final Iterator<Binding<Bean>> itr = bindings.iterator();
 
@@ -114,7 +114,7 @@ class RankedBindingsTest {
 
     @Test
     void testPendingPublishers() {
-        final RankedBindings<Bean> bindings = new RankedBindings<Bean>(TypeLiteral.get(Bean.class), null);
+        final RankedBindings<Bean> bindings = new RankedBindings<>(TypeLiteral.get(Bean.class), null);
 
         Iterator<Binding<Bean>> itr = bindings.iterator();
 
@@ -198,7 +198,7 @@ class RankedBindingsTest {
         final BindingPublisher publisher2 = new InjectorBindings(injector2, new DefaultRankingFunction(2));
         final BindingPublisher publisher3 = new InjectorBindings(injector3, new DefaultRankingFunction(3));
 
-        final RankedBindings<Bean> bindings = new RankedBindings<Bean>(TypeLiteral.get(Bean.class), null);
+        final RankedBindings<Bean> bindings = new RankedBindings<>(TypeLiteral.get(Bean.class), null);
 
         bindings.add(publisher0, 0);
         bindings.add(publisher1, 1);

@@ -59,7 +59,7 @@ final class DependencyAnalyzer extends DefaultBindingTargetVisitor<Object, Boole
     // ----------------------------------------------------------------------
 
     static {
-        RESTRICTED_CLASSES = new HashSet<Class<?>>(Arrays.<Class<?>>asList(
+        RESTRICTED_CLASSES = new HashSet<>(Arrays.<Class<?>>asList(
                 AbstractModule.class,
                 Binder.class,
                 Binding.class,
@@ -83,9 +83,9 @@ final class DependencyAnalyzer extends DefaultBindingTargetVisitor<Object, Boole
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final Map<TypeLiteral<?>, Boolean> analyzedTypes = new HashMap<TypeLiteral<?>, Boolean>();
+    private final Map<TypeLiteral<?>, Boolean> analyzedTypes = new HashMap<>();
 
-    private final Set<Key<?>> requiredKeys = new HashSet<Key<?>>();
+    private final Set<Key<?>> requiredKeys = new HashSet<>();
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -101,9 +101,9 @@ final class DependencyAnalyzer extends DefaultBindingTargetVisitor<Object, Boole
     // ----------------------------------------------------------------------
 
     public Set<Key<?>> findMissingKeys(final Set<Key<?>> localKeys) {
-        final Set<Key<?>> missingKeys = new HashSet<Key<?>>();
+        final Set<Key<?>> missingKeys = new HashSet<>();
         while (requiredKeys.size() > 0) {
-            final List<Key<?>> candidateKeys = new ArrayList<Key<?>>(requiredKeys);
+            final List<Key<?>> candidateKeys = new ArrayList<>(requiredKeys);
             requiredKeys.clear(); // reset so we can detect any implicit requirements
 
             for (final Key<?> key : candidateKeys) {

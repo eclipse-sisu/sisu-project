@@ -26,7 +26,7 @@ final class RankedBindings<T> implements Iterable<Binding<T>>, BindingSubscriber
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    final transient RankedSequence<Binding<T>> bindings = new RankedSequence<Binding<T>>();
+    final transient RankedSequence<Binding<T>> bindings = new RankedSequence<>();
 
     final transient TypeLiteral<T> type;
 
@@ -40,7 +40,7 @@ final class RankedBindings<T> implements Iterable<Binding<T>>, BindingSubscriber
 
     RankedBindings(final TypeLiteral<T> type, final RankedSequence<BindingPublisher> publishers) {
         this.type = type;
-        this.pendingPublishers = new RankedSequence<BindingPublisher>(publishers);
+        this.pendingPublishers = new RankedSequence<>(publishers);
     }
 
     // ----------------------------------------------------------------------
@@ -78,7 +78,7 @@ final class RankedBindings<T> implements Iterable<Binding<T>>, BindingSubscriber
     // ----------------------------------------------------------------------
 
     <Q extends Annotation> BeanCache<Q, T> newBeanCache() {
-        final BeanCache<Q, T> beans = new BeanCache<Q, T>();
+        final BeanCache<Q, T> beans = new BeanCache<>();
         synchronized (cachedBeans) {
             cachedBeans.add(beans);
         }

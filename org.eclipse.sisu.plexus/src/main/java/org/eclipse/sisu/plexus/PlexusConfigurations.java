@@ -48,7 +48,7 @@ final class PlexusConfigurations {
      * @return Provider that provides configured values for the given property
      */
     public <T> Provider<T> lookup(final Configuration configuration, final BeanProperty<T> property) {
-        return new ConfigurationProvider<T>(converterProvider, property.getType(), configuration.value());
+        return new ConfigurationProvider<>(converterProvider, property.getType(), configuration.value());
     }
 
     // ----------------------------------------------------------------------

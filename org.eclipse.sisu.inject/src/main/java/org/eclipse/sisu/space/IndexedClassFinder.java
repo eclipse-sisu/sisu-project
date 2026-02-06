@@ -64,7 +64,7 @@ public final class IndexedClassFinder implements ClassFinder {
             indices = space.findEntries(localPath, indexName, false);
         }
 
-        final Set<String> names = new LinkedHashSet<String>();
+        final Set<String> names = new LinkedHashSet<>();
         while (indices.hasMoreElements()) {
             final URL url = indices.nextElement();
             try {

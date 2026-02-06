@@ -28,10 +28,9 @@ import org.junit.jupiter.api.Test;
 class NamedIterableAdapterTest {
     @Test
     void testNamedAdapter() {
-        final Map<Named, String> original = new LinkedHashMap<Named, String>();
+        final Map<Named, String> original = new LinkedHashMap<>();
 
-        final Map<String, String> adapter =
-                new EntryMapAdapter<String, String>(new NamedIterableAdapter<String>(original.entrySet()));
+        final Map<String, String> adapter = new EntryMapAdapter<>(new NamedIterableAdapter<>(original.entrySet()));
 
         assertEquals(original, adapter);
         original.put(Names.named("3"), "C");
@@ -68,10 +67,9 @@ class NamedIterableAdapterTest {
 
     @Test
     void testUnsupportedOperations() {
-        final Map<Named, String> original = new LinkedHashMap<Named, String>();
+        final Map<Named, String> original = new LinkedHashMap<>();
 
-        final Map<String, String> adapter =
-                new EntryMapAdapter<String, String>(new NamedIterableAdapter<String>(original.entrySet()));
+        final Map<String, String> adapter = new EntryMapAdapter<>(new NamedIterableAdapter<>(original.entrySet()));
 
         original.put(Names.named("1"), "A");
 

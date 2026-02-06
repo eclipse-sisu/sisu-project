@@ -223,8 +223,8 @@ final class PlexusXmlScanner {
 
         String implementation = null;
 
-        final Map<String, Requirement> requirementMap = new HashMap<String, Requirement>();
-        final Map<String, Configuration> configurationMap = new HashMap<String, Configuration>();
+        final Map<String, Requirement> requirementMap = new HashMap<>();
+        final Map<String, Configuration> configurationMap = new HashMap<>();
         final ClassSpace space = registry.getSpace();
 
         parser.require(XmlPullParser.START_TAG, null, "component");
@@ -299,7 +299,7 @@ final class PlexusXmlScanner {
             final MXParser parser, final ClassSpace space, final Map<String, Requirement> requirementMap)
             throws XmlPullParserException, IOException {
         String role = null;
-        final List<String> hintList = new ArrayList<String>();
+        final List<String> hintList = new ArrayList<>();
         String fieldName = null;
         boolean optional = false;
 

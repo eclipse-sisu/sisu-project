@@ -50,8 +50,8 @@ public class ConfigurationAnnotationTest extends TestCase {
         cloneToString = cloneToString.replace("class ", "").replace("interface ", "");
 
         assertEquals(
-                new HashSet<String>(Arrays.asList(origToString.split("[(, )]"))),
-                new HashSet<String>(Arrays.asList(cloneToString.split("[(, )]"))));
+                new HashSet<>(Arrays.asList(origToString.split("[(, )]"))),
+                new HashSet<>(Arrays.asList(cloneToString.split("[(, )]"))));
 
         assertEquals(orig.annotationType(), clone.annotationType());
     }

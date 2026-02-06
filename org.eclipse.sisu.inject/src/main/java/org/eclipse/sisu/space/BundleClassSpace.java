@@ -87,7 +87,7 @@ public final class BundleClassSpace implements ClassSpace {
         final URL[] classPath = getBundleClassPath();
         final Enumeration<URL> entries = bundle.findEntries(null != path ? path : "/", glob, recurse);
         if (classPath.length > 0) {
-            return new ChainedEnumeration<URL>(entries, new ResourceEnumeration(path, glob, recurse, classPath));
+            return new ChainedEnumeration<>(entries, new ResourceEnumeration(path, glob, recurse, classPath));
         }
         return null != entries ? entries : NO_ENTRIES;
     }
@@ -130,8 +130,8 @@ public final class BundleClassSpace implements ClassSpace {
             if (null == path) {
                 bundleClassPath = NO_URLS;
             } else {
-                final List<URL> classPath = new ArrayList<URL>();
-                final Set<String> visited = new HashSet<String>();
+                final List<URL> classPath = new ArrayList<>();
+                final Set<String> visited = new HashSet<>();
 
                 visited.add(".");
 

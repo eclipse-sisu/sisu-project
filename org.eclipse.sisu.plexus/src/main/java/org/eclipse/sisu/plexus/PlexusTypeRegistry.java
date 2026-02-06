@@ -38,11 +38,11 @@ final class PlexusTypeRegistry {
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final Map<String, Component> components = new HashMap<String, Component>();
+    private final Map<String, Component> components = new HashMap<>();
 
-    private final Map<String, DeferredClass<?>> implementations = new HashMap<String, DeferredClass<?>>();
+    private final Map<String, DeferredClass<?>> implementations = new HashMap<>();
 
-    private final Set<String> deferredNames = new HashSet<String>();
+    private final Set<String> deferredNames = new HashSet<>();
 
     private final ClassSpace space;
 
@@ -146,7 +146,7 @@ final class PlexusTypeRegistry {
      * @return Plexus component map
      */
     Map<Component, DeferredClass<?>> getComponents() {
-        final Map<Component, DeferredClass<?>> map = new HashMap<Component, DeferredClass<?>>();
+        final Map<Component, DeferredClass<?>> map = new HashMap<>();
         for (final Entry<String, DeferredClass<?>> i : implementations.entrySet()) {
             map.put(components.get(i.getKey()), i.getValue());
         }

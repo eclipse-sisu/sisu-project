@@ -85,7 +85,7 @@ class FileEntryIteratorTest {
     void testSimpleFolder() throws Exception {
         final Iterator<String> i = new FileEntryIterator(expand(resource("simple.jar")), "", true);
 
-        final Set<String> names = new HashSet<String>();
+        final Set<String> names = new HashSet<>();
         while (i.hasNext()) {
             names.add(i.next());
         }
@@ -113,7 +113,7 @@ class FileEntryIteratorTest {
     void testNoRecursion() throws Exception {
         final Iterator<String> i = new FileEntryIterator(expand(resource("simple.jar")), "", false);
 
-        final Set<String> names = new HashSet<String>();
+        final Set<String> names = new HashSet<>();
         while (i.hasNext()) {
             names.add(i.next());
         }
@@ -132,7 +132,7 @@ class FileEntryIteratorTest {
     void testSubPath() throws Exception {
         final Iterator<String> i = new FileEntryIterator(expand(resource("simple.jar")), "a/b", true);
 
-        final Set<String> names = new HashSet<String>();
+        final Set<String> names = new HashSet<>();
         while (i.hasNext()) {
             names.add(i.next());
         }

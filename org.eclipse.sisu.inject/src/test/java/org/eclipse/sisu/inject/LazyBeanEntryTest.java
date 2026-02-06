@@ -59,13 +59,13 @@ class LazyBeanEntryTest {
         });
 
         final LazyBeanEntry<Annotation, Bean> bean1 =
-                new LazyBeanEntry<Annotation, Bean>(key1.getAnnotation(), injector.getBinding(key1), 42);
+                new LazyBeanEntry<>(key1.getAnnotation(), injector.getBinding(key1), 42);
         final LazyBeanEntry<Annotation, Bean> bean2 =
-                new LazyBeanEntry<Annotation, Bean>(key2.getAnnotation(), injector.getBinding(key2), -24);
+                new LazyBeanEntry<>(key2.getAnnotation(), injector.getBinding(key2), -24);
         final LazyBeanEntry<Annotation, Bean> bean3 =
-                new LazyBeanEntry<Annotation, Bean>(key3.getAnnotation(), injector.getBinding(key3), 0);
+                new LazyBeanEntry<>(key3.getAnnotation(), injector.getBinding(key3), 0);
         final LazyBeanEntry<Annotation, Bean> bean4 =
-                new LazyBeanEntry<Annotation, Bean>(key4.getAnnotation(), injector.getBinding(key4), -1);
+                new LazyBeanEntry<>(key4.getAnnotation(), injector.getBinding(key4), -1);
 
         assertEquals("This is a test", bean1.getDescription());
         assertTrue(bean1.getSource() instanceof StackTraceElement);
@@ -106,8 +106,7 @@ class LazyBeanEntryTest {
             }
         });
 
-        final Entry<Annotation, Object> countingEntry =
-                new LazyBeanEntry<Annotation, Object>(null, injector.getBinding(Object.class), 0);
+        final Entry<Annotation, Object> countingEntry = new LazyBeanEntry<>(null, injector.getBinding(Object.class), 0);
 
         final Thread[] pool = new Thread[8];
         for (int i = 0; i < pool.length; i++) {
@@ -178,7 +177,7 @@ class LazyBeanEntryTest {
         }
 
         public DeferredClass<String> getImplementationClass() {
-            return new LoadedClass<String>(String.class);
+            return new LoadedClass<>(String.class);
         }
     }
 
@@ -205,9 +204,9 @@ class LazyBeanEntryTest {
         });
 
         final Entry<Named, String> entry1 =
-                new LazyBeanEntry<Named, String>((Named) key1.getAnnotation(), injector.getBinding(key1), 0);
+                new LazyBeanEntry<>((Named) key1.getAnnotation(), injector.getBinding(key1), 0);
         final Entry<Named, String> entry2 =
-                new LazyBeanEntry<Named, String>((Named) key2.getAnnotation(), injector.getBinding(key2), 0);
+                new LazyBeanEntry<>((Named) key2.getAnnotation(), injector.getBinding(key2), 0);
 
         assertEquals('@' + javax.inject.Named.class.getName() + "(value=CLS)=" + String.class, entry1.toString());
         assertEquals('@' + javax.inject.Named.class.getName() + "(value=PRO)=" + opaqueProvider, entry2.toString());

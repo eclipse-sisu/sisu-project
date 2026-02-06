@@ -128,7 +128,7 @@ public class MapConverter extends AbstractConfigurationConverter implements Para
             throws ComponentConfigurationException {
         final Class<?> implType = getClassForImplementationHint(type, configuration, loader);
         if (null == implType || Modifier.isAbstract(implType.getModifiers())) {
-            return new TreeMap<Object, Object>();
+            return new TreeMap<>();
         }
 
         final Object impl = instantiateObject(implType);

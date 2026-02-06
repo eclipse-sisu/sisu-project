@@ -45,9 +45,9 @@ public final class ComponentDescriptorBeanModule implements PlexusBeanModule {
 
     private final ClassSpace space;
 
-    private final Map<Component, DeferredClass<?>> componentMap = new HashMap<Component, DeferredClass<?>>();
+    private final Map<Component, DeferredClass<?>> componentMap = new HashMap<>();
 
-    private final Map<String, PlexusBeanMetadata> metadataMap = new HashMap<String, PlexusBeanMetadata>();
+    private final Map<String, PlexusBeanMetadata> metadataMap = new HashMap<>();
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -184,7 +184,7 @@ public final class ComponentDescriptorBeanModule implements PlexusBeanModule {
         // Implementation fields
         // ----------------------------------------------------------------------
 
-        private Map<String, Requirement> requirementMap = new HashMap<String, Requirement>();
+        private Map<String, Requirement> requirementMap = new HashMap<>();
 
         // ----------------------------------------------------------------------
         // Constructors

@@ -128,7 +128,7 @@ public class ComponentDescriptor<T> {
 
     public final void addRequirement(final ComponentRequirement requirement) {
         if (requirements.isEmpty()) {
-            requirements = new ArrayList<ComponentRequirement>();
+            requirements = new ArrayList<>();
         }
         requirements.add(requirement);
     }

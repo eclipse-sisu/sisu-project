@@ -92,19 +92,19 @@ final class PseudoPlexusContainer implements PlexusContainer {
     }
 
     public List<Object> lookupList(final String role) throws ComponentLookupException {
-        return new EntryListAdapter<Object>(locate(role, null));
+        return new EntryListAdapter<>(locate(role, null));
     }
 
     public <T> List<T> lookupList(final Class<T> role) throws ComponentLookupException {
-        return new EntryListAdapter<T>(locate(null, role));
+        return new EntryListAdapter<>(locate(null, role));
     }
 
     public Map<String, Object> lookupMap(final String role) throws ComponentLookupException {
-        return new EntryMapAdapter<String, Object>(locate(role, null));
+        return new EntryMapAdapter<>(locate(role, null));
     }
 
     public <T> Map<String, T> lookupMap(final Class<T> role) throws ComponentLookupException {
-        return new EntryMapAdapter<String, T>(locate(null, role));
+        return new EntryMapAdapter<>(locate(null, role));
     }
 
     // ----------------------------------------------------------------------

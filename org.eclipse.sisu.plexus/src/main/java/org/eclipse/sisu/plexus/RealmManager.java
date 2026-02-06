@@ -53,11 +53,9 @@ public final class RealmManager implements ClassWorldListener {
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final ConcurrentMap<ClassRealm, Set<String>> visibility =
-            new ConcurrentHashMap<ClassRealm, Set<String>>(16, 0.75f, 1);
+    private final ConcurrentMap<ClassRealm, Set<String>> visibility = new ConcurrentHashMap<>(16, 0.75f, 1);
 
-    private final ConcurrentMap<ClassRealm, Injector> injectors =
-            new ConcurrentHashMap<ClassRealm, Injector>(16, 0.75f, 1);
+    private final ConcurrentMap<ClassRealm, Injector> injectors = new ConcurrentHashMap<>(16, 0.75f, 1);
 
     private final MutableBeanLocator beanLocator;
 
@@ -136,8 +134,8 @@ public final class RealmManager implements ClassWorldListener {
     // ----------------------------------------------------------------------
 
     private static Set<String> computeVisibleNames(final ClassRealm forRealm) {
-        final Set<String> visibleRealmNames = new HashSet<String>();
-        final List<ClassRealm> searchRealms = new ArrayList<ClassRealm>();
+        final Set<String> visibleRealmNames = new HashSet<>();
+        final List<ClassRealm> searchRealms = new ArrayList<>();
 
         searchRealms.add(forRealm);
         for (int i = 0; i < searchRealms.size(); i++) {

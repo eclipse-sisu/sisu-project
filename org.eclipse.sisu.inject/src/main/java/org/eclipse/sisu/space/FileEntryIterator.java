@@ -28,7 +28,7 @@ final class FileEntryIterator implements Iterator<String> {
 
     private final String rootPath;
 
-    private final Deque<String> entryNames = new ArrayDeque<String>();
+    private final Deque<String> entryNames = new ArrayDeque<>();
 
     private final boolean recurse;
 

@@ -30,7 +30,7 @@ final class MildElements<T> extends AbstractCollection<T> {
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final ReferenceQueue<T> queue = new ReferenceQueue<T>();
+    private final ReferenceQueue<T> queue = new ReferenceQueue<>();
 
     final List<Reference<T>> list;
 
@@ -53,7 +53,7 @@ final class MildElements<T> extends AbstractCollection<T> {
     public boolean add(final T element) {
         compact();
 
-        return list.add(soft ? new Soft<T>(element, queue, list.size()) : new Weak<T>(element, queue, list.size()));
+        return list.add(soft ? new Soft<>(element, queue, list.size()) : new Weak<>(element, queue, list.size()));
     }
 
     @Override

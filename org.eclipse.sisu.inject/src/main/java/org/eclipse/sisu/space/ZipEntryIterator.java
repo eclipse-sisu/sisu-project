@@ -98,7 +98,7 @@ final class ZipEntryIterator implements Iterator<String> {
      */
     private static String[] getEntryNames(final ZipInputStream zipStream) throws IOException {
         try {
-            final List<String> names = new ArrayList<String>(64);
+            final List<String> names = new ArrayList<>(64);
             for (ZipEntry e = zipStream.getNextEntry(); e != null; e = zipStream.getNextEntry()) // NOSONAR
             {
                 names.add(e.getName());

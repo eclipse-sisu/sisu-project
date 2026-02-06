@@ -122,7 +122,7 @@ public final class QualifiedTypeVisitor implements SpaceVisitor, ClassVisitor {
     // ----------------------------------------------------------------------
 
     /**
-     * Finds source of current class; detailed location or {@link ClassSpace#toString()}.
+     * Finds source of current class; detailed location or {@link ClassSpace} string representation.
      */
     private String findSource() {
         if (null != location) {

@@ -94,7 +94,7 @@ final class QualifierCache implements ClassVisitor {
      * @return Seeded results
      */
     private static Map<String, Boolean> seedResults() {
-        final Map<String, Boolean> results = new ConcurrentHashMap<String, Boolean>(32, 0.75f, 1);
+        final Map<String, Boolean> results = new ConcurrentHashMap<>(32, 0.75f, 1);
         try {
             final String qualifiers = System.getProperty("sisu.qualifiers");
             if (qualifiers != null && qualifiers.length() > 0) {

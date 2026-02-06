@@ -77,7 +77,7 @@ final class BindingTracker<T> extends ServiceTracker<T, ServiceBinding<T>> {
     public ServiceBinding<T> addingService(final ServiceReference<T> reference) {
         final ServiceBinding<T> binding;
         try {
-            binding = new ServiceBinding<T>(context, clazzName, maxRank, reference);
+            binding = new ServiceBinding<>(context, clazzName, maxRank, reference);
         } catch (final Exception e) {
             Logs.warn("Problem subscribing to service: {}", reference, e);
             return null;

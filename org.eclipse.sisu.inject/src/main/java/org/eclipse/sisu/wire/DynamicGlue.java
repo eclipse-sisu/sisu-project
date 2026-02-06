@@ -222,7 +222,7 @@ final class DynamicGlue {
      * Returns the methods that should be wrapped for delegation in the given class.
      */
     private static Collection<Method> getWrappableMethods(final Class<?> clazz) {
-        final Map<String, Method> methodMap = new HashMap<String, Method>(OBJECT_METHOD_MAP);
+        final Map<String, Method> methodMap = new HashMap<>(OBJECT_METHOD_MAP);
         for (final Method m : clazz.getMethods()) {
             if (isWrappable(m)) {
                 methodMap.put(signatureKey(m), m);

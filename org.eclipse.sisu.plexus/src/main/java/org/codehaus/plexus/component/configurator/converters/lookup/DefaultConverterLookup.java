@@ -79,7 +79,7 @@ public final class DefaultConverterLookup implements ConverterLookup {
             Weak.concurrentKeys(); // entries will expire on class unload
 
     private final List<ConfigurationConverter> customConverters = //
-            new CopyOnWriteArrayList<ConfigurationConverter>();
+            new CopyOnWriteArrayList<>();
 
     public void registerConverter(final ConfigurationConverter converter) {
         customConverters.add(converter);

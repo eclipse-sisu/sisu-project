@@ -98,7 +98,7 @@ final class PlexusXmlMetadata implements PlexusBeanMetadata {
         }
 
         // primary mappings always override secondary mappings
-        final Map<K, V> tempMap = new HashMap<K, V>(secondary);
+        final Map<K, V> tempMap = new HashMap<>(secondary);
         tempMap.putAll(primary);
         return tempMap;
     }

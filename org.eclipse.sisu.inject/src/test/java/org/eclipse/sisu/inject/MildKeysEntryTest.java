@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.lang.ref.Reference;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -32,8 +31,7 @@ import org.junit.jupiter.api.Test;
 class MildKeysEntryTest {
     @Test
     void testEntrySet() {
-        final Map<String, String> map =
-                new MildKeys<String, String>(new LinkedHashMap<Reference<String>, String>(), true);
+        final Map<String, String> map = new MildKeys<>(new LinkedHashMap<>(), true);
 
         map.put("a", "1");
         map.put("b", "2");
@@ -50,8 +48,7 @@ class MildKeysEntryTest {
 
     @Test
     void testEntrySetIteratorRemove() {
-        final Map<String, String> map =
-                new MildKeys<String, String>(new LinkedHashMap<Reference<String>, String>(), true);
+        final Map<String, String> map = new MildKeys<>(new LinkedHashMap<>(), true);
 
         map.put("x", "10");
         map.put("y", "20");
@@ -65,8 +62,7 @@ class MildKeysEntryTest {
 
     @Test
     void testEntrySetNoSuchElement() {
-        final Map<String, String> map =
-                new MildKeys<String, String>(new LinkedHashMap<Reference<String>, String>(), true);
+        final Map<String, String> map = new MildKeys<>(new LinkedHashMap<>(), true);
 
         final Iterator<Map.Entry<String, String>> entryIterator = map.entrySet().iterator();
         assertFalse(entryIterator.hasNext());
@@ -80,8 +76,7 @@ class MildKeysEntryTest {
 
     @Test
     void testStrongEntrySetValue() {
-        final Map<String, String> map =
-                new MildKeys<String, String>(new LinkedHashMap<Reference<String>, String>(), true);
+        final Map<String, String> map = new MildKeys<>(new LinkedHashMap<>(), true);
 
         map.put("key", "oldValue");
 
@@ -95,8 +90,7 @@ class MildKeysEntryTest {
 
     @Test
     void testContainsKey() {
-        final Map<String, String> map =
-                new MildKeys<String, String>(new LinkedHashMap<Reference<String>, String>(), true);
+        final Map<String, String> map = new MildKeys<>(new LinkedHashMap<>(), true);
 
         assertFalse(map.containsKey("a"));
         map.put("a", "1");
@@ -106,8 +100,7 @@ class MildKeysEntryTest {
 
     @Test
     void testContainsValue() {
-        final Map<String, String> map =
-                new MildKeys<String, String>(new LinkedHashMap<Reference<String>, String>(), true);
+        final Map<String, String> map = new MildKeys<>(new LinkedHashMap<>(), true);
 
         assertFalse(map.containsValue("1"));
         map.put("a", "1");
@@ -117,10 +110,9 @@ class MildKeysEntryTest {
 
     @Test
     void testPutAll() {
-        final Map<String, String> map =
-                new MildKeys<String, String>(new LinkedHashMap<Reference<String>, String>(), true);
+        final Map<String, String> map = new MildKeys<>(new LinkedHashMap<>(), true);
 
-        final Map<String, String> otherMap = new HashMap<String, String>();
+        final Map<String, String> otherMap = new HashMap<>();
         otherMap.put("x", "1");
         otherMap.put("y", "2");
 
@@ -132,8 +124,7 @@ class MildKeysEntryTest {
 
     @Test
     void testClear() {
-        final Map<String, String> map =
-                new MildKeys<String, String>(new LinkedHashMap<Reference<String>, String>(), true);
+        final Map<String, String> map = new MildKeys<>(new LinkedHashMap<>(), true);
 
         map.put("a", "1");
         map.put("b", "2");
@@ -145,8 +136,7 @@ class MildKeysEntryTest {
 
     @Test
     void testGet() {
-        final Map<String, String> map =
-                new MildKeys<String, String>(new LinkedHashMap<Reference<String>, String>(), true);
+        final Map<String, String> map = new MildKeys<>(new LinkedHashMap<>(), true);
 
         assertNull(map.get("a"));
         map.put("a", "1");
@@ -155,8 +145,7 @@ class MildKeysEntryTest {
 
     @Test
     void testRemove() {
-        final Map<String, String> map =
-                new MildKeys<String, String>(new LinkedHashMap<Reference<String>, String>(), true);
+        final Map<String, String> map = new MildKeys<>(new LinkedHashMap<>(), true);
 
         map.put("a", "1");
         assertEquals("1", map.remove("a"));
@@ -165,8 +154,7 @@ class MildKeysEntryTest {
 
     @Test
     void testWeakKeyVariant() {
-        final Map<String, String> map =
-                new MildKeys<String, String>(new LinkedHashMap<Reference<String>, String>(), false);
+        final Map<String, String> map = new MildKeys<>(new LinkedHashMap<>(), false);
 
         map.put("a", "1");
         assertEquals("1", map.get("a"));

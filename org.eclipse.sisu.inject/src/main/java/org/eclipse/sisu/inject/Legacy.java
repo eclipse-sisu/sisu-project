@@ -80,7 +80,7 @@ public final class Legacy<S> {
     // ----------------------------------------------------------------------
 
     public static <S, T extends S> Legacy<S> as(final Class<T> clazz) {
-        return new Legacy<S>(clazz);
+        return new Legacy<>(clazz);
     }
 
     public static <Q extends Annotation, T> BeanEntry<Q, T> adapt(final org.eclipse.sisu.BeanEntry<Q, T> delegate) {

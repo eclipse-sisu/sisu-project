@@ -70,17 +70,17 @@ public class BeanWatcherTest {
 
     @javax.inject.Named
     static class NamedItemWatcher {
-        Map<String, Item> items = new HashMap<String, Item>();
+        Map<String, Item> items = new HashMap<>();
     }
 
     @javax.inject.Named
     static class MarkedItemWatcher {
-        Map<Integer, Item> items = new HashMap<Integer, Item>();
+        Map<Integer, Item> items = new HashMap<>();
     }
 
     @javax.inject.Named
     static class AnnotatedItemWatcher {
-        Map<Annotation, Item> items = new HashMap<Annotation, Item>();
+        Map<Annotation, Item> items = new HashMap<>();
     }
 
     @javax.inject.Named

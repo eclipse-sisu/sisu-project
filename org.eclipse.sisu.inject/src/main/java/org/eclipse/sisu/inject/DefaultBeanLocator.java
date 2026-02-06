@@ -34,7 +34,7 @@ public final class DefaultBeanLocator implements MutableBeanLocator {
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final RankedSequence<BindingPublisher> publishers = new RankedSequence<BindingPublisher>();
+    private final RankedSequence<BindingPublisher> publishers = new RankedSequence<>();
 
     private final ConcurrentMap<Long, RankedBindings> cachedBindings = Weak.concurrentValues(256, 1);
 

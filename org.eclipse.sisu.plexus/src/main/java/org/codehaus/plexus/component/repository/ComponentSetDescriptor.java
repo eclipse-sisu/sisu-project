@@ -37,24 +37,24 @@ public class ComponentSetDescriptor {
 
     public final void addComponentDescriptor(final ComponentDescriptor<?> component) {
         if (components.isEmpty()) {
-            components = new ArrayList<ComponentDescriptor<?>>();
+            components = new ArrayList<>();
         }
         components.add(component);
     }
 
     public final void setComponents(final List<ComponentDescriptor<?>> components) {
-        this.components = new ArrayList<ComponentDescriptor<?>>(components);
+        this.components = new ArrayList<>(components);
     }
 
     public final void addDependency(final ComponentDependency dependency) {
         if (dependencies.isEmpty()) {
-            dependencies = new ArrayList<ComponentDependency>();
+            dependencies = new ArrayList<>();
         }
         dependencies.add(dependency);
     }
 
     public final void setDependencies(final List<ComponentDependency> dependencies) {
-        this.dependencies = new ArrayList<ComponentDependency>(dependencies);
+        this.dependencies = new ArrayList<>(dependencies);
     }
 
     public final boolean isIsolatedRealm() {

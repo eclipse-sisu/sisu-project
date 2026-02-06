@@ -29,17 +29,17 @@ import org.junit.jupiter.api.Test;
 class RankedSequenceTest {
     static final AtomicBoolean active = new AtomicBoolean(true);
 
-    static final List<Throwable> errors = Collections.synchronizedList(new ArrayList<Throwable>());
+    static final List<Throwable> errors = Collections.synchronizedList(new ArrayList<>());
 
     static final Random random = new Random(System.currentTimeMillis());
 
     static final int CONCURRENCY = 8;
 
-    static final RankedSequence<Integer> rankedList = new RankedSequence<Integer>();
+    static final RankedSequence<Integer> rankedList = new RankedSequence<>();
 
     @Test
     void testOrdering() {
-        final RankedSequence<String> list = new RankedSequence<String>();
+        final RankedSequence<String> list = new RankedSequence<>();
 
         list.insert("A1", Integer.MAX_VALUE);
         list.insert("F", Integer.MIN_VALUE + 1);
@@ -121,7 +121,7 @@ class RankedSequenceTest {
 
     @Test
     void testEmptyList() {
-        final Iterator<Object> itr = new RankedSequence<Object>().iterator();
+        final Iterator<Object> itr = new RankedSequence<>().iterator();
 
         assertFalse(itr.hasNext());
 

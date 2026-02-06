@@ -31,7 +31,7 @@ final class WatchedBeans<Q extends Annotation, T, W> implements BindingSubscribe
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final BeanCache<Q, T> beans = new BeanCache<Q, T>();
+    private final BeanCache<Q, T> beans = new BeanCache<>();
 
     private final Key<T> key;
 
@@ -50,7 +50,7 @@ final class WatchedBeans<Q extends Annotation, T, W> implements BindingSubscribe
         this.mediator = mediator;
 
         strategy = QualifyingStrategy.selectFor(key);
-        watcherRef = new WeakReference<W>(watcher);
+        watcherRef = new WeakReference<>(watcher);
     }
 
     // ----------------------------------------------------------------------

@@ -65,7 +65,7 @@ final class DefaultPlexusBeans<T> implements Iterable<PlexusBean<T>> {
         }
 
         public PlexusBean<T> next() {
-            return new LazyPlexusBean<T>(itr.next());
+            return new LazyPlexusBean<>(itr.next());
         }
 
         public void remove() {

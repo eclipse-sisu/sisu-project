@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 class MainTest {
     @Test
     void testBootWithProperties() {
-        final Map<String, String> properties = new HashMap<String, String>();
+        final Map<String, String> properties = new HashMap<>();
         properties.put("sisu.scanning", "off");
         final Injector injector = Main.boot(properties, new String[0]);
         assertNotNull(injector);
@@ -33,7 +33,7 @@ class MainTest {
 
     @Test
     void testBootWithPropertiesAndBindings() {
-        final Map<String, String> properties = new HashMap<String, String>();
+        final Map<String, String> properties = new HashMap<>();
         properties.put("sisu.scanning", "off");
         final Module extra = new AbstractModule() {
             @Override

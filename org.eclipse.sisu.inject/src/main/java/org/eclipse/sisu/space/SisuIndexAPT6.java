@@ -123,7 +123,7 @@ public final class SisuIndexAPT6 extends AbstractSisuIndex implements Processor 
             return Collections.emptySet();
         }
         if (qualifiers != null && qualifiers.length() > 0) {
-            final Set<String> annotationTypes = new HashSet<String>();
+            final Set<String> annotationTypes = new HashSet<>();
             for (String type : Tokens.splitByComma(qualifiers)) {
                 annotationTypes.add(type);
             }

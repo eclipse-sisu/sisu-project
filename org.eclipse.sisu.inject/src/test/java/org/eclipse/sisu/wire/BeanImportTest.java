@@ -312,7 +312,7 @@ class BeanImportTest {
         YImpl concreteProxy;
     }
 
-    static Map<String, Object> PROPS = new HashMap<String, Object>();
+    static Map<String, Object> PROPS = new HashMap<>();
 
     class TestModule extends AbstractModule {
         @Override

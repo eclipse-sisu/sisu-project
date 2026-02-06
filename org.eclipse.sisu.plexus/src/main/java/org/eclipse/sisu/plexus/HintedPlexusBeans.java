@@ -38,9 +38,9 @@ final class HintedPlexusBeans<T> implements Iterable<PlexusBean<T>> {
     HintedPlexusBeans(final Iterable<BeanEntry<Named, T>> beans, final TypeLiteral<T> role, final String[] hints) {
         this.beans = beans;
 
-        missingPlexusBeans = new ArrayList<PlexusBean<T>>(hints.length);
+        missingPlexusBeans = new ArrayList<>(hints.length);
         for (final String h : hints) {
-            missingPlexusBeans.add(new MissingPlexusBean<T>(role, h));
+            missingPlexusBeans.add(new MissingPlexusBean<>(role, h));
         }
     }
 
@@ -50,7 +50,7 @@ final class HintedPlexusBeans<T> implements Iterable<PlexusBean<T>> {
 
     public Iterator<PlexusBean<T>> iterator() {
         // assume all hints are missing to begin with
-        final List<PlexusBean<T>> plexusBeans = new ArrayList<PlexusBean<T>>(missingPlexusBeans);
+        final List<PlexusBean<T>> plexusBeans = new ArrayList<>(missingPlexusBeans);
 
         // scan available beans and populate list according to hint
         final int size = plexusBeans.size();
@@ -61,7 +61,7 @@ final class HintedPlexusBeans<T> implements Iterable<PlexusBean<T>> {
             for (int i = 0; i < size; i++) {
                 final PlexusBean<T> element = plexusBeans.get(i);
                 if (element instanceof MissingPlexusBean<?> && hint.equals(element.getKey())) {
-                    plexusBeans.set(i, new LazyPlexusBean<T>(candidate));
+                    plexusBeans.set(i, new LazyPlexusBean<>(candidate));
                     numFound++;
                 }
             }

@@ -44,7 +44,7 @@ final class MediationListener extends AbstractMatcher<TypeLiteral<?>>
     // ----------------------------------------------------------------------
 
     public MediationListener(final Binder binder) {
-        mediation = new ArrayList<Mediation<?, ?, ?>>();
+        mediation = new ArrayList<>();
         locator = binder.getProvider(BeanLocator.class);
     }
 

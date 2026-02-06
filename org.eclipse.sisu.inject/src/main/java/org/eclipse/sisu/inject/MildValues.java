@@ -30,7 +30,7 @@ class MildValues<K, V> implements Map<K, V> {
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    final ReferenceQueue<V> queue = new ReferenceQueue<V>();
+    final ReferenceQueue<V> queue = new ReferenceQueue<>();
 
     final Map<K, Reference<V>> map;
 
@@ -154,7 +154,7 @@ class MildValues<K, V> implements Map<K, V> {
      * @return Soft or weak {@link Reference} for the given key-value mapping.
      */
     final Reference<V> mildValue(final K key, final V value) {
-        return soft ? new Soft<K, V>(key, value, queue) : new Weak<K, V>(key, value, queue);
+        return soft ? new Soft<>(key, value, queue) : new Weak<>(key, value, queue);
     }
 
     /**

@@ -42,7 +42,7 @@ public class SisuTracker extends BundleTracker<Object> implements BundlePlan {
     // ----------------------------------------------------------------------
 
     static {
-        final Set<String> supportBundleNames = new HashSet<String>();
+        final Set<String> supportBundleNames = new HashSet<>();
         final Class<?>[] supportTypes = {Inject.class, Guice.class, SisuExtender.class};
         for (final Class<?> type : supportTypes) {
             final Bundle bundle = FrameworkUtil.getBundle(type);

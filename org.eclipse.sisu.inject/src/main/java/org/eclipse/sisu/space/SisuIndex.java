@@ -61,7 +61,7 @@ public class SisuIndex extends AbstractSisuIndex implements SpaceVisitor, ClassV
     // ----------------------------------------------------------------------
 
     public static void main(final String[] args) {
-        final List<URL> indexPath = new ArrayList<URL>(args.length);
+        final List<URL> indexPath = new ArrayList<>(args.length);
         for (final String path : args) {
             try {
                 indexPath.add(new File(path).toURI().toURL());

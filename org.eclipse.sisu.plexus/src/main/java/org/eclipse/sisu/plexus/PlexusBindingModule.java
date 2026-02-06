@@ -52,7 +52,7 @@ public final class PlexusBindingModule implements Module {
     // ----------------------------------------------------------------------
 
     public void configure(final Binder binder) {
-        final List<PlexusBeanSource> sources = new ArrayList<PlexusBeanSource>(modules.length);
+        final List<PlexusBeanSource> sources = new ArrayList<>(modules.length);
         for (final PlexusBeanModule module : modules) {
             final PlexusBeanSource source = module.configure(binder);
             if (null != source) {

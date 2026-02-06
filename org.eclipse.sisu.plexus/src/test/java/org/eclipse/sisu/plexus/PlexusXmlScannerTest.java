@@ -129,7 +129,7 @@ public class PlexusXmlScannerTest extends TestCase {
     public void testComponents() {
         final ClassSpace space = new URLClassSpace(PlexusXmlScannerTest.class.getClassLoader());
 
-        final Map<String, PlexusBeanMetadata> metadata = new HashMap<String, PlexusBeanMetadata>();
+        final Map<String, PlexusBeanMetadata> metadata = new HashMap<>();
         final PlexusXmlScanner scanner = new PlexusXmlScanner(null, null, metadata);
 
         final Map<Component, DeferredClass<?>> componentMap = scanner.scan(space, true);
@@ -258,7 +258,7 @@ public class PlexusXmlScannerTest extends TestCase {
 
         try {
             space = new FixedClassSpace("/META-INF/plexus/bad_components_3.xml");
-            final Map<String, PlexusBeanMetadata> metadata = new HashMap<String, PlexusBeanMetadata>();
+            final Map<String, PlexusBeanMetadata> metadata = new HashMap<>();
             final PlexusXmlScanner scanner = new PlexusXmlScanner(null, null, metadata);
 
             scanner.scan(space, true);
@@ -279,7 +279,7 @@ public class PlexusXmlScannerTest extends TestCase {
     public void testInterpolatedComponentsXml() {
         final ClassSpace space = new FixedClassSpace("/META-INF/plexus/variable_components.xml");
 
-        final Map<String, PlexusBeanMetadata> metadata = new HashMap<String, PlexusBeanMetadata>();
+        final Map<String, PlexusBeanMetadata> metadata = new HashMap<>();
 
         new PlexusXmlScanner(null, null, metadata).scan(space, true);
 

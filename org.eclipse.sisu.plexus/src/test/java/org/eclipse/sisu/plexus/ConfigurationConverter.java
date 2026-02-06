@@ -54,7 +54,7 @@ public class ConfigurationConverter extends AbstractMatcher<TypeLiteral<?>> impl
 
     @Inject
     void setTypeConverterBindings(final Injector injector) {
-        otherConverterBindings = new ArrayList<TypeConverterBinding>();
+        otherConverterBindings = new ArrayList<>();
         for (final TypeConverterBinding b : injector.getTypeConverterBindings()) {
             if (false == b.getTypeConverter() instanceof ConfigurationConverter) {
                 otherConverterBindings.add(b);

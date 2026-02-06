@@ -86,7 +86,7 @@ final class PlexusPropertyBinder implements PropertyBinder {
         final Configuration configuration = metadata.getConfiguration(property);
         if (null != configuration) {
             final Provider<T> valueProvider = configurations.lookup(configuration, property);
-            return new ProvidedPropertyBinding<T>(property, valueProvider);
+            return new ProvidedPropertyBinding<>(property, valueProvider);
         }
 
         /*
@@ -102,9 +102,9 @@ final class PlexusPropertyBinder implements PropertyBinder {
             }
             final Provider<T> roleProvider = requirements.lookup(requirement, property);
             if (OPTIONAL_SUPPORTED && requirement.optional()) {
-                return new OptionalPropertyBinding<T>(property, roleProvider);
+                return new OptionalPropertyBinding<>(property, roleProvider);
             }
-            return new ProvidedPropertyBinding<T>(property, roleProvider);
+            return new ProvidedPropertyBinding<>(property, roleProvider);
         }
 
         return null; // nothing to bind

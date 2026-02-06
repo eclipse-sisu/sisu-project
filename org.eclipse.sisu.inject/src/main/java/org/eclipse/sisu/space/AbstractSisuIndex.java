@@ -41,7 +41,7 @@ abstract class AbstractSisuIndex {
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final Map<Object, Set<String>> index = new LinkedHashMap<Object, Set<String>>();
+    private final Map<Object, Set<String>> index = new LinkedHashMap<>();
 
     // ----------------------------------------------------------------------
     // Common methods
@@ -116,7 +116,7 @@ abstract class AbstractSisuIndex {
      * @return Table elements
      */
     private Set<String> readTable(final Object name) {
-        final Set<String> table = new TreeSet<String>();
+        final Set<String> table = new TreeSet<>();
         try {
             try (BufferedReader reader = new BufferedReader(getReader(INDEX_FOLDER + name))) {
                 for (String line = reader.readLine(); line != null; line = reader.readLine()) {

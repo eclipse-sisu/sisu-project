@@ -33,8 +33,8 @@ class EntryListAdapterTest {
     @SuppressWarnings("boxing")
     @Test
     void testListSize() {
-        final Map<String, Integer> map = new HashMap<String, Integer>();
-        final List<Integer> list = new EntryListAdapter<Integer>(map.entrySet());
+        final Map<String, Integer> map = new HashMap<>();
+        final List<Integer> list = new EntryListAdapter<>(map.entrySet());
 
         assertTrue(list.isEmpty());
         map.put("A", 1);
@@ -52,7 +52,7 @@ class EntryListAdapterTest {
     @Test
     void testEmptyList() {
         final ListIterator<String> i =
-                new EntryListAdapter<String>(Collections.<Entry<Integer, String>>emptyList()).listIterator(0);
+                new EntryListAdapter<>(Collections.<Entry<Integer, String>>emptyList()).listIterator(0);
 
         assertFalse(i.hasNext());
         assertEquals(0, i.nextIndex());
@@ -80,20 +80,20 @@ class EntryListAdapterTest {
     @SuppressWarnings("boxing")
     @Test
     void testInvalidListIterator() {
-        final Map<Integer, String> map = new HashMap<Integer, String>();
+        final Map<Integer, String> map = new HashMap<>();
 
         map.put(3, "C");
         map.put(1, "A");
         map.put(2, "B");
 
         try {
-            new EntryListAdapter<String>(map.entrySet()).listIterator(-1);
+            new EntryListAdapter<>(map.entrySet()).listIterator(-1);
             fail("Expected IndexOutOfBoundsException");
         } catch (final IndexOutOfBoundsException e) {
         }
 
         try {
-            new EntryListAdapter<String>(map.entrySet()).listIterator(4);
+            new EntryListAdapter<>(map.entrySet()).listIterator(4);
             fail("Expected IndexOutOfBoundsException");
         } catch (final IndexOutOfBoundsException e) {
         }
@@ -102,13 +102,13 @@ class EntryListAdapterTest {
     @SuppressWarnings("boxing")
     @Test
     void testIterator() {
-        final Map<Integer, String> map = new LinkedHashMap<Integer, String>();
+        final Map<Integer, String> map = new LinkedHashMap<>();
 
         map.put(3, "C");
         map.put(1, "A");
         map.put(2, "B");
 
-        final Iterator<String> i = new EntryListAdapter<String>(map.entrySet()).iterator();
+        final Iterator<String> i = new EntryListAdapter<>(map.entrySet()).iterator();
 
         assertTrue(i.hasNext());
 
@@ -137,13 +137,13 @@ class EntryListAdapterTest {
     @SuppressWarnings("boxing")
     @Test
     void testListIterator() {
-        final Map<Integer, String> map = new LinkedHashMap<Integer, String>();
+        final Map<Integer, String> map = new LinkedHashMap<>();
 
         map.put(3, "C");
         map.put(1, "A");
         map.put(2, "B");
 
-        final ListIterator<String> i = new EntryListAdapter<String>(map.entrySet()).listIterator(1);
+        final ListIterator<String> i = new EntryListAdapter<>(map.entrySet()).listIterator(1);
 
         assertTrue(i.hasNext());
         assertEquals(1, i.nextIndex());
@@ -220,16 +220,16 @@ class EntryListAdapterTest {
     @SuppressWarnings("boxing")
     @Test
     void testVanishingList() {
-        final Map<Integer, String> map = new LinkedHashMap<Integer, String>();
+        final Map<Integer, String> map = new LinkedHashMap<>();
 
         map.put(3, "C");
         map.put(1, "A");
         map.put(2, "B");
 
-        final IndexList<Entry<Integer, String>> entries = new IndexList<Entry<Integer, String>>();
+        final IndexList<Entry<Integer, String>> entries = new IndexList<>();
 
         entries.addAll(map.entrySet());
-        final ListIterator<String> i = new EntryListAdapter<String>(entries).listIterator(1);
+        final ListIterator<String> i = new EntryListAdapter<>(entries).listIterator(1);
         entries.clear();
 
         assertFalse(i.hasNext());
@@ -265,16 +265,16 @@ class EntryListAdapterTest {
     @SuppressWarnings("boxing")
     @Test
     void testCachedList() {
-        final Map<Integer, String> map = new LinkedHashMap<Integer, String>();
+        final Map<Integer, String> map = new LinkedHashMap<>();
 
         map.put(3, "C");
         map.put(1, "A");
         map.put(2, "B");
 
-        final IndexList<Entry<Integer, String>> entries = new IndexList<Entry<Integer, String>>();
+        final IndexList<Entry<Integer, String>> entries = new IndexList<>();
 
         entries.addAll(map.entrySet());
-        final ListIterator<String> i = new EntryListAdapter<String>(entries).listIterator(3);
+        final ListIterator<String> i = new EntryListAdapter<>(entries).listIterator(3);
         entries.clear();
 
         assertFalse(i.hasNext());

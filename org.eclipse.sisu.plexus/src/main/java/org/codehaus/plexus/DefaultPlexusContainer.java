@@ -604,7 +604,7 @@ public final class DefaultPlexusContainer implements MutablePlexusContainer {
         if (null == role || null != type && type.getName().equals(role)) {
             return plexusBeanLocator.locate(TypeLiteral.get(type), canonicalHints);
         }
-        final Set<Class> candidates = new HashSet<Class>();
+        final Set<Class> candidates = new HashSet<>();
         for (final ClassRealm realm : getVisibleRealms()) {
             try {
                 final Class clazz = realm.loadClass(role);
@@ -623,7 +623,7 @@ public final class DefaultPlexusContainer implements MutablePlexusContainer {
 
     private Collection<ClassRealm> getVisibleRealms() {
         final Object[] realms = getClassWorld().getRealms().toArray();
-        final Set<ClassRealm> visibleRealms = new LinkedHashSet<ClassRealm>(realms.length);
+        final Set<ClassRealm> visibleRealms = new LinkedHashSet<>(realms.length);
         final ClassRealm currentLookupRealm = getLookupRealm();
         if (null != currentLookupRealm) {
             visibleRealms.add(currentLookupRealm);
@@ -656,7 +656,7 @@ public final class DefaultPlexusContainer implements MutablePlexusContainer {
     }
 
     private static <T> ComponentDescriptor<T> newComponentDescriptor(final String role, final PlexusBean<T> bean) {
-        final ComponentDescriptor<T> cd = new ComponentDescriptor<T>();
+        final ComponentDescriptor<T> cd = new ComponentDescriptor<>();
         cd.setRole(role);
         cd.setRoleHint(bean.getKey());
         cd.setImplementationClass(bean.getImplementationClass());
@@ -722,7 +722,7 @@ public final class DefaultPlexusContainer implements MutablePlexusContainer {
         }
 
         public DeferredClass<LoggerManager> getImplementationClass() {
-            return new LoadedClass<LoggerManager>(get().getClass());
+            return new LoadedClass<>(get().getClass());
         }
     }
 
@@ -732,7 +732,7 @@ public final class DefaultPlexusContainer implements MutablePlexusContainer {
         }
 
         public DeferredClass<Logger> getImplementationClass() {
-            return new LoadedClass<Logger>(get().getClass());
+            return new LoadedClass<>(get().getClass());
         }
     }
 

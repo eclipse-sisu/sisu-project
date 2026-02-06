@@ -88,7 +88,7 @@ public class DefaultPlexusConfiguration implements PlexusConfiguration {
 
     public final void setAttribute(final String attributeName, final String attributeValue) {
         if (attributeMap.isEmpty()) {
-            attributeMap = new HashMap<String, String>();
+            attributeMap = new HashMap<>();
         }
         attributeMap.put(attributeName, attributeValue);
     }
@@ -151,11 +151,11 @@ public class DefaultPlexusConfiguration implements PlexusConfiguration {
 
         List<PlexusConfiguration> children = childMap.get(childName);
         if (null == children) {
-            children = new ArrayList<PlexusConfiguration>();
+            children = new ArrayList<>();
             if (childMap.isEmpty()) {
                 // create mutable map and index at the same time
-                childMap = new LinkedHashMap<String, List<PlexusConfiguration>>();
-                childIndex = new ArrayList<PlexusConfiguration>();
+                childMap = new LinkedHashMap<>();
+                childIndex = new ArrayList<>();
             }
             childMap.put(childName, children);
         }

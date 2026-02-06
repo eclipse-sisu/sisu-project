@@ -88,7 +88,7 @@ class WatchedBeansTest {
     @Test
     void testWatchedBeans() {
         final MutableBeanLocator locator = new DefaultBeanLocator();
-        RankedSequence<String> names = new RankedSequence<String>();
+        RankedSequence<String> names = new RankedSequence<>();
 
         locator.watch(Key.get(Bean.class, Named.class), new RankingMediator(), names);
 

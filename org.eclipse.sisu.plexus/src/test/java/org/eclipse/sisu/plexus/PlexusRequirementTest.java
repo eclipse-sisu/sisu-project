@@ -480,7 +480,7 @@ public class PlexusRequirementTest extends TestCase {
     }
 
     public void testPlexus121Compatibility() throws Exception {
-        final List<URL> urls = new ArrayList<URL>();
+        final List<URL> urls = new ArrayList<>();
         urls.add(new File("target/dependency/plexus-component-annotations-1.2.1.jar")
                 .toURI()
                 .toURL());

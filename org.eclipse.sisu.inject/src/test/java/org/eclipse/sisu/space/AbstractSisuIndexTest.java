@@ -31,13 +31,13 @@ import org.junit.jupiter.api.Test;
 @BaseTests
 class AbstractSisuIndexTest {
     static class TestSisuIndex extends AbstractSisuIndex {
-        final Map<String, String> inputData = new HashMap<String, String>();
+        final Map<String, String> inputData = new HashMap<>();
 
-        final Map<String, StringWriter> outputData = new HashMap<String, StringWriter>();
+        final Map<String, StringWriter> outputData = new HashMap<>();
 
-        final List<String> infoMessages = new ArrayList<String>();
+        final List<String> infoMessages = new ArrayList<>();
 
-        final List<String> warnMessages = new ArrayList<String>();
+        final List<String> warnMessages = new ArrayList<>();
 
         @Override
         protected void info(final String message) {

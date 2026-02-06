@@ -197,10 +197,10 @@ class LocatedBeansTest {
     }
 
     private <Q extends Annotation, T> LocatedBeans<Q, T> locate(final Key<T> key) {
-        final RankedBindings<T> bindings = new RankedBindings<T>(key.getTypeLiteral(), null);
+        final RankedBindings<T> bindings = new RankedBindings<>(key.getTypeLiteral(), null);
         for (final Binding<T> b : injector.findBindingsByType(key.getTypeLiteral())) {
             bindings.add(b, 0);
         }
-        return new LocatedBeans<Q, T>(key, bindings, null);
+        return new LocatedBeans<>(key, bindings, null);
     }
 }

@@ -238,12 +238,12 @@ class BeanPropertiesTest {
         final Field field = C.class.getDeclaredField("name");
         final Method setter = D.class.getDeclaredMethod("setName", String.class);
 
-        assertEquals(propertyField, new BeanPropertyField<Object>(field));
-        assertEquals(propertySetter, new BeanPropertySetter<Object>(setter));
+        assertEquals(propertyField, new BeanPropertyField<>(field));
+        assertEquals(propertySetter, new BeanPropertySetter<>(setter));
 
-        assertFalse(propertyField.equals(new BeanPropertyField<Object>(F.class.getDeclaredField("name"))));
-        assertFalse(propertySetter.equals(
-                new BeanPropertySetter<Object>(F.class.getDeclaredMethod("setName", String.class))));
+        assertFalse(propertyField.equals(new BeanPropertyField<>(F.class.getDeclaredField("name"))));
+        assertFalse(
+                propertySetter.equals(new BeanPropertySetter<>(F.class.getDeclaredMethod("setName", String.class))));
 
         assertEquals(field.hashCode(), propertyField.hashCode());
         assertEquals(setter.hashCode(), propertySetter.hashCode());
@@ -323,7 +323,7 @@ class BeanPropertiesTest {
     @Test
     void testIllegalAccess() {
         try {
-            final BeanProperty<Object> p = new BeanPropertyField<Object>(A.class.getDeclaredField("name"));
+            final BeanProperty<Object> p = new BeanPropertyField<>(A.class.getDeclaredField("name"));
             p.set(new Object(), "test");
             fail("Expected RuntimeException");
         } catch (final NoSuchFieldException e) {
@@ -333,8 +333,7 @@ class BeanPropertiesTest {
         }
 
         try {
-            final BeanProperty<Object> p =
-                    new BeanPropertySetter<Object>(A.class.getDeclaredMethod("setName", String.class));
+            final BeanProperty<Object> p = new BeanPropertySetter<>(A.class.getDeclaredMethod("setName", String.class));
             p.set(new Object(), "test");
             fail("Expected RuntimeException");
         } catch (final NoSuchMethodException e) {

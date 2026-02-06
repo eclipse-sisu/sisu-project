@@ -96,11 +96,11 @@ public class CollectionConverter extends AbstractCollectionConverter implements 
         if (null == implType || Modifier.isAbstract(implType.getModifiers())) {
             if (Set.class.isAssignableFrom(type)) {
                 if (SortedSet.class.isAssignableFrom(type)) {
-                    return new TreeSet<Object>();
+                    return new TreeSet<>();
                 }
-                return new HashSet<Object>();
+                return new HashSet<>();
             }
-            return new ArrayList<Object>();
+            return new ArrayList<>();
         }
 
         final Object impl = instantiateObject(implType);

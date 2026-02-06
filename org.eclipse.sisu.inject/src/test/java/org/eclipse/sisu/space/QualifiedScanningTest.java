@@ -69,9 +69,9 @@ class QualifiedScanningTest {
     static class G {}
 
     static class TestListener implements QualifiedTypeListener {
-        final List<Class<?>> clazzes = new ArrayList<Class<?>>();
+        final List<Class<?>> clazzes = new ArrayList<>();
 
-        final Set<Object> sources = new HashSet<Object>();
+        final Set<Object> sources = new HashSet<>();
 
         public void hear(final Class<?> clazz, final Object source) {
             clazzes.add(clazz);

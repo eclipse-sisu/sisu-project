@@ -23,7 +23,7 @@ public class DefaultContext implements Context {
     // ----------------------------------------------------------------------
 
     protected final Map<Object, Object> contextData = //
-            new ConcurrentHashMap<Object, Object>(16, 0.75f, 1);
+            new ConcurrentHashMap<>(16, 0.75f, 1);
 
     // ----------------------------------------------------------------------
     // Constructors

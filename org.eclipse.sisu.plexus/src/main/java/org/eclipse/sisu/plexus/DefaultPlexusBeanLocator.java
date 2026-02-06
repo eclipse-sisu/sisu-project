@@ -63,8 +63,8 @@ public final class DefaultPlexusBeanLocator implements PlexusBeanLocator {
         final Key<T> key = hints.length == 1 ? Key.get(role, Names.named(hints[0])) : Key.get(role, Named.class);
         Iterable<BeanEntry<Named, T>> beans = (Iterable<BeanEntry<Named, T>>) beanLocator.<Named, T>locate(key);
         if (PlexusConstants.REALM_VISIBILITY.equalsIgnoreCase(visibility)) {
-            beans = new RealmFilteredBeans<T>(realmManager, beans);
+            beans = new RealmFilteredBeans<>(realmManager, beans);
         }
-        return hints.length <= 1 ? new DefaultPlexusBeans<T>(beans) : new HintedPlexusBeans<T>(beans, role, hints);
+        return hints.length <= 1 ? new DefaultPlexusBeans<>(beans) : new HintedPlexusBeans<>(beans, role, hints);
     }
 }

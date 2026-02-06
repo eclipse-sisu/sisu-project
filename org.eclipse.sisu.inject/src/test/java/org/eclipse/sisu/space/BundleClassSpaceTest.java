@@ -50,7 +50,7 @@ class BundleClassSpaceTest {
     @BeforeEach
     void setUp() throws Exception {
 
-        final Map<String, String> configuration = new HashMap<String, String>();
+        final Map<String, String> configuration = new HashMap<>();
         configuration.put(Constants.FRAMEWORK_STORAGE_CLEAN, Constants.FRAMEWORK_STORAGE_CLEAN_ONFIRSTINIT);
         configuration.put(Constants.FRAMEWORK_STORAGE, "target/bundlecache");
 

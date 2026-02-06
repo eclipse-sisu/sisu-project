@@ -224,7 +224,7 @@ public final class InjectorBindings implements BindingPublisher {
         if (null == wildcards) {
             synchronized (this) {
                 if (null == wildcards) {
-                    final List<Binding<?>> visible = new ArrayList<Binding<?>>();
+                    final List<Binding<?>> visible = new ArrayList<>();
                     final List<Binding<Object>> candidates = injector.findBindingsByType(OBJECT_TYPE_LITERAL);
                     for (int i = 0, size = candidates.size(); i < size; i++) {
                         final Binding<?> binding = candidates.get(i);

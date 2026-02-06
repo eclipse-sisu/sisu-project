@@ -143,7 +143,7 @@ final class PlexusRequirements {
         // ----------------------------------------------------------------------
 
         public Map<String, T> get() {
-            return new EntryMapAdapter<String, T>(locate());
+            return new EntryMapAdapter<>(locate());
         }
     }
 
@@ -165,7 +165,7 @@ final class PlexusRequirements {
         // ----------------------------------------------------------------------
 
         public List<T> get() {
-            return new EntryListAdapter<T>(locate());
+            return new EntryListAdapter<>(locate());
         }
     }
 
@@ -187,7 +187,7 @@ final class PlexusRequirements {
         // ----------------------------------------------------------------------
 
         public Set<T> get() {
-            return new EntrySetAdapter<T>(locate());
+            return new EntrySetAdapter<>(locate());
         }
     }
 

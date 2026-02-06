@@ -82,7 +82,7 @@ public class MapConstantTest extends TestCase {
     }
 
     public void testMapAndProperties() {
-        final HashMap<String, String> testMap = new HashMap<String, String>();
+        final HashMap<String, String> testMap = new HashMap<>();
         testMap.put("key1", "value1");
         testMap.put("key2", "value2");
 

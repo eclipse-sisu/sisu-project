@@ -210,7 +210,7 @@ public final class SisuExtensions implements SpaceModule.Strategy, WireModule.St
      */
     public <T> List<Class<? extends T>> load(final Class<T> spi) {
         final String index = "META-INF/services/" + spi.getName();
-        final List<Class<? extends T>> extensionTypes = new ArrayList<Class<? extends T>>();
+        final List<Class<? extends T>> extensionTypes = new ArrayList<>();
         for (final String name : new IndexedClassFinder(index, global).indexedNames(space)) {
             try {
                 extensionTypes.add(space.loadClass(name).asSubclass(spi));

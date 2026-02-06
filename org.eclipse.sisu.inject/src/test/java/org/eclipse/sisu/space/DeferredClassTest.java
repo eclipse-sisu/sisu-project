@@ -50,7 +50,7 @@ class DeferredClassTest {
 
         assertEquals((17 * 31 + clazzName.hashCode()) * 31 + space.hashCode(), clazz.hashCode());
 
-        assertEquals(new NamedClass<Object>(space, clazzName), clazz);
+        assertEquals(new NamedClass<>(space, clazzName), clazz);
 
         assertFalse(clazz.equals(new DeferredClass<Object>() {
             @SuppressWarnings("unchecked")
@@ -70,8 +70,8 @@ class DeferredClassTest {
         final String clazzName2 = clazzName + "$1";
         final ClassSpace space2 = new URLClassSpace(ClassLoader.getSystemClassLoader(), null);
 
-        assertFalse(clazz.equals(new NamedClass<Object>(space, clazzName2)));
-        assertFalse(clazz.equals(new NamedClass<Object>(space2, clazzName)));
+        assertFalse(clazz.equals(new NamedClass<>(space, clazzName2)));
+        assertFalse(clazz.equals(new NamedClass<>(space2, clazzName)));
 
         assertTrue(clazz.toString().contains(clazzName));
         assertTrue(clazz.toString().contains(space.toString()));
@@ -79,8 +79,8 @@ class DeferredClassTest {
 
     @Test
     void testLoadedClass() {
-        final DeferredClass<?> dummyClazz = new LoadedClass<Dummy>(Dummy.class);
-        final DeferredClass<?> stringClazz = new LoadedClass<String>(String.class);
+        final DeferredClass<?> dummyClazz = new LoadedClass<>(Dummy.class);
+        final DeferredClass<?> stringClazz = new LoadedClass<>(String.class);
 
         assertEquals(String.class.getName(), stringClazz.getName());
         assertEquals(String.class.getName(), stringClazz.load().getName());
@@ -99,9 +99,9 @@ class DeferredClassTest {
     void testMissingStrongDeferredClass() {
         try {
             final ClassSpace space = new URLClassSpace(testLoader);
-            System.out.println(new NamedClass<Object>(space, "unknown-class"));
+            System.out.println(new NamedClass<>(space, "unknown-class"));
             System.out.println(new LoadedClass<Object>(getClass()));
-            new NamedClass<Object>(space, "unknown-class").load();
+            new NamedClass<>(space, "unknown-class").load();
             fail("Expected TypeNotPresentException");
         } catch (final TypeNotPresentException e) {
         }

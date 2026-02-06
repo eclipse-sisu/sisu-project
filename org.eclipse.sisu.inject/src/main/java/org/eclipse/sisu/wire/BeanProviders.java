@@ -85,7 +85,7 @@ final class BeanProviders {
         final Provider<Iterable<Entry<K, V>>> entries = entriesOf(key);
         return new Provider<List<V>>() {
             public List<V> get() {
-                return new EntryListAdapter<V>(entries.get());
+                return new EntryListAdapter<>(entries.get());
             }
         };
     }
@@ -97,7 +97,7 @@ final class BeanProviders {
         final Provider<Iterable<Entry<K, V>>> entries = entriesOf(key);
         return new Provider<Set<V>>() {
             public Set<V> get() {
-                return new EntrySetAdapter<V>(entries.get());
+                return new EntrySetAdapter<>(entries.get());
             }
         };
     }
@@ -109,7 +109,7 @@ final class BeanProviders {
         final Provider<Iterable<Entry<K, V>>> entries = entriesOf(key);
         return new Provider<Map<K, V>>() {
             public Map<K, V> get() {
-                return new EntryMapAdapter<K, V>(entries.get());
+                return new EntryMapAdapter<>(entries.get());
             }
         };
     }
@@ -121,7 +121,7 @@ final class BeanProviders {
         final Provider<Iterable<Entry<Named, V>>> entries = entriesOf(Key.get(type, Named.class));
         return new Provider<Map<String, V>>() {
             public Map<String, V> get() {
-                return new EntryMapAdapter<String, V>(new NamedIterableAdapter<V>(entries.get()));
+                return new EntryMapAdapter<>(new NamedIterableAdapter<>(entries.get()));
             }
         };
     }
@@ -148,6 +148,6 @@ final class BeanProviders {
      * Provides placeholder beans/providers.
      */
     public <V> Provider<V> placeholderOf(final Key<V> key) {
-        return new PlaceholderBeanProvider<V>(this, key);
+        return new PlaceholderBeanProvider<>(this, key);
     }
 }

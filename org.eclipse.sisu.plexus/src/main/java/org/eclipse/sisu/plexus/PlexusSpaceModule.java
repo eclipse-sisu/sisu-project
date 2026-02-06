@@ -83,7 +83,7 @@ public final class PlexusSpaceModule implements Module {
 
         binder.bind(BeanManager.class).toInstance(manager);
 
-        final List<PlexusBeanModule> beanModules = new ArrayList<PlexusBeanModule>();
+        final List<PlexusBeanModule> beanModules = new ArrayList<>();
 
         final Map<?, ?> variables = new ContextMapAdapter(context);
         beanModules.add(new PlexusXmlBeanModule(space, variables));

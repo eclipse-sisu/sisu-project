@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.lang.ref.Reference;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -38,8 +37,7 @@ class MildValuesTest {
     }
 
     private static void testValues(final boolean soft) {
-        final Map<String, String> names =
-                new MildValues<String, String>(new LinkedHashMap<String, Reference<String>>(), soft);
+        final Map<String, String> names = new MildValues<>(new LinkedHashMap<>(), soft);
 
         String a = new String("A"), b = new String("B"), c = new String("C");
 
@@ -125,7 +123,7 @@ class MildValuesTest {
         int gcCount = 0, hash = 0;
         do {
             try {
-                final List<byte[]> buf = new LinkedList<byte[]>();
+                final List<byte[]> buf = new LinkedList<>();
                 for (int i = 0; i < 1024 * 1024; i++) {
                     // try to trigger aggressive GC
                     buf.add(new byte[1024 * 1024]);

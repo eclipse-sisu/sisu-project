@@ -24,8 +24,8 @@ class EntryMapAdapterTest {
     @SuppressWarnings("boxing")
     @Test
     void testMapSize() {
-        final Map<String, Integer> original = new HashMap<String, Integer>();
-        final Map<String, Integer> adapter = new EntryMapAdapter<String, Integer>(original.entrySet());
+        final Map<String, Integer> original = new HashMap<>();
+        final Map<String, Integer> adapter = new EntryMapAdapter<>(original.entrySet());
 
         assertTrue(adapter.isEmpty());
         original.put("A", 1);
@@ -43,8 +43,8 @@ class EntryMapAdapterTest {
     @SuppressWarnings("boxing")
     @Test
     void testMapEquality() {
-        final Map<Integer, String> original = new HashMap<Integer, String>();
-        final Map<Integer, String> adapter = new EntryMapAdapter<Integer, String>(original.entrySet());
+        final Map<Integer, String> original = new HashMap<>();
+        final Map<Integer, String> adapter = new EntryMapAdapter<>(original.entrySet());
 
         assertEquals(original, adapter);
         original.put(3, "C");

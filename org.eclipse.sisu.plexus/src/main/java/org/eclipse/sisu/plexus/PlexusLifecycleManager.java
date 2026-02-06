@@ -49,9 +49,9 @@ public final class PlexusLifecycleManager extends BeanScheduler implements BeanM
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final Deque<Startable> startableBeans = new ArrayDeque<Startable>();
+    private final Deque<Startable> startableBeans = new ArrayDeque<>();
 
-    private final Deque<Disposable> disposableBeans = new ArrayDeque<Disposable>();
+    private final Deque<Disposable> disposableBeans = new ArrayDeque<>();
 
     private final Logger consoleLogger = new ConsoleLogger();
 

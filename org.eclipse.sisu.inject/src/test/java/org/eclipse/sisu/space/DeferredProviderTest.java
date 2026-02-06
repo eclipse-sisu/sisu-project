@@ -159,8 +159,8 @@ class DeferredProviderTest {
     void testDeferredImplementationClass() {
         final ClassSpace space = new URLClassSpace(C.class.getClassLoader(), null);
 
-        final DeferredClass<C> clazz1 = new NamedClass<C>(space, CImpl.class.getName());
-        final DeferredClass<C> clazz2 = new LoadedClass<C>(CImpl.class);
+        final DeferredClass<C> clazz1 = new NamedClass<>(space, CImpl.class.getName());
+        final DeferredClass<C> clazz2 = new LoadedClass<>(CImpl.class);
 
         final DeferredProvider<C> provider1 = clazz1.asProvider();
         final DeferredProvider<C> provider2 = clazz2.asProvider();
