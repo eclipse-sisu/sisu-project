@@ -8,6 +8,9 @@ Sisu is a modular JSR330-based container that supports classpath scanning, auto-
 
 # New and Noteworthy
 
+- _2026-02-07_
+  [1.0.0](https://github.com/eclipse-sisu/sisu-project/releases/tag/releases%2F1.0.0)
+
 - _2024-06-03_  
   [0.9.0.M3](https://github.com/eclipse-sisu/sisu-project/releases/tag/milestones%2F0.9.0.M3)
 
