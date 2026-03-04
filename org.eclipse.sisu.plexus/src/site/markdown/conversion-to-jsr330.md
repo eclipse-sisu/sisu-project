@@ -17,7 +17,7 @@ For brevity of examples imports are omitted. The following table defines the mea
 | `@Singleton` | `javax.inject.Singleton` | Standard JSR-330 annotation to mark component as singleton |
 | `@Typed` | `javax.enterprise.inject.Typed` | JavaEE annotation to mark component type |
 | `@Description` | `org.eclipse.sisu.Description` | Sisu-specific annotation to provide a description for a component |
-| `@Parameters` | `org.eclipse.sisu.Parameters` | Sisu-specific annotation to mark \`Map\` injection as container context parameters. |
+| `@Parameters` | `org.eclipse.sisu.Parameters` | Sisu-specific annotation to mark `Map` injection as container context parameters. |
 | `@Inject` | `javax.inject.Inject` | Standard JSR-330 annotation to mark field, parameter, method for injection |
 | `@Nullable` | `javax.annotation.Nullable` | Standard JSR-305 annotation to mark field, parameter, result value as potentially returning null value |
 
@@ -31,6 +31,7 @@ Prefer the standard `javax.inject` versions.
 
 1. [JSR-330: Dependency Injection for Java](https://javax-inject.github.io/javax-inject/)
 2. [JSR-305: Annotations for Software Defect Detection](https://www.jcp.org/en/jsr/detail?id=305)
+3. [Javadoc for `javax.inject`](https://javax-inject.github.io/javax-inject/api/index.html)
 
 # Code Examples
 
@@ -330,7 +331,7 @@ implements Component
 
 ## @Configuration
 
-Plexus configuration injection is handled by \`@Inject @Named("${expression}")\` injection.
+Plexus configuration injection is handled by `@Inject @Named("${expression}")` injection.
 
 ### Basics
 
@@ -391,6 +392,9 @@ public class MyComponent
     }
 }
 ```
+
+Further details in [Javadoc for `org.eclipse.sisu.wire`](/sisu/apidocs/org/eclipse/sisu/wire/package-summary.html).
+The Plexus-JSR330 adapter populates the configuration parameters from [`org.codehaus.plexus.context.Context.getContextData()`](/sisu/apidocs/org/codehaus/plexus/context/Context.html#getContextData()) in [`DefaultPlexusContainer`](https://github.com/eclipse-sisu/sisu-project/blob/e14f89574e8122893987734fe3f2674a4a7fc858/org.eclipse.sisu.plexus/src/main/java/org/codehaus/plexus/DefaultPlexusContainer.java#L725).
 
 ## Lifecycle Support
 
@@ -570,7 +574,7 @@ public class MyPluginModule
 }
 ```
 
-Note that Maven Class Loading mechanism does not expose the Guice API to plugins by default, you need to expose it yourself using the \`extension.xml\` config file. This file is where we list the exposed APIs from maven core to plugins.
+Note that Maven Class Loading mechanism does not expose the Guice API to plugins by default, you need to expose it yourself using the `extension.xml` config file. This file is where we list the exposed APIs from maven core to plugins.
 
 Since core extensions are the only way to modify any behaviour of maven core, we have to create a core extension and put this file in it in order to modify the exposed APIs.
 
