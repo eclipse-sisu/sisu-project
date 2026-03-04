@@ -394,6 +394,7 @@ public class MyComponent
 ```
 
 Further details in [Javadoc for `org.eclipse.sisu.wire`](/sisu/apidocs/org/eclipse/sisu/wire/package-summary.html).
+The Plexus-JSR330 adapter populates the configuration parameters from [`org.codehaus.plexus.context.Context.getContextData()](/sisu/apidocs/org/codehaus/plexus/context/Context.html#getContextData()) in [`DefaultPlexusContainer`](https://github.com/eclipse-sisu/sisu-project/blob/e14f89574e8122893987734fe3f2674a4a7fc858/org.eclipse.sisu.plexus/src/main/java/org/codehaus/plexus/DefaultPlexusContainer.java#L725).
 
 ## Lifecycle Support
 
