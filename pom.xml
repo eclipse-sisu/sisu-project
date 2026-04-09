@@ -124,7 +124,7 @@
 
     <!-- Versions -->
     <mavenRuntimeVersion>3.3.1</mavenRuntimeVersion>
-    <mavenBuildVersion>3.9.12</mavenBuildVersion>
+    <mavenBuildVersion>3.9.14</mavenBuildVersion>
     <javaBuildVersion>17</javaBuildVersion>
     <mavenPluginToolsVersion>3.15.2</mavenPluginToolsVersion>
     <asmVersion>9.9.1</asmVersion>
@@ -132,9 +132,9 @@
     <guiceVersion>4.2.3</guiceVersion>
     <!-- define empty, as jacoco is only conditionally executed (https://www.eclemma.org/jacoco/trunk/doc/prepare-agent-mojo.html) -->
     <argLine />
-    <njordVersion>0.9.3</njordVersion>
+    <njordVersion>0.9.5</njordVersion>
     <!-- Spotless versions -->
-    <spotlessMavenPluginVersion>3.2.1</spotlessMavenPluginVersion>
+    <spotlessMavenPluginVersion>3.4.0</spotlessMavenPluginVersion>
     <spotlessPalantirJavaFormatVersion>2.86.0</spotlessPalantirJavaFormatVersion>
   </properties>
 
@@ -210,7 +210,7 @@
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-utils</artifactId>
-        <version>3.6.0</version>
+        <version>3.6.1</version>
       </dependency>
 
       <!--
@@ -304,7 +304,7 @@
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>5.12.2</version>
+        <version>5.14.3</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -361,7 +361,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>3.4.0</version>
+          <version>3.5.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -375,7 +375,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
-          <version>3.9.0</version>
+          <version>3.10.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -390,7 +390,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.5.4</version>
+          <version>3.5.5</version>
           <configuration>
             <failIfNoSpecifiedTests>false</failIfNoSpecifiedTests>
           </configuration>
@@ -398,12 +398,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>3.5.4</version>
+          <version>3.5.5</version>
         </plugin>
         <plugin>
           <groupId>biz.aQute.bnd</groupId>
           <artifactId>bnd-maven-plugin</artifactId>
-          <version>7.2.1</version>
+          <version>7.2.3</version>
           <configuration>
             <bnd><![CDATA[
 Bundle-Copyright: Copyright (c) 2010-present Sonatype, Inc. and others
@@ -439,7 +439,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>3.6.1</version>
+          <version>3.6.2</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
