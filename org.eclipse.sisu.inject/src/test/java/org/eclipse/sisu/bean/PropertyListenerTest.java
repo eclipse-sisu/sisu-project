@@ -24,7 +24,7 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.AbstractMatcher;
 import com.google.inject.name.Names;
 import com.google.inject.spi.TypeEncounter;
-import javax.inject.Named;
+import jakarta.inject.Named;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -53,7 +53,7 @@ class PropertyListenerTest {
         String ignore;
 
         @Named("injected")
-        @javax.inject.Inject
+        @jakarta.inject.Inject
         int jsr330;
 
         @Named("injected")

@@ -140,7 +140,7 @@ final class DependencyAnalyzer extends DefaultBindingTargetVisitor<Object, Boole
 
     @Override
     public Boolean visit(final ProviderInstanceBinding<?> binding) {
-        final javax.inject.Provider<?> provider = Guice4.getProviderInstance(binding);
+        final jakarta.inject.Provider<?> provider = Guice4.getProviderInstance(binding);
         if (provider instanceof DeferredProvider<?>) {
             try {
                 final Class<?> clazz = ((DeferredProvider<?>) provider)
@@ -184,7 +184,7 @@ final class DependencyAnalyzer extends DefaultBindingTargetVisitor<Object, Boole
     private void requireKey(final Key<?> key) {
         if (!requiredKeys.contains(key)) {
             final Class<?> clazz = key.getTypeLiteral().getRawType();
-            if (javax.inject.Provider.class == clazz || com.google.inject.Provider.class == clazz) {
+            if (jakarta.inject.Provider.class == clazz || com.google.inject.Provider.class == clazz) {
                 requireKey(key.ofType(TypeArguments.get(key.getTypeLiteral(), 0)));
             } else if (!RESTRICTED_CLASSES.contains(clazz)) {
                 requiredKeys.add(key);

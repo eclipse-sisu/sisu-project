@@ -14,7 +14,7 @@ package org.eclipse.sisu.inject;
 
 import com.google.inject.Binding;
 import com.google.inject.Singleton;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.eclipse.sisu.Priority;
 
 /**

@@ -16,6 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import jakarta.inject.Named;
+import jakarta.inject.Qualifier;
+import jakarta.inject.Singleton;
 import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -31,9 +34,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.inject.Named;
-import javax.inject.Qualifier;
-import javax.inject.Singleton;
 import org.eclipse.sisu.BaseTests;
 import org.eclipse.sisu.inject.DeferredClass;
 import org.junit.jupiter.api.AfterEach;
@@ -269,7 +269,7 @@ class QualifiedScanningTest {
 
         visitor.visitClass(new URL("file:target/classes/java/lang/Object.class"));
         visitor.enterClass(0, "java/lang/Object", null, null);
-        visitor.visitAnnotation("Ljavax/inject/Named;");
+        visitor.visitAnnotation("Ljakarta/inject/Named;");
         visitor.leaveClass();
 
         assertEquals(1, listener.sources.size());
@@ -277,7 +277,7 @@ class QualifiedScanningTest {
 
         visitor.visitClass(new URL("jar:file:bar.jar!/java/lang/String.class"));
         visitor.enterClass(0, "java/lang/String", null, null);
-        visitor.visitAnnotation("Ljavax/inject/Named;");
+        visitor.visitAnnotation("Ljakarta/inject/Named;");
         visitor.leaveClass();
 
         assertEquals(2, listener.sources.size());
@@ -286,7 +286,7 @@ class QualifiedScanningTest {
 
         visitor.visitClass(new URL("file:some/obfuscated/location"));
         visitor.enterClass(0, "java/lang/Integer", null, null);
-        visitor.visitAnnotation("Ljavax/inject/Named;");
+        visitor.visitAnnotation("Ljakarta/inject/Named;");
         visitor.leaveClass();
 
         assertEquals(3, listener.sources.size());

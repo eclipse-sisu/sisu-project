@@ -16,9 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Provides;
+import jakarta.inject.Inject;
 import java.util.Arrays;
 import java.util.Map;
-import javax.inject.Inject;
 import org.eclipse.sisu.Parameters;
 import org.junit.jupiter.api.Test;
 

@@ -10,6 +10,13 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Binder;
 import com.google.inject.Guice;
@@ -22,7 +29,6 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
 import java.util.Iterator;
 import java.util.Map.Entry;
-import junit.framework.TestCase;
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.classworlds.ClassWorldException;
 import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
@@ -32,8 +38,10 @@ import org.eclipse.sisu.inject.DefaultRankingFunction;
 import org.eclipse.sisu.inject.InjectorBindings;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.inject.Sources;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class PlexusBeanLocatorTest extends TestCase {
+public class PlexusBeanLocatorTest {
     @ImplementedBy(BeanImpl.class)
     interface Bean {}
 
@@ -47,7 +55,7 @@ public class PlexusBeanLocatorTest extends TestCase {
 
     Injector child3;
 
-    @Override
+    @BeforeEach
     public void setUp() throws Exception {
         parent = Guice.createInjector(new AbstractModule() {
             @Override
@@ -82,6 +90,7 @@ public class PlexusBeanLocatorTest extends TestCase {
         });
     }
 
+    @Test
     public void testInjectorOrdering() {
         final MutableBeanLocator locator = new DefaultBeanLocator();
 
@@ -150,6 +159,7 @@ public class PlexusBeanLocatorTest extends TestCase {
         assertFalse(i.hasNext());
     }
 
+    @Test
     public void testExistingInjectors() {
         final MutableBeanLocator locator = new DefaultBeanLocator();
 
@@ -173,6 +183,7 @@ public class PlexusBeanLocatorTest extends TestCase {
         assertFalse(i.hasNext());
     }
 
+    @Test
     public void testRoleHintLookup() {
         final MutableBeanLocator locator = new DefaultBeanLocator();
 
@@ -282,6 +293,7 @@ public class PlexusBeanLocatorTest extends TestCase {
         assertNull(m3.getValue());
     }
 
+    @Test
     public void testInjectorVisibility() throws NoSuchRealmException {
         final MutableBeanLocator locator = new DefaultBeanLocator();
         final ClassWorld world = new ClassWorld();

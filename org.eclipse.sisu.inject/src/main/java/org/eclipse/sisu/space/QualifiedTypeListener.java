@@ -13,7 +13,7 @@
 package org.eclipse.sisu.space;
 
 import com.google.inject.Binder;
-import javax.inject.Qualifier;
+import jakarta.inject.Qualifier;
 
 /**
  * Listens for types annotated with {@link Qualifier} annotations.

@@ -24,18 +24,6 @@ import org.eclipse.sisu.PreDestroy;
  * Builds {@link BeanLifecycle}s by searching class hierarchies for JSR250 annotations.
  */
 final class LifecycleBuilder {
-    static {
-        boolean hasJsr250Annotations;
-        try {
-            hasJsr250Annotations = javax.annotation.PostConstruct.class.isAnnotation()
-                    && javax.annotation.PreDestroy.class.isAnnotation();
-        } catch (final LinkageError e) {
-            hasJsr250Annotations = false;
-        }
-        HAS_JSR250_ANNOTATIONS = hasJsr250Annotations;
-    }
-
-    private static final boolean HAS_JSR250_ANNOTATIONS;
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -108,15 +96,7 @@ final class LifecycleBuilder {
     }
 
     private boolean isAnnotationPresent(final Method method, final Class<? extends Annotation> annotationClass) {
-        boolean result = method.isAnnotationPresent(annotationClass);
-        if (!result && HAS_JSR250_ANNOTATIONS) {
-            if (PostConstruct.class.equals(annotationClass)) {
-                result = method.isAnnotationPresent(javax.annotation.PostConstruct.class);
-            } else if (PreDestroy.class.equals(annotationClass)) {
-                result = method.isAnnotationPresent(javax.annotation.PreDestroy.class);
-            }
-        }
-        return result;
+        return method.isAnnotationPresent(annotationClass);
     }
 
     /**

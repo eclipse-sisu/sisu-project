@@ -15,12 +15,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.name.Names;
+import jakarta.inject.Inject;
 import java.net.URL;
-import javax.inject.Inject;
 import org.junit.jupiter.api.Test;
 
 class QualifiedModuleTest {
-    @javax.inject.Named
+    @jakarta.inject.Named
     static class CustomModule extends AbstractModule {
         @Override
         protected void configure() {
@@ -29,7 +29,7 @@ class QualifiedModuleTest {
     }
 
     @Inject
-    @javax.inject.Named("CustomConstant")
+    @jakarta.inject.Named("CustomConstant")
     private String value;
 
     @Inject

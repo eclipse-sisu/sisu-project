@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.google.inject.Key;
 import com.google.inject.ProvisionException;
 import com.google.inject.TypeLiteral;
@@ -17,11 +21,11 @@ import com.google.inject.name.Names;
 import com.google.inject.util.Types;
 import java.util.List;
 import java.util.Map;
-import junit.framework.TestCase;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.junit.jupiter.api.Test;
 
-public class RolesTest extends TestCase {
+public class RolesTest {
     private static final TypeLiteral<Object> OBJECT_LITERAL = TypeLiteral.get(Object.class);
 
     private static final TypeLiteral<String> STRING_LITERAL = TypeLiteral.get(String.class);
@@ -32,6 +36,7 @@ public class RolesTest extends TestCase {
 
     private static final Key<Object> OBJECT_FOO_COMPONENT_KEY = Key.get(Object.class, Names.named("foo"));
 
+    @Test
     public void testCanonicalRoleHint() {
         assertEquals(OBJECT_LITERAL + "", Roles.canonicalRoleHint(Object.class.getName(), null));
         assertEquals(OBJECT_LITERAL + "", Roles.canonicalRoleHint(Object.class.getName(), ""));
@@ -42,6 +47,7 @@ public class RolesTest extends TestCase {
         assertEquals(OBJECT_LITERAL + ":foo", Roles.canonicalRoleHint(component("foo")));
     }
 
+    @Test
     public void testDefaultComponentKeys() {
         assertEquals(OBJECT_COMPONENT_KEY, Roles.componentKey(Object.class, null));
         assertEquals(OBJECT_COMPONENT_KEY, Roles.componentKey(OBJECT_LITERAL, ""));
@@ -50,11 +56,13 @@ public class RolesTest extends TestCase {
         assertEquals(OBJECT_COMPONENT_KEY, Roles.componentKey(component("default")));
     }
 
+    @Test
     public void testComponentKeys() {
         assertEquals(OBJECT_FOO_COMPONENT_KEY, Roles.componentKey(Object.class, "foo"));
         assertEquals(OBJECT_FOO_COMPONENT_KEY, Roles.componentKey(component("foo")));
     }
 
+    @Test
     public void testRoleAnalysis() {
         assertEquals(STRING_LITERAL, Roles.roleType(requirement(String.class), OBJECT_LITERAL));
         assertEquals(STRING_LITERAL, Roles.roleType(requirement(Object.class), STRING_LITERAL));
@@ -83,6 +91,7 @@ public class RolesTest extends TestCase {
         return new RequirementImpl(role, false);
     }
 
+    @Test
     public void testMissingComponentExceptions() {
         try {
             Roles.throwMissingComponentException(STRING_LITERAL, null);
@@ -97,6 +106,7 @@ public class RolesTest extends TestCase {
         }
     }
 
+    @Test
     public void testCamelization() {
         assertSame("thisIsATest", Roles.camelizeName("thisIsATest"));
         assertEquals("thisIsATest", Roles.camelizeName("this-is-a-test"));

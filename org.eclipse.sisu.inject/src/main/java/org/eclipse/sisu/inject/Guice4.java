@@ -17,9 +17,9 @@ import com.google.inject.Scopes;
 import com.google.inject.spi.InstanceBinding;
 import com.google.inject.spi.ProviderInstanceBinding;
 import com.google.inject.spi.ProvidesMethodBinding;
+import jakarta.inject.Provider;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import javax.inject.Provider;
 
 /**
  * Utility methods for dealing with changes in the Guice 4.0 SPI.

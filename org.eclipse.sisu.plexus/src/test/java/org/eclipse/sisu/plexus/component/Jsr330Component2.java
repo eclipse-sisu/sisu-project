@@ -9,8 +9,8 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus.component;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 @Named
 @Singleton

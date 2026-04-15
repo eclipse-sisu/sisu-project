@@ -47,8 +47,8 @@ import java.util.*;
 import javax.swing.*;
 
 // Standard JSR330 annotations
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import com.google.inject.Guice;
 

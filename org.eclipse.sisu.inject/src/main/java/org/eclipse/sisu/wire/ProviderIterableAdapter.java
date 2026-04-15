@@ -12,10 +12,10 @@
  */
 package org.eclipse.sisu.wire;
 
+import jakarta.inject.Provider;
 import java.lang.annotation.Annotation;
 import java.util.Iterator;
 import java.util.Map.Entry;
-import javax.inject.Provider;
 import org.eclipse.sisu.BeanEntry;
 
 /**

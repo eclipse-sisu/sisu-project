@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.sisu.bean.beta;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import org.eclipse.sisu.bean.alpha.Private;
 
 @Singleton

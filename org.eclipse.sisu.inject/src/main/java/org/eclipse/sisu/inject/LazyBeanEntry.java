@@ -14,8 +14,8 @@ package org.eclipse.sisu.inject;
 
 import com.google.inject.Binding;
 import com.google.inject.Scopes;
+import jakarta.inject.Provider;
 import java.lang.annotation.Annotation;
-import javax.inject.Provider;
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.Description;
 
@@ -120,9 +120,9 @@ final class LazyBeanEntry<Q extends Annotation, T> implements BeanEntry<Q, T> {
     // ----------------------------------------------------------------------
 
     /**
-     * Implementation of @{@link javax.inject.Named} that can also act like @{@link com.google.inject.name.Named}.
+     * Implementation of @{@link jakarta.inject.Named} that can also act like @{@link com.google.inject.name.Named}.
      */
-    private static final class JsrNamed implements com.google.inject.name.Named, javax.inject.Named {
+    private static final class JsrNamed implements com.google.inject.name.Named, jakarta.inject.Named {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
@@ -148,7 +148,7 @@ final class LazyBeanEntry<Q extends Annotation, T> implements BeanEntry<Q, T> {
 
         @Override
         public Class<? extends Annotation> annotationType() {
-            return javax.inject.Named.class;
+            return jakarta.inject.Named.class;
         }
 
         @Override
@@ -164,15 +164,15 @@ final class LazyBeanEntry<Q extends Annotation, T> implements BeanEntry<Q, T> {
             if (rhs instanceof com.google.inject.name.Named) {
                 return value.equals(((com.google.inject.name.Named) rhs).value());
             }
-            if (rhs instanceof javax.inject.Named) {
-                return value.equals(((javax.inject.Named) rhs).value());
+            if (rhs instanceof jakarta.inject.Named) {
+                return value.equals(((jakarta.inject.Named) rhs).value());
             }
             return false;
         }
 
         @Override
         public String toString() {
-            return "@" + javax.inject.Named.class.getName() + "(value=" + value + ")";
+            return "@" + jakarta.inject.Named.class.getName() + "(value=" + value + ")";
         }
     }
 }

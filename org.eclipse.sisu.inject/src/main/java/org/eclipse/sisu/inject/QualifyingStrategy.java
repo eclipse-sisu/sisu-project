@@ -18,9 +18,9 @@ import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 import com.google.inject.spi.ConstructorBinding;
 import com.google.inject.spi.ProviderKeyBinding;
+import jakarta.inject.Provider;
+import jakarta.inject.Qualifier;
 import java.lang.annotation.Annotation;
-import javax.inject.Provider;
-import javax.inject.Qualifier;
 
 /**
  * Enumerates the different strategies for qualifying {@link Binding}s against requirement {@link Key}s.
@@ -56,7 +56,7 @@ enum QualifyingStrategy {
             if (binding instanceof ConstructorBinding<?>
                     && null == binding.getKey().getAnnotationType()) {
                 final Class<?> clazz = binding.getKey().getTypeLiteral().getRawType();
-                final javax.inject.Named alias = clazz.getAnnotation(javax.inject.Named.class);
+                final jakarta.inject.Named alias = clazz.getAnnotation(jakarta.inject.Named.class);
                 if (null != alias
                         && alias.value().equals(((Named) requirement.getAnnotation()).value())
                         && clazz.equals(Implementations.find(binding))) {

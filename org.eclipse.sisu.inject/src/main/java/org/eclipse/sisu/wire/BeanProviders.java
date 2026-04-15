@@ -68,7 +68,7 @@ final class BeanProviders {
     public <K extends Annotation, V> Provider<Iterable<Entry<K, V>>> entriesOf(final Key key) {
         final TypeLiteral<V> type = key.getTypeLiteral();
         final Class<?> clazz = type.getRawType();
-        if (javax.inject.Provider.class != clazz && com.google.inject.Provider.class != clazz) {
+        if (jakarta.inject.Provider.class != clazz && com.google.inject.Provider.class != clazz) {
             return beanEntriesOf(key);
         }
         final Provider<Iterable<BeanEntry>> beanEntries = beanEntriesOf(key.ofType(TypeArguments.get(type, 0)));

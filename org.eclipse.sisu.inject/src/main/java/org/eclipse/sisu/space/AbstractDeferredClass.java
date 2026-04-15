@@ -13,7 +13,7 @@
 package org.eclipse.sisu.space;
 
 import com.google.inject.Injector;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.inject.DeferredProvider;
 import org.eclipse.sisu.inject.Logs;

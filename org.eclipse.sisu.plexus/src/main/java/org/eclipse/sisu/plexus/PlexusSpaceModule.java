@@ -14,11 +14,11 @@ package org.eclipse.sisu.plexus;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.inject.Inject;
-import javax.inject.Provider;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.context.Context;

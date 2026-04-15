@@ -17,12 +17,12 @@ import com.google.inject.Guice;
 import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
+import jakarta.inject.Inject;
 import java.io.File;
 import java.lang.annotation.Annotation;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Properties;
-import javax.inject.Inject;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 import org.eclipse.sisu.space.BeanScanning;
 import org.eclipse.sisu.space.ClassSpace;
@@ -30,12 +30,8 @@ import org.eclipse.sisu.space.SpaceModule;
 import org.eclipse.sisu.space.URLClassSpace;
 import org.eclipse.sisu.wire.ParameterKeys;
 import org.eclipse.sisu.wire.WireModule;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 
 /**
  * Abstract TestNG/JUnit4/5 test that automatically binds and injects itself.
@@ -55,15 +51,11 @@ public abstract class InjectedTest implements Module {
     // Setup
     // ----------------------------------------------------------------------
 
-    @Before
-    @BeforeMethod
     @BeforeEach
     public void setUp() throws Exception {
         Guice.createInjector(new WireModule(new SetUpModule(), spaceModule()));
     }
 
-    @After
-    @AfterMethod
     @AfterEach
     public void tearDown() throws Exception {
         locator.clear();

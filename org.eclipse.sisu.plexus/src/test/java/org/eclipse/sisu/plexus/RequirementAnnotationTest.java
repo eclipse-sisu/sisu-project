@@ -10,15 +10,20 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import junit.framework.TestCase;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.junit.jupiter.api.Test;
 
-public class RequirementAnnotationTest extends TestCase {
+public class RequirementAnnotationTest {
     @Requirement
     String defaultReq;
 
@@ -42,6 +47,7 @@ public class RequirementAnnotationTest extends TestCase {
             hints = {"A", "B", "C"})
     List<String> namedStringListReq;
 
+    @Test
     public void testRequirementImpl() throws NoSuchFieldException {
         checkBehaviour("defaultReq");
         checkBehaviour("stringReq");

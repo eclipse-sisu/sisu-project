@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 import org.eclipse.sisu.BaseTests;
 import org.eclipse.sisu.space.URLClassSpace;
 import org.junit.jupiter.api.Test;
-import org.slf4j.impl.SimpleLogger;
+import org.slf4j.simple.SimpleLogger;
 
 @BaseTests
 class LogsTest {

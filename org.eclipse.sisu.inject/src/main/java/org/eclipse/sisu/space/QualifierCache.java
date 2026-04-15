@@ -12,9 +12,9 @@
  */
 package org.eclipse.sisu.space;
 
+import jakarta.inject.Qualifier;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.inject.Qualifier;
 
 /**
  * Caching {@link ClassVisitor} that maintains a map of known {@link Qualifier} annotations.
@@ -24,9 +24,9 @@ final class QualifierCache implements ClassVisitor {
     // Constants
     // ----------------------------------------------------------------------
 
-    private static final String QUALIFIER_DESC = "Ljavax/inject/Qualifier;";
+    private static final String QUALIFIER_DESC = "Ljakarta/inject/Qualifier;";
 
-    private static final String NAMED_DESC = "Ljavax/inject/Named;";
+    private static final String NAMED_DESC = "Ljakarta/inject/Named;";
 
     // ----------------------------------------------------------------------
     // Implementation fields

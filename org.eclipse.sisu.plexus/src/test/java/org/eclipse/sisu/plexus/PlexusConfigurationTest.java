@@ -12,24 +12,28 @@ package org.eclipse.sisu.plexus;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonMap;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.ProvisionException;
+import jakarta.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.inject.Inject;
-import junit.framework.TestCase;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.sisu.bean.BeanManager;
 import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.bean.PropertyBinding;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class PlexusConfigurationTest extends TestCase {
+public class PlexusConfigurationTest {
     @Inject
     ConfiguredComponent component;
 
@@ -66,7 +70,7 @@ public class PlexusConfigurationTest extends TestCase {
         }
     }
 
-    @Override
+    @BeforeEach
     protected void setUp() {
         Guice.createInjector(new AbstractModule() {
             @Override
@@ -130,6 +134,7 @@ public class PlexusConfigurationTest extends TestCase {
         Xpp3Dom xml;
     }
 
+    @Test
     public void testConfiguration() {
         assertEquals("1", component.a);
         assertEquals(Integer.valueOf(2), component.b);

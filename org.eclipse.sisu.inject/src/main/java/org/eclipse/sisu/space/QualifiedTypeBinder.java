@@ -20,13 +20,13 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.binder.ScopedBindingBuilder;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
+import jakarta.inject.Provider;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.IncompleteAnnotationException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import javax.inject.Provider;
 import org.eclipse.sisu.Mediator;
 import org.eclipse.sisu.inject.BeanLocator;
 import org.eclipse.sisu.inject.TypeArguments;
@@ -36,27 +36,12 @@ import org.eclipse.sisu.inject.TypeArguments;
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
 public final class QualifiedTypeBinder implements QualifiedTypeListener {
-    // ----------------------------------------------------------------------
-    // Static initialization
-    // ----------------------------------------------------------------------
-
-    static {
-        boolean hasJsr299Typed;
-        try {
-            hasJsr299Typed = javax.enterprise.inject.Typed.class.isAnnotation();
-        } catch (final LinkageError e) {
-            hasJsr299Typed = false;
-        }
-        HAS_JSR299_TYPED = hasJsr299Typed;
-    }
 
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
 
     private static final TypeLiteral<Object> OBJECT_TYPE_LITERAL = TypeLiteral.get(Object.class);
-
-    private static final boolean HAS_JSR299_TYPED;
 
     // ----------------------------------------------------------------------
     // Implementation fields
@@ -102,8 +87,6 @@ public final class QualifiedTypeBinder implements QualifiedTypeListener {
             installModule(qualifiedType);
         } else if (Mediator.class.isAssignableFrom(qualifiedType)) {
             registerMediator(qualifiedType);
-        } else if (org.sonatype.inject.Mediator.class.isAssignableFrom(qualifiedType)) {
-            registerLegacyMediator(qualifiedType);
         } else if (Provider.class.isAssignableFrom(qualifiedType)) {
             bindProviderType(qualifiedType);
         } else {
@@ -144,19 +127,6 @@ public final class QualifiedTypeBinder implements QualifiedTypeListener {
         }
     }
 
-    @SuppressWarnings("deprecation")
-    private void registerLegacyMediator(final Class<org.sonatype.inject.Mediator> mediatorType) {
-        final TypeLiteral<?>[] args = resolveTypeArguments(mediatorType, org.sonatype.inject.Mediator.class);
-        if (args.length != 3) {
-            binder.addError(mediatorType + " has wrong number of type arguments");
-        } else {
-            final Mediator mediator = org.eclipse.sisu.inject.Legacy.adapt(newInstance(mediatorType));
-            if (null != mediator) {
-                mediate(watchedKey(args[1], args[0].getRawType()), mediator, args[2].getRawType());
-            }
-        }
-    }
-
     /**
      * Uses the given mediator to mediate updates between the {@link BeanLocator} and associated watchers.
      *
@@ -178,7 +148,7 @@ public final class QualifiedTypeBinder implements QualifiedTypeListener {
      * @param providerType The provider type
      */
     private void bindProviderType(final Class<?> providerType) {
-        final TypeLiteral[] args = resolveTypeArguments(providerType, javax.inject.Provider.class);
+        final TypeLiteral[] args = resolveTypeArguments(providerType, jakarta.inject.Provider.class);
         if (args.length != 1) {
             binder.addError(providerType + " has wrong number of type arguments");
         } else {
@@ -294,7 +264,7 @@ public final class QualifiedTypeBinder implements QualifiedTypeListener {
     }
 
     private static Named getBindingName(final Class<?> qualifiedType) {
-        final javax.inject.Named jsr330 = qualifiedType.getAnnotation(javax.inject.Named.class);
+        final jakarta.inject.Named jsr330 = qualifiedType.getAnnotation(jakarta.inject.Named.class);
         if (null != jsr330) {
             try {
                 final String name = jsr330.value();
@@ -324,12 +294,6 @@ public final class QualifiedTypeBinder implements QualifiedTypeListener {
 
     private static Class<?>[] getBindingTypes(final Class<?> clazz) {
         for (Class<?> c = clazz; null != c && c != Object.class; c = c.getSuperclass()) {
-            if (HAS_JSR299_TYPED) {
-                final javax.enterprise.inject.Typed typed = c.getAnnotation(javax.enterprise.inject.Typed.class);
-                if (null != typed) {
-                    return typed.value().length > 0 ? typed.value() : c.getInterfaces();
-                }
-            }
             final org.eclipse.sisu.Typed typed = c.getAnnotation(org.eclipse.sisu.Typed.class);
             if (null != typed) {
                 return typed.value().length > 0 ? typed.value() : c.getInterfaces();
@@ -339,14 +303,12 @@ public final class QualifiedTypeBinder implements QualifiedTypeListener {
     }
 
     private static boolean isSingleton(final Class<?> type) {
-        return type.isAnnotationPresent(javax.inject.Singleton.class)
+        return type.isAnnotationPresent(jakarta.inject.Singleton.class)
                 || type.isAnnotationPresent(com.google.inject.Singleton.class);
     }
 
-    @SuppressWarnings("deprecation")
     private static boolean isEagerSingleton(final Class<?> type) {
-        return type.isAnnotationPresent(org.eclipse.sisu.EagerSingleton.class)
-                || type.isAnnotationPresent(org.sonatype.inject.EagerSingleton.class);
+        return type.isAnnotationPresent(org.eclipse.sisu.EagerSingleton.class);
     }
 
     private static <T> Key<T> watchedKey(final TypeLiteral<T> type, final Class qualifierType) {

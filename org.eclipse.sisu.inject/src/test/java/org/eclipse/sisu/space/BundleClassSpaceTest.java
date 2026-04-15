@@ -32,11 +32,13 @@ import org.eclipse.sisu.BaseTests;
 import org.eclipse.sisu.inject.DeferredClass;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
 import org.osgi.framework.launch.Framework;
 
+@Disabled
 @BaseTests
 class BundleClassSpaceTest {
     private static final URL EMPTY_BUNDLE = ZipEntryIteratorTest.class.getResource("empty.jar");

@@ -10,21 +10,25 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.ConfigurationException;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import javax.inject.Inject;
-import javax.inject.Named;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class DateConstantTest extends TestCase {
-    @Override
+public class DateConstantTest {
+    @BeforeEach
     protected void setUp() throws Exception {
         Guice.createInjector(new AbstractModule() {
                     private void bind(final String name, final String value) {
@@ -62,14 +66,17 @@ public class DateConstantTest extends TestCase {
     @Inject
     Injector injector;
 
+    @Test
     public void testDateFormat1() {
         assertEquals(dateText1, new SimpleDateFormat("yyyy-MM-dd h:mm:ss.S a", Locale.US).format(date1));
     }
 
+    @Test
     public void testDateFormat2() {
         assertEquals(dateText2, new SimpleDateFormat("yyyy-MM-dd h:mm:ssa", Locale.US).format(date2));
     }
 
+    @Test
     public void testBadDateFormat() {
         try {
             injector.getInstance(Key.get(Date.class, Names.named("BadFormat")));

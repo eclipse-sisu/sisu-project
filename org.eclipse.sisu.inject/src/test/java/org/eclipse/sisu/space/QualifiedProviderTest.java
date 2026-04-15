@@ -13,17 +13,16 @@ package org.eclipse.sisu.space;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.google.inject.Guice;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.inject.Provider;
 import java.net.URL;
 import java.util.concurrent.atomic.AtomicInteger;
-import javax.enterprise.inject.Typed;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Provider;
 import org.junit.jupiter.api.Test;
 
 class QualifiedProviderTest {
     @Named("jsr330-counting")
-    static class JSR330CountingThreadProvider implements javax.inject.Provider<Thread> {
+    static class JSR330CountingThreadProvider implements jakarta.inject.Provider<Thread> {
         @Inject
         @Named("counting")
         Runnable runnable;
@@ -53,7 +52,7 @@ class QualifiedProviderTest {
     }
 
     @Named("counting")
-    @Typed
+    @org.eclipse.sisu.Typed
     static class CountingRunnable implements Runnable {
         static final AtomicInteger count = new AtomicInteger();
 

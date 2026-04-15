@@ -14,11 +14,11 @@ package org.eclipse.sisu.plexus;
 
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
+import jakarta.inject.Inject;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import javax.inject.Inject;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;

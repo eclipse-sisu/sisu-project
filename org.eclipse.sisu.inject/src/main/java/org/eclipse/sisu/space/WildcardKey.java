@@ -14,11 +14,11 @@ package org.eclipse.sisu.space;
 
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
+import jakarta.inject.Provider;
+import jakarta.inject.Qualifier;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import javax.inject.Provider;
-import javax.inject.Qualifier;
 
 /**
  * Binding {@link Key} for implementations that act as "wild-cards", meaning they match against any assignable type.

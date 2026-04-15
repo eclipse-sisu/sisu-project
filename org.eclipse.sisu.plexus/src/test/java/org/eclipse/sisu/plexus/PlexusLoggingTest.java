@@ -10,19 +10,23 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
-import javax.inject.Inject;
-import junit.framework.TestCase;
+import jakarta.inject.Inject;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.bean.BeanManager;
 import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.bean.PropertyBinding;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PlexusLoggingTest extends TestCase {
+public class PlexusLoggingTest {
     static class LoggerManager implements BeanManager {
         @Override
         public boolean manage(final Class<?> clazz) {
@@ -60,7 +64,7 @@ public class PlexusLoggingTest extends TestCase {
         }
     }
 
-    @Override
+    @BeforeEach
     protected void setUp() {
         Guice.createInjector(new AbstractModule() {
             @Override
@@ -86,6 +90,7 @@ public class PlexusLoggingTest extends TestCase {
     @Inject
     SomeComponent component;
 
+    @Test
     public void testLogging() {
         assertNotNull(component.logger);
 

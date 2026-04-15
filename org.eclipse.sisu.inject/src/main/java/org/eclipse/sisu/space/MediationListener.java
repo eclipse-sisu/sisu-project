@@ -19,10 +19,10 @@ import com.google.inject.matcher.AbstractMatcher;
 import com.google.inject.spi.InjectionListener;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
+import jakarta.inject.Provider;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
-import javax.inject.Provider;
 import org.eclipse.sisu.Mediator;
 import org.eclipse.sisu.inject.BeanLocator;
 

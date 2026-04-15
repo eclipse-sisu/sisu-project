@@ -13,7 +13,7 @@ package org.eclipse.sisu.launch;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.inject.Binder;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
 final class Custom2Test extends InjectedTest {

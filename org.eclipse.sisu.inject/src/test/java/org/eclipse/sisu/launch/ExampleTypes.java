@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.sisu.launch;
 
+import jakarta.inject.Named;
+import jakarta.inject.Qualifier;
+import jakarta.inject.Singleton;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import javax.inject.Named;
-import javax.inject.Qualifier;
-import javax.inject.Singleton;
 
 // various qualified types for testing
 

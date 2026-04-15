@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.sisu.bean.alpha;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 @Singleton
 public class HiddenPublic extends Private {

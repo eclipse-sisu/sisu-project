@@ -10,9 +10,15 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.name.Names;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,12 +26,11 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import javax.inject.Inject;
-import javax.inject.Named;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class CollectionConstantTest extends TestCase {
-    @Override
+public class CollectionConstantTest {
+    @BeforeEach
     protected void setUp() throws Exception {
         Guice.createInjector(new AbstractModule() {
                     private void bind(final String name, final String value) {
@@ -72,10 +77,12 @@ public class CollectionConstantTest extends TestCase {
     @Named("Numbers")
     Collection<Collection<Integer>> numbers;
 
+    @Test
     public void testEmptyCollection() {
         assertTrue(empty.isEmpty());
     }
 
+    @Test
     public void testCustomCollections() {
         assertEquals(LinkedHashSet.class, custom.getClass());
         final Iterator<?> i = custom.iterator();
@@ -84,11 +91,13 @@ public class CollectionConstantTest extends TestCase {
         assertFalse(i.hasNext());
     }
 
+    @Test
     public void testStringCollection() {
         assertEquals(Arrays.asList("cat", "dog", "aardvark"), animals);
     }
 
-    @SuppressWarnings({"unchecked", "boxing"})
+    @SuppressWarnings("boxing")
+    @Test
     public void testPrimitiveCollection() {
         assertEquals(Arrays.asList(Arrays.asList(1, 2), Arrays.asList(3, 4), Arrays.asList(5, 6)), numbers);
     }

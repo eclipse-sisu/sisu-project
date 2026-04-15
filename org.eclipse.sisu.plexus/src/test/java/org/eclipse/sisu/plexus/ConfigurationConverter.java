@@ -17,9 +17,9 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.AbstractMatcher;
 import com.google.inject.spi.TypeConverter;
 import com.google.inject.spi.TypeConverterBinding;
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.inject.Inject;
 
 public class ConfigurationConverter extends AbstractMatcher<TypeLiteral<?>> implements TypeConverter, Module {
     private Collection<TypeConverterBinding> otherConverterBindings;

@@ -14,10 +14,10 @@ package org.eclipse.sisu.plexus;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
+import jakarta.inject.Provider;
 import java.security.SecureClassLoader;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import javax.inject.Provider;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;

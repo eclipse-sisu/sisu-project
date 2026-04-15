@@ -275,7 +275,7 @@ final class ElementAnalyzer extends DefaultElementVisitor<Void> {
     @SuppressWarnings("deprecation")
     private static boolean isParameters(final Key<?> key) {
         final Class<? extends Annotation> qualifierType = key.getAnnotationType();
-        return Parameters.class == qualifierType || org.sonatype.inject.Parameters.class == qualifierType;
+        return Parameters.class == qualifierType;
     }
 
     private static boolean isRestricted(final Key<?> key) {

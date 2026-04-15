@@ -14,8 +14,8 @@ package org.eclipse.sisu.inject;
 
 import com.google.inject.ImplementedBy;
 import com.google.inject.Key;
+import jakarta.inject.Qualifier;
 import java.lang.annotation.Annotation;
-import javax.inject.Qualifier;
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.Mediator;
 

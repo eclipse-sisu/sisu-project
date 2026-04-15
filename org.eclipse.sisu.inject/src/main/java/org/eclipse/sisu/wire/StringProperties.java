@@ -13,11 +13,11 @@
 package org.eclipse.sisu.wire;
 
 import com.google.inject.Singleton;
+import jakarta.inject.Inject;
 import java.util.AbstractMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import javax.inject.Inject;
 import org.eclipse.sisu.Parameters;
 
 /**
