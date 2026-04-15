@@ -12,13 +12,13 @@ package org.eclipse.sisu.plexus;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonMap;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import junit.framework.TestCase;
 import org.codehaus.plexus.component.configurator.BasicComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ComponentConfigurator;
 import org.codehaus.plexus.component.configurator.expression.DefaultExpressionEvaluator;
@@ -27,8 +27,9 @@ import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
+import org.junit.jupiter.api.Test;
 
-public class ParameterizedCollectionTest extends TestCase {
+public class ParameterizedCollectionTest {
     static class MapHolder {
         Map<String, Map<String, Map<String, List<Boolean>>>> map;
     }
@@ -41,6 +42,7 @@ public class ParameterizedCollectionTest extends TestCase {
         Map<String, Map<String, List<Boolean>>>[] array;
     }
 
+    @Test
     public void testParameterizedMap() throws Exception {
         final MapHolder mapHolder = new MapHolder();
 
@@ -59,6 +61,7 @@ public class ParameterizedCollectionTest extends TestCase {
         assertEquals(expectedMap, mapHolder.map);
     }
 
+    @Test
     public void testParameterizedList() throws Exception {
         final ListHolder listHolder = new ListHolder();
 
@@ -77,6 +80,7 @@ public class ParameterizedCollectionTest extends TestCase {
         assertEquals(expectedList, listHolder.list);
     }
 
+    @Test
     public void testParameterizedArray() throws Exception {
         final ArrayHolder arrayHolder = new ArrayHolder();
 

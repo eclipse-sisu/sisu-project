@@ -6,10 +6,10 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,27 +40,24 @@ import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator
 import org.codehaus.plexus.component.configurator.expression.TypeAwareExpressionEvaluator;
 import org.codehaus.plexus.configuration.DefaultPlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class BasicComponentConfiguratorTest {
-    @Rule
-    public TemporaryFolder tmpDirectory = new TemporaryFolder();
-
     private ComponentConfigurator configurator;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         configurator = new BasicComponentConfigurator();
     }
 
     @Test
-    public void testSimplePathOnDefaultFileSystem() throws ComponentConfigurationException {
+    public void testSimplePathOnDefaultFileSystem(@TempDir Path tempDir) throws ComponentConfigurationException {
         PathTestComponent component = new PathTestComponent();
         Path absolutePath = Paths.get("").resolve("absolute").toAbsolutePath();
         configure(
+                tempDir,
                 component,
                 "path",
                 "readme.txt",
@@ -71,23 +68,23 @@ public class BasicComponentConfiguratorTest {
                 "absoluteFile",
                 absolutePath.toString());
         // path must be converted to absolute one
-        assertEquals(tmpDirectory.getRoot().toPath().resolve("readme.txt"), component.path);
+        assertEquals(tempDir.resolve("readme.txt"), component.path);
         assertEquals(FileSystems.getDefault(), component.path.getFileSystem());
         assertEquals(absolutePath, component.absolutePath);
-        assertEquals(new File(tmpDirectory.getRoot(), "readme.txt"), component.file);
+        assertEquals(new File(tempDir.toFile(), "readme.txt"), component.file);
         assertEquals(absolutePath.toFile(), component.absoluteFile);
     }
 
     @Test
-    public void testTypeWithoutConverterButConstructorAcceptingString()
+    public void testTypeWithoutConverterButConstructorAcceptingString(@TempDir Path tempDir)
             throws ComponentConfigurationException, IOException {
         CustomTypeComponent component = new CustomTypeComponent();
-        configure(component, "custom", "hello world");
+        configure(tempDir, component, "custom", "hello world");
         assertEquals("hello world", component.custom.toString());
     }
 
     @Test
-    public void testTypePassedToExpressionEvaluator() throws ComponentConfigurationException {
+    public void testTypePassedToExpressionEvaluator(@TempDir Path tempDir) throws ComponentConfigurationException {
         CustomTypeComponent component = new CustomTypeComponent();
         ExpressionEvaluator evaluator = new TypeAwareExpressionEvaluator() {
             @Override
@@ -107,15 +104,17 @@ public class BasicComponentConfiguratorTest {
                 return path;
             }
         };
-        configure(evaluator, component, "custom", "hello world");
+        configure(tempDir, evaluator, component, "custom", "hello world");
         assertEquals("hello world", component.custom.toString());
     }
 
     @Test
-    public void testTemporalConvertersWithoutMillisecondsAndOffset() throws ComponentConfigurationException {
+    public void testTemporalConvertersWithoutMillisecondsAndOffset(@TempDir Path tempDir)
+            throws ComponentConfigurationException {
         TemporalComponent component = new TemporalComponent();
         String dateString = "2023-01-02 03:04:05";
         configure(
+                tempDir,
                 component,
                 "localDateTime",
                 dateString,
@@ -142,10 +141,12 @@ public class BasicComponentConfiguratorTest {
     }
 
     @Test
-    public void testTemporalConvertersWithISO8601StringWithOffset() throws ComponentConfigurationException {
+    public void testTemporalConvertersWithISO8601StringWithOffset(@TempDir Path tempDir)
+            throws ComponentConfigurationException {
         TemporalComponent component = new TemporalComponent();
         String dateString = "2023-01-02T03:04:05.000000900+02:30";
         configure(
+                tempDir,
                 component,
                 "localDateTime",
                 dateString,
@@ -172,12 +173,13 @@ public class BasicComponentConfiguratorTest {
     }
 
     @Test
-    public void testTemporalConvertersWithInvalidString() {
+    public void testTemporalConvertersWithInvalidString(@TempDir Path tempDir) {
         TemporalComponent component = new TemporalComponent();
         String dateString = "invalid";
         assertThrows(
                 ComponentConfigurationException.class,
                 () -> configure(
+                        tempDir,
                         component,
                         "localDateTime",
                         dateString,
@@ -196,7 +198,7 @@ public class BasicComponentConfiguratorTest {
     }
 
     @Test
-    public void testConfigureComplexBean() throws Exception {
+    public void testConfigureComplexBean(@TempDir Path tempDir) throws Exception {
         ComplexBean complexBean = new ComplexBean();
 
         // configure( complexBean, "resources", "foo;bar" );
@@ -208,21 +210,23 @@ public class BasicComponentConfiguratorTest {
         config.addChild(child);
 
         configure(
+                tempDir,
                 null,
                 complexBean,
                 config,
                 new ClassWorld("foo", Thread.currentThread().getContextClassLoader()).getClassRealm("foo"));
 
         assertEquals(complexBean.resources.size(), 2);
-        assertTrue(complexBean.resources.toString(), complexBean.resources.contains(Resource.newResource("foo")));
-        assertTrue(complexBean.resources.toString(), complexBean.resources.contains(Resource.newResource("bar")));
+        assertTrue(complexBean.resources.contains(Resource.newResource("foo")), complexBean.resources.toString());
+        assertTrue(complexBean.resources.contains(Resource.newResource("bar")), complexBean.resources.toString());
     }
 
-    private void configure(Object component, String... keysAndValues) throws ComponentConfigurationException {
-        configure(null, component, keysAndValues);
+    private void configure(Path tempDir, Object component, String... keysAndValues)
+            throws ComponentConfigurationException {
+        configure(tempDir, null, component, keysAndValues);
     }
 
-    private void configure(ExpressionEvaluator evaluator, Object component, String... keysAndValues)
+    private void configure(Path tempDir, ExpressionEvaluator evaluator, Object component, String... keysAndValues)
             throws ComponentConfigurationException {
         final DefaultPlexusConfiguration config = new DefaultPlexusConfiguration("testConfig");
         if (keysAndValues.length % 2 != 0) {
@@ -231,23 +235,27 @@ public class BasicComponentConfiguratorTest {
         for (int i = 0; i < keysAndValues.length; i += 2) {
             config.addChild(keysAndValues[i], keysAndValues[i + 1]);
         }
-        configure(evaluator, component, config);
+        configure(tempDir, evaluator, component, config);
     }
 
-    private void configure(ExpressionEvaluator evaluator, Object component, PlexusConfiguration config)
+    private void configure(Path tempDir, ExpressionEvaluator evaluator, Object component, PlexusConfiguration config)
             throws ComponentConfigurationException {
-        configure(evaluator, component, config, null);
+        configure(tempDir, evaluator, component, config, null);
     }
 
     private void configure(
-            ExpressionEvaluator evaluator, Object component, PlexusConfiguration config, ClassRealm loader)
+            Path tempDir,
+            ExpressionEvaluator evaluator,
+            Object component,
+            PlexusConfiguration config,
+            ClassRealm loader)
             throws ComponentConfigurationException {
         if (evaluator == null) {
             evaluator = new DefaultExpressionEvaluator() {
                 @Override
                 public File alignToBaseDirectory(File path) {
                     if (!path.isAbsolute()) {
-                        return new File(tmpDirectory.getRoot(), path.getPath());
+                        return new File(tempDir.toFile(), path.getPath());
                     } else {
                         return path;
                     }

@@ -49,7 +49,7 @@ public final class SisuIndexAPT6 extends AbstractSisuIndex implements Processor 
     static {
         boolean hasQualifier;
         try {
-            hasQualifier = javax.inject.Qualifier.class.isAnnotation();
+            hasQualifier = jakarta.inject.Qualifier.class.isAnnotation();
         } catch (final LinkageError e) {
             hasQualifier = false;
         }
@@ -180,7 +180,7 @@ public final class SisuIndexAPT6 extends AbstractSisuIndex implements Processor 
 
     private static boolean hasQualifier(final TypeElement anno) {
         if (HAS_QUALIFIER) {
-            return null != anno.getAnnotation(javax.inject.Qualifier.class);
+            return null != anno.getAnnotation(jakarta.inject.Qualifier.class);
         }
         for (final AnnotationMirror mirror : anno.getAnnotationMirrors()) {
             if (QUALIFIER.equals(mirror.getAnnotationType().toString())) {

@@ -13,8 +13,8 @@ package org.eclipse.sisu.space;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.PrivateModule;
+import jakarta.inject.Named;
 import java.net.URL;
-import javax.inject.Named;
 import org.junit.jupiter.api.Test;
 
 class CachingModuleTest {

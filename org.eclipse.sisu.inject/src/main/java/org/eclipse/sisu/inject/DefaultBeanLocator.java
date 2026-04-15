@@ -17,10 +17,10 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
+import jakarta.inject.Inject;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import javax.inject.Inject;
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.Mediator;
 

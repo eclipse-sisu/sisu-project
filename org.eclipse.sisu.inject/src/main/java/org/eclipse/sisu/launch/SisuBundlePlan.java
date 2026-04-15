@@ -60,7 +60,7 @@ public class SisuBundlePlan implements BundlePlan {
             return false;
         }
         final String imports = bundle.getHeaders().get(Constants.IMPORT_PACKAGE);
-        return null != imports && (imports.contains("javax.inject") || imports.contains("com.google.inject"));
+        return null != imports && (imports.contains("jakarta.inject") || imports.contains("com.google.inject"));
     }
 
     /**

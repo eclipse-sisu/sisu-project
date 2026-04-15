@@ -18,7 +18,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Provider;
 import com.google.inject.ProvisionException;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.inject.DeferredProvider;
 import org.junit.jupiter.api.Test;

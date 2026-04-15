@@ -15,13 +15,14 @@ package org.codehaus.plexus;
 import java.io.File;
 import java.io.InputStream;
 import java.util.Map;
-import junit.framework.TestCase;
 import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.DefaultContext;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
-public abstract class PlexusTestCase extends TestCase {
+public abstract class PlexusTestCase {
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
@@ -108,7 +109,7 @@ public abstract class PlexusTestCase extends TestCase {
         // place-holder for tests to customize
     }
 
-    @Override
+    @BeforeEach
     protected void setUp() throws Exception {
         // place-holder for tests to customize
     }
@@ -137,7 +138,7 @@ public abstract class PlexusTestCase extends TestCase {
         }
     }
 
-    @Override
+    @AfterEach
     protected void tearDown() throws Exception {
         if (null != container) {
             teardownContainer();

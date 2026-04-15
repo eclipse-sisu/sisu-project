@@ -21,10 +21,10 @@ import com.google.inject.spi.Elements;
 import com.google.inject.spi.MembersInjectorLookup;
 import com.google.inject.spi.PrivateElements;
 import com.google.inject.spi.ProviderLookup;
+import jakarta.inject.Qualifier;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import javax.inject.Qualifier;
 
 /**
  * Guice {@link Module} that automatically binds types annotated with {@link Qualifier} annotations.

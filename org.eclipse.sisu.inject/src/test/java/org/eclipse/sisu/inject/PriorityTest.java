@@ -35,29 +35,29 @@ class PriorityTest {
     @org.eclipse.sisu.Priority(1000)
     static class MediumPriorityBean implements Bean {}
 
-    @javax.annotation.Priority(3000)
+    @org.eclipse.sisu.Priority(3000)
     static class HighPriorityBean implements Bean {}
 
     // base priority of non-default (alternative) implementation is Integer.MIN_VALUE
     static class AlternativeBean implements Bean {}
 
-    @javax.annotation.Priority(-5000)
-    static class LowPriorityProvider implements javax.inject.Provider<Bean> {
+    @org.eclipse.sisu.Priority(-5000)
+    static class LowPriorityProvider implements jakarta.inject.Provider<Bean> {
         @Override
         public Bean get() {
             return new DefaultBean();
         }
     }
 
-    @javax.annotation.Priority(5000)
-    static class HighPriorityProvider implements javax.inject.Provider<Bean> {
+    @org.eclipse.sisu.Priority(5000)
+    static class HighPriorityProvider implements jakarta.inject.Provider<Bean> {
         @Override
         public Bean get() {
             return new DefaultBean();
         }
     }
 
-    @javax.annotation.Priority(-5000)
+    @org.eclipse.sisu.Priority(-5000)
     static class LowPriorityGuiceProvider implements Provider<Bean> {
         @Override
         public Bean get() {
@@ -65,7 +65,7 @@ class PriorityTest {
         }
     }
 
-    @javax.annotation.Priority(5000)
+    @org.eclipse.sisu.Priority(5000)
     static class HighPriorityGuiceProvider implements Provider<Bean> {
         @Override
         public Bean get() {

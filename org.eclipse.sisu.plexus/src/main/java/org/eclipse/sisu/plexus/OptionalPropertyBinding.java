@@ -12,7 +12,7 @@
  */
 package org.eclipse.sisu.plexus;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.bean.PropertyBinding;
 

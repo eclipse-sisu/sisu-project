@@ -13,7 +13,7 @@
 package org.eclipse.sisu.plexus;
 
 import com.google.inject.spi.TypeEncounter;
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.bean.BeanManager;

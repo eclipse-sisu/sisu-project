@@ -19,10 +19,10 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 import com.google.inject.spi.TypeConverter;
+import jakarta.inject.Inject;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Map;
 import java.util.Map.Entry;
-import javax.inject.Inject;
 import org.eclipse.sisu.Parameters;
 
 /**

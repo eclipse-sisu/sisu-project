@@ -139,7 +139,7 @@ class LazyBeanEntryTest {
         }
     }
 
-    @javax.inject.Named("TEST")
+    @jakarta.inject.Named("TEST")
     interface T {}
 
     @Test
@@ -154,22 +154,22 @@ class LazyBeanEntryTest {
         });
 
         @SuppressWarnings({"unchecked", "rawtypes"})
-        final LazyBeanEntry<javax.inject.Named, String> entry =
+        final LazyBeanEntry<jakarta.inject.Named, String> entry =
                 new LazyBeanEntry(guiceNamed, injector.getBinding(Key.get(String.class, guiceNamed)), 0);
 
-        final javax.inject.Named jsrNamed = entry.getKey();
+        final jakarta.inject.Named jsrNamed = entry.getKey();
 
         assertTrue(jsrNamed.equals(jsrNamed));
         assertTrue(jsrNamed.equals(entry.getKey()));
-        assertTrue(jsrNamed.equals(T.class.getAnnotation(javax.inject.Named.class)));
+        assertTrue(jsrNamed.equals(T.class.getAnnotation(jakarta.inject.Named.class)));
         assertTrue(jsrNamed.equals(guiceNamed));
 
         assertFalse(jsrNamed.equals(Names.named("")));
         assertFalse(jsrNamed.equals("TEST"));
 
-        assertEquals(javax.inject.Named.class, jsrNamed.annotationType());
+        assertEquals(jakarta.inject.Named.class, jsrNamed.annotationType());
 
-        assertEquals(T.class.getAnnotation(javax.inject.Named.class).hashCode(), jsrNamed.hashCode());
+        assertEquals(T.class.getAnnotation(jakarta.inject.Named.class).hashCode(), jsrNamed.hashCode());
     }
 
     static class StringProvider implements DeferredProvider<String> {
@@ -212,7 +212,7 @@ class LazyBeanEntryTest {
         final Entry<Named, String> entry2 =
                 new LazyBeanEntry<>((Named) key2.getAnnotation(), injector.getBinding(key2), 0);
 
-        assertEquals('@' + javax.inject.Named.class.getName() + "(value=CLS)=" + String.class, entry1.toString());
-        assertEquals('@' + javax.inject.Named.class.getName() + "(value=PRO)=" + opaqueProvider, entry2.toString());
+        assertEquals('@' + jakarta.inject.Named.class.getName() + "(value=CLS)=" + String.class, entry1.toString());
+        assertEquals('@' + jakarta.inject.Named.class.getName() + "(value=PRO)=" + opaqueProvider, entry2.toString());
     }
 }

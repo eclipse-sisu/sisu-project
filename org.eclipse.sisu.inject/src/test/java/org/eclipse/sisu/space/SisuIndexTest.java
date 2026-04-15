@@ -34,12 +34,12 @@ class SisuIndexTest {
 
         // concrete class
         sisuIndex.enterClass(1 /* ACC_PUBLIC */, "com/example/MyImpl", "java/lang/Object", null);
-        sisuIndex.visitAnnotation("Ljavax/inject/Named;");
+        sisuIndex.visitAnnotation("Ljakarta/inject/Named;");
         sisuIndex.leaveClass();
 
         // abstract class (should be skipped)
         sisuIndex.enterClass(1 | 0x0400 /* ABSTRACT */, "com/example/AbstractType", "java/lang/Object", null);
-        sisuIndex.visitAnnotation("Ljavax/inject/Named;");
+        sisuIndex.visitAnnotation("Ljakarta/inject/Named;");
         sisuIndex.leaveClass();
 
         sisuIndex.leaveSpace();
@@ -47,7 +47,7 @@ class SisuIndexTest {
         sisuIndex.flushIndex();
 
         // check that the index file was created
-        final File indexFile = new File(tempDir, "META-INF/sisu/javax.inject.Named");
+        final File indexFile = new File(tempDir, "META-INF/sisu/jakarta.inject.Named");
         assertTrue(indexFile.exists());
     }
 
@@ -77,14 +77,14 @@ class SisuIndexTest {
         // interface (0x0200)
         sisuIndex.enterClass(0x0200, "com/example/MyInterface", "java/lang/Object", null);
         // visitAnnotation on a non-instantiable class should not add to index
-        sisuIndex.visitAnnotation("Ljavax/inject/Named;");
+        sisuIndex.visitAnnotation("Ljakarta/inject/Named;");
         sisuIndex.leaveClass();
 
         sisuIndex.leaveSpace();
         sisuIndex.flushIndex();
 
         // check that the index file was not created
-        final File indexFile = new File(tempDir, "META-INF/sisu/javax.inject.Named");
+        final File indexFile = new File(tempDir, "META-INF/sisu/jakarta.inject.Named");
         assertFalse(indexFile.exists());
     }
 }

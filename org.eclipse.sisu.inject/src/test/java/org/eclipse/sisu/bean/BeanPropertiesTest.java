@@ -17,6 +17,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.google.inject.TypeLiteral;
 import com.google.inject.util.Types;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -30,8 +32,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import javax.inject.Named;
-import javax.inject.Singleton;
 import org.eclipse.sisu.BaseTests;
 import org.junit.jupiter.api.Test;
 

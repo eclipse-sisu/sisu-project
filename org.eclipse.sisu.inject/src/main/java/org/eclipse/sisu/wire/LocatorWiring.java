@@ -20,6 +20,7 @@ import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Named;
 import com.google.inject.spi.InjectionPoint;
+import jakarta.inject.Qualifier;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
@@ -27,7 +28,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.inject.Qualifier;
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.Dynamic;
 import org.eclipse.sisu.Hidden;
@@ -115,8 +115,7 @@ public final class LocatorWiring implements Wiring {
         final TypeLiteral<?>[] args = TypeArguments.get(key.getTypeLiteral());
         if (1 == args.length && null == key.getAnnotation()) {
             final TypeLiteral<?> elementType = args[0];
-            if (BeanEntry.class == elementType.getRawType()
-                    || org.sonatype.inject.BeanEntry.class == elementType.getRawType()) {
+            if (BeanEntry.class == elementType.getRawType()) {
                 final Provider beanEntriesProvider = getBeanEntriesProvider(elementType);
                 if (null != beanEntriesProvider) {
                     binder.bind(key).toProvider(beanEntriesProvider);
@@ -139,11 +138,7 @@ public final class LocatorWiring implements Wiring {
         if (2 == args.length) {
             final Class qualifierType = args[0].getRawType();
             final Key key = qualifierType.isAnnotation() ? Key.get(args[1], qualifierType) : Key.get(args[1]);
-            final Provider beanEntries = beanProviders.beanEntriesOf(key);
-
-            return BeanEntry.class == entryType.getRawType()
-                    ? beanEntries
-                    : org.eclipse.sisu.inject.Legacy.adapt(beanEntries);
+            return beanProviders.beanEntriesOf(key);
         }
         return null;
     }

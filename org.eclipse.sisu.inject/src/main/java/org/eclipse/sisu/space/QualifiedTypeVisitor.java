@@ -13,8 +13,8 @@
 package org.eclipse.sisu.space;
 
 import com.google.inject.Module;
+import jakarta.inject.Qualifier;
 import java.net.URL;
-import javax.inject.Qualifier;
 import org.eclipse.sisu.inject.Logs;
 
 /**

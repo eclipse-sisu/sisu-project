@@ -10,17 +10,22 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
-import junit.framework.TestCase;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.bean.BeanProperties;
 import org.eclipse.sisu.bean.BeanProperty;
+import org.junit.jupiter.api.Test;
 
-public class PlexusAnnotatedBeanMetadataTest extends TestCase {
+public class PlexusAnnotatedBeanMetadataTest {
     @Component(role = Bean.class)
     protected static class Bean {
         @Configuration(name = "1", value = "BLANK")
@@ -38,6 +43,7 @@ public class PlexusAnnotatedBeanMetadataTest extends TestCase {
     }
 
     @SuppressWarnings("deprecation")
+    @Test
     public void testRawAnnotations() {
         final PlexusBeanMetadata metadata = new PlexusAnnotatedMetadata(null);
         assertFalse(metadata.isEmpty());
@@ -60,6 +66,7 @@ public class PlexusAnnotatedBeanMetadataTest extends TestCase {
     }
 
     @SuppressWarnings("deprecation")
+    @Test
     public void testInterpolatedAnnotations() {
         final Map<?, ?> variables = Collections.singletonMap("some.value", "INTERPOLATED");
 

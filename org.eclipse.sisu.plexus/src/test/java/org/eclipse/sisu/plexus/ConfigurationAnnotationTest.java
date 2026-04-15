@@ -10,12 +10,17 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.Arrays;
 import java.util.HashSet;
-import junit.framework.TestCase;
 import org.codehaus.plexus.component.annotations.Configuration;
+import org.junit.jupiter.api.Test;
 
-public class ConfigurationAnnotationTest extends TestCase {
+public class ConfigurationAnnotationTest {
     @Configuration("Default")
     String defaultConfig;
 
@@ -25,6 +30,7 @@ public class ConfigurationAnnotationTest extends TestCase {
     @Configuration("${property}")
     String propertyConfig;
 
+    @Test
     public void testConfigurationImpl() throws NoSuchFieldException {
         checkBehaviour("defaultConfig");
         checkBehaviour("namedConfig");
@@ -64,6 +70,7 @@ public class ConfigurationAnnotationTest extends TestCase {
         return new ConfigurationImpl(orig.name(), orig.value());
     }
 
+    @Test
     public void testNullChecks() {
         checkNullNotAllowed(null, "");
         checkNullNotAllowed("", null);

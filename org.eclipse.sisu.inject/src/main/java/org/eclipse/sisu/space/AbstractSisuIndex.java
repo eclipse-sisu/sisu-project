@@ -33,9 +33,9 @@ abstract class AbstractSisuIndex {
 
     static final String INDEX_FOLDER = "META-INF/sisu/";
 
-    static final String QUALIFIER = "javax.inject.Qualifier";
+    static final String QUALIFIER = "jakarta.inject.Qualifier";
 
-    static final String NAMED = "javax.inject.Named";
+    static final String NAMED = "jakarta.inject.Named";
 
     // ----------------------------------------------------------------------
     // Implementation fields

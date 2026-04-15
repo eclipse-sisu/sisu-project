@@ -12,12 +12,12 @@
  */
 package org.eclipse.sisu.wire;
 
+import jakarta.inject.Provider;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import javax.inject.Provider;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;

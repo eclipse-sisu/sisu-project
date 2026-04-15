@@ -16,6 +16,7 @@ import com.google.inject.ImplementedBy;
 import com.google.inject.Key;
 import com.google.inject.ProvidedBy;
 import com.google.inject.TypeLiteral;
+import jakarta.inject.Qualifier;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.GenericArrayType;
@@ -24,7 +25,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
-import javax.inject.Qualifier;
 
 /**
  * Utility methods for dealing with generic type arguments.

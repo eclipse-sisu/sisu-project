@@ -19,14 +19,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import jakarta.inject.Inject;
+import jakarta.inject.Qualifier;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import javax.inject.Inject;
-import javax.inject.Qualifier;
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.EagerSingleton;
 import org.eclipse.sisu.Mediator;
@@ -46,15 +46,15 @@ public class BeanWatcherTest {
 
     abstract static class SomeItem extends Item {}
 
-    @javax.inject.Named
+    @jakarta.inject.Named
     static class AItem extends SomeItem {}
 
     @Marked(0)
-    @javax.inject.Named
+    @jakarta.inject.Named
     static class BItem extends SomeItem {}
 
     @EagerSingleton
-    @javax.inject.Named
+    @jakarta.inject.Named
     static class CItem extends SomeItem {
         static boolean initialized;
 
@@ -68,37 +68,37 @@ public class BeanWatcherTest {
 
     static class EItem extends SomeItem {}
 
-    @javax.inject.Named
+    @jakarta.inject.Named
     static class NamedItemWatcher {
         Map<String, Item> items = new HashMap<>();
     }
 
-    @javax.inject.Named
+    @jakarta.inject.Named
     static class MarkedItemWatcher {
         Map<Integer, Item> items = new HashMap<>();
     }
 
-    @javax.inject.Named
+    @jakarta.inject.Named
     static class AnnotatedItemWatcher {
         Map<Annotation, Item> items = new HashMap<>();
     }
 
-    @javax.inject.Named
-    static class NamedItemMediator implements Mediator<javax.inject.Named, Item, NamedItemWatcher> {
+    @jakarta.inject.Named
+    static class NamedItemMediator implements Mediator<jakarta.inject.Named, Item, NamedItemWatcher> {
         @Override
-        public void add(final BeanEntry<javax.inject.Named, Item> bean, final NamedItemWatcher watcher)
+        public void add(final BeanEntry<jakarta.inject.Named, Item> bean, final NamedItemWatcher watcher)
                 throws Exception {
             assertNull(watcher.items.put(bean.getKey().value(), bean.getValue()));
         }
 
         @Override
-        public void remove(final BeanEntry<javax.inject.Named, Item> bean, final NamedItemWatcher watcher)
+        public void remove(final BeanEntry<jakarta.inject.Named, Item> bean, final NamedItemWatcher watcher)
                 throws Exception {
             assertEquals(watcher.items.remove(bean.getKey().value()), bean.getValue());
         }
     }
 
-    @javax.inject.Named
+    @jakarta.inject.Named
     static class MarkedItemMediator implements Mediator<Marked, Item, MarkedItemWatcher> {
         @Override
         public void add(final BeanEntry<Marked, Item> bean, final MarkedItemWatcher watcher) throws Exception {
@@ -111,7 +111,7 @@ public class BeanWatcherTest {
         }
     }
 
-    @javax.inject.Named
+    @jakarta.inject.Named
     static class AnnotatedItemMediator implements Mediator<Annotation, Item, AnnotatedItemWatcher> {
         @Override
         public void add(final BeanEntry<Annotation, Item> bean, final AnnotatedItemWatcher watcher) throws Exception {

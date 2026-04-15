@@ -14,11 +14,11 @@ package org.eclipse.sisu.wire;
 
 import com.google.inject.ProvisionException;
 import com.google.inject.TypeLiteral;
+import jakarta.inject.Provider;
 import java.lang.reflect.InvocationTargetException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.concurrent.ConcurrentMap;
-import javax.inject.Provider;
 import org.eclipse.sisu.inject.Weak;
 
 /**

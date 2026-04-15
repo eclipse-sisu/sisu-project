@@ -10,15 +10,19 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Arrays;
 import java.util.List;
-import junit.framework.TestCase;
 import org.codehaus.plexus.component.configurator.BasicComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
+import org.junit.jupiter.api.Test;
 
-public class DefaultValuesTest extends TestCase {
+public class DefaultValuesTest {
+    @Test
     public void testDefaultBasicValue() throws ComponentConfigurationException {
         final ComponentWithInt componentWithString = new ComponentWithInt();
 
@@ -36,6 +40,7 @@ public class DefaultValuesTest extends TestCase {
         assertEquals("OVERRIDE", componentWithString.target);
     }
 
+    @Test
     public void testDefaultCollection() throws ComponentConfigurationException {
         final ComponentWithArray componentWithArray = new ComponentWithArray();
         final ComponentWithList componentWithList = new ComponentWithList();

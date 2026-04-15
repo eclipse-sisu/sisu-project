@@ -12,8 +12,8 @@
  */
 package org.codehaus.plexus.component.configurator;
 
+import jakarta.inject.Named;
 import java.util.Map;
-import javax.inject.Named;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.MapOrientedComponent;
 import org.codehaus.plexus.component.configurator.converters.composite.MapConverter;

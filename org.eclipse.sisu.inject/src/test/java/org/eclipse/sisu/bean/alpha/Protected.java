@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.sisu.bean.alpha;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
+import org.eclipse.sisu.PostConstruct;
+import org.eclipse.sisu.PreDestroy;
 
 @Singleton
 public class Protected extends Public {

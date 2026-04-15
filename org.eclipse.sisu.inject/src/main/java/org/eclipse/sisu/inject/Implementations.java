@@ -22,8 +22,8 @@ import com.google.inject.spi.LinkedKeyBinding;
 import com.google.inject.spi.ProviderInstanceBinding;
 import com.google.inject.spi.ProviderKeyBinding;
 import com.google.inject.spi.UntargettedBinding;
+import jakarta.inject.Provider;
 import java.lang.annotation.Annotation;
-import javax.inject.Provider;
 import org.eclipse.sisu.Description;
 import org.eclipse.sisu.Priority;
 
@@ -43,14 +43,6 @@ final class Implementations {
             hasGuiceServlet = false;
         }
         HAS_GUICE_SERVLET = hasGuiceServlet;
-
-        boolean hasJsr250Priority;
-        try {
-            hasJsr250Priority = javax.annotation.Priority.class.isAnnotation();
-        } catch (final LinkageError e) {
-            hasJsr250Priority = false;
-        }
-        HAS_JSR250_PRIORITY = hasJsr250Priority;
     }
 
     // ----------------------------------------------------------------------
@@ -58,8 +50,6 @@ final class Implementations {
     // ----------------------------------------------------------------------
 
     private static final boolean HAS_GUICE_SERVLET;
-
-    private static final boolean HAS_JSR250_PRIORITY;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -102,7 +92,7 @@ final class Implementations {
         if (null != annotationSource) {
             annotation = annotationSource.getAnnotation(annotationType);
             if (null == annotation) {
-                if (HAS_JSR250_PRIORITY && isPriority) {
+                if (isPriority) {
                     annotation = adaptJsr250(binding, annotationSource);
                 } else if (Description.class.equals(annotationType)) {
                     annotation = adaptLegacy(binding, annotationSource);
@@ -118,13 +108,13 @@ final class Implementations {
 
     @SuppressWarnings("unchecked")
     private static <T extends Annotation> T adaptJsr250(final Binding<?> binding, final Class<?> clazz) {
-        final javax.annotation.Priority jsr250 = clazz.getAnnotation(javax.annotation.Priority.class);
+        final Priority jsr250 = clazz.getAnnotation(Priority.class);
         return null != jsr250 ? (T) new PrioritySource(binding.getSource(), jsr250.value()) : null;
     }
 
-    @SuppressWarnings({"unchecked", "deprecation"})
+    @SuppressWarnings("unchecked")
     private static <T extends Annotation> T adaptLegacy(final Binding<?> binding, final Class<?> clazz) {
-        final org.sonatype.inject.Description legacy = clazz.getAnnotation(org.sonatype.inject.Description.class);
+        final Description legacy = clazz.getAnnotation(Description.class);
         return null != legacy ? (T) new DescriptionSource(binding.getSource(), legacy.value()) : null;
     }
 

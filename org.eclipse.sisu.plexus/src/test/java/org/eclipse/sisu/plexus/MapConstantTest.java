@@ -10,20 +10,24 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.name.Names;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
-import javax.inject.Inject;
-import javax.inject.Named;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class MapConstantTest extends TestCase {
-    @Override
+public class MapConstantTest {
+    @BeforeEach
     protected void setUp() throws Exception {
         Guice.createInjector(new AbstractModule() {
                     private void bind(final String name, final String value) {
@@ -70,10 +74,12 @@ public class MapConstantTest extends TestCase {
     @Named("Properties")
     Properties properties;
 
+    @Test
     public void testEmptyMap() {
         assertTrue(empty.isEmpty());
     }
 
+    @Test
     public void testCustomMap() {
         assertEquals(LinkedHashMap.class, custom.getClass());
         assertEquals("TEST", custom.get("builder").toString());
@@ -81,6 +87,7 @@ public class MapConstantTest extends TestCase {
         assertEquals(new File("TEST"), custom.get("file"));
     }
 
+    @Test
     public void testMapAndProperties() {
         final HashMap<String, String> testMap = new HashMap<>();
         testMap.put("key1", "value1");

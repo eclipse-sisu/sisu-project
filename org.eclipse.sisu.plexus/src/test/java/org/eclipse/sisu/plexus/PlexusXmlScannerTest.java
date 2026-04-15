@@ -10,6 +10,13 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.google.inject.TypeLiteral;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
@@ -21,7 +28,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import junit.framework.TestCase;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.bean.BeanProperty;
@@ -30,11 +36,12 @@ import org.eclipse.sisu.inject.DeferredProvider;
 import org.eclipse.sisu.space.ClassSpace;
 import org.eclipse.sisu.space.LoadedClass;
 import org.eclipse.sisu.space.URLClassSpace;
+import org.junit.jupiter.api.Test;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-public class PlexusXmlScannerTest extends TestCase {
+public class PlexusXmlScannerTest {
     static class NamedProperty implements BeanProperty<Object> {
         final String name;
 
@@ -112,6 +119,7 @@ public class PlexusXmlScannerTest extends TestCase {
         }
     }
 
+    @Test
     public void testLoadOnStart() {
         final URL plexusXml = getClass().getResource("/META-INF/plexus/plexus.xml");
         final PlexusXmlScanner scanner = new PlexusXmlScanner(null, plexusXml, null);
@@ -128,6 +136,7 @@ public class PlexusXmlScannerTest extends TestCase {
         assertEquals(DebugBean.class, componentMap.get(component2).load());
     }
 
+    @Test
     public void testBadPlexusXml() {
         final ClassSpace space = new URLClassSpace(PlexusXmlScannerTest.class.getClassLoader());
         final URL plexusXml = getClass().getResource("/META-INF/plexus/bad_plexus_1.xml");
@@ -135,6 +144,7 @@ public class PlexusXmlScannerTest extends TestCase {
     }
 
     @SuppressWarnings("deprecation")
+    @Test
     public void testComponents() {
         final ClassSpace space = new URLClassSpace(PlexusXmlScannerTest.class.getClassLoader());
 
