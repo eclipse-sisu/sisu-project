@@ -6,9 +6,9 @@
  *******************************************************************************/
 package org.codehaus.plexus.component.configurator.converters.composite;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.util.Properties;
@@ -16,7 +16,7 @@ import org.codehaus.plexus.component.configurator.ComponentConfigurationExceptio
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluationException;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PropertiesConverterTest {
     @Test
@@ -56,7 +56,7 @@ public class PropertiesConverterTest {
                         null);
         assertTrue(object instanceof Properties);
         Properties result = (Properties) object;
-        assertTrue(result.size() == 2);
+        assertEquals(2, result.size());
         assertEquals("value1", result.getProperty("key1"));
         assertEquals("value2", result.getProperty("key2"));
     }

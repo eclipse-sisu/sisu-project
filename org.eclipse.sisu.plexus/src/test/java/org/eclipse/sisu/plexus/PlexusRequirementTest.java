@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Binder;
 import com.google.inject.Guice;
@@ -21,35 +23,30 @@ import com.google.inject.name.Names;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import javax.inject.Inject;
-import junit.framework.TestCase;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.space.ClassSpace;
 import org.eclipse.sisu.space.URLClassSpace;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class PlexusRequirementTest extends TestCase {
+public class PlexusRequirementTest {
     @Inject
     Component1 component;
 
     @Inject
     Injector injector;
 
-    @Override
-    protected void setUp() {
+    @BeforeEach
+    void setUp() {
         Guice.createInjector(new AbstractModule() {
             @Override
             @SuppressWarnings("unchecked")
             protected void configure() {
-                final ClassSpace space = new URLClassSpace(TestCase.class.getClassLoader());
+                final ClassSpace space = new URLClassSpace(PlexusRequirementTest.class.getClassLoader());
 
                 final DeferredClass<A> deferA = (DeferredClass<A>) space.deferLoadClass(BrokenAImpl.class.getName());
 
@@ -227,6 +224,7 @@ public class PlexusRequirementTest extends TestCase {
         B testNoDefault;
     }
 
+    @Test
     public void testRepeatInjection() {
         final Component1 duplicate = injector.getInstance(Component1.class);
         assertSame(component.testField, duplicate.testField);
@@ -234,6 +232,7 @@ public class PlexusRequirementTest extends TestCase {
         assertSame(component.testRole, duplicate.testRole);
     }
 
+    @Test
     public void testSingleRequirement() {
         assertEquals(AImpl.class, component.testField.getClass());
         assertEquals(AImpl.class, component.testSetter.getClass());
@@ -243,6 +242,7 @@ public class PlexusRequirementTest extends TestCase {
         assertEquals(BImpl.class, component.testWildcard.getClass());
     }
 
+    @Test
     public void testRequirementMap() {
         assertEquals(5, component.testMap.size());
         assertEquals(0, component.testEmptyMap.size());
@@ -262,20 +262,16 @@ public class PlexusRequirementTest extends TestCase {
         assertEquals("AC", keys.next());
         assertFalse(keys.hasNext());
 
-        // check value ordering is same as original map-binder
         final Iterator<?> values = component.testMap.values().iterator();
         assertEquals(AImpl.class, values.next().getClass());
         assertEquals(AAImpl.class, values.next().getClass());
-        try {
-            values.next();
-            fail("Expected NoClassDefFoundError");
-        } catch (final NoClassDefFoundError e) {
-        }
+        assertThrows(NoClassDefFoundError.class, values::next);
         assertEquals(ABImpl.class, values.next().getClass());
         assertEquals(ACImpl.class, values.next().getClass());
         assertFalse(values.hasNext());
     }
 
+    @Test
     public void testRequirementSubMap() {
         assertEquals(2, component.testSubMap.size());
 
@@ -296,6 +292,7 @@ public class PlexusRequirementTest extends TestCase {
         assertFalse(values.hasNext());
     }
 
+    @Test
     public void testRequirementList() {
         assertEquals(5, component.testList.size());
         assertEquals(0, component.testEmptyList.size());
@@ -304,16 +301,13 @@ public class PlexusRequirementTest extends TestCase {
         final Iterator<?> i = component.testList.iterator();
         assertEquals(AImpl.class, i.next().getClass());
         assertEquals(AAImpl.class, i.next().getClass());
-        try {
-            i.next();
-            fail("Expected NoClassDefFoundError");
-        } catch (final NoClassDefFoundError e) {
-        }
+        assertThrows(NoClassDefFoundError.class, i::next);
         assertEquals(ABImpl.class, i.next().getClass());
         assertEquals(ACImpl.class, i.next().getClass());
         assertFalse(i.hasNext());
     }
 
+    @Test
     public void testRequirementSubList() {
         assertEquals(2, component.testSubList.size());
 
@@ -324,6 +318,7 @@ public class PlexusRequirementTest extends TestCase {
         assertFalse(i.hasNext());
     }
 
+    @Test
     public void testRequirementCollection() {
         assertEquals(5, component.testCollection.size());
 
@@ -331,31 +326,24 @@ public class PlexusRequirementTest extends TestCase {
         final Iterator<?> i = component.testCollection.iterator();
         assertEquals(AImpl.class, i.next().getClass());
         assertEquals(AAImpl.class, i.next().getClass());
-        try {
-            i.next();
-            fail("Expected NoClassDefFoundError");
-        } catch (final NoClassDefFoundError e) {
-        }
+        assertThrows(NoClassDefFoundError.class, i::next);
         assertEquals(ABImpl.class, i.next().getClass());
         assertEquals(ACImpl.class, i.next().getClass());
         assertFalse(i.hasNext());
     }
 
+    @Test
     public void testRequirementIterable() {
-        // check ordering is same as original map-binder
         final Iterator<?> i = component.testIterable.iterator();
         assertEquals(AImpl.class, i.next().getClass());
         assertEquals(AAImpl.class, i.next().getClass());
-        try {
-            i.next();
-            fail("Expected NoClassDefFoundError");
-        } catch (final NoClassDefFoundError e) {
-        }
+        assertThrows(NoClassDefFoundError.class, i::next);
         assertEquals(ABImpl.class, i.next().getClass());
         assertEquals(ACImpl.class, i.next().getClass());
         assertFalse(i.hasNext());
     }
 
+    @Test
     public void testRequirementSet() {
         assertEquals(5, component.testSet.size());
 
@@ -363,56 +351,47 @@ public class PlexusRequirementTest extends TestCase {
         final Iterator<?> i = component.testSet.iterator();
         assertEquals(AImpl.class, i.next().getClass());
         assertEquals(AAImpl.class, i.next().getClass());
-        try {
-            i.next();
-            fail("Expected NoClassDefFoundError");
-        } catch (final NoClassDefFoundError e) {
-        }
+        assertThrows(NoClassDefFoundError.class, i::next);
         assertEquals(ABImpl.class, i.next().getClass());
         assertEquals(ACImpl.class, i.next().getClass());
         assertFalse(i.hasNext());
     }
 
+    @Test
     public void testZeroArgSetterError() {
         injector.getInstance(Component2.class);
     }
 
+    @Test
     public void testMultiArgSetterError() {
         injector.getInstance(Component3.class);
     }
 
+    @Test
     public void testMissingRequirement() {
-        try {
-            injector.getInstance(Component4.class);
-            fail("Expected error for missing requirement");
-        } catch (final ProvisionException e) {
-        }
+        assertThrows(ProvisionException.class, () -> injector.getInstance(Component4.class));
     }
 
+    @Test
     public void testNoSuchHint() {
-        try {
-            injector.getInstance(Component5.class);
-            fail("Expected error for no such hint");
-        } catch (final ProvisionException e) {
-        }
+        assertThrows(ProvisionException.class, () -> injector.getInstance(Component5.class));
     }
 
+    @Test
     public void testNoSuchMapHint() {
-        try {
-            injector.getInstance(Component6.class).testNoSuchHint.toString();
-            fail("Expected error for no such hint");
-        } catch (final ProvisionException e) {
-        }
+        assertThrows(
+                ProvisionException.class,
+                () -> injector.getInstance(Component6.class).testNoSuchHint.toString());
     }
 
+    @Test
     public void testNoSuchListHint() {
-        try {
-            injector.getInstance(Component7.class).testNoSuchHint.toString();
-            fail("Expected error for no such hint");
-        } catch (final ProvisionException e) {
-        }
+        assertThrows(
+                ProvisionException.class,
+                () -> injector.getInstance(Component7.class).testNoSuchHint.toString());
     }
 
+    @Test
     public void testWildcardHint() {
         final List<A> testList = injector.getInstance(Component8.class).testWildcardHint;
 
@@ -422,22 +401,15 @@ public class PlexusRequirementTest extends TestCase {
         final Iterator<?> i = testList.iterator();
         assertEquals(AImpl.class, i.next().getClass());
         assertEquals(AAImpl.class, i.next().getClass());
-        try {
-            i.next();
-            fail("Expected NoClassDefFoundError");
-        } catch (final NoClassDefFoundError e) {
-        }
+        assertThrows(NoClassDefFoundError.class, i::next);
         assertEquals(ABImpl.class, i.next().getClass());
         assertEquals(ACImpl.class, i.next().getClass());
         assertFalse(i.hasNext());
     }
 
+    @Test
     public void testNoDefault() {
-        try {
-            injector.getInstance(Component9.class);
-            fail("Expected error for missing default requirement");
-        } catch (final ProvisionException e) {
-        }
+        assertThrows(ProvisionException.class, () -> injector.getInstance(Component9.class));
     }
 
     interface Alpha {}
@@ -464,6 +436,7 @@ public class PlexusRequirementTest extends TestCase {
     @Inject
     Omega omega;
 
+    @Test
     public void testCircularity() {
         assertNotNull(((OmegaImpl) omega).alpha);
         assertNotNull(((AlphaImpl) alpha).omega);
@@ -472,14 +445,12 @@ public class PlexusRequirementTest extends TestCase {
         assertSame(omega, ((AlphaImpl) alpha).omega);
     }
 
+    @Test
     public void testBadDeferredRole() {
-        try {
-            injector.getInstance(Gamma.class);
-            fail("Expected ProvisionException");
-        } catch (final ProvisionException e) {
-        }
+        assertThrows(ProvisionException.class, () -> injector.getInstance(Gamma.class));
     }
 
+    @Test
     public void testPlexus121Compatibility() throws Exception {
         final List<URL> urls = new ArrayList<>();
         urls.add(new File("target/dependency/plexus-component-annotations-1.2.1.jar")
@@ -503,6 +474,7 @@ public class PlexusRequirementTest extends TestCase {
 
     @SuppressWarnings("unchecked")
     static <S, T extends S> DeferredClass<T> defer(final Class<S> clazz) {
-        return (DeferredClass<T>) new URLClassSpace(TestCase.class.getClassLoader()).deferLoadClass(clazz.getName());
+        return (DeferredClass<T>)
+                new URLClassSpace(PlexusRequirementTest.class.getClassLoader()).deferLoadClass(clazz.getName());
     }
 }

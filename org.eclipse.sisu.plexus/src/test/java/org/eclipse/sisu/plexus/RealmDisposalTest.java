@@ -10,26 +10,29 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.io.File;
-import junit.framework.TestCase;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class RealmDisposalTest extends TestCase {
+public class RealmDisposalTest {
     private ClassLoader origCL;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() {
         origCL = Thread.currentThread().getContextClassLoader();
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @AfterEach
+    void tearDown() {
         Thread.currentThread().setContextClassLoader(origCL);
-        super.tearDown();
     }
 
+    @Test
     public void test441254_recreateChildRealm() throws Exception {
         final String realmId = "child-realm";
 
