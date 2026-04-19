@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.ConfigurationException;
 import com.google.inject.Guice;
@@ -22,11 +25,13 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 import javax.inject.Inject;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class BeanConstantTest extends TestCase {
-    @Override
-    protected void setUp() throws Exception {
+public class BeanConstantTest {
+
+    @BeforeEach
+    void setUp() {
         Guice.createInjector(new AbstractModule() {
                     private void bindBean(final String name, final String clazzName, final String content) {
                         final String xml = "<bean implementation='" + clazzName + "'>" + content + "</bean>";
@@ -91,14 +96,17 @@ public class BeanConstantTest extends TestCase {
     @Inject
     Injector injector;
 
+    @Test
     public void testEmptyBeanConversion() {
         assertEquals(EmptyBean.class, getBean("EmptyBean", Object.class).getClass());
     }
 
+    @Test
     public void testMissingType() {
         testFailedConversion("MissingType", EmptyBean.class);
     }
 
+    @Test
     public void testPeerClassLoader1() {
         final ClassLoader tccl = Thread.currentThread().getContextClassLoader();
         try {
@@ -109,6 +117,7 @@ public class BeanConstantTest extends TestCase {
         }
     }
 
+    @Test
     public void testPeerClassLoader2() {
         final ClassLoader tccl = Thread.currentThread().getContextClassLoader();
         try {
@@ -119,53 +128,63 @@ public class BeanConstantTest extends TestCase {
         }
     }
 
+    @Test
     public void testBeanWithPropertiesConversion() {
         final BeanWithProperties beanWithProperties = (BeanWithProperties) getBean("BeanWithProperty", Object.class);
         assertEquals(4.2f, beanWithProperties.value, 0f);
-        assertEquals(beanWithProperties.text.length(), 0);
+        assertEquals(0, beanWithProperties.text.length());
     }
 
+    @Test
     public void testMissingPropertyConversion() {
         testFailedConversion("MissingProperty", Object.class);
     }
 
+    @Test
     public void testStringXMLConversion() {
         final PlexusBeanConverter configurator = injector.getInstance(PlexusBeanConverter.class);
         assertEquals(
+                0,
                 configurator
                         .convert(TypeLiteral.get(String.class), "<one><two/></one>")
-                        .length(),
-                0);
+                        .length());
     }
 
+    @Test
     public void testMissingDefaultConstructor() {
         testFailedConversion("MissingDefaultConstructor", Object.class);
     }
 
+    @Test
     public void testBrokenDefaultConstructor() {
         testFailedConversion("BrokenDefaultConstructor", Object.class);
     }
 
+    @Test
     public void testMissingStringConstructor() {
         testFailedConversion("MissingStringConstructor", Object.class);
     }
 
+    @Test
     public void testBrokenStringConstructor() {
         testFailedConversion("BrokenStringConstructor", Object.class);
     }
 
+    @Test
     public void testSimpleFileBean() {
         assertEquals(
                 "readme.txt",
                 injector.getInstance(Key.get(File.class, Names.named("README"))).getName());
     }
 
+    @Test
     public void testSimpleUrlBean() {
         assertEquals(
                 "www.sonatype.org",
                 injector.getInstance(Key.get(URL.class, Names.named("SITE"))).getHost());
     }
 
+    @Test
     public void testNonBean() {
         final Calendar calendar = Calendar.getInstance();
         calendar.setTime(injector.getInstance(Key.get(Date.class, Names.named("DATE"))));
@@ -174,7 +193,7 @@ public class BeanConstantTest extends TestCase {
         assertEquals(2009, calendar.get(Calendar.YEAR));
     }
 
-    @SuppressWarnings("boxing")
+    @Test
     public void testConfigurator() {
         final PlexusBeanConverter configurator = injector.getInstance(PlexusBeanConverter.class);
         final float value = configurator.convert(TypeLiteral.get(float.class), "4.2");
@@ -186,10 +205,6 @@ public class BeanConstantTest extends TestCase {
     }
 
     private void testFailedConversion(final String bindingName, final Class<?> clazz) {
-        try {
-            getBean(bindingName, clazz);
-            fail("Expected ConfigurationException");
-        } catch (final ConfigurationException e) {
-        }
+        assertThrows(ConfigurationException.class, () -> getBean(bindingName, clazz));
     }
 }

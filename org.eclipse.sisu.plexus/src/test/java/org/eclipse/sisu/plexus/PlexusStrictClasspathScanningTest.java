@@ -9,7 +9,9 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.google.inject.CreationException;
 import java.io.File;
@@ -26,7 +28,6 @@ import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
-import junit.framework.TestCase;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
@@ -36,13 +37,15 @@ import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.eclipse.sisu.plexus.component.Jsr330Component1;
 import org.eclipse.sisu.plexus.component.Jsr330Component2;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
 
 /**
  * Tests the behaviour when classloading fails due to invalid class files in the classpath (both with strict and non-strict classpath scanning).
  */
-public class PlexusStrictClasspathScanningTest extends TestCase {
+public class PlexusStrictClasspathScanningTest {
 
+    @Test
     public void testStrictClasspathScanningWithValidClassFileForPlexusComponent()
             throws IOException, PlexusContainerException, ComponentLookupException {
         try (TemporaryDirectoryClasspath dirClasspath = new TemporaryDirectoryClasspath()) {
@@ -50,10 +53,13 @@ public class PlexusStrictClasspathScanningTest extends TestCase {
             dirClasspath.addResource(
                     Paths.get("target", "test-classes", "invalid-plexus-components"), "META-INF/plexus/components.xml");
 
-            Consumer<DefaultContainerConfiguration> configConsumer = config -> {
-                config.setStrictClassPathScanning(true);
+            Consumer<DefaultContainerConfiguration> configConsumer = new Consumer<DefaultContainerConfiguration>() {
+                @Override
+                public void accept(DefaultContainerConfiguration config) {
+                    config.setStrictClassPathScanning(true);
+                }
             };
-            // test with container realm containing invalid class file
+
             DefaultPlexusContainer plexus =
                     createIsolatedPlexusContainer(configConsumer, Optional.of(dirClasspath.getURL()));
             try {
@@ -68,6 +74,7 @@ public class PlexusStrictClasspathScanningTest extends TestCase {
         }
     }
 
+    @Test
     public void testStrictClasspathScanningWithInvalidClassFileForPlexusComponent() throws Exception {
         try (TemporaryDirectoryClasspath dirClasspath = new TemporaryDirectoryClasspath()) {
             dirClasspath.addPackage(Paths.get("target", "test-classes"), "org.eclipse.sisu.plexus.component");
@@ -75,8 +82,11 @@ public class PlexusStrictClasspathScanningTest extends TestCase {
                     Paths.get("target", "test-classes", "invalid-plexus-components"), "META-INF/plexus/components.xml");
             dirClasspath.invalidateClassFile(Jsr330Component2.class.getName());
 
-            Consumer<DefaultContainerConfiguration> configConsumer = config -> {
-                config.setStrictClassPathScanning(true);
+            Consumer<DefaultContainerConfiguration> configConsumer = new Consumer<DefaultContainerConfiguration>() {
+                @Override
+                public void accept(DefaultContainerConfiguration config) {
+                    config.setStrictClassPathScanning(true);
+                }
             };
             // test with container realm containing invalid class file
             DefaultPlexusContainer plexus =
@@ -110,23 +120,34 @@ public class PlexusStrictClasspathScanningTest extends TestCase {
         }
     }
 
+    @Test
     public void testStrictClasspathScanningWithValidClassFileForSisuComponent() throws Exception {
         try (TemporaryDirectoryClasspath dirClasspath = new TemporaryDirectoryClasspath()) {
             dirClasspath.addPackage(Paths.get("target", "test-classes"), "org.eclipse.sisu.plexus.component");
             dirClasspath.addResource(
                     Paths.get("target", "test-classes", "invalid-sisu-components"), "META-INF/sisu/javax.inject.Named");
 
-            Consumer<DefaultContainerConfiguration> configConsumer = config -> {
-                config.setStrictClassPathScanning(true);
-                config.setClassPathScanning(PlexusConstants.SCANNING_INDEX);
+            Consumer<DefaultContainerConfiguration> configConsumer = new Consumer<DefaultContainerConfiguration>() {
+                @Override
+                public void accept(DefaultContainerConfiguration config) {
+                    config.setStrictClassPathScanning(true);
+                    config.setClassPathScanning(PlexusConstants.SCANNING_INDEX);
+                }
             };
-            // test with container realm containing invalid class file
+
             DefaultPlexusContainer plexus =
                     createIsolatedPlexusContainer(configConsumer, Optional.of(dirClasspath.getURL()));
-            assertNotNull(plexus.lookup(Jsr330Component1.class.getName()));
+            try {
+                assertNotNull(plexus.lookup(Jsr330Component1.class.getName()));
+            } finally {
+                if (plexus != null) {
+                    plexus.dispose();
+                }
+            }
         }
     }
 
+    @Test
     public void testStrictClasspathScanningWithInvalidClassFileForSisuComponent() throws Exception {
         try (TemporaryDirectoryClasspath dirClasspath = new TemporaryDirectoryClasspath()) {
             dirClasspath.addPackage(Paths.get("target", "test-classes"), "org.eclipse.sisu.plexus.component");
@@ -134,10 +155,14 @@ public class PlexusStrictClasspathScanningTest extends TestCase {
                     Paths.get("target", "test-classes", "invalid-sisu-components"), "META-INF/sisu/javax.inject.Named");
             dirClasspath.invalidateClassFile(Jsr330Component2.class.getName());
 
-            Consumer<DefaultContainerConfiguration> configConsumer = config -> {
-                config.setStrictClassPathScanning(true);
-                config.setClassPathScanning(PlexusConstants.SCANNING_INDEX);
+            Consumer<DefaultContainerConfiguration> configConsumer = new Consumer<DefaultContainerConfiguration>() {
+                @Override
+                public void accept(DefaultContainerConfiguration config) {
+                    config.setStrictClassPathScanning(true);
+                    config.setClassPathScanning(PlexusConstants.SCANNING_INDEX);
+                }
             };
+
             // test with container realm containing invalid class file
             CreationException e = assertThrows(
                     CreationException.class,

@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Binder;
 import com.google.inject.Guice;
@@ -18,7 +21,6 @@ import com.google.inject.Key;
 import com.google.inject.name.Names;
 import javax.inject.Inject;
 import javax.inject.Named;
-import junit.framework.TestCase;
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.bean.BeanManager;
@@ -26,8 +28,10 @@ import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.bean.PropertyBinding;
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.space.URLClassSpace;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class PlexusBeanMetadataTest extends TestCase {
+public class PlexusBeanMetadataTest {
     @Inject
     @Named("2")
     Bean bean;
@@ -35,8 +39,8 @@ public class PlexusBeanMetadataTest extends TestCase {
     @Inject
     Injector injector;
 
-    @Override
-    protected void setUp() {
+    @BeforeEach
+    void setUp() {
         Guice.createInjector(new AbstractModule() {
             @Override
             protected void configure() {
@@ -202,6 +206,7 @@ public class PlexusBeanMetadataTest extends TestCase {
         }
     }
 
+    @Test
     public void testExtraMetadata() {
         assertEquals("REQUIREMENT", bean.getExtraMetadata());
         assertEquals("CONFIGURATION", injector.getInstance(DefaultBean2.class).extraMetadata);
@@ -209,6 +214,6 @@ public class PlexusBeanMetadataTest extends TestCase {
     }
 
     static DeferredClass<?> defer(final Class<?> clazz) {
-        return new URLClassSpace(TestCase.class.getClassLoader()).deferLoadClass(clazz.getName());
+        return new URLClassSpace(PlexusBeanMetadataTest.class.getClassLoader()).deferLoadClass(clazz.getName());
     }
 }

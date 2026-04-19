@@ -8,6 +8,9 @@ Main-Class: org.eclipse.sisu.launch.Main
 Import-Package: com.google.inject.servlet;resolution:=optional,\
  javax.servlet.*;resolution:=optional,\
  org.slf4j.*;resolution:=optional,\
+ org.junit.jupiter.api.*;resolution:=optional,\
+ org.junit.jupiter.params.*;resolution:=optional,\
+ org.junit.platform.*;resolution:=optional,\
  org.junit.*;resolution:=optional,\
  junit.framework.*;resolution:=optional,\
  org.testng.*;resolution:=optional,\

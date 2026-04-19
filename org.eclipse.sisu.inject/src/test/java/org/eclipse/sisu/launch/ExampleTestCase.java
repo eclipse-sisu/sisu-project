@@ -10,17 +10,21 @@
  *******************************************************************************/
 package org.eclipse.sisu.launch;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.google.inject.name.Names;
 import java.io.File;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.junit.jupiter.api.Test;
 
 /**
- * Still JUnit3 based test
- * Execute with JUnit3 runner.
+ * Migrated to JUnit 5.
  */
-public final class ExampleTestCase extends InjectedTestCase {
+public class ExampleTestCase extends InjectedTest {
     @Inject
     @Named("${basedir}")
     String basedir;
@@ -29,6 +33,7 @@ public final class ExampleTestCase extends InjectedTestCase {
     @Named("${basedir}/target/test-classes/org/eclipse/sisu/launch/inject.properties")
     File propertiesFile;
 
+    @Test
     public void testBasedir() {
         assertEquals(getBasedir(), basedir);
         assertTrue(propertiesFile.isFile());
@@ -40,6 +45,7 @@ public final class ExampleTestCase extends InjectedTestCase {
     @Inject
     Map<String, Foo> beans;
 
+    @Test
     public void testInjection() {
         assertTrue(bean instanceof DefaultFoo);
 
@@ -53,6 +59,7 @@ public final class ExampleTestCase extends InjectedTestCase {
         assertTrue(bean == beans.get("default"));
     }
 
+    @Test
     public void testContainerLookup() {
         assertTrue(lookup(Foo.class) instanceof DefaultFoo);
         assertTrue(lookup(Foo.class, Named.class) instanceof DefaultFoo);

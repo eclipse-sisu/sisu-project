@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.sisu.launch;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.google.inject.Binder;
 import com.google.inject.Key;
 import com.google.inject.assistedinject.Assisted;
@@ -18,12 +21,9 @@ import java.util.Properties;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.eclipse.sisu.inject.BeanLocator;
+import org.junit.jupiter.api.Test;
 
-/**
- * Still JUnit3 based test
- * Execute with JUnit3 runner.
- */
-public final class AssistedTestCase extends InjectedTestCase {
+public class AssistedTestCase extends InjectedTest {
     interface FooFactory {
         Foo create(int port);
     }
@@ -59,6 +59,7 @@ public final class AssistedTestCase extends InjectedTestCase {
     @Inject
     BeanLocator beanLocator;
 
+    @Test
     public void testAssistedInject() {
         Foo bean = beanFactory.create(8080);
         assertTrue(bean instanceof AssistedFoo);

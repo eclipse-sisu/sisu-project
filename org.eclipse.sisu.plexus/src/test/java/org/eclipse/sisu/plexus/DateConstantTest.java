@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.ConfigurationException;
 import com.google.inject.Guice;
@@ -21,11 +24,12 @@ import java.util.Date;
 import java.util.Locale;
 import javax.inject.Inject;
 import javax.inject.Named;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class DateConstantTest extends TestCase {
-    @Override
-    protected void setUp() throws Exception {
+public class DateConstantTest {
+    @BeforeEach
+    void setUp() {
         Guice.createInjector(new AbstractModule() {
                     private void bind(final String name, final String value) {
                         bindConstant().annotatedWith(Names.named(name)).to(value);
@@ -62,19 +66,20 @@ public class DateConstantTest extends TestCase {
     @Inject
     Injector injector;
 
+    @Test
     public void testDateFormat1() {
         assertEquals(dateText1, new SimpleDateFormat("yyyy-MM-dd h:mm:ss.S a", Locale.US).format(date1));
     }
 
+    @Test
     public void testDateFormat2() {
         assertEquals(dateText2, new SimpleDateFormat("yyyy-MM-dd h:mm:ssa", Locale.US).format(date2));
     }
 
+    @Test
     public void testBadDateFormat() {
-        try {
-            injector.getInstance(Key.get(Date.class, Names.named("BadFormat")));
-            fail("Expected ConfigurationException");
-        } catch (final ConfigurationException e) {
-        }
+        assertThrows(
+                ConfigurationException.class,
+                () -> injector.getInstance(Key.get(Date.class, Names.named("BadFormat"))));
     }
 }

@@ -10,12 +10,15 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.Arrays;
 import java.util.Collections;
-import junit.framework.TestCase;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.junit.jupiter.api.Test;
 
-public class HintsTest extends TestCase {
+public class HintsTest {
+    @Test
     public void testCanonicalHint() {
         assertEquals("default", Hints.canonicalHint(null));
         assertEquals("default", Hints.canonicalHint(""));
@@ -23,6 +26,7 @@ public class HintsTest extends TestCase {
         assertEquals("foo", Hints.canonicalHint("foo"));
     }
 
+    @Test
     public void testCanonicalHints() {
         assertArrayEquals(new String[0], Hints.canonicalHints());
         assertArrayEquals(new String[0], Hints.canonicalHints(requirement()));
@@ -33,6 +37,7 @@ public class HintsTest extends TestCase {
         assertArrayEquals(new String[] {"foo", "default"}, Hints.canonicalHints(requirement("foo", "")));
     }
 
+    @Test
     public void testCanonicalHintList() {
         assertEquals(Collections.emptyList(), Hints.canonicalHints(Arrays.asList()));
         assertEquals(Collections.emptyList(), Hints.canonicalHints(Arrays.asList("")));
@@ -42,6 +47,7 @@ public class HintsTest extends TestCase {
         assertEquals(Arrays.asList("foo", "default"), Hints.canonicalHints(Arrays.asList("foo", "")));
     }
 
+    @Test
     public void testHintsAreInterned() {
         assertSame("hint", Hints.canonicalHint(new String("hint")));
         assertSame("hint", Hints.canonicalHints(requirement(new String("hint")))[0]);
@@ -52,15 +58,12 @@ public class HintsTest extends TestCase {
         assertEquals(new String("hint"), Hints.canonicalHint("hint"));
     }
 
+    @Test
     public void testIsDefaultHint() {
         assertTrue(Hints.isDefaultHint(null));
         assertTrue(Hints.isDefaultHint(""));
         assertTrue(Hints.isDefaultHint(new String("default")));
         assertFalse(Hints.isDefaultHint("foo"));
-    }
-
-    private static <T> void assertArrayEquals(final T[] a, final T[] b) {
-        assertTrue("Expected: " + Arrays.toString(a) + "but was: " + Arrays.toString(b), Arrays.equals(a, b));
     }
 
     @SuppressWarnings("deprecation")

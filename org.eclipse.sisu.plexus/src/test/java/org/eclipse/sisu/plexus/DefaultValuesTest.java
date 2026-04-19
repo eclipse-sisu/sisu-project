@@ -10,15 +10,19 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.Arrays;
 import java.util.List;
-import junit.framework.TestCase;
 import org.codehaus.plexus.component.configurator.BasicComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
+import org.junit.jupiter.api.Test;
 
-public class DefaultValuesTest extends TestCase {
+public class DefaultValuesTest {
+    @Test
     public void testDefaultBasicValue() throws ComponentConfigurationException {
         final ComponentWithInt componentWithString = new ComponentWithInt();
 
@@ -36,6 +40,7 @@ public class DefaultValuesTest extends TestCase {
         assertEquals("OVERRIDE", componentWithString.target);
     }
 
+    @Test
     public void testDefaultCollection() throws ComponentConfigurationException {
         final ComponentWithArray componentWithArray = new ComponentWithArray();
         final ComponentWithList componentWithList = new ComponentWithList();
@@ -46,7 +51,7 @@ public class DefaultValuesTest extends TestCase {
         config.addChild(target);
 
         new BasicComponentConfigurator().configureComponent(componentWithArray, config, null);
-        assertTrue(Arrays.equals(new String[] {"one", "two", "three"}, componentWithArray.target));
+        assertArrayEquals(new String[] {"one", "two", "three"}, componentWithArray.target);
 
         new BasicComponentConfigurator().configureComponent(componentWithList, config, null);
         assertEquals(Arrays.asList("one", "two", "three"), componentWithList.target);
@@ -56,7 +61,7 @@ public class DefaultValuesTest extends TestCase {
         target.addChild(element);
 
         new BasicComponentConfigurator().configureComponent(componentWithArray, config, null);
-        assertTrue(Arrays.equals(new String[] {"OVERRIDE"}, componentWithArray.target));
+        assertArrayEquals(new String[] {"OVERRIDE"}, componentWithArray.target);
 
         new BasicComponentConfigurator().configureComponent(componentWithList, config, null);
         assertEquals(Arrays.asList("OVERRIDE"), componentWithList.target);
