@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        java: [ '17', '21', '25' ]
+        java: [ '17', '21', '26' ]
         include:
           # lengthy build steps should only be performed on linux with Java 21 (Sonarcloud analysis, deployment)
           - os: ubuntu-latest
