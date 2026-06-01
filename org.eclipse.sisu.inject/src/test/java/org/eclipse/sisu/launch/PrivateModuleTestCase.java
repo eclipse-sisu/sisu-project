@@ -10,18 +10,21 @@
  *******************************************************************************/
 package org.eclipse.sisu.launch;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.google.inject.Binder;
 import com.google.inject.PrivateModule;
 import com.google.inject.name.Names;
 import java.util.Properties;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.junit.jupiter.api.Test;
 
 /**
- * Still JUnit3 based test
- * Execute with JUnit3 runner.
+ * JUnit 5 version.
  */
-public final class PrivateModuleTestCase extends InjectedTestCase {
+public final class PrivateModuleTestCase extends InjectedTest {
     static class PrivateFoo implements Foo {
         final String host;
 
@@ -80,6 +83,7 @@ public final class PrivateModuleTestCase extends InjectedTestCase {
     @Named("B")
     Foo beanB;
 
+    @Test
     public void testAssistedInject() {
         assertTrue(bean instanceof PrivateFoo);
         assertEquals("127.0.0.1", ((PrivateFoo) bean).host);

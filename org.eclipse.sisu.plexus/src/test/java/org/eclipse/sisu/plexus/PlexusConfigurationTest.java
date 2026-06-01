@@ -12,6 +12,9 @@ package org.eclipse.sisu.plexus;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonMap;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -21,15 +24,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
-import junit.framework.TestCase;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.sisu.bean.BeanManager;
 import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.bean.PropertyBinding;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class PlexusConfigurationTest extends TestCase {
+public class PlexusConfigurationTest {
     @Inject
     ConfiguredComponent component;
 
@@ -66,8 +70,9 @@ public class PlexusConfigurationTest extends TestCase {
         }
     }
 
-    @Override
-    protected void setUp() {
+    @BeforeEach
+    void setUp() {
+        ComponentManager.SEEN = 0;
         Guice.createInjector(new AbstractModule() {
             @Override
             protected void configure() {
@@ -130,6 +135,7 @@ public class PlexusConfigurationTest extends TestCase {
         Xpp3Dom xml;
     }
 
+    @Test
     public void testConfiguration() {
         assertEquals("1", component.a);
         assertEquals(Integer.valueOf(2), component.b);
@@ -160,11 +166,7 @@ public class PlexusConfigurationTest extends TestCase {
 
         assertEquals(2, ComponentManager.SEEN);
 
-        try {
-            injector.getInstance(MisconfiguredComponent.class);
-            fail("Expected ProvisionException");
-        } catch (final ProvisionException e) {
-        }
+        assertThrows(ProvisionException.class, () -> injector.getInstance(MisconfiguredComponent.class));
 
         assertEquals(2, ComponentManager.SEEN);
     }

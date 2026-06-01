@@ -10,17 +10,19 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.google.inject.AbstractModule;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import junit.framework.TestCase;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+import org.junit.jupiter.api.Test;
 
-public class PlexusLifecycleTest extends TestCase {
+public class PlexusLifecycleTest {
     static class PlexusBean implements Startable {
         private final StringBuilder results = new StringBuilder();
 
@@ -59,6 +61,7 @@ public class PlexusLifecycleTest extends TestCase {
         }
     }
 
+    @Test
     public void testPlexusLifecycle() throws Exception {
         // standard Plexus lifecycle is always enabled
         PlexusContainer container = createContainer(false);
@@ -75,6 +78,7 @@ public class PlexusLifecycleTest extends TestCase {
         assertEquals("<>", bean.toString());
     }
 
+    @Test
     public void testJsr250Lifecycle() throws Exception {
         // nothing should happen as JSR250 is off by default
         PlexusContainer container = createContainer(false);

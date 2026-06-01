@@ -10,15 +10,18 @@
  *******************************************************************************/
 package org.eclipse.sisu.launch;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Properties;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.junit.jupiter.api.Test;
 
 /**
- * Still JUnit3 based test
- * Execute with JUnit3 runner.
+ * Migrated to JUnit 5.
  */
-public final class Custom3TestCase extends InjectedTestCase {
+public class Custom3TestCase extends InjectedTest {
     @Override
     public void configure(final Properties properties) {
         properties.put("hint", "NameTag");
@@ -33,6 +36,7 @@ public final class Custom3TestCase extends InjectedTestCase {
     @Named("${port}")
     int port;
 
+    @Test
     public void testPerTestCaseCustomization() {
         assertTrue(bean instanceof NamedAndTaggedFoo);
 

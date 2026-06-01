@@ -10,14 +10,16 @@
  *******************************************************************************/
 package org.eclipse.sisu.launch;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.google.inject.Binder;
 import javax.inject.Inject;
+import org.junit.jupiter.api.Test;
 
 /**
- * Still JUnit3 based test
- * Execute with JUnit3 runner.
+ * Migrated to JUnit 5.
  */
-public final class Custom1TestCase extends InjectedTestCase {
+public class Custom1TestCase extends InjectedTest {
     @Override
     public void configure(final Binder binder) {
         // override automatic binding
@@ -27,6 +29,7 @@ public final class Custom1TestCase extends InjectedTestCase {
     @Inject
     Foo bean;
 
+    @Test
     public void testPerTestCaseCustomization() {
         assertTrue(bean instanceof NamedFoo);
     }

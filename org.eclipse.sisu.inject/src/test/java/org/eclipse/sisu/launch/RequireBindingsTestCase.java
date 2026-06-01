@@ -10,14 +10,16 @@
  *******************************************************************************/
 package org.eclipse.sisu.launch;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.google.inject.Binder;
 import javax.inject.Inject;
+import org.junit.jupiter.api.Test;
 
 /**
- * Still JUnit3 based test
- * Execute with JUnit3 runner.
+ * JUnit 5 version.
  */
-public final class RequireBindingsTestCase extends InjectedTestCase {
+public final class RequireBindingsTestCase extends InjectedTest {
     @Override
     public void configure(final Binder binder) {
         binder.requireExplicitBindings();
@@ -26,6 +28,7 @@ public final class RequireBindingsTestCase extends InjectedTestCase {
     @Inject
     Foo bean;
 
+    @Test
     public void testRequireExplicitBindings() {
         assertNotNull(bean);
     }
