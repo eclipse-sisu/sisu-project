@@ -1,5 +1,6 @@
 Bundle-Name: Sisu-Plexus
-Bundle-SymbolicName: org.eclipse.sisu.plexus;singleton:=true
+Automatic-Module-Name: org.eclipse.sisu.plexus
+Bundle-SymbolicName: ${Automatic-Module-Name};singleton:=true
 -exportcontents: org.eclipse.sisu.plexus.*,\
  org.codehaus.plexus.*
 Import-Package: javax.inject,\

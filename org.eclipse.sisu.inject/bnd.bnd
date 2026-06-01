@@ -1,5 +1,6 @@
 Bundle-Name: Sisu-Inject
-Bundle-SymbolicName: org.eclipse.sisu.inject;singleton:=true
+Automatic-Module-Name: org.eclipse.sisu.inject
+Bundle-SymbolicName: ${Automatic-Module-Name};singleton:=true
 Main-Class: org.eclipse.sisu.launch.Main
 -exportcontents: org.eclipse.sisu.*,\
  org.sonatype.inject;x-internal:=true
