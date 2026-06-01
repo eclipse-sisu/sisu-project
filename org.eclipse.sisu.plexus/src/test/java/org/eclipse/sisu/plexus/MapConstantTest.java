@@ -94,6 +94,6 @@ public class MapConstantTest {
         testMap.put("key2", "value2");
 
         assertEquals(testMap, map);
-        assertEquals(testMap, properties);
+        assertEquals(testMap, properties); // NOSONAR Comparison of "dissimilar types"
     }
 }
