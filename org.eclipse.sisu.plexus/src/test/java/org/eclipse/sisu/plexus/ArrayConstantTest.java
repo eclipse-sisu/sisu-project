@@ -22,7 +22,7 @@ import javax.inject.Named;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ArrayConstantTest {
+class ArrayConstantTest {
 
     @BeforeEach
     void setUp() {

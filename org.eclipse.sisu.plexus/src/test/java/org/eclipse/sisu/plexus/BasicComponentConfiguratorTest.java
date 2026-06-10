@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -78,7 +77,7 @@ class BasicComponentConfiguratorTest {
     }
 
     @Test
-    void testTypeWithoutConverterButConstructorAcceptingString() throws ComponentConfigurationException, IOException {
+    void testTypeWithoutConverterButConstructorAcceptingString() throws ComponentConfigurationException {
         CustomTypeComponent component = new CustomTypeComponent();
         configure(component, "custom", "hello world");
         assertEquals("hello world", component.custom.toString());

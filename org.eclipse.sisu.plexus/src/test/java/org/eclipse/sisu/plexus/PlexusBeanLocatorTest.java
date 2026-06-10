@@ -14,8 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Binder;
@@ -207,17 +207,8 @@ class PlexusBeanLocatorTest {
 
         assertEquals("!=<missing>", pling.toString());
 
-        try {
-            pling.getValue();
-            fail("Expected ProvisionException");
-        } catch (final ProvisionException e) {
-        }
-
-        try {
-            pling.setValue(null);
-            fail("Expected UnsupportedOperationException");
-        } catch (final UnsupportedOperationException e) {
-        }
+        assertThrows(ProvisionException.class, pling::getValue);
+        assertThrows(UnsupportedOperationException.class, () -> pling.setValue(null));
 
         publishInjector(locator, parent, 0);
         publishInjector(locator, child1, 1);

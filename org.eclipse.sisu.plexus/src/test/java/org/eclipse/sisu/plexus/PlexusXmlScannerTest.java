@@ -165,11 +165,7 @@ class PlexusXmlScannerTest {
         final Class<?> proxy =
                 CustomTestClassLoader.proxy(componentMap.get(component4).load());
 
-        try {
-            assertNotNull(proxy.getMethod("TestMe"));
-        } catch (final NoSuchMethodException e) {
-            fail("Proxied class is missing 'TestMe' method");
-        }
+        assertDoesNotThrow(() -> assertNotNull(proxy.getMethod("TestMe")));
 
         final PlexusBeanMetadata metadata1 = metadata.get(DefaultBean.class.getName());
 
@@ -279,20 +275,18 @@ class PlexusXmlScannerTest {
         space = new FixedClassSpace("/META-INF/plexus/bad_components_2.xml");
         new PlexusXmlScanner(null, null, null).scan(space, true);
 
-        try {
-            space = new FixedClassSpace("/META-INF/plexus/bad_components_3.xml");
+        assertThrows(TypeNotPresentException.class, () -> {
+            ClassSpace space1 = new FixedClassSpace("/META-INF/plexus/bad_components_3.xml");
             final Map<String, PlexusBeanMetadata> metadata = new HashMap<>();
             final PlexusXmlScanner scanner = new PlexusXmlScanner(null, null, metadata);
 
-            scanner.scan(space, true);
+            scanner.scan(space1, true);
 
             final Requirement badReq =
                     metadata.get(DefaultBean.class.getName()).getRequirement(new NamedProperty("no.such.class"));
 
             badReq.role();
-            fail("Expected TypeNotPresentException");
-        } catch (final TypeNotPresentException e) {
-        }
+        });
 
         space = new FixedClassSpace("/META-INF/plexus/bad_components_4.xml");
         final PlexusXmlScanner scanner = new PlexusXmlScanner(null, null, null);
