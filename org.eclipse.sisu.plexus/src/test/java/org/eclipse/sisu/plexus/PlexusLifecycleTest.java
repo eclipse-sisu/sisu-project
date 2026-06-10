@@ -22,7 +22,7 @@ import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.junit.jupiter.api.Test;
 
-public class PlexusLifecycleTest {
+class PlexusLifecycleTest {
     static class PlexusBean implements Startable {
         private final StringBuilder results = new StringBuilder();
 
@@ -62,7 +62,7 @@ public class PlexusLifecycleTest {
     }
 
     @Test
-    public void testPlexusLifecycle() throws Exception {
+    void testPlexusLifecycle() throws Exception {
         // standard Plexus lifecycle is always enabled
         PlexusContainer container = createContainer(false);
         PlexusBean bean = container.lookup(PlexusBean.class);
@@ -79,7 +79,7 @@ public class PlexusLifecycleTest {
     }
 
     @Test
-    public void testJsr250Lifecycle() throws Exception {
+    void testJsr250Lifecycle() throws Exception {
         // nothing should happen as JSR250 is off by default
         PlexusContainer container = createContainer(false);
         Jsr250Bean bean = container.lookup(Jsr250Bean.class);

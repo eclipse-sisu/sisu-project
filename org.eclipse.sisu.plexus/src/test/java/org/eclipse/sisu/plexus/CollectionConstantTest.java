@@ -29,7 +29,7 @@ import javax.inject.Named;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class CollectionConstantTest {
+class CollectionConstantTest {
 
     @BeforeEach
     void setUp() {
@@ -79,12 +79,12 @@ public class CollectionConstantTest {
     Collection<Collection<Integer>> numbers;
 
     @Test
-    public void testEmptyCollection() {
+    void testEmptyCollection() {
         assertTrue(empty.isEmpty());
     }
 
     @Test
-    public void testCustomCollections() {
+    void testCustomCollections() {
         assertEquals(LinkedHashSet.class, custom.getClass());
         final Iterator<?> i = custom.iterator();
         assertEquals(new File("FOO"), i.next());
@@ -93,13 +93,12 @@ public class CollectionConstantTest {
     }
 
     @Test
-    public void testStringCollection() {
+    void testStringCollection() {
         assertEquals(Arrays.asList("cat", "dog", "aardvark"), animals);
     }
 
     @Test
-    @SuppressWarnings({"unchecked", "boxing"})
-    public void testPrimitiveCollection() {
+    void testPrimitiveCollection() {
         assertEquals(Arrays.asList(Arrays.asList(1, 2), Arrays.asList(3, 4), Arrays.asList(5, 6)), numbers);
     }
 }

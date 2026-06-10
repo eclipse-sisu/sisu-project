@@ -25,7 +25,7 @@ import org.eclipse.sisu.bean.BeanProperties;
 import org.eclipse.sisu.bean.BeanProperty;
 import org.junit.jupiter.api.Test;
 
-public class PlexusAnnotatedBeanMetadataTest {
+class PlexusAnnotatedBeanMetadataTest {
     @Component(role = Bean.class)
     protected static class Bean {
         @Configuration(name = "1", value = "BLANK")
@@ -44,7 +44,7 @@ public class PlexusAnnotatedBeanMetadataTest {
 
     @Test
     @SuppressWarnings("deprecation")
-    public void testRawAnnotations() {
+    void testRawAnnotations() {
         final PlexusBeanMetadata metadata = new PlexusAnnotatedMetadata(null);
         assertFalse(metadata.isEmpty());
 
@@ -67,7 +67,7 @@ public class PlexusAnnotatedBeanMetadataTest {
 
     @Test
     @SuppressWarnings("deprecation")
-    public void testInterpolatedAnnotations() {
+    void testInterpolatedAnnotations() {
         final Map<?, ?> variables = Collections.singletonMap("some.value", "INTERPOLATED");
 
         final PlexusBeanMetadata metadata = new PlexusAnnotatedMetadata(variables);

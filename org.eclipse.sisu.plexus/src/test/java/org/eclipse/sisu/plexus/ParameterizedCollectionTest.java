@@ -29,7 +29,7 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.junit.jupiter.api.Test;
 
-public class ParameterizedCollectionTest {
+class ParameterizedCollectionTest {
     static class MapHolder {
         Map<String, Map<String, Map<String, List<Boolean>>>> map;
     }
@@ -43,7 +43,7 @@ public class ParameterizedCollectionTest {
     }
 
     @Test
-    public void testParameterizedMap() throws Exception {
+    void testParameterizedMap() throws Exception {
         final MapHolder mapHolder = new MapHolder();
 
         configure(
@@ -62,7 +62,7 @@ public class ParameterizedCollectionTest {
     }
 
     @Test
-    public void testParameterizedList() throws Exception {
+    void testParameterizedList() throws Exception {
         final ListHolder listHolder = new ListHolder();
 
         configure(
@@ -81,7 +81,7 @@ public class ParameterizedCollectionTest {
     }
 
     @Test
-    public void testParameterizedArray() throws Exception {
+    void testParameterizedArray() throws Exception {
         final ArrayHolder arrayHolder = new ArrayHolder();
 
         configure(

@@ -41,7 +41,7 @@ import org.eclipse.sisu.inject.Sources;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class PlexusBeanLocatorTest {
+class PlexusBeanLocatorTest {
     @ImplementedBy(BeanImpl.class)
     interface Bean {}
 
@@ -91,7 +91,7 @@ public class PlexusBeanLocatorTest {
     }
 
     @Test
-    public void testInjectorOrdering() {
+    void testInjectorOrdering() {
         final MutableBeanLocator locator = new DefaultBeanLocator();
 
         final Iterable<? extends Entry<String, Bean>> roles =
@@ -160,7 +160,7 @@ public class PlexusBeanLocatorTest {
     }
 
     @Test
-    public void testExistingInjectors() {
+    void testExistingInjectors() {
         final MutableBeanLocator locator = new DefaultBeanLocator();
 
         publishInjector(locator, parent, 0);
@@ -184,7 +184,7 @@ public class PlexusBeanLocatorTest {
     }
 
     @Test
-    public void testRoleHintLookup() {
+    void testRoleHintLookup() {
         final MutableBeanLocator locator = new DefaultBeanLocator();
 
         final Iterable<? extends Entry<String, Bean>> roles = new DefaultPlexusBeanLocator(locator)
@@ -294,7 +294,7 @@ public class PlexusBeanLocatorTest {
     }
 
     @Test
-    public void testInjectorVisibility() throws NoSuchRealmException {
+    void testInjectorVisibility() throws NoSuchRealmException {
         final MutableBeanLocator locator = new DefaultBeanLocator();
         final ClassWorld world = new ClassWorld();
 

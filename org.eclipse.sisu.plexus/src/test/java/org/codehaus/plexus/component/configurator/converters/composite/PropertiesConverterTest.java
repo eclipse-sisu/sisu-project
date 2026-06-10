@@ -8,6 +8,7 @@ package org.codehaus.plexus.component.configurator.converters.composite;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -18,19 +19,19 @@ import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.junit.jupiter.api.Test;
 
-public class PropertiesConverterTest {
+class PropertiesConverterTest {
     @Test
-    public void canConvertPositive() {
+    void canConvertPositive() {
         assertTrue(new PropertiesConverter().canConvert(Properties.class));
     }
 
     @Test
-    public void canConvertNegative() {
+    void canConvertNegative() {
         assertFalse(new PropertiesConverter().canConvert(Object.class));
     }
 
     @Test
-    public void testConvert1() throws ComponentConfigurationException {
+    void testConvert1() throws ComponentConfigurationException {
         XmlPlexusConfiguration config = new XmlPlexusConfiguration("properties");
         config.addChild("key1", "value1");
         config.addChild("key2", "value2");
@@ -54,7 +55,7 @@ public class PropertiesConverterTest {
                             }
                         },
                         null);
-        assertTrue(object instanceof Properties);
+        assertInstanceOf(Properties.class, object);
         Properties result = (Properties) object;
         assertEquals(2, result.size());
         assertEquals("value1", result.getProperty("key1"));
@@ -62,7 +63,7 @@ public class PropertiesConverterTest {
     }
 
     @Test
-    public void testConvert2() throws ComponentConfigurationException {
+    void testConvert2() throws ComponentConfigurationException {
         XmlPlexusConfiguration config = new XmlPlexusConfiguration("properties");
 
         XmlPlexusConfiguration entry1 = new XmlPlexusConfiguration("property");
@@ -95,7 +96,7 @@ public class PropertiesConverterTest {
                             }
                         },
                         null);
-        assertTrue(object instanceof Properties);
+        assertInstanceOf(Properties.class, object);
         Properties result = (Properties) object;
         assertEquals(2, result.size());
         assertEquals("value1", result.getProperty("key1"));

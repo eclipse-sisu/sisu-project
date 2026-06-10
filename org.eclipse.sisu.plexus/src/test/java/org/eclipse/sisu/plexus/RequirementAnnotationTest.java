@@ -20,7 +20,7 @@ import java.util.List;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.junit.jupiter.api.Test;
 
-public class RequirementAnnotationTest {
+class RequirementAnnotationTest {
     @Requirement
     String defaultReq;
 
@@ -45,7 +45,7 @@ public class RequirementAnnotationTest {
     List<String> namedStringListReq;
 
     @Test
-    public void testRequirementImpl() throws NoSuchFieldException {
+    void testRequirementImpl() throws NoSuchFieldException {
         checkBehaviour("defaultReq");
         checkBehaviour("stringReq");
         checkBehaviour("namedReq");
@@ -54,10 +54,10 @@ public class RequirementAnnotationTest {
         checkBehaviour("namedStringReq");
         checkBehaviour("namedStringListReq");
 
-        assertFalse(replicate(getRequirement("defaultReq")).equals(getRequirement("stringReq")));
-        assertFalse(replicate(getRequirement("stringReq")).equals(getRequirement("namedStringReq")));
-        assertFalse(replicate(getRequirement("defaultReq")).equals(getRequirement("namedListReq")));
-        assertFalse(replicate(getRequirement("defaultReq")).equals(getRequirement("optionalReq")));
+        assertNotEquals(replicate(getRequirement("defaultReq")), getRequirement("stringReq"));
+        assertNotEquals(replicate(getRequirement("stringReq")), getRequirement("namedStringReq"));
+        assertNotEquals(replicate(getRequirement("defaultReq")), getRequirement("namedListReq"));
+        assertNotEquals(replicate(getRequirement("defaultReq")), getRequirement("optionalReq"));
     }
 
     private static void checkBehaviour(final String name) throws NoSuchFieldException {

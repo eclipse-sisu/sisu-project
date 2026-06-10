@@ -21,9 +21,9 @@ import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.junit.jupiter.api.Test;
 
-public class DefaultValuesTest {
+class DefaultValuesTest {
     @Test
-    public void testDefaultBasicValue() throws ComponentConfigurationException {
+    void testDefaultBasicValue() throws ComponentConfigurationException {
         final ComponentWithInt componentWithString = new ComponentWithInt();
 
         final PlexusConfiguration config = new XmlPlexusConfiguration("config");
@@ -41,7 +41,7 @@ public class DefaultValuesTest {
     }
 
     @Test
-    public void testDefaultCollection() throws ComponentConfigurationException {
+    void testDefaultCollection() throws ComponentConfigurationException {
         final ComponentWithArray componentWithArray = new ComponentWithArray();
         final ComponentWithList componentWithList = new ComponentWithList();
 

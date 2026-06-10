@@ -31,7 +31,7 @@ import org.eclipse.sisu.space.URLClassSpace;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class PlexusBeanMetadataTest {
+class PlexusBeanMetadataTest {
     @Inject
     @Named("2")
     Bean bean;
@@ -207,7 +207,7 @@ public class PlexusBeanMetadataTest {
     }
 
     @Test
-    public void testExtraMetadata() {
+    void testExtraMetadata() {
         assertEquals("REQUIREMENT", bean.getExtraMetadata());
         assertEquals("CONFIGURATION", injector.getInstance(DefaultBean2.class).extraMetadata);
         assertSame(bean, injector.getInstance(Key.get(Bean.class, Names.named("2"))));

@@ -27,7 +27,7 @@ import javax.inject.Named;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class DateConstantTest {
+class DateConstantTest {
     @BeforeEach
     void setUp() {
         Guice.createInjector(new AbstractModule() {
@@ -67,17 +67,17 @@ public class DateConstantTest {
     Injector injector;
 
     @Test
-    public void testDateFormat1() {
+    void testDateFormat1() {
         assertEquals(dateText1, new SimpleDateFormat("yyyy-MM-dd h:mm:ss.S a", Locale.US).format(date1));
     }
 
     @Test
-    public void testDateFormat2() {
+    void testDateFormat2() {
         assertEquals(dateText2, new SimpleDateFormat("yyyy-MM-dd h:mm:ssa", Locale.US).format(date2));
     }
 
     @Test
-    public void testBadDateFormat() {
+    void testBadDateFormat() {
         assertThrows(
                 ConfigurationException.class,
                 () -> injector.getInstance(Key.get(Date.class, Names.named("BadFormat"))));

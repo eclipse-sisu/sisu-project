@@ -36,7 +36,7 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-public class PlexusXmlScannerTest {
+class PlexusXmlScannerTest {
     static class NamedProperty implements BeanProperty<Object> {
         final String name;
 
@@ -115,7 +115,7 @@ public class PlexusXmlScannerTest {
     }
 
     @Test
-    public void testLoadOnStart() {
+    void testLoadOnStart() {
         final URL plexusXml = getClass().getResource("/META-INF/plexus/plexus.xml");
         final PlexusXmlScanner scanner = new PlexusXmlScanner(null, plexusXml, null);
 
@@ -132,7 +132,7 @@ public class PlexusXmlScannerTest {
     }
 
     @Test
-    public void testBadPlexusXml() {
+    void testBadPlexusXml() {
         final ClassSpace space = new URLClassSpace(PlexusXmlScannerTest.class.getClassLoader());
         final URL plexusXml = getClass().getResource("/META-INF/plexus/bad_plexus_1.xml");
         new PlexusXmlScanner(null, plexusXml, null).scan(space, true);
@@ -140,7 +140,7 @@ public class PlexusXmlScannerTest {
 
     @Test
     @SuppressWarnings("deprecation")
-    public void testComponents() {
+    void testComponents() {
         final ClassSpace space = new URLClassSpace(PlexusXmlScannerTest.class.getClassLoader());
 
         final Map<String, PlexusBeanMetadata> metadata = new HashMap<>();
@@ -270,7 +270,7 @@ public class PlexusXmlScannerTest {
     }
 
     @Test
-    public void testBadComponentsXml() {
+    void testBadComponentsXml() {
         ClassSpace space;
 
         space = new FixedClassSpace("/META-INF/plexus/bad_components_1.xml");
@@ -300,7 +300,7 @@ public class PlexusXmlScannerTest {
     }
 
     @Test
-    public void testInterpolatedComponentsXml() {
+    void testInterpolatedComponentsXml() {
         final ClassSpace space = new FixedClassSpace("/META-INF/plexus/variable_components.xml");
 
         final Map<String, PlexusBeanMetadata> metadata = new HashMap<>();
@@ -325,7 +325,7 @@ public class PlexusXmlScannerTest {
     }
 
     @Test
-    public void testLocalizedXmlScanning() {
+    void testLocalizedXmlScanning() {
         final ClassSpace space = new URLClassSpace(PlexusXmlScannerTest.class.getClassLoader(), null);
 
         assertFalse(new PlexusXmlScanner(null, null, null).scan(space, true).isEmpty());
@@ -333,7 +333,7 @@ public class PlexusXmlScannerTest {
     }
 
     @Test
-    public void testOptionalLogging() throws Exception {
+    void testOptionalLogging() throws Exception {
         final Level level = Logger.getLogger("").getLevel();
         try {
             Logger.getLogger("").setLevel(Level.SEVERE);

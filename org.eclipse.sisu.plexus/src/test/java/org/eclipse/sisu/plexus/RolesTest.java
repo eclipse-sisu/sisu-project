@@ -23,7 +23,7 @@ import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.junit.jupiter.api.Test;
 
-public class RolesTest {
+class RolesTest {
     private static final TypeLiteral<Object> OBJECT_LITERAL = TypeLiteral.get(Object.class);
 
     private static final TypeLiteral<String> STRING_LITERAL = TypeLiteral.get(String.class);

@@ -33,7 +33,7 @@ import org.eclipse.sisu.space.URLClassSpace;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class PlexusRequirementTest {
+class PlexusRequirementTest {
     @Inject
     Component1 component;
 
@@ -225,7 +225,7 @@ public class PlexusRequirementTest {
     }
 
     @Test
-    public void testRepeatInjection() {
+    void testRepeatInjection() {
         final Component1 duplicate = injector.getInstance(Component1.class);
         assertSame(component.testField, duplicate.testField);
         assertSame(component.testSetter, duplicate.testSetter);
@@ -233,7 +233,7 @@ public class PlexusRequirementTest {
     }
 
     @Test
-    public void testSingleRequirement() {
+    void testSingleRequirement() {
         assertEquals(AImpl.class, component.testField.getClass());
         assertEquals(AImpl.class, component.testSetter.getClass());
         assertEquals(AImpl.class, component.testRole.getClass());
@@ -243,7 +243,7 @@ public class PlexusRequirementTest {
     }
 
     @Test
-    public void testRequirementMap() {
+    void testRequirementMap() {
         assertEquals(5, component.testMap.size());
         assertEquals(0, component.testEmptyMap.size());
 
@@ -272,7 +272,7 @@ public class PlexusRequirementTest {
     }
 
     @Test
-    public void testRequirementSubMap() {
+    void testRequirementSubMap() {
         assertEquals(2, component.testSubMap.size());
 
         // check mapping
@@ -293,7 +293,7 @@ public class PlexusRequirementTest {
     }
 
     @Test
-    public void testRequirementList() {
+    void testRequirementList() {
         assertEquals(5, component.testList.size());
         assertEquals(0, component.testEmptyList.size());
 
@@ -308,7 +308,7 @@ public class PlexusRequirementTest {
     }
 
     @Test
-    public void testRequirementSubList() {
+    void testRequirementSubList() {
         assertEquals(2, component.testSubList.size());
 
         // check ordering is same as hints
@@ -319,7 +319,7 @@ public class PlexusRequirementTest {
     }
 
     @Test
-    public void testRequirementCollection() {
+    void testRequirementCollection() {
         assertEquals(5, component.testCollection.size());
 
         // check ordering is same as original map-binder
@@ -333,7 +333,7 @@ public class PlexusRequirementTest {
     }
 
     @Test
-    public void testRequirementIterable() {
+    void testRequirementIterable() {
         final Iterator<?> i = component.testIterable.iterator();
         assertEquals(AImpl.class, i.next().getClass());
         assertEquals(AAImpl.class, i.next().getClass());
@@ -344,7 +344,7 @@ public class PlexusRequirementTest {
     }
 
     @Test
-    public void testRequirementSet() {
+    void testRequirementSet() {
         assertEquals(5, component.testSet.size());
 
         // check ordering is same as original map-binder
@@ -358,41 +358,41 @@ public class PlexusRequirementTest {
     }
 
     @Test
-    public void testZeroArgSetterError() {
+    void testZeroArgSetterError() {
         injector.getInstance(Component2.class);
     }
 
     @Test
-    public void testMultiArgSetterError() {
+    void testMultiArgSetterError() {
         injector.getInstance(Component3.class);
     }
 
     @Test
-    public void testMissingRequirement() {
+    void testMissingRequirement() {
         assertThrows(ProvisionException.class, () -> injector.getInstance(Component4.class));
     }
 
     @Test
-    public void testNoSuchHint() {
+    void testNoSuchHint() {
         assertThrows(ProvisionException.class, () -> injector.getInstance(Component5.class));
     }
 
     @Test
-    public void testNoSuchMapHint() {
+    void testNoSuchMapHint() {
         assertThrows(
                 ProvisionException.class,
                 () -> injector.getInstance(Component6.class).testNoSuchHint.toString());
     }
 
     @Test
-    public void testNoSuchListHint() {
+    void testNoSuchListHint() {
         assertThrows(
                 ProvisionException.class,
                 () -> injector.getInstance(Component7.class).testNoSuchHint.toString());
     }
 
     @Test
-    public void testWildcardHint() {
+    void testWildcardHint() {
         final List<A> testList = injector.getInstance(Component8.class).testWildcardHint;
 
         assertEquals(5, testList.size());
@@ -408,7 +408,7 @@ public class PlexusRequirementTest {
     }
 
     @Test
-    public void testNoDefault() {
+    void testNoDefault() {
         assertThrows(ProvisionException.class, () -> injector.getInstance(Component9.class));
     }
 
@@ -437,7 +437,7 @@ public class PlexusRequirementTest {
     Omega omega;
 
     @Test
-    public void testCircularity() {
+    void testCircularity() {
         assertNotNull(((OmegaImpl) omega).alpha);
         assertNotNull(((AlphaImpl) alpha).omega);
 
@@ -446,12 +446,12 @@ public class PlexusRequirementTest {
     }
 
     @Test
-    public void testBadDeferredRole() {
+    void testBadDeferredRole() {
         assertThrows(ProvisionException.class, () -> injector.getInstance(Gamma.class));
     }
 
     @Test
-    public void testPlexus121Compatibility() throws Exception {
+    void testPlexus121Compatibility() throws Exception {
         final List<URL> urls = new ArrayList<>();
         urls.add(new File("target/dependency/plexus-component-annotations-1.2.1.jar")
                 .toURI()

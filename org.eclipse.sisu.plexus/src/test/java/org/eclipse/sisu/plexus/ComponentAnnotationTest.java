@@ -20,7 +20,7 @@ import java.util.HashSet;
 import org.codehaus.plexus.component.annotations.Component;
 import org.junit.jupiter.api.Test;
 
-public class ComponentAnnotationTest {
+class ComponentAnnotationTest {
     interface A {}
 
     @Component(role = A.class)
@@ -48,7 +48,7 @@ public class ComponentAnnotationTest {
     static class Simple3 extends Simple {}
 
     @Test
-    public void testComponentImpl() throws ClassNotFoundException {
+    void testComponentImpl() throws ClassNotFoundException {
         checkBehaviour("DefaultA");
         checkBehaviour("NamedA");
         checkBehaviour("PrototypeA");
@@ -96,7 +96,7 @@ public class ComponentAnnotationTest {
     }
 
     @Test
-    public void testNullChecks() {
+    void testNullChecks() {
         checkNullNotAllowed(null, "", "", "");
         checkNullNotAllowed(Object.class, null, "", "");
         checkNullNotAllowed(Object.class, "", null, "");
