@@ -275,21 +275,16 @@ class PlexusXmlScannerTest {
         space = new FixedClassSpace("/META-INF/plexus/bad_components_2.xml");
         new PlexusXmlScanner(null, null, null).scan(space, true);
 
-        assertThrows(TypeNotPresentException.class, () -> {
-            ClassSpace space1 = new FixedClassSpace("/META-INF/plexus/bad_components_3.xml");
-            final Map<String, PlexusBeanMetadata> metadata = new HashMap<>();
-            final PlexusXmlScanner scanner = new PlexusXmlScanner(null, null, metadata);
-
-            scanner.scan(space1, true);
-
-            final Requirement badReq =
-                    metadata.get(DefaultBean.class.getName()).getRequirement(new NamedProperty("no.such.class"));
-
-            badReq.role();
-        });
+        space = new FixedClassSpace("/META-INF/plexus/bad_components_3.xml");
+        final Map<String, PlexusBeanMetadata> metadata = new HashMap<>();
+        PlexusXmlScanner scanner = new PlexusXmlScanner(null, null, metadata);
+        scanner.scan(space, true);
+        final Requirement badReq =
+                metadata.get(DefaultBean.class.getName()).getRequirement(new NamedProperty("no.such.class"));
+        assertThrows(TypeNotPresentException.class, badReq::role);
 
         space = new FixedClassSpace("/META-INF/plexus/bad_components_4.xml");
-        final PlexusXmlScanner scanner = new PlexusXmlScanner(null, null, null);
+        scanner = new PlexusXmlScanner(null, null, null);
         assertTrue(scanner.scan(space, true).isEmpty());
     }
 
@@ -328,32 +323,34 @@ class PlexusXmlScannerTest {
 
     @Test
     void testOptionalLogging() throws Exception {
-        final Level level = Logger.getLogger("").getLevel();
-        try {
-            Logger.getLogger("").setLevel(Level.SEVERE);
+        assertDoesNotThrow(() -> {
+            final Level level = Logger.getLogger("").getLevel();
+            try {
+                Logger.getLogger("").setLevel(Level.SEVERE);
 
-            // check everything still works without any SLF4J jars
-            final ClassLoader noLoggingLoader =
-                    new URLClassLoader(new URLClassSpace(getClass().getClassLoader()).getURLs(), null) {
-                        @Override
-                        protected synchronized Class<?> loadClass(final String name, final boolean resolve)
-                                throws ClassNotFoundException {
-                            if (name.contains("slf4j")) {
-                                throw new ClassNotFoundException(name);
+                // check everything still works without any SLF4J jars
+                final ClassLoader noLoggingLoader =
+                        new URLClassLoader(new URLClassSpace(getClass().getClassLoader()).getURLs(), null) {
+                            @Override
+                            protected synchronized Class<?> loadClass(final String name, final boolean resolve)
+                                    throws ClassNotFoundException {
+                                if (name.contains("slf4j")) {
+                                    throw new ClassNotFoundException(name);
+                                }
+                                if (name.contains("cobertura")) {
+                                    return PlexusXmlScannerTest.class
+                                            .getClassLoader()
+                                            .loadClass(name);
+                                }
+                                return super.loadClass(name, resolve);
                             }
-                            if (name.contains("cobertura")) {
-                                return PlexusXmlScannerTest.class
-                                        .getClassLoader()
-                                        .loadClass(name);
-                            }
-                            return super.loadClass(name, resolve);
-                        }
-                    };
+                        };
 
-            noLoggingLoader.loadClass(SimpleScanningExample.class.getName()).newInstance();
-        } finally {
-            Logger.getLogger("").setLevel(level);
-        }
+                noLoggingLoader.loadClass(SimpleScanningExample.class.getName()).newInstance();
+            } finally {
+                Logger.getLogger("").setLevel(level);
+            }
+        });
     }
 
     static final class CustomTestClassLoader extends ClassLoader {
