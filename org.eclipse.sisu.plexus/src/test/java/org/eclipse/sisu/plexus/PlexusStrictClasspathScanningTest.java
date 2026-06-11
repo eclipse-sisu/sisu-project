@@ -43,10 +43,10 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 /**
  * Tests the behaviour when classloading fails due to invalid class files in the classpath (both with strict and non-strict classpath scanning).
  */
-public class PlexusStrictClasspathScanningTest {
+class PlexusStrictClasspathScanningTest {
 
     @Test
-    public void testStrictClasspathScanningWithValidClassFileForPlexusComponent()
+    void testStrictClasspathScanningWithValidClassFileForPlexusComponent()
             throws IOException, PlexusContainerException, ComponentLookupException {
         try (TemporaryDirectoryClasspath dirClasspath = new TemporaryDirectoryClasspath()) {
             dirClasspath.addPackage(Paths.get("target", "test-classes"), "org.eclipse.sisu.plexus.component");
@@ -75,7 +75,7 @@ public class PlexusStrictClasspathScanningTest {
     }
 
     @Test
-    public void testStrictClasspathScanningWithInvalidClassFileForPlexusComponent() throws Exception {
+    void testStrictClasspathScanningWithInvalidClassFileForPlexusComponent() throws Exception {
         try (TemporaryDirectoryClasspath dirClasspath = new TemporaryDirectoryClasspath()) {
             dirClasspath.addPackage(Paths.get("target", "test-classes"), "org.eclipse.sisu.plexus.component");
             dirClasspath.addResource(
@@ -121,7 +121,7 @@ public class PlexusStrictClasspathScanningTest {
     }
 
     @Test
-    public void testStrictClasspathScanningWithValidClassFileForSisuComponent() throws Exception {
+    void testStrictClasspathScanningWithValidClassFileForSisuComponent() throws Exception {
         try (TemporaryDirectoryClasspath dirClasspath = new TemporaryDirectoryClasspath()) {
             dirClasspath.addPackage(Paths.get("target", "test-classes"), "org.eclipse.sisu.plexus.component");
             dirClasspath.addResource(
@@ -148,7 +148,7 @@ public class PlexusStrictClasspathScanningTest {
     }
 
     @Test
-    public void testStrictClasspathScanningWithInvalidClassFileForSisuComponent() throws Exception {
+    void testStrictClasspathScanningWithInvalidClassFileForSisuComponent() throws Exception {
         try (TemporaryDirectoryClasspath dirClasspath = new TemporaryDirectoryClasspath()) {
             dirClasspath.addPackage(Paths.get("target", "test-classes"), "org.eclipse.sisu.plexus.component");
             dirClasspath.addResource(

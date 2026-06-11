@@ -19,7 +19,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class RealmDisposalTest {
+class RealmDisposalTest {
     private ClassLoader origCL;
 
     @BeforeEach
@@ -33,7 +33,7 @@ public class RealmDisposalTest {
     }
 
     @Test
-    public void test441254_recreateChildRealm() throws Exception {
+    void test441254_recreateChildRealm() throws Exception {
         final String realmId = "child-realm";
 
         final DefaultPlexusContainer plexus = new DefaultPlexusContainer();

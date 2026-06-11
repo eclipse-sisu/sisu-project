@@ -14,8 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Binder;
@@ -41,7 +41,7 @@ import org.eclipse.sisu.inject.Sources;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class PlexusBeanLocatorTest {
+class PlexusBeanLocatorTest {
     @ImplementedBy(BeanImpl.class)
     interface Bean {}
 
@@ -91,7 +91,7 @@ public class PlexusBeanLocatorTest {
     }
 
     @Test
-    public void testInjectorOrdering() {
+    void testInjectorOrdering() {
         final MutableBeanLocator locator = new DefaultBeanLocator();
 
         final Iterable<? extends Entry<String, Bean>> roles =
@@ -160,7 +160,7 @@ public class PlexusBeanLocatorTest {
     }
 
     @Test
-    public void testExistingInjectors() {
+    void testExistingInjectors() {
         final MutableBeanLocator locator = new DefaultBeanLocator();
 
         publishInjector(locator, parent, 0);
@@ -184,7 +184,7 @@ public class PlexusBeanLocatorTest {
     }
 
     @Test
-    public void testRoleHintLookup() {
+    void testRoleHintLookup() {
         final MutableBeanLocator locator = new DefaultBeanLocator();
 
         final Iterable<? extends Entry<String, Bean>> roles = new DefaultPlexusBeanLocator(locator)
@@ -207,17 +207,8 @@ public class PlexusBeanLocatorTest {
 
         assertEquals("!=<missing>", pling.toString());
 
-        try {
-            pling.getValue();
-            fail("Expected ProvisionException");
-        } catch (final ProvisionException e) {
-        }
-
-        try {
-            pling.setValue(null);
-            fail("Expected UnsupportedOperationException");
-        } catch (final UnsupportedOperationException e) {
-        }
+        assertThrows(ProvisionException.class, pling::getValue);
+        assertThrows(UnsupportedOperationException.class, () -> pling.setValue(null));
 
         publishInjector(locator, parent, 0);
         publishInjector(locator, child1, 1);
@@ -294,7 +285,7 @@ public class PlexusBeanLocatorTest {
     }
 
     @Test
-    public void testInjectorVisibility() throws NoSuchRealmException {
+    void testInjectorVisibility() throws NoSuchRealmException {
         final MutableBeanLocator locator = new DefaultBeanLocator();
         final ClassWorld world = new ClassWorld();
 

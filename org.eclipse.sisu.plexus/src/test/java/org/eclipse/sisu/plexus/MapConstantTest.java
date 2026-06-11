@@ -26,7 +26,7 @@ import javax.inject.Named;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class MapConstantTest {
+class MapConstantTest {
     @BeforeEach
     void setUp() {
         Guice.createInjector(new AbstractModule() {
@@ -75,12 +75,12 @@ public class MapConstantTest {
     Properties properties;
 
     @Test
-    public void testEmptyMap() {
+    void testEmptyMap() {
         assertTrue(empty.isEmpty());
     }
 
     @Test
-    public void testCustomMap() {
+    void testCustomMap() {
         assertEquals(LinkedHashMap.class, custom.getClass());
         assertEquals("TEST", custom.get("builder").toString());
         assertEquals(StringBuilder.class, custom.get("builder").getClass());
@@ -88,7 +88,7 @@ public class MapConstantTest {
     }
 
     @Test
-    public void testMapAndProperties() {
+    void testMapAndProperties() {
         final HashMap<String, String> testMap = new HashMap<>();
         testMap.put("key1", "value1");
         testMap.put("key2", "value2");

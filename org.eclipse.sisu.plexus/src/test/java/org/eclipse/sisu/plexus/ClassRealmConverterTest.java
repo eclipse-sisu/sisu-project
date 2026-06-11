@@ -17,9 +17,9 @@ import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.configurator.converters.special.ClassRealmConverter;
 import org.junit.jupiter.api.Test;
 
-public class ClassRealmConverterTest {
+class ClassRealmConverterTest {
     @Test
-    public void testClassRealmStack() throws Exception {
+    void testClassRealmStack() throws Exception {
         final ClassWorld world = new ClassWorld();
 
         final ClassRealm realmA = world.newRealm("A");

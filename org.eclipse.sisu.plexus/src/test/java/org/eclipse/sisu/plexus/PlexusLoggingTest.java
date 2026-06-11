@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PlexusLoggingTest {
+class PlexusLoggingTest {
     static class LoggerManager implements BeanManager {
         @Override
         public boolean manage(final Class<?> clazz) {
@@ -91,7 +91,7 @@ public class PlexusLoggingTest {
     SomeComponent component;
 
     @Test
-    public void testLogging() {
+    void testLogging() {
         assertNotNull(component.logger);
 
         assertEquals(SomeComponent.class.getName(), component.logger.getName());

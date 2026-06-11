@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -44,7 +43,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-public class BasicComponentConfiguratorTest {
+class BasicComponentConfiguratorTest {
 
     @TempDir
     Path tmpDirectory;
@@ -57,7 +56,7 @@ public class BasicComponentConfiguratorTest {
     }
 
     @Test
-    public void testSimplePathOnDefaultFileSystem() throws ComponentConfigurationException {
+    void testSimplePathOnDefaultFileSystem() throws ComponentConfigurationException {
         PathTestComponent component = new PathTestComponent();
         Path absolutePath = Paths.get("").resolve("absolute").toAbsolutePath();
         configure(
@@ -78,15 +77,14 @@ public class BasicComponentConfiguratorTest {
     }
 
     @Test
-    public void testTypeWithoutConverterButConstructorAcceptingString()
-            throws ComponentConfigurationException, IOException {
+    void testTypeWithoutConverterButConstructorAcceptingString() throws ComponentConfigurationException {
         CustomTypeComponent component = new CustomTypeComponent();
         configure(component, "custom", "hello world");
         assertEquals("hello world", component.custom.toString());
     }
 
     @Test
-    public void testTypePassedToExpressionEvaluator() throws ComponentConfigurationException {
+    void testTypePassedToExpressionEvaluator() throws ComponentConfigurationException {
         CustomTypeComponent component = new CustomTypeComponent();
         ExpressionEvaluator evaluator = new TypeAwareExpressionEvaluator() {
             @Override
@@ -111,7 +109,7 @@ public class BasicComponentConfiguratorTest {
     }
 
     @Test
-    public void testTemporalConvertersWithoutMillisecondsAndOffset() throws ComponentConfigurationException {
+    void testTemporalConvertersWithoutMillisecondsAndOffset() throws ComponentConfigurationException {
         TemporalComponent component = new TemporalComponent();
         String dateString = "2023-01-02 03:04:05";
         configure(
@@ -141,7 +139,7 @@ public class BasicComponentConfiguratorTest {
     }
 
     @Test
-    public void testTemporalConvertersWithISO8601StringWithOffset() throws ComponentConfigurationException {
+    void testTemporalConvertersWithISO8601StringWithOffset() throws ComponentConfigurationException {
         TemporalComponent component = new TemporalComponent();
         String dateString = "2023-01-02T03:04:05.000000900+02:30";
         configure(
@@ -171,7 +169,7 @@ public class BasicComponentConfiguratorTest {
     }
 
     @Test
-    public void testTemporalConvertersWithInvalidString() {
+    void testTemporalConvertersWithInvalidString() {
         TemporalComponent component = new TemporalComponent();
         String dateString = "invalid";
         assertThrows(
@@ -195,7 +193,7 @@ public class BasicComponentConfiguratorTest {
     }
 
     @Test
-    public void testConfigureComplexBean() throws Exception {
+    void testConfigureComplexBean() throws Exception {
         ComplexBean complexBean = new ComplexBean();
 
         // configure( complexBean, "resources", "foo;bar" );

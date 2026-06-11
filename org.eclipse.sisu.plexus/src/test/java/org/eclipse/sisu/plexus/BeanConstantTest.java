@@ -28,7 +28,7 @@ import javax.inject.Inject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class BeanConstantTest {
+class BeanConstantTest {
 
     @BeforeEach
     void setUp() {
@@ -97,17 +97,17 @@ public class BeanConstantTest {
     Injector injector;
 
     @Test
-    public void testEmptyBeanConversion() {
+    void testEmptyBeanConversion() {
         assertEquals(EmptyBean.class, getBean("EmptyBean", Object.class).getClass());
     }
 
     @Test
-    public void testMissingType() {
+    void testMissingType() {
         testFailedConversion("MissingType", EmptyBean.class);
     }
 
     @Test
-    public void testPeerClassLoader1() {
+    void testPeerClassLoader1() {
         final ClassLoader tccl = Thread.currentThread().getContextClassLoader();
         try {
             Thread.currentThread().setContextClassLoader(null);
@@ -118,7 +118,7 @@ public class BeanConstantTest {
     }
 
     @Test
-    public void testPeerClassLoader2() {
+    void testPeerClassLoader2() {
         final ClassLoader tccl = Thread.currentThread().getContextClassLoader();
         try {
             Thread.currentThread().setContextClassLoader(null);

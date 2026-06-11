@@ -33,7 +33,7 @@ import org.eclipse.sisu.bean.PropertyBinding;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class PlexusConfigurationTest {
+class PlexusConfigurationTest {
     @Inject
     ConfiguredComponent component;
 
@@ -136,7 +136,7 @@ public class PlexusConfigurationTest {
     }
 
     @Test
-    public void testConfiguration() {
+    void testConfiguration() {
         assertEquals("1", component.a);
         assertEquals(Integer.valueOf(2), component.b);
         assertEquals(3, component.c);

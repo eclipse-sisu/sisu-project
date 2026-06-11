@@ -22,7 +22,7 @@ import javax.inject.Named;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ArrayConstantTest {
+class ArrayConstantTest {
 
     @BeforeEach
     void setUp() {
@@ -79,27 +79,27 @@ public class ArrayConstantTest {
     double[][] multi2;
 
     @Test
-    public void testEmptyArray() {
+    void testEmptyArray() {
         assertEquals(0, empty.length);
     }
 
     @Test
-    public void testCustomArray() {
+    void testCustomArray() {
         assertArrayEquals(new Object[] {true, URI.create("file:temp"), 8.1f}, custom);
     }
 
     @Test
-    public void testStringArray() {
+    void testStringArray() {
         assertArrayEquals(new String[] {"1", "2", "3"}, text);
     }
 
     @Test
-    public void testPrimitiveArray() {
+    void testPrimitiveArray() {
         assertArrayEquals(new int[] {4, 5, 6}, numbers);
     }
 
     @Test
-    public void testMultiArrays() {
+    void testMultiArrays() {
         assertArrayEquals(new Integer[][] {{1, 2}, {3, 4}, {5, 6}}, multi1);
         assertArrayEquals(new double[][] {{1, 2}, {3, 4}, {5, 6}}, multi2);
     }

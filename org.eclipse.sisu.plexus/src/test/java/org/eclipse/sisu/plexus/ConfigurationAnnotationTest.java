@@ -20,7 +20,7 @@ import java.util.HashSet;
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.junit.jupiter.api.Test;
 
-public class ConfigurationAnnotationTest {
+class ConfigurationAnnotationTest {
     @Configuration("Default")
     String defaultConfig;
 
@@ -31,7 +31,7 @@ public class ConfigurationAnnotationTest {
     String propertyConfig;
 
     @Test
-    public void testConfigurationImpl() throws NoSuchFieldException {
+    void testConfigurationImpl() throws NoSuchFieldException {
         checkBehaviour("defaultConfig");
         checkBehaviour("namedConfig");
         checkBehaviour("propertyConfig");
@@ -71,7 +71,7 @@ public class ConfigurationAnnotationTest {
     }
 
     @Test
-    public void testNullChecks() {
+    void testNullChecks() {
         checkNullNotAllowed(null, "");
         checkNullNotAllowed("", null);
     }

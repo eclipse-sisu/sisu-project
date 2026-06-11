@@ -17,9 +17,9 @@ import java.util.Collections;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.junit.jupiter.api.Test;
 
-public class HintsTest {
+class HintsTest {
     @Test
-    public void testCanonicalHint() {
+    void testCanonicalHint() {
         assertEquals("default", Hints.canonicalHint(null));
         assertEquals("default", Hints.canonicalHint(""));
         assertEquals("default", Hints.canonicalHint(new String("default")));
@@ -27,7 +27,7 @@ public class HintsTest {
     }
 
     @Test
-    public void testCanonicalHints() {
+    void testCanonicalHints() {
         assertArrayEquals(new String[0], Hints.canonicalHints());
         assertArrayEquals(new String[0], Hints.canonicalHints(requirement()));
         assertArrayEquals(new String[0], Hints.canonicalHints(requirement("")));
@@ -38,7 +38,7 @@ public class HintsTest {
     }
 
     @Test
-    public void testCanonicalHintList() {
+    void testCanonicalHintList() {
         assertEquals(Collections.emptyList(), Hints.canonicalHints(Arrays.asList()));
         assertEquals(Collections.emptyList(), Hints.canonicalHints(Arrays.asList("")));
         assertEquals(Arrays.asList(Hints.DEFAULT_HINT), Hints.canonicalHints(Arrays.asList("default")));
@@ -48,7 +48,7 @@ public class HintsTest {
     }
 
     @Test
-    public void testHintsAreInterned() {
+    void testHintsAreInterned() {
         assertSame("hint", Hints.canonicalHint(new String("hint")));
         assertSame("hint", Hints.canonicalHints(requirement(new String("hint")))[0]);
         final Requirement requirement = requirement(new String("foo"), new String("bar"));
@@ -59,7 +59,7 @@ public class HintsTest {
     }
 
     @Test
-    public void testIsDefaultHint() {
+    void testIsDefaultHint() {
         assertTrue(Hints.isDefaultHint(null));
         assertTrue(Hints.isDefaultHint(""));
         assertTrue(Hints.isDefaultHint(new String("default")));
