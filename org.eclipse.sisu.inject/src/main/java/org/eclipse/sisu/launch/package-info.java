@@ -16,7 +16,7 @@
  * For example test classes that scan, bind, and auto-wire the test classpath:
  * <pre>
  * &#064;Test
- * public class MyJUnit4orTestNGTest extends {@link org.eclipse.sisu.launch.InjectedTest} {
+ * public class MyJUnit4Test extends {@link org.eclipse.sisu.launch.InjectedTest} {
  *   // ...tests...
  * }
  *

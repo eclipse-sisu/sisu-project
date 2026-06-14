@@ -14,7 +14,6 @@ Import-Package: com.google.inject.servlet;resolution:=optional,\
  org.junit.platform.*;resolution:=optional,\
  org.junit.*;resolution:=optional,\
  junit.framework.*;resolution:=optional,\
- org.testng.*;resolution:=optional,\
  javax.enterprise.inject;resolution:=optional,\
  !javax.annotation.processing.*,\
  !javax.lang.model.*,\

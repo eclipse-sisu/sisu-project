@@ -34,11 +34,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 
 /**
- * Abstract TestNG/JUnit4/5 test that automatically binds and injects itself.
+ * Abstract JUnit4/5 test that automatically binds and injects itself.
  */
 @SuppressWarnings("unused")
 public abstract class InjectedTest implements Module {
@@ -56,14 +54,12 @@ public abstract class InjectedTest implements Module {
     // ----------------------------------------------------------------------
 
     @Before
-    @BeforeMethod
     @BeforeEach
     public void setUp() throws Exception {
         Guice.createInjector(new WireModule(new SetUpModule(), spaceModule()));
     }
 
     @After
-    @AfterMethod
     @AfterEach
     public void tearDown() throws Exception {
         locator.clear();

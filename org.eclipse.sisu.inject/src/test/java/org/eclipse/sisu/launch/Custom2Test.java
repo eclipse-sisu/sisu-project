@@ -28,7 +28,6 @@ final class Custom2Test extends InjectedTest {
 
     @Test
     // @org.junit.jupiter.api.Test
-    // @org.testng.annotations.Test
     public void testPerTestCaseCustomization() {
         assertTrue(bean instanceof TaggedFoo);
     }
