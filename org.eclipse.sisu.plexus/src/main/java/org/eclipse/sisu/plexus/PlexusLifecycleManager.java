@@ -29,6 +29,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.eclipse.sisu.bean.BeanManager;
 import org.eclipse.sisu.bean.BeanProperty;
+import org.eclipse.sisu.bean.BeanPropertyGetter;
 import org.eclipse.sisu.bean.BeanScheduler;
 import org.eclipse.sisu.bean.PropertyBinding;
 import org.eclipse.sisu.inject.Logs;
@@ -104,11 +105,20 @@ public final class PlexusLifecycleManager extends BeanScheduler implements BeanM
         final Class clazz = property.getType().getRawType();
         if ("org.slf4j.Logger".equals(clazz.getName())) // NOSONAR
         {
+            // in case of SLF4J logger, and final field, we may want to back-out
+            BeanPropertyGetter getter;
+            if (property instanceof BeanPropertyGetter) {
+                getter = (BeanPropertyGetter) property;
+            } else {
+                getter = null;
+            }
             return new PropertyBinding() {
                 @Override
                 @SuppressWarnings("unchecked")
                 public <B> void injectProperty(final B bean) {
-                    property.set(bean, getSLF4JLogger(bean));
+                    if (null == getter || !getter.isFinal()) {
+                        property.set(bean, getSLF4JLogger(bean));
+                    }
                 }
             };
         }
