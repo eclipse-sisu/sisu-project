@@ -132,9 +132,9 @@
     <guiceVersion>4.2.3</guiceVersion>
     <!-- define empty, as jacoco is only conditionally executed (https://www.eclemma.org/jacoco/trunk/doc/prepare-agent-mojo.html) -->
     <argLine />
-    <njordVersion>0.9.7</njordVersion>
+    <njordVersion>0.9.8</njordVersion>
     <!-- Spotless versions -->
-    <spotlessMavenPluginVersion>3.6.0</spotlessMavenPluginVersion>
+    <spotlessMavenPluginVersion>3.7.0</spotlessMavenPluginVersion>
     <spotlessPalantirJavaFormatVersion>2.86.0</spotlessPalantirJavaFormatVersion>
   </properties>
 
@@ -368,7 +368,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
-          <version>3.10.0</version>
+          <version>3.11.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -396,7 +396,7 @@
         <plugin>
           <groupId>biz.aQute.bnd</groupId>
           <artifactId>bnd-maven-plugin</artifactId>
-          <version>7.2.3</version>
+          <version>7.3.0</version>
           <configuration>
             <bnd><![CDATA[
 Bundle-Copyright: Copyright (c) 2010-present Sonatype, Inc. and others
@@ -447,7 +447,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.8.14</version>
+          <version>0.8.15</version>
           <configuration>
             <excludes>
               <exclude>Incomplete*</exclude>
