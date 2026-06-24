@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.eclipse.sisu</groupId>
     <artifactId>sisu-inject</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2-SNAPSHOT</version>
   </parent>
 
   <artifactId>sisu-maven-plugin</artifactId>

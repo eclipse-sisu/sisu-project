@@ -18,7 +18,7 @@
 
   <groupId>org.eclipse.sisu</groupId>
   <artifactId>sisu-inject</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>${project.groupId}:${project.artifactId}</name>
@@ -81,7 +81,7 @@
   <scm>
     <connection>scm:git:git://github.com/eclipse-sisu/sisu-project.git</connection>
     <developerConnection>scm:git:git@github.com:eclipse-sisu/sisu-project.git</developerConnection>
-    <tag>releases/1.0.1</tag>
+    <tag>HEAD</tag>
     <url>https://github.com/eclipse-sisu/sisu-project/tree/main</url>
   </scm>
   <issueManagement>
@@ -116,7 +116,7 @@
     <maven.compiler.source>${maven.compiler.release}</maven.compiler.source>
     <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.build.outputTimestamp>2026-06-24T10:10:57Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2026-06-24T10:11:18Z</project.build.outputTimestamp>
 
     <!-- Source headers -->
     <sisu.licenseHeader>https://raw.githubusercontent.com/eclipse-sisu/sisu-project/main/license-header-epl2.txt</sisu.licenseHeader>
