@@ -1,18 +1,5 @@
 # Security Policy
 
-<!--
-    THIS IS A TEMPLATE THAT YOU MUST MODIFIY FOR USE BY YOUR PROJECT.
-    
-    Adapt this template as required:
-
-    * Remove content that does not make sense for your project
-    * Replace <organization> and <repository> with values for your project
-    * Remove the comments
-
-    For any questions about implementing security best practices, contact the 
-    Eclipse Foundation Security Team at security@eclipse-foundation.org
--->
-
 This Eclipse Foundation Project adheres to the [Eclipse Foundation Vulnerability Reporting Policy](https://www.eclipse.org/security/policy/).
 
 ## How To Report a Vulnerability
@@ -45,5 +32,5 @@ This information will help us triage your report more quickly.
 
 Supported versions are:
 
-* Version 1.0.x
+* Eclipse Sisu Version 1.0.x
 
