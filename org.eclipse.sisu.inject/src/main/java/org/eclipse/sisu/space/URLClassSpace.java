@@ -128,7 +128,7 @@ public class URLClassSpace implements ClassSpace {
 
     @Override
     public final DeferredClass<?> deferLoadClass(final String name) {
-        return new NamedClass<>(this, name);
+        return new NamedClass<>(loader, this, name);
     }
 
     @Override

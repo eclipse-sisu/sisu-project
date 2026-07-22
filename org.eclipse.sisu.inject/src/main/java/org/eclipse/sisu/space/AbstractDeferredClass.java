@@ -29,6 +29,12 @@ abstract class AbstractDeferredClass<T> implements DeferredClass<T>, DeferredPro
     @Inject
     private Injector injector;
 
+    private final ClassLoader tccl;
+
+    protected AbstractDeferredClass(ClassLoader tccl) {
+        this.tccl = tccl;
+    }
+
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
@@ -40,6 +46,11 @@ abstract class AbstractDeferredClass<T> implements DeferredClass<T>, DeferredPro
 
     @Override
     public final T get() {
+        ClassLoader original = null;
+        if (tccl != null) {
+            original = Thread.currentThread().getContextClassLoader();
+            Thread.currentThread().setContextClassLoader(tccl);
+        }
         try {
             // load class and bootstrap injection
             return injector.getInstance(load());
@@ -49,6 +60,9 @@ abstract class AbstractDeferredClass<T> implements DeferredClass<T>, DeferredPro
             try {
                 Logs.warn("Error injecting: {}", getName(), e);
             } finally {
+                if (original != null) {
+                    Thread.currentThread().setContextClassLoader(original);
+                }
                 Logs.throwUnchecked(e);
             }
         }

@@ -31,6 +31,11 @@ final class NamedClass<T> extends AbstractDeferredClass<T> {
     // ----------------------------------------------------------------------
 
     NamedClass(final ClassSpace space, final String name) {
+        this(null, space, name);
+    }
+
+    NamedClass(final ClassLoader tccl, final ClassSpace space, final String name) {
+        super(tccl);
         this.space = space;
         this.name = name;
     }

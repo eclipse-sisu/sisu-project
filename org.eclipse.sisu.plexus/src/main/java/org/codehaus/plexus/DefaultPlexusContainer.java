@@ -318,12 +318,14 @@ public final class DefaultPlexusContainer implements MutablePlexusContainer {
                 Guice.createInjector(new Module() {
                     @Override
                     public void configure(final Binder binder) {
+                        // toProvider: to prevent auto-injection if instance is annotated; we consider it
+                        // constructed/done
                         if (Hints.isDefaultHint(hint)) {
-                            binder.bind((Class) role).toInstance(component);
+                            binder.bind((Class) role).toProvider(() -> component);
                         } else {
                             binder.bind((Class) role)
                                     .annotatedWith(Names.named(hint))
-                                    .toInstance(component);
+                                    .toProvider(() -> component);
                         }
                     }
                 }),

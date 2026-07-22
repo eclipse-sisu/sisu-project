@@ -28,8 +28,13 @@ public final class LoadedClass<T> extends AbstractDeferredClass<T> {
     // Constructors
     // ----------------------------------------------------------------------
 
-    @SuppressWarnings("unchecked")
     public LoadedClass(final Class<? extends T> clazz) {
+        this(null, clazz);
+    }
+
+    @SuppressWarnings("unchecked")
+    public LoadedClass(final ClassLoader tccl, final Class<? extends T> clazz) {
+        super(tccl);
         this.clazz = (Class<T>) clazz;
     }
 
