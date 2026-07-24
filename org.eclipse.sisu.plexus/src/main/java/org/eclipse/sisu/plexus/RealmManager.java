@@ -13,14 +13,17 @@
 package org.eclipse.sisu.plexus;
 
 import com.google.inject.Injector;
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Predicate;
 import org.codehaus.plexus.classworlds.ClassWorldListener;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
+import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.inject.InjectorBindings;
 import org.eclipse.sisu.inject.MutableBeanLocator;
 
@@ -79,6 +82,20 @@ public final class RealmManager implements ClassWorldListener {
             if (tccl instanceof ClassRealm) {
                 return (ClassRealm) tccl;
             }
+        }
+        return null;
+    }
+
+    /**
+     * Returns {@link Predicate} for realm visibility filtering, or {@code null} if not applicable.
+     */
+    public <Q extends Annotation, T> Predicate<BeanEntry<Q, T>> visibilityPredicate() {
+        final Set<String> realmNames = visibleRealmNames(contextRealm());
+        if (null != realmNames && realmNames.size() > 0) {
+            return beanEntry -> {
+                final String source = String.valueOf(beanEntry.getSource());
+                return !source.startsWith("ClassRealm") || realmNames.contains(source);
+            };
         }
         return null;
     }

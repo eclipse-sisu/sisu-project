@@ -19,7 +19,10 @@ import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import javax.inject.Inject;
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.Mediator;
@@ -47,9 +50,15 @@ public final class DefaultBeanLocator implements MutableBeanLocator {
 
     private final ReentrantReadWriteLock publisherLock = new ReentrantReadWriteLock();
 
+    private final AtomicReference<Supplier<Predicate>> beanEntryPredicateSupplier = new AtomicReference<>();
+
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
+
+    public void enableFiltering(Supplier<Predicate> predicateSupplier) {
+        this.beanEntryPredicateSupplier.set(predicateSupplier);
+    }
 
     @Override
     public Iterable<BeanEntry> locate(final Key key) {
@@ -67,7 +76,12 @@ public final class DefaultBeanLocator implements MutableBeanLocator {
             }
         }
         final boolean isImplicit = key.getAnnotationType() == null && TypeArguments.isImplicit(type);
-        return new LocatedBeans(key, bindings, isImplicit ? implicitBindings : null);
+        LocatedBeans result = new LocatedBeans(key, bindings, isImplicit ? implicitBindings : null);
+        Supplier<Predicate> predicateSupplier = beanEntryPredicateSupplier.get();
+        if (null != predicateSupplier) {
+            return new FilteredBeans(predicateSupplier, result);
+        }
+        return result;
     }
 
     @Override

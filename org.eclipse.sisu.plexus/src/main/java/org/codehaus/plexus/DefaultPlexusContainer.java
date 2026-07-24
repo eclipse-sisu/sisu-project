@@ -171,6 +171,7 @@ public final class DefaultPlexusContainer implements MutablePlexusContainer {
 
         containerRealm = lookupContainerRealm(configuration);
         realmManager = new RealmManager(qualifiedBeanLocator);
+        ((DefaultBeanLocator) qualifiedBeanLocator).enableFiltering(realmManager::visibilityPredicate);
         containerRealm.getWorld().addListener(realmManager);
 
         componentVisibility = configuration.getComponentVisibility();
