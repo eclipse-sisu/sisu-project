@@ -15,7 +15,7 @@ package org.eclipse.sisu.plexus;
 import com.google.inject.name.Named;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.function.Predicate;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.eclipse.sisu.BeanEntry;
 
@@ -46,9 +46,9 @@ final class RealmFilteredBeans<T> implements Iterable<BeanEntry<Named, T>> {
 
     @Override
     public Iterator<BeanEntry<Named, T>> iterator() {
-        final Set<String> realmNames = realmManager.visibleRealmNames(RealmManager.contextRealm());
-        if (null != realmNames && realmNames.size() > 0) {
-            return new FilteredItr(realmNames);
+        Predicate<BeanEntry<Named, T>> predicate = null != realmManager ? realmManager.visibilityPredicate() : null;
+        if (null != predicate) {
+            return new FilteredItr(predicate);
         }
         return beans.iterator();
     }
@@ -67,7 +67,7 @@ final class RealmFilteredBeans<T> implements Iterable<BeanEntry<Named, T>> {
 
         private final Iterator<BeanEntry<Named, T>> itr = beans.iterator();
 
-        private final Set<String> realmNames;
+        private final Predicate<BeanEntry<Named, T>> predicate;
 
         private BeanEntry<Named, T> nextBean;
 
@@ -75,8 +75,8 @@ final class RealmFilteredBeans<T> implements Iterable<BeanEntry<Named, T>> {
         // Constructors
         // ----------------------------------------------------------------------
 
-        public FilteredItr(final Set<String> realmNames) {
-            this.realmNames = realmNames;
+        public FilteredItr(final Predicate<BeanEntry<Named, T>> predicate) {
+            this.predicate = predicate;
         }
 
         // ----------------------------------------------------------------------
@@ -90,8 +90,7 @@ final class RealmFilteredBeans<T> implements Iterable<BeanEntry<Named, T>> {
             }
             while (itr.hasNext()) {
                 nextBean = itr.next();
-                final String source = String.valueOf(nextBean.getSource());
-                if (!source.startsWith("ClassRealm") || realmNames.contains(source)) {
+                if (predicate.test(nextBean)) {
                     return true;
                 }
             }

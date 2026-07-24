@@ -45,6 +45,8 @@ public final class DefaultContainerConfiguration implements ContainerConfigurati
 
     private boolean strictClassPathScanning;
 
+    private boolean jsr330ComponentVisibilityFollowsPlexusVisibility = true;
+
     // ----------------------------------------------------------------------
     // Public methods
     // ----------------------------------------------------------------------
@@ -176,5 +178,16 @@ public final class DefaultContainerConfiguration implements ContainerConfigurati
     @Override
     public boolean getStrictClassPathScanning() {
         return strictClassPathScanning;
+    }
+
+    @Override
+    public ContainerConfiguration setJSR330ComponentVisibilityFollowsPlexusVisibility(boolean on) {
+        this.jsr330ComponentVisibilityFollowsPlexusVisibility = on;
+        return this;
+    }
+
+    @Override
+    public boolean getJSR330ComponentVisibilityFollowsPlexusVisibility() {
+        return jsr330ComponentVisibilityFollowsPlexusVisibility;
     }
 }
