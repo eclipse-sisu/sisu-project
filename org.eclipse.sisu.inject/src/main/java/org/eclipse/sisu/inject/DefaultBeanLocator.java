@@ -56,7 +56,10 @@ public final class DefaultBeanLocator implements MutableBeanLocator {
     // Public methods
     // ----------------------------------------------------------------------
 
-    public void enableFiltering(Supplier<Predicate> predicateSupplier) {
+    /**
+     * Sets the predicate supplier for bean entry filtering, may be {@code null}, when no filtering is applied.
+     */
+    public void setBeanEntryPredicateSupplier(Supplier<Predicate> predicateSupplier) {
         this.beanEntryPredicateSupplier.set(predicateSupplier);
     }
 

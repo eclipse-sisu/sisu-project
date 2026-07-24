@@ -174,7 +174,7 @@ public final class DefaultPlexusContainer implements MutablePlexusContainer {
         if (configuration.getJSR330ComponentVisibilityFollowsPlexusVisibility()
                 && PlexusConstants.REALM_VISIBILITY.equalsIgnoreCase(configuration.getComponentVisibility())) {
             // "realm" filtering is enabled for plexus, apply same filter onto JSR330 components too
-            ((DefaultBeanLocator) qualifiedBeanLocator).enableFiltering(realmManager::visibilityPredicate);
+            ((DefaultBeanLocator) qualifiedBeanLocator).setBeanEntryPredicateSupplier(realmManager::visibilityPredicate);
         }
         containerRealm.getWorld().addListener(realmManager);
 

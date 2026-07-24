@@ -20,7 +20,7 @@ import java.util.function.Supplier;
 import org.eclipse.sisu.BeanEntry;
 
 /**
- * Sequence of {@link BeanEntry}s filtered according to provided {@link java.util.function.Predicate}.
+ * Sequence of {@link BeanEntry}s filtered according to supplied {@link java.util.function.Predicate}.
  */
 final class FilteredBeans<Q extends Annotation, T> implements Iterable<BeanEntry<Q, T>> {
     // ----------------------------------------------------------------------
@@ -58,7 +58,7 @@ final class FilteredBeans<Q extends Annotation, T> implements Iterable<BeanEntry
     // ----------------------------------------------------------------------
 
     /**
-     * {@link BeanEntry} iterator that only returns entries visible from the given set of named realms.
+     * {@link BeanEntry} iterator that only returns entries allowed by predicate.
      */
     final class FilteredItr implements Iterator<BeanEntry<Q, T>> {
         // ----------------------------------------------------------------------
