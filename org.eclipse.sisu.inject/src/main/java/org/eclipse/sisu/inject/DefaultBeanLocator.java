@@ -50,7 +50,7 @@ public final class DefaultBeanLocator implements MutableBeanLocator {
 
     private final ReentrantReadWriteLock publisherLock = new ReentrantReadWriteLock();
 
-    private final AtomicReference<Supplier<Predicate>> beanEntryPredicateSupplier = new AtomicReference<>();
+    private final AtomicReference<Supplier<Predicate>> beanEntryPredicateSupplier = new AtomicReference<>(null);
 
     // ----------------------------------------------------------------------
     // Public methods
