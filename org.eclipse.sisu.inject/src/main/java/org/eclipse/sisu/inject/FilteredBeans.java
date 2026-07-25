@@ -46,7 +46,7 @@ final class FilteredBeans<Q extends Annotation, T> implements Iterable<BeanEntry
 
     @Override
     public Iterator<BeanEntry<Q, T>> iterator() {
-        final Predicate<BeanEntry<Q, T>> predicate = predicateSupplier.get();
+        final Predicate<BeanEntry<Q, T>> predicate = predicateSupplier != null ? predicateSupplier.get() : null;
         if (null != predicate) {
             return new FilteredItr(predicate);
         }
