@@ -35,7 +35,7 @@ class FilteredBeansTest {
     Injector injector;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         injector = Guice.createInjector(new AbstractModule() {
             @Override
             protected void configure() {

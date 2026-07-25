@@ -91,7 +91,7 @@ public final class RealmManager implements ClassWorldListener {
      */
     public <Q extends Annotation, T> Predicate<BeanEntry<Q, T>> visibilityPredicate() {
         final Set<String> realmNames = visibleRealmNames(contextRealm());
-        if (null != realmNames && realmNames.size() > 0) {
+        if (null != realmNames && !realmNames.isEmpty()) {
             return beanEntry -> {
                 final String source = String.valueOf(beanEntry.getSource());
                 return !source.startsWith("ClassRealm") || realmNames.contains(source);
