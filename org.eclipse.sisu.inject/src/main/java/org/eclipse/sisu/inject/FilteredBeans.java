@@ -21,8 +21,9 @@ import org.eclipse.sisu.BeanEntry;
 
 /**
  * Sequence of {@link BeanEntry}s filtered according to supplied {@link java.util.function.Predicate}.
+ * This class is public, as it is reused in Plexus Shim for realm filtering.
  */
-final class FilteredBeans<Q extends Annotation, T> implements Iterable<BeanEntry<Q, T>> {
+public final class FilteredBeans<Q extends Annotation, T> implements Iterable<BeanEntry<Q, T>> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -35,7 +36,8 @@ final class FilteredBeans<Q extends Annotation, T> implements Iterable<BeanEntry
     // Constructors
     // ----------------------------------------------------------------------
 
-    FilteredBeans(final Supplier<Predicate<BeanEntry<Q, T>>> predicateSupplier, final Iterable<BeanEntry<Q, T>> beans) {
+    public FilteredBeans(
+            final Supplier<Predicate<BeanEntry<Q, T>>> predicateSupplier, final Iterable<BeanEntry<Q, T>> beans) {
         this.predicateSupplier = predicateSupplier;
         this.beans = beans;
     }
