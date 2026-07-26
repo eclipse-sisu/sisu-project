@@ -590,7 +590,7 @@ and finally inject all your disposables into a component that has access to life
 ```
 @Named
 @Singleton
-public class MyLifecycleParticipant extends AbstractLifecycleParticipant {
+public class MyLifecycleParticipant extends AbstractMavenLifecycleParticipant {
 {
     private final List<MyDisposable> disposables;
 
