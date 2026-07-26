@@ -132,9 +132,9 @@
     <guiceVersion>4.2.3</guiceVersion>
     <!-- define empty, as jacoco is only conditionally executed (https://www.eclemma.org/jacoco/trunk/doc/prepare-agent-mojo.html) -->
     <argLine />
-    <njordVersion>0.9.8</njordVersion>
+    <njordVersion>0.9.9</njordVersion>
     <!-- Spotless versions -->
-    <spotlessMavenPluginVersion>3.7.0</spotlessMavenPluginVersion>
+    <spotlessMavenPluginVersion>3.8.0</spotlessMavenPluginVersion>
     <spotlessPalantirJavaFormatVersion>2.86.0</spotlessPalantirJavaFormatVersion>
   </properties>
 
@@ -417,7 +417,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>3.5.0</version>
+          <version>3.5.1</version>
           <executions>
             <execution>
               <id>default-jar</id>
@@ -567,7 +567,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.eclipse.sisu</groupId>
           <artifactId>sisu-maven-plugin</artifactId>
-          <version>1.0.0</version>
+          <version>1.0.1</version>
           <executions>
             <execution>
               <id>index-project</id>
@@ -614,7 +614,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>com.mycila</groupId>
           <artifactId>license-maven-plugin</artifactId>
-          <version>5.0.0</version>
+          <version>5.1.1</version>
           <configuration>
             <aggregate>true</aggregate>
             <strictCheck>true</strictCheck>
