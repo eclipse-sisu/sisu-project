@@ -8,18 +8,18 @@ This document provides some details on how to convert legacy Plexus components i
 
 For brevity of examples imports are omitted. The following table defines the meanings and fully-qualified-class-names of the annotations references in the following examples.
 
-| Annotation | Class | Description |
-| --- | --- | --- |
-| `@Component` | `org.codehaus.plexus.component.annotations.Component` | Legacy Plexus component annotation |
-| `@Requirement` | `org.codehaus.plexus.component.annotations.Requirement` | Legacy Plexus injection annotation |
-| `@Configuration` | `org.codehaus.plexus.component.annotations.Configuration` | Legacy Plexus configuration annotation |
-| `@Named` | `javax.inject.Named` | Standard JSR-330 annotation to provide component name |
-| `@Singleton` | `javax.inject.Singleton` | Standard JSR-330 annotation to mark component as singleton |
-| `@Typed` | `javax.enterprise.inject.Typed` | JavaEE annotation to mark component type |
-| `@Description` | `org.eclipse.sisu.Description` | Sisu-specific annotation to provide a description for a component |
-| `@Parameters` | `org.eclipse.sisu.Parameters` | Sisu-specific annotation to mark `Map` injection as container context parameters. |
-| `@Inject` | `javax.inject.Inject` | Standard JSR-330 annotation to mark field, parameter, method for injection |
-| `@Nullable` | `javax.annotation.Nullable` | Standard JSR-305 annotation to mark field, parameter, result value as potentially returning null value |
+| Annotation | Class                                                                | Description                                                                           |
+| --- |----------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| `@Component` | `org.codehaus.plexus.component.annotations.Component`                | Legacy Plexus component annotation                                                    |
+| `@Requirement` | `org.codehaus.plexus.component.annotations.Requirement`              | Legacy Plexus injection annotation                                                    |
+| `@Configuration` | `org.codehaus.plexus.component.annotations.Configuration`            | Legacy Plexus configuration annotation                                                |
+| `@Named` | `javax.inject.Named`                                                 | Standard JSR-330 annotation to provide component name                                 |
+| `@Singleton` | `javax.inject.Singleton`                                             | Standard JSR-330 annotation to mark component as singleton                            |
+| `@Typed` | `org.eclipse.sisu.Typed` or `javax.enterprise.inject.Typed` (JavaEE) | Annotation to mark component type                                                     |
+| `@Description` | `org.eclipse.sisu.Description`                                       | Sisu-specific annotation to provide a description for a component                     |
+| `@Parameters` | `org.eclipse.sisu.Parameters`                                        | Sisu-specific annotation to mark `Map` injection as container context parameters.     |
+| `@Inject` | `javax.inject.Inject`                                                | Standard JSR-330 annotation to mark field, parameter, method for injection            |
+| `@Nullable` | `org.eclipse.sisu.Nullable` or `javax.annotation.Nullable` (JSR-305) | Annotation to mark field, parameter, result value as potentially returning null value |
 
 **`javax.inject` vs. `com.google.inject`**
 
@@ -320,10 +320,10 @@ becomes:
 public class MyComponent
 implements Component
 {
-    private final List components;
+    private final List<AnotherComponent> components;
 
     @Inject
-    public MyComponent(final List components) {
+    public MyComponent(final List<AnotherComponent> components) {
         this.components = components;
     }
 }
@@ -409,7 +409,7 @@ This section is specific to how to adapt legacy Plexus component lifecycle inter
 
 ### Initializable
 
-By and far this can be replaced by using constructor-inject, and performing the initialize() at the end of the constructor.
+By and far this can be replaced by using constructor-inject, and performing the `initialize()` at the end of the constructor.
 
 ```
 @Component(role=Component.class, hint="my")
@@ -465,6 +465,7 @@ public class MyComponent
 Support for [Sisu/JSR250 lifecycle annotations](../org.eclipse.sisu.inject/lifecycle.html) is available when enabled for the Plexus wrapper ([Maven 3.5+](https://issues.apache.org/jira/browse/MNG-6084) enables JSR250 support). 
 
 If JSR250 support is not enabled then applications can use other techniques to handle start/stop behavior. The examples below show the solution used in Sonatype Nexus, which relies on a modified implementation of the Google-Guava EventBus to manage lifecycle events.
+Sisu provides own annotations as well, in form of `org.eclipse.sisu.PostConstruct` and `org.eclipse.sisu.PreDestroy` with equal semantics. 
 
 ```
 @Component(role=Component.class, hint="my")
