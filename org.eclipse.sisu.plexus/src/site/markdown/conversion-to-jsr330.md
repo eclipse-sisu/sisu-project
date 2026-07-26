@@ -599,6 +599,7 @@ public class MyLifecycleParticipant extends AbstractMavenLifecycleParticipant {
         this.disposables = disposables;
     }
 
+    @Override
     public void afterSessionEnd(MavenSession session) {
         for (MyDisposable disposable : disposables) {
             disposable.dispose();
