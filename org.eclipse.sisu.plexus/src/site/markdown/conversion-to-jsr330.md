@@ -585,7 +585,7 @@ public class MyComponent
 }
 ```
 
-and finally inject all your disposables into a component that has access to lifecycle (good example is `AbstractLifecycleParticipant` in Maven 3+)
+and finally inject all your disposables into a component that has access to lifecycle (good example is `AbstractMavenLifecycleParticipant` in Maven 3+)
 
 ```
 @Named
