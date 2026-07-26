@@ -8,18 +8,18 @@ This document provides some details on how to convert legacy Plexus components i
 
 For brevity of examples imports are omitted. The following table defines the meanings and fully-qualified-class-names of the annotations references in the following examples.
 
-| Annotation | Class                                                                | Description                                                                           |
-| --- |----------------------------------------------------------------------|---------------------------------------------------------------------------------------|
-| `@Component` | `org.codehaus.plexus.component.annotations.Component`                | Legacy Plexus component annotation                                                    |
-| `@Requirement` | `org.codehaus.plexus.component.annotations.Requirement`              | Legacy Plexus injection annotation                                                    |
+| Annotation       | Class                                                                | Description                                                                           |
+|------------------|----------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| `@Component`     | `org.codehaus.plexus.component.annotations.Component`                | Legacy Plexus component annotation                                                    |
+| `@Requirement`   | `org.codehaus.plexus.component.annotations.Requirement`              | Legacy Plexus injection annotation                                                    |
 | `@Configuration` | `org.codehaus.plexus.component.annotations.Configuration`            | Legacy Plexus configuration annotation                                                |
-| `@Named` | `javax.inject.Named`                                                 | Standard JSR-330 annotation to provide component name                                 |
-| `@Singleton` | `javax.inject.Singleton`                                             | Standard JSR-330 annotation to mark component as singleton                            |
-| `@Typed` | `org.eclipse.sisu.Typed` or `javax.enterprise.inject.Typed` (JavaEE) | Annotation to mark component type                                                     |
-| `@Description` | `org.eclipse.sisu.Description`                                       | Sisu-specific annotation to provide a description for a component                     |
-| `@Parameters` | `org.eclipse.sisu.Parameters`                                        | Sisu-specific annotation to mark `Map` injection as container context parameters.     |
-| `@Inject` | `javax.inject.Inject`                                                | Standard JSR-330 annotation to mark field, parameter, method for injection            |
-| `@Nullable` | `org.eclipse.sisu.Nullable` or `javax.annotation.Nullable` (JSR-305) | Annotation to mark field, parameter, result value as potentially returning null value |
+| `@Named`         | `javax.inject.Named`                                                 | Standard JSR-330 annotation to provide component name                                 |
+| `@Singleton`     | `javax.inject.Singleton`                                             | Standard JSR-330 annotation to mark component as singleton                            |
+| `@Typed`         | `org.eclipse.sisu.Typed` or `javax.enterprise.inject.Typed` (JavaEE) | Annotation to mark component type                                                     |
+| `@Description`   | `org.eclipse.sisu.Description`                                       | Sisu-specific annotation to provide a description for a component                     |
+| `@Parameters`    | `org.eclipse.sisu.Parameters`                                        | Sisu-specific annotation to mark `Map` injection as container context parameters.     |
+| `@Inject`        | `javax.inject.Inject`                                                | Standard JSR-330 annotation to mark field, parameter, method for injection            |
+| `@Nullable`      | `org.eclipse.sisu.Nullable` or `javax.annotation.Nullable` (JSR-305) | Annotation to mark field, parameter, result value as potentially returning null value |
 
 **`javax.inject` vs. `com.google.inject`**
 
@@ -400,12 +400,12 @@ The Plexus-JSR330 adapter populates the configuration parameters from [`org.code
 
 This section is specific to how to adapt legacy Plexus component lifecycle interfaces. There is no hard-fast way to adapt these, but there are some guidelines to follow.
 
-| Interface | Class | Description |
-| --- | --- | --- |
-| Initializable | org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable | Hook was used to inform a component once its injection has been performed. |
-| Contextualizable | org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable | Similar to Initializable but passes in the container context. |
-| Startable | org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable | Allows components to be started and stopped. |
-| Disposable | org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable | Hook used to inform a component that it is no longer available in the container. |
+| Interface        | Class                                                                   | Description                                                                      |
+|------------------|-------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| Initializable    | org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable    | Hook was used to inform a component once its injection has been performed.       |
+| Contextualizable | org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable | Similar to Initializable but passes in the container context.                    |
+| Startable        | org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable        | Allows components to be started and stopped.                                     |
+| Disposable       | org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable       | Hook used to inform a component that it is no longer available in the container. |
 
 ### Initializable
 
