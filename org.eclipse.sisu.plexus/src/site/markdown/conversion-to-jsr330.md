@@ -558,6 +558,56 @@ public class MyComponent
 }
 ```
 
+Alternately, users can define their own lifecycle interface, and use that by injecting those into some component that has access to lifecycle
+
+```
+public interface MyDisposable {
+
+    void dispose();
+
+}
+```
+
+then make your components implement it
+
+```
+@Named("my")
+@Singleton
+public class MyComponent
+    implements Component, MyDispoosable
+{
+    ...
+
+    @Override
+    public dispose() {
+        // do something to "dispose"
+    }
+}
+```
+
+and finally inject all your disposables into a component that has access to lifecycle (good example is `AbstractLifecycleParticipant` in Maven 3+)
+
+```
+@Named
+@Singleton
+public class MyLifecycleParticipant extends AbstractLifecycleParticipant {
+{
+    private final List<MyDisposable> disposables;
+
+    @Inject
+    public MyLifecycleParticipant(final List<MyDisposable> disposables) {
+        this.disposables = disposables;
+    }
+
+    public void afterSessionEnd(MavenSession session) {
+        for (MyDisposable disposable : disposables) {
+            disposable.dispose();
+        }
+    }
+}
+```
+
+
 ## Custom Bindings
 
 Plugins which require additional custom bindings can provide a @Named Guice module to configure components bindings further.
