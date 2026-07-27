@@ -10,33 +10,35 @@
  * Contributors:
  *   Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  */
-package org.eclipse.sisu.plexus;
+package org.eclipse.sisu.inject;
 
-import com.google.inject.name.Named;
+import java.lang.annotation.Annotation;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Set;
-import org.codehaus.plexus.classworlds.realm.ClassRealm;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import org.eclipse.sisu.BeanEntry;
 
 /**
- * Sequence of {@link BeanEntry}s filtered according to whether they are visible from the current {@link ClassRealm}.
+ * Sequence of {@link BeanEntry}s filtered according to supplied {@link java.util.function.Predicate}.
+ * This class is public, as it is reused in Plexus Shim for realm filtering.
  */
-final class RealmFilteredBeans<T> implements Iterable<BeanEntry<Named, T>> {
+public final class FilteredBeans<Q extends Annotation, T> implements Iterable<BeanEntry<Q, T>> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
 
-    private final RealmManager realmManager;
+    private final Supplier<Predicate<BeanEntry<Q, T>>> predicateSupplier;
 
-    final Iterable<BeanEntry<Named, T>> beans;
+    final Iterable<BeanEntry<Q, T>> beans;
 
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
-    RealmFilteredBeans(final RealmManager realmManager, final Iterable<BeanEntry<Named, T>> beans) {
-        this.realmManager = realmManager;
+    public FilteredBeans(
+            final Supplier<Predicate<BeanEntry<Q, T>>> predicateSupplier, final Iterable<BeanEntry<Q, T>> beans) {
+        this.predicateSupplier = predicateSupplier;
         this.beans = beans;
     }
 
@@ -45,10 +47,10 @@ final class RealmFilteredBeans<T> implements Iterable<BeanEntry<Named, T>> {
     // ----------------------------------------------------------------------
 
     @Override
-    public Iterator<BeanEntry<Named, T>> iterator() {
-        final Set<String> realmNames = realmManager.visibleRealmNames(RealmManager.contextRealm());
-        if (null != realmNames && realmNames.size() > 0) {
-            return new FilteredItr(realmNames);
+    public Iterator<BeanEntry<Q, T>> iterator() {
+        final Predicate<BeanEntry<Q, T>> predicate = predicateSupplier != null ? predicateSupplier.get() : null;
+        if (null != predicate) {
+            return new FilteredItr(predicate);
         }
         return beans.iterator();
     }
@@ -58,25 +60,25 @@ final class RealmFilteredBeans<T> implements Iterable<BeanEntry<Named, T>> {
     // ----------------------------------------------------------------------
 
     /**
-     * {@link BeanEntry} iterator that only returns entries visible from the given set of named realms.
+     * {@link BeanEntry} iterator that only returns entries allowed by predicate.
      */
-    final class FilteredItr implements Iterator<BeanEntry<Named, T>> {
+    final class FilteredItr implements Iterator<BeanEntry<Q, T>> {
         // ----------------------------------------------------------------------
         // Implementation fields
         // ----------------------------------------------------------------------
 
-        private final Iterator<BeanEntry<Named, T>> itr = beans.iterator();
+        private final Iterator<BeanEntry<Q, T>> itr = beans.iterator();
 
-        private final Set<String> realmNames;
+        private final Predicate<BeanEntry<Q, T>> predicate;
 
-        private BeanEntry<Named, T> nextBean;
+        private BeanEntry<Q, T> nextBean;
 
         // ----------------------------------------------------------------------
         // Constructors
         // ----------------------------------------------------------------------
 
-        public FilteredItr(final Set<String> realmNames) {
-            this.realmNames = realmNames;
+        public FilteredItr(final Predicate<BeanEntry<Q, T>> predicate) {
+            this.predicate = predicate;
         }
 
         // ----------------------------------------------------------------------
@@ -90,8 +92,7 @@ final class RealmFilteredBeans<T> implements Iterable<BeanEntry<Named, T>> {
             }
             while (itr.hasNext()) {
                 nextBean = itr.next();
-                final String source = String.valueOf(nextBean.getSource());
-                if (!source.startsWith("ClassRealm") || realmNames.contains(source)) {
+                if (predicate.test(nextBean)) {
                     return true;
                 }
             }
@@ -100,10 +101,10 @@ final class RealmFilteredBeans<T> implements Iterable<BeanEntry<Named, T>> {
         }
 
         @Override
-        public BeanEntry<Named, T> next() {
+        public BeanEntry<Q, T> next() {
             if (hasNext()) {
                 // populated by hasNext()
-                final BeanEntry<Named, T> bean = nextBean;
+                final BeanEntry<Q, T> bean = nextBean;
                 nextBean = null;
                 return bean;
             }

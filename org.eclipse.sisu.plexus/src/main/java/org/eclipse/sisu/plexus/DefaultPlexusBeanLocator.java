@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import org.codehaus.plexus.PlexusConstants;
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.inject.BeanLocator;
+import org.eclipse.sisu.inject.FilteredBeans;
 
 /**
  * {@link PlexusBeanLocator} that locates beans of various types from zero or more {@link Injector}s.
@@ -64,7 +65,7 @@ public final class DefaultPlexusBeanLocator implements PlexusBeanLocator {
         final Key<T> key = hints.length == 1 ? Key.get(role, Names.named(hints[0])) : Key.get(role, Named.class);
         Iterable<BeanEntry<Named, T>> beans = (Iterable<BeanEntry<Named, T>>) beanLocator.<Named, T>locate(key);
         if (PlexusConstants.REALM_VISIBILITY.equalsIgnoreCase(visibility)) {
-            beans = new RealmFilteredBeans<>(realmManager, beans);
+            beans = new FilteredBeans<>(realmManager::visibilityPredicate, beans);
         }
         return hints.length <= 1 ? new DefaultPlexusBeans<>(beans) : new HintedPlexusBeans<>(beans, role, hints);
     }

@@ -64,4 +64,8 @@ public interface ContainerConfiguration {
     ContainerConfiguration setStrictClassPathScanning(boolean strictScanning);
 
     boolean getStrictClassPathScanning();
+
+    ContainerConfiguration setJSR330ComponentVisibilityFollowsPlexusVisibility(boolean on);
+
+    boolean getJSR330ComponentVisibilityFollowsPlexusVisibility();
 }
