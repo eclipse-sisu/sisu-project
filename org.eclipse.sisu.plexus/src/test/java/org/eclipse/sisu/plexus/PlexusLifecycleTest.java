@@ -13,8 +13,6 @@ package org.eclipse.sisu.plexus;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.google.inject.AbstractModule;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
@@ -64,12 +62,12 @@ class PlexusLifecycleTest {
     static class Jsr250Bean {
         private final StringBuilder results = new StringBuilder();
 
-        @PostConstruct
+        @javax.annotation.PostConstruct
         public void start() {
             results.append("{");
         }
 
-        @PreDestroy
+        @javax.annotation.PreDestroy
         public void stop() {
             results.append("}");
         }
