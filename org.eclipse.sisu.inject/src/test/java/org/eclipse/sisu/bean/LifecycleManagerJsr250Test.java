@@ -16,14 +16,14 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.eclipse.sisu.PostConstruct;
-import org.eclipse.sisu.PreDestroy;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import org.junit.jupiter.api.Test;
 
 /**
- * LifecycleManager test using Sisu own annotations.
+ * LifecycleManager test using JSR250 annotations.
  */
-class LifecycleManagerTest {
+class LifecycleManagerJsr250Test {
     static class ManagedBean {
         boolean started;
 

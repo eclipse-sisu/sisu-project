@@ -23,6 +23,25 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.junit.jupiter.api.Test;
 
 class PlexusLifecycleTest {
+    static class Jsr330Bean {
+        private final StringBuilder results = new StringBuilder();
+
+        @org.eclipse.sisu.PostConstruct
+        public void start() {
+            results.append("<");
+        }
+
+        @org.eclipse.sisu.PreDestroy
+        public void stop() {
+            results.append(">");
+        }
+
+        @Override
+        public String toString() {
+            return results.toString();
+        }
+    }
+
     static class PlexusBean implements Startable {
         private final StringBuilder results = new StringBuilder();
 
@@ -59,6 +78,23 @@ class PlexusLifecycleTest {
         public String toString() {
             return results.toString();
         }
+    }
+
+    @Test
+    void testJsr330Lifecycle() throws Exception {
+        // no lifecycle enabled; does not work
+        PlexusContainer container = createContainer(false);
+        Jsr330Bean bean = container.lookup(Jsr330Bean.class);
+        assertEquals("", bean.toString());
+        container.dispose();
+        assertEquals("", bean.toString());
+
+        // with jsr250 enabled; works
+        container = createContainer(true);
+        bean = container.lookup(Jsr330Bean.class);
+        assertEquals("<", bean.toString());
+        container.dispose();
+        assertEquals("<>", bean.toString());
     }
 
     @Test
@@ -100,6 +136,7 @@ class PlexusLifecycleTest {
         return new DefaultPlexusContainer(config.setJSR250Lifecycle(jsr250), new AbstractModule() {
             @Override
             protected void configure() {
+                bind(Jsr330Bean.class);
                 bind(PlexusBean.class);
                 bind(Jsr250Bean.class);
             }
