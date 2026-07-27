@@ -574,7 +574,7 @@ then make your components implement it
 @Named("my")
 @Singleton
 public class MyComponent
-    implements Component, MyDispoosable
+    implements Component, MyDisposable
 {
     ...
 
