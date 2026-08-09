@@ -79,7 +79,8 @@ public final class EntryMapAdapter<K, V> extends AbstractMap<K, V> {
 
         @Override
         public Iterator<Entry<K, V>> iterator() {
-            return iterable.iterator();
+            // ensure unique keys by wrapping the iterator in a {@link UniqueKeyEntryIterator}
+            return new UniqueKeyEntryIterator<>(iterable.iterator());
         }
 
         @Override
