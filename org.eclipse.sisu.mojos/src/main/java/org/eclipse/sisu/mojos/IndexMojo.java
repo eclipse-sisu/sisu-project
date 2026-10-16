@@ -23,9 +23,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
@@ -147,7 +147,7 @@ public class IndexMojo extends AbstractMojo {
     /**
      * For m2e incremental build support
      */
-    @Component
+    @Inject
     protected BuildContext buildContext;
 
     public IndexMojo() {

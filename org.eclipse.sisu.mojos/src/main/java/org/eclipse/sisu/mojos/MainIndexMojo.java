@@ -13,8 +13,8 @@
 package org.eclipse.sisu.mojos;
 
 import java.io.File;
+import javax.inject.Inject;
 import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -44,7 +44,7 @@ public class MainIndexMojo extends AbstractMojo {
     /**
      * For m2e incremental build support
      */
-    @Component
+    @Inject
     protected BuildContext buildContext;
 
     // ----------------------------------------------------------------------

@@ -171,7 +171,7 @@ class PlexusStrictClasspathScanningTest {
                     "Problem scanning " + dirClasspath.getClassFileUrl(Jsr330Component2.class.getName()),
                     e.getCause().getMessage());
             assertEquals(
-                    "Unsupported class file major version 255",
+                    "Unsupported class file version 255.0",
                     e.getCause().getCause().getMessage());
 
             // test with container realm containing invalid class file
@@ -186,7 +186,7 @@ class PlexusStrictClasspathScanningTest {
                         "Problem scanning " + dirClasspath.getClassFileUrl(Jsr330Component2.class.getName()),
                         e.getCause().getMessage());
                 assertEquals(
-                        "Unsupported class file major version 255",
+                        "Unsupported class file version 255.0",
                         e.getCause().getCause().getMessage());
                 // unexpected wrapped exception: https://github.com/eclipse-sisu/sisu-project/issues/184
                 assertThrows(ComponentLookupException.class, () -> plexus.lookup(Jsr330Component1.class.getName()));
