@@ -14,28 +14,11 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         java: [ '17', '21', '26' ]
-        include:
-          # lengthy build steps should only be performed on linux with Java 21 (Sonarcloud analysis, deployment)
-          - os: ubuntu-latest
-            java: '21'
-            isMainBuildEnv: true
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
 
     steps:
-      # sets environment variables to be used in subsequent steps: https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-environment-variable
-      - name: Set environment variables
-        shell: bash
-        run: |
-          if [ "${{ matrix.isMainBuildEnv }}" = "true" ]; then
-            echo "MVN_ADDITIONAL_OPTS=org.sonarsource.scanner.maven:sonar-maven-plugin:5.5.0.6356:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }} -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }} -Dsonar.scanner.skipJreProvisioning -Pcode-coverage" >> $GITHUB_ENV
-            echo "GIT_FETCH_DEPTH=0" >> $GITHUB_ENV # Shallow clones should be disabled for a better relevancy of analysis
-          else
-            echo "MVN_ADDITIONAL_OPTS=" >> $GITHUB_ENV
-            echo "GIT_FETCH_DEPTH=1" >> $GITHUB_ENV
-          fi
-
       - uses: actions/checkout@v7
         with:
           fetch-depth: ${{ env.GIT_FETCH_DEPTH }}
