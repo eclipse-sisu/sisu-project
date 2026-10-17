@@ -111,10 +111,10 @@
   </distributionManagement>
 
   <properties>
-    <!-- TEMPORARY (classfile migration, phase 1): raised from 8 to 25 so the
-         java.lang.classfile implementation can live in the main source set.
-         Restore 8 in phase 4 (see docs/classfile-migration.md). -->
-    <maven.compiler.release>25</maven.compiler.release>
+    <!-- Java 8 baseline for all main source sets; the Sisu-Inject module
+         additionally compiles a Multi-Release JAR layer (src/main/java25)
+         at release 25 with the java.lang.classfile based backends -->
+    <maven.compiler.release>8</maven.compiler.release>
     <!-- Set to same version as release target for consistency -->
     <maven.compiler.source>${maven.compiler.release}</maven.compiler.source>
     <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
@@ -128,7 +128,7 @@
     <!-- Versions -->
     <mavenRuntimeVersion>3.3.1</mavenRuntimeVersion>
     <mavenBuildVersion>3.9.16</mavenBuildVersion>
-    <!-- TEMPORARY (classfile migration, phase 1): matches maven.compiler.release; restore 17 in phase 4 -->
+    <!-- JDK 25 is required to build the Multi-Release JAR layer of Sisu-Inject -->
     <javaBuildVersion>25</javaBuildVersion>
     <mavenPluginToolsVersion>3.16.0</mavenPluginToolsVersion>
     <asmVersion>9.11</asmVersion>
