@@ -24,8 +24,25 @@ public interface AnnotationVisitor {
     /**
      * Visits an element of the declared annotation.
      *
+     * <p>
+     * The value is delivered in a normalized form, independent of the class
+     * file implementation that performs the scanning:
+     * <ul>
+     * <li>primitive elements ({@code byte}, {@code char}, {@code short},
+     *     {@code int}, {@code long}, {@code float}, {@code double},
+     *     {@code boolean}) are delivered as their boxed forms</li>
+     * <li>{@code String} elements are delivered as {@link String}s</li>
+     * <li>enum constant elements are delivered as the {@link String} binary
+     *     name of the enum class (the constant name is not delivered)</li>
+     * <li>class literal elements are delivered as the {@link String} binary
+     *     name of the referenced class</li>
+     * <li>arrays of the above are delivered as {@code Object[]} with
+     *     element-wise normalized values</li>
+     * <li>nested annotation elements are not delivered</li>
+     * </ul>
+     *
      * @param name The element name
-     * @param value The element value
+     * @param value The normalized element value
      */
     void visitElement(String name, Object value);
 

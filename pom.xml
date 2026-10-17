@@ -111,7 +111,10 @@
   </distributionManagement>
 
   <properties>
-    <maven.compiler.release>8</maven.compiler.release>
+    <!-- TEMPORARY (classfile migration, phase 1): raised from 8 to 25 so the
+         java.lang.classfile implementation can live in the main source set.
+         Restore 8 in phase 4 (see docs/classfile-migration.md). -->
+    <maven.compiler.release>25</maven.compiler.release>
     <!-- Set to same version as release target for consistency -->
     <maven.compiler.source>${maven.compiler.release}</maven.compiler.source>
     <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
@@ -125,7 +128,8 @@
     <!-- Versions -->
     <mavenRuntimeVersion>3.3.1</mavenRuntimeVersion>
     <mavenBuildVersion>3.9.16</mavenBuildVersion>
-    <javaBuildVersion>17</javaBuildVersion>
+    <!-- TEMPORARY (classfile migration, phase 1): matches maven.compiler.release; restore 17 in phase 4 -->
+    <javaBuildVersion>25</javaBuildVersion>
     <mavenPluginToolsVersion>3.16.0</mavenPluginToolsVersion>
     <asmVersion>9.11</asmVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
@@ -528,7 +532,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
           <version>3.12.0</version>
           <configuration>
             <overview>${basedir}/overview.html</overview>
-            <excludePackageNames>*.internal,*.asm</excludePackageNames>
+            <excludePackageNames>*.internal,*.asm,*.classfile</excludePackageNames>
             <additionalJOption>-Xdoclint:all,-missing</additionalJOption>
             <detectOfflineLinks>false</detectOfflineLinks>
             <quiet>true</quiet>
