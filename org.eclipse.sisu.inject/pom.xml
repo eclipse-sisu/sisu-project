@@ -429,6 +429,26 @@
               </systemPropertyVariables>
             </configuration>
           </execution>
+          <!-- Run the full suite with the java.lang.classfile implementation -->
+          <execution>
+            <id>classfile</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <reportNameSuffix>classfile</reportNameSuffix>
+              <additionalClasspathElements>
+                <additionalClasspathElement>${project.build.directory}/guice3/guava.jar</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice3/guice.jar</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice3/guice-assistedinject.jar</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice3/guice-servlet.jar</additionalClasspathElement>
+              </additionalClasspathElements>
+              <systemPropertyVariables>
+                <guiceVersion>guice3</guiceVersion>
+                <sisu.classfile>classfile</sisu.classfile>
+              </systemPropertyVariables>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>
