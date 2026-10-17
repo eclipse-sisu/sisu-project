@@ -2,6 +2,7 @@ Bundle-Name: Sisu-Inject
 Automatic-Module-Name: org.eclipse.sisu.inject
 Bundle-SymbolicName: ${Automatic-Module-Name};singleton:=true
 Main-Class: org.eclipse.sisu.launch.Main
+Multi-Release: true
 -exportcontents: org.eclipse.sisu.*,\
  org.sonatype.inject;x-internal:=true
 # remove annotation processor dependencies (never used at runtime)
@@ -9,6 +10,7 @@ Main-Class: org.eclipse.sisu.launch.Main
 Import-Package: com.google.inject.servlet;resolution:=optional,\
  javax.servlet.*;resolution:=optional,\
  org.slf4j.*;resolution:=optional,\
+ org.objectweb.asm.*;resolution:=optional,\
  org.junit.jupiter.api.*;resolution:=optional,\
  org.junit.jupiter.params.*;resolution:=optional,\
  org.junit.platform.*;resolution:=optional,\
