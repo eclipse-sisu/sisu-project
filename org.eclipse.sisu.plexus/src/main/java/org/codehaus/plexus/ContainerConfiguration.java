@@ -82,8 +82,10 @@ public interface ContainerConfiguration {
      * @param supplierTransformer the supplier transformer, may be {@code null} meaning "identity" (the default value).
      * @since 1.1.1
      */
-    ContainerConfiguration setVisibilityPredicateSupplierTransformer(
-            Function<Supplier<Predicate>, Supplier<Predicate>> supplierTransformer);
+    default ContainerConfiguration setVisibilityPredicateSupplierTransformer(
+            Function<Supplier<Predicate>, Supplier<Predicate>> supplierTransformer) {
+        throw new UnsupportedOperationException("Unsupported operation");
+    }
 
     /**
      * Returns the configured visibility predicate supplier, never {@code null}. The default transformer is
@@ -91,5 +93,7 @@ public interface ContainerConfiguration {
      *
      * @since 1.1.1
      */
-    Function<Supplier<Predicate>, Supplier<Predicate>> getVisibilityPredicateSupplierTransformer();
+    default Function<Supplier<Predicate>, Supplier<Predicate>> getVisibilityPredicateSupplierTransformer() {
+        return Function.identity();
+    }
 }
