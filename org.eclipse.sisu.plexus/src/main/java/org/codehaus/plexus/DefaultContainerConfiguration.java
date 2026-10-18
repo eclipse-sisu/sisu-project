@@ -14,6 +14,9 @@ package org.codehaus.plexus;
 
 import java.net.URL;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.context.Context;
@@ -46,6 +49,9 @@ public final class DefaultContainerConfiguration implements ContainerConfigurati
     private boolean strictClassPathScanning;
 
     private boolean jsr330ComponentVisibilityFollowsPlexusVisibility = true;
+
+    private Function<Supplier<Predicate>, Supplier<Predicate>> visibilityPredicateSupplierTransformer =
+            Function.identity();
 
     // ----------------------------------------------------------------------
     // Public methods
@@ -189,5 +195,18 @@ public final class DefaultContainerConfiguration implements ContainerConfigurati
     @Override
     public boolean getJSR330ComponentVisibilityFollowsPlexusVisibility() {
         return jsr330ComponentVisibilityFollowsPlexusVisibility;
+    }
+
+    @Override
+    public ContainerConfiguration setVisibilityPredicateSupplierTransformer(
+            Function<Supplier<Predicate>, Supplier<Predicate>> supplierTransformer) {
+        this.visibilityPredicateSupplierTransformer =
+                supplierTransformer == null ? Function.identity() : supplierTransformer;
+        return this;
+    }
+
+    @Override
+    public Function<Supplier<Predicate>, Supplier<Predicate>> getVisibilityPredicateSupplierTransformer() {
+        return visibilityPredicateSupplierTransformer;
     }
 }

@@ -14,6 +14,9 @@ package org.codehaus.plexus;
 
 import java.net.URL;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.context.Context;
@@ -68,4 +71,29 @@ public interface ContainerConfiguration {
     ContainerConfiguration setJSR330ComponentVisibilityFollowsPlexusVisibility(boolean on);
 
     boolean getJSR330ComponentVisibilityFollowsPlexusVisibility();
+
+    /**
+     * Allows customizing visibility predicate supplier. If {@link #getJSR330ComponentVisibilityFollowsPlexusVisibility()}
+     * is set to {@code true}, container will use the default predicate supplier. This method allows programmatic
+     * altering of default supplier, for example by wrapping it, replacing it. The supplied function will receive
+     * the default supplier, must return a non {@code null} instance. By default, this function is set to
+     * {@link Function#identity()}.
+     *
+     * @param supplierTransformer the supplier transformer, may be {@code null} meaning "identity" (the default value).
+     * @since 1.1.1
+     */
+    default ContainerConfiguration setVisibilityPredicateSupplierTransformer(
+            Function<Supplier<Predicate>, Supplier<Predicate>> supplierTransformer) {
+        throw new UnsupportedOperationException("Unsupported operation");
+    }
+
+    /**
+     * Returns the configured visibility predicate supplier, never {@code null}. The default transformer is
+     * {@link Function#identity()}.
+     *
+     * @since 1.1.1
+     */
+    default Function<Supplier<Predicate>, Supplier<Predicate>> getVisibilityPredicateSupplierTransformer() {
+        return Function.identity();
+    }
 }
