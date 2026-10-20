@@ -64,6 +64,15 @@
       <artifactId>org.eclipse.sisu.inject</artifactId>
     </dependency>
     <!--
+     | ASM is required by the Sisu-Inject class file backends on JDK 8 to 24
+     | (and when sisu.classfile=asm is selected) and used directly by the
+     | tests
+    -->
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm</artifactId>
+    </dependency>
+    <!--
      | Plexus classloading/utilities
     -->
     <dependency>
@@ -309,6 +318,11 @@
         <configuration>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
           <argLine>-Xmx64m @{argLine}</argLine>
+          <systemPropertyVariables>
+            <!-- PlexusStrictClasspathScanningTest asserts the ASM specific error message; the
+                 classfile backend is covered by the org.eclipse.sisu.inject test matrix -->
+            <sisu.classfile>asm</sisu.classfile>
+          </systemPropertyVariables>
           <classpathDependencyExcludes>
             <classpathDependencyExclude>com.google.guava:guava</classpathDependencyExclude>
             <classpathDependencyExclude>com.google.inject:guice</classpathDependencyExclude>

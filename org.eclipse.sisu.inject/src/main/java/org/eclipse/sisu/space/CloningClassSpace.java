@@ -12,13 +12,10 @@
  */
 package org.eclipse.sisu.space;
 
-import java.lang.reflect.Modifier;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import org.eclipse.sisu.inject.DeferredClass;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
+import org.eclipse.sisu.inject.classfile.ClassFileSupport;
 
 /**
  * {@link ClassSpace} that can create multiple (deferred) copies of the same implementation type.
@@ -120,19 +117,7 @@ public final class CloningClassSpace extends URLClassSpace {
                 throw new ClassNotFoundException(name);
             }
 
-            final ClassWriter cw = new ClassWriter(0);
-            cw.visit(Opcodes.V1_6, Modifier.PUBLIC, proxyName, null, superName, null);
-            final MethodVisitor mv = cw.visitMethod(Modifier.PUBLIC, "<init>", "()V", null, null);
-
-            mv.visitCode();
-            mv.visitVarInsn(Opcodes.ALOAD, 0);
-            mv.visitMethodInsn(Opcodes.INVOKESPECIAL, superName, "<init>", "()V", false);
-            mv.visitInsn(Opcodes.RETURN);
-            mv.visitMaxs(1, 1);
-            mv.visitEnd();
-            cw.visitEnd();
-
-            final byte[] buf = cw.toByteArray();
+            final byte[] buf = ClassFileSupport.proxyGenerator().generateClone(proxyName, superName);
 
             return defineClass(name, buf, 0, buf.length);
         }

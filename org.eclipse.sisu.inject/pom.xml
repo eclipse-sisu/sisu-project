@@ -40,11 +40,13 @@
     </dependency>
 
     <!--
-     | ASM is required
+     | ASM supports the class file backends; required on JDK 8 to 24 and when
+     | sisu.classfile=asm is selected, optional from JDK 25 onwards
     -->
     <dependency>
       <groupId>org.ow2.asm</groupId>
       <artifactId>asm</artifactId>
+      <optional>true</optional>
     </dependency>
 
     <!--
@@ -136,6 +138,26 @@
       <plugin>
         <groupId>biz.aQute.bnd</groupId>
         <artifactId>bnd-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <executions>
+          <execution>
+            <!-- Multi-Release JAR layer: java.lang.classfile based backends -->
+            <id>compile-jdk25</id>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <release>25</release>
+              <compileSourceRoots>
+                <compileSourceRoot>${project.basedir}/src/main/java25</compileSourceRoot>
+              </compileSourceRoots>
+              <multiReleaseOutput>true</multiReleaseOutput>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -341,6 +363,10 @@
             <configuration>
               <groups>base</groups>
               <additionalClasspathElements>
+                <!-- The test classpath root is a directory, where Multi-Release JAR
+                     semantics do not apply; expose the versions/25 layer explicitly
+                     so the tests run as the jar would on JDK 25 and later -->
+                <additionalClasspathElement>${project.build.directory}/classes/META-INF/versions/25</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice3/guice.jar</additionalClasspathElement>
               </additionalClasspathElements>
             </configuration>
@@ -354,6 +380,7 @@
               <reportNameSuffix>guice3</reportNameSuffix>
               <excludedGroups>base</excludedGroups>
               <additionalClasspathElements>
+                <additionalClasspathElement>${project.build.directory}/classes/META-INF/versions/25</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice3/guava.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice3/guice.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice3/guice-assistedinject.jar</additionalClasspathElement>
@@ -373,6 +400,7 @@
               <reportNameSuffix>guice4</reportNameSuffix>
               <excludedGroups>base</excludedGroups>
               <additionalClasspathElements>
+                <additionalClasspathElement>${project.build.directory}/classes/META-INF/versions/25</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice4/failureaccess.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice4/guava.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice4/asm.jar</additionalClasspathElement>
@@ -395,6 +423,7 @@
               <reportNameSuffix>guice5</reportNameSuffix>
               <excludedGroups>base</excludedGroups>
               <additionalClasspathElements>
+                <additionalClasspathElement>${project.build.directory}/classes/META-INF/versions/25</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice5/failureaccess.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice5/guava.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice5/asm.jar</additionalClasspathElement>
@@ -416,6 +445,7 @@
               <reportNameSuffix>guice6</reportNameSuffix>
               <excludedGroups>base</excludedGroups>
               <additionalClasspathElements>
+                <additionalClasspathElement>${project.build.directory}/classes/META-INF/versions/25</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice6/jakarta.inject-api.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice6/failureaccess.jar</additionalClasspathElement>
                 <additionalClasspathElement>${project.build.directory}/guice6/guava.jar</additionalClasspathElement>
@@ -426,6 +456,31 @@
               </additionalClasspathElements>
               <systemPropertyVariables>
                 <guiceVersion>guice6</guiceVersion>
+                <!-- Pin the newest Guice to the ASM implementation, so that
+                     both backends are exercised against each Guice version -->
+                <sisu.classfile>asm</sisu.classfile>
+              </systemPropertyVariables>
+            </configuration>
+          </execution>
+          <!-- Run the full suite with the ASM implementation; the default executions
+               already use the java.lang.classfile implementation on JDK 25+ -->
+          <execution>
+            <id>asm</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <reportNameSuffix>asm</reportNameSuffix>
+              <additionalClasspathElements>
+                <additionalClasspathElement>${project.build.directory}/classes/META-INF/versions/25</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice3/guava.jar</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice3/guice.jar</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice3/guice-assistedinject.jar</additionalClasspathElement>
+                <additionalClasspathElement>${project.build.directory}/guice3/guice-servlet.jar</additionalClasspathElement>
+              </additionalClasspathElements>
+              <systemPropertyVariables>
+                <guiceVersion>guice3</guiceVersion>
+                <sisu.classfile>asm</sisu.classfile>
               </systemPropertyVariables>
             </configuration>
           </execution>
