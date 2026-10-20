@@ -69,7 +69,9 @@ public abstract class AbstractConfigurationConverter implements ConfigurationCon
         String value = configuration.getValue();
         try {
             Object result = null;
-            if (null != value && !value.isEmpty()) {
+            // an explicitly empty value (e.g. <foo></foo>) is a value in its own right and must not
+            // fall back to default-value, only a value that is genuinely absent (null) should
+            if (null != value) {
                 if (evaluator instanceof TypeAwareExpressionEvaluator && type != null) {
                     result = ((TypeAwareExpressionEvaluator) evaluator).evaluate(value, type);
                 } else {
