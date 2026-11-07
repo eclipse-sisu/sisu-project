@@ -11,8 +11,12 @@
 package org.eclipse.sisu.plexus;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
+import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.junit.jupiter.api.AfterEach;
@@ -57,6 +61,44 @@ class RealmDisposalTest {
         Thread.currentThread().setContextClassLoader(realm);
         plexus.discoverComponents(realm);
         assertNotNull(plexus.lookup("org.eclipse.sisu.plexus.tests.SomeComponent"));
+    }
+
+    @Test
+    void disposedRealmIsNotRetainedByLifecycleCache() throws Exception {
+        final DefaultPlexusContainer plexus =
+                new DefaultPlexusContainer(new DefaultContainerConfiguration().setJSR250Lifecycle(true));
+        try {
+            final WeakReference<ClassRealm> realmRef = discoverAndDisposeRealm(plexus, "child-realm");
+
+            // wait up to ~5s, the loop ends as soon as the realm was collected
+            for (int i = 0; i < 100 && null != realmRef.get(); i++) {
+                System.gc();
+                Thread.sleep(50);
+            }
+            assertNull(realmRef.get(), "disposed realm should be garbage collectable");
+        } finally {
+            plexus.dispose();
+        }
+    }
+
+    private WeakReference<ClassRealm> discoverAndDisposeRealm(final DefaultPlexusContainer plexus, final String realmId)
+            throws Exception {
+        final ClassRealm realm = plexus.createChildRealm(realmId);
+        realm.addURL(new File("target/test-classes/component-jar/component-jar-0.1.jar")
+                .getCanonicalFile()
+                .toURI()
+                .toURL());
+        Thread.currentThread().setContextClassLoader(realm);
+        try {
+            plexus.discoverComponents(realm);
+            final Object component = plexus.lookup("org.eclipse.sisu.plexus.tests.SomeComponent");
+            assertSame(realm, component.getClass().getClassLoader());
+            plexus.release(component);
+        } finally {
+            Thread.currentThread().setContextClassLoader(origCL);
+        }
+        realm.getWorld().disposeRealm(realm.getId());
+        return new WeakReference<>(realm);
     }
 
     // the point of this disabled test is to manually assert all references to the disposed realms are cleared

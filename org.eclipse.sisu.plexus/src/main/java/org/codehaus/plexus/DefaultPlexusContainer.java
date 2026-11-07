@@ -39,6 +39,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.inject.Provider;
 import org.codehaus.plexus.classworlds.ClassWorld;
+import org.codehaus.plexus.classworlds.ClassWorldListener;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
 import org.codehaus.plexus.classworlds.realm.NoSuchRealmException;
@@ -130,6 +131,8 @@ public final class DefaultPlexusContainer implements MutablePlexusContainer {
 
     final BeanManager plexusBeanManager;
 
+    private final ClassWorldListener jsr250CacheFlusher;
+
     private final String componentVisibility;
 
     private final boolean isAutoWiringEnabled;
@@ -188,7 +191,11 @@ public final class DefaultPlexusContainer implements MutablePlexusContainer {
         scanning = parseScanningOption(configuration.getClassPathScanning());
 
         plexusBeanLocator = new DefaultPlexusBeanLocator(qualifiedBeanLocator, realmManager, componentVisibility);
-        final BeanManager jsr250Lifecycle = configuration.getJSR250Lifecycle() ? new LifecycleManager() : null;
+        final LifecycleManager jsr250Lifecycle = configuration.getJSR250Lifecycle() ? new LifecycleManager() : null;
+        jsr250CacheFlusher = null != jsr250Lifecycle ? new LifecycleCacheFlusher(jsr250Lifecycle) : null;
+        if (null != jsr250CacheFlusher) {
+            containerRealm.getWorld().addListener(jsr250CacheFlusher);
+        }
         plexusBeanManager = new PlexusLifecycleManager(
                 Providers.of(context),
                 loggerManagerProvider, //
@@ -547,6 +554,9 @@ public final class DefaultPlexusContainer implements MutablePlexusContainer {
         lookupRealm.remove();
 
         containerRealm.getWorld().removeListener(realmManager);
+        if (null != jsr250CacheFlusher) {
+            containerRealm.getWorld().removeListener(jsr250CacheFlusher);
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -797,6 +807,27 @@ public final class DefaultPlexusContainer implements MutablePlexusContainer {
                     .iterator()
                     .next()
                     .getValue();
+        }
+    }
+
+    /**
+     * Flushes cached JSR250 lifecycles of disposed realms, so their classes (and the realms) can be collected.
+     */
+    static final class LifecycleCacheFlusher implements ClassWorldListener {
+        private final LifecycleManager lifecycleManager;
+
+        LifecycleCacheFlusher(final LifecycleManager lifecycleManager) {
+            this.lifecycleManager = lifecycleManager;
+        }
+
+        @Override
+        public void realmCreated(final ClassRealm realm) {
+            // nothing to do
+        }
+
+        @Override
+        public void realmDisposed(final ClassRealm realm) {
+            lifecycleManager.flushCacheFor(clazz -> clazz.getClassLoader() == realm);
         }
     }
 }
