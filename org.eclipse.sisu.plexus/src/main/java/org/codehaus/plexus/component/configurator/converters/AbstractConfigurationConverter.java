@@ -62,12 +62,15 @@ public abstract class AbstractConfigurationConverter implements ConfigurationCon
     /**
      * Whether an explicitly empty value (for example {@code <foo></foo>}) is itself a meaningful value for
      * the type this converter produces, and should therefore override {@code default-value} instead of being
-     * treated the same as an absent element. {@code false} for every converter except {@link
-     * org.codehaus.plexus.component.configurator.converters.basic.StringConverter}, since an empty string is
-     * not a valid value for most other types (for example it cannot be parsed as a number or an enum
-     * constant).
+     * treated the same as an absent element. {@code false} by default, since an empty string is not a valid
+     * value for most types (for example it cannot be parsed as a number or an enum constant); only {@link
+     * org.codehaus.plexus.component.configurator.converters.basic.StringConverter} overrides this.
+     * {@link org.codehaus.plexus.component.configurator.converters.basic.StringBufferConverter} and {@link
+     * org.codehaus.plexus.component.configurator.converters.basic.StringBuilderConverter} do not, since they
+     * do not extend {@code StringConverter}, so they keep treating an empty value as absent.
      *
      * @return {@code true} if an empty value is itself meaningful for this converter's type
+     * @since 1.1.2
      */
     protected boolean isEmptyValueMeaningful() {
         return false;
