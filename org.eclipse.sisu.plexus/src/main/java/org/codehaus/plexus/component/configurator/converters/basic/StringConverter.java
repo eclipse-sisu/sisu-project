@@ -22,4 +22,9 @@ public class StringConverter extends AbstractBasicConverter {
     public Object fromString(final String value) {
         return value;
     }
+
+    @Override
+    protected boolean isEmptyValueMeaningful() {
+        return true;
+    }
 }

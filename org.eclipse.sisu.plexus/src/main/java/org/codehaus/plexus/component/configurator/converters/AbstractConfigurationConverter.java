@@ -59,6 +59,20 @@ public abstract class AbstractConfigurationConverter implements ConfigurationCon
         return fromExpression(configuration, evaluator, type, true);
     }
 
+    /**
+     * Whether an explicitly empty value (for example {@code <foo></foo>}) is itself a meaningful value for
+     * the type this converter produces, and should therefore override {@code default-value} instead of being
+     * treated the same as an absent element. {@code false} for every converter except {@link
+     * org.codehaus.plexus.component.configurator.converters.basic.StringConverter}, since an empty string is
+     * not a valid value for most other types (for example it cannot be parsed as a number or an enum
+     * constant).
+     *
+     * @return {@code true} if an empty value is itself meaningful for this converter's type
+     */
+    protected boolean isEmptyValueMeaningful() {
+        return false;
+    }
+
     protected Object fromExpression(
             final PlexusConfiguration configuration,
             final ExpressionEvaluator evaluator,
@@ -69,9 +83,10 @@ public abstract class AbstractConfigurationConverter implements ConfigurationCon
         String value = configuration.getValue();
         try {
             Object result = null;
-            // an explicitly empty value (e.g. <foo></foo>) is a value in its own right and must not
-            // fall back to default-value, only a value that is genuinely absent (null) should
-            if (null != value) {
+            // an explicitly empty value (e.g. <foo></foo>) is a value in its own right and must not fall
+            // back to default-value when it is meaningful for this type; otherwise, like a genuinely
+            // absent (null) value, it falls through to default-value below.
+            if (null != value && (!value.isEmpty() || isEmptyValueMeaningful())) {
                 if (evaluator instanceof TypeAwareExpressionEvaluator && type != null) {
                     result = ((TypeAwareExpressionEvaluator) evaluator).evaluate(value, type);
                 } else {

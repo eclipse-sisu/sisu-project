@@ -8,6 +8,7 @@ package org.codehaus.plexus.component.configurator.converters.basic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -54,5 +55,42 @@ class EnumConverterTest {
                         null);
         assertTrue(object instanceof StandardCopyOption);
         assertEquals(StandardCopyOption.ATOMIC_MOVE, object);
+    }
+
+    private static final ExpressionEvaluator ECHO_EVALUATOR = new ExpressionEvaluator() {
+        @Override
+        public Object evaluate(String expression) throws ExpressionEvaluationException {
+            return expression;
+        }
+
+        @Override
+        public File alignToBaseDirectory(File path) {
+            return null;
+        }
+    };
+
+    @Test
+    void explicitEmptyValueStillFallsBackToDefaultValue() throws ComponentConfigurationException {
+        // unlike String, an empty value is not meaningful for an enum: "" is not a valid constant name,
+        // so it must still fall back to default-value exactly as an absent element would.
+        XmlPlexusConfiguration config = new XmlPlexusConfiguration("field");
+        config.setValue("");
+        config.setAttribute("default-value", StandardCopyOption.ATOMIC_MOVE.name());
+
+        Object result = new EnumConverter()
+                .fromConfiguration(null, config, StandardCopyOption.class, null, null, ECHO_EVALUATOR, null);
+
+        assertEquals(StandardCopyOption.ATOMIC_MOVE, result);
+    }
+
+    @Test
+    void explicitEmptyValueWithoutDefaultValueLeavesFieldUntouched() throws ComponentConfigurationException {
+        XmlPlexusConfiguration config = new XmlPlexusConfiguration("field");
+        config.setValue("");
+
+        Object result = new EnumConverter()
+                .fromConfiguration(null, config, StandardCopyOption.class, null, null, ECHO_EVALUATOR, null);
+
+        assertNull(result);
     }
 }
