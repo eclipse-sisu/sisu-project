@@ -14,8 +14,6 @@ package org.codehaus.plexus.component.configurator.converters.special;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import org.codehaus.classworlds.ClassRealmAdapter;
-import org.codehaus.classworlds.ClassRealmReverseAdapter;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ConfigurationListener;
@@ -24,7 +22,7 @@ import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLoo
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
-@SuppressWarnings({"unchecked", "deprecation"})
+@SuppressWarnings({"unchecked"})
 public final class ClassRealmConverter extends AbstractConfigurationConverter {
     private static ThreadLocal<Object> context = new ThreadLocal<>();
 
@@ -32,10 +30,6 @@ public final class ClassRealmConverter extends AbstractConfigurationConverter {
 
     public ClassRealmConverter(final ClassRealm realm) {
         this.realm = realm;
-    }
-
-    public ClassRealmConverter(final org.codehaus.classworlds.ClassRealm realm) {
-        this.realm = ClassRealmReverseAdapter.getInstance(realm);
     }
 
     public ClassRealmConverter() {
@@ -84,8 +78,7 @@ public final class ClassRealmConverter extends AbstractConfigurationConverter {
 
     @Override
     public boolean canConvert(final Class<?> type) {
-        return ClassRealm.class.isAssignableFrom(type)
-                || org.codehaus.classworlds.ClassRealm.class.isAssignableFrom(type);
+        return ClassRealm.class.isAssignableFrom(type);
     }
 
     @Override
@@ -101,9 +94,6 @@ public final class ClassRealmConverter extends AbstractConfigurationConverter {
         Object result = fromExpression(configuration, evaluator, type);
         if (null == result) {
             result = peekContextRealm();
-        }
-        if (!ClassRealm.class.isAssignableFrom(type) && result instanceof ClassRealm) {
-            result = ClassRealmAdapter.getInstance((ClassRealm) result);
         }
         return result;
     }
