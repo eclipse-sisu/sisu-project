@@ -118,4 +118,30 @@ class LifecycleManagerTest {
         // After flushing, re-managing should re-build the lifecycle
         assertTrue(manager.manage(ManagedBean.class));
     }
+
+    @Test
+    void testUnmanageSpecificBeanAfterFlush() {
+        final LifecycleManager manager = new LifecycleManager();
+        manager.manage(ManagedBean.class);
+
+        final ManagedBean bean = new ManagedBean();
+        manager.manage(bean);
+        manager.flushCacheFor(clz -> true);
+
+        assertTrue(manager.unmanage(bean));
+        assertTrue(bean.stopped);
+    }
+
+    @Test
+    void testUnmanageAllAfterFlush() {
+        final LifecycleManager manager = new LifecycleManager();
+        manager.manage(ManagedBean.class);
+
+        final ManagedBean bean = new ManagedBean();
+        manager.manage(bean);
+        manager.flushCacheFor(clz -> true);
+
+        assertTrue(manager.unmanage());
+        assertTrue(bean.stopped);
+    }
 }

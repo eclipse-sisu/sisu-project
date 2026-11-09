@@ -31,7 +31,7 @@ public final class LifecycleManager extends BeanScheduler implements BeanManager
     private final Map<Class<?>, BeanLifecycle> lifecycles = //
             new ConcurrentHashMap<>(16, 0.75f, 1);
 
-    private final Deque<Object> stoppableBeans = new ArrayDeque<>();
+    private final Deque<StoppableBean> stoppableBeans = new ArrayDeque<>();
 
     // ----------------------------------------------------------------------
     // Public methods
@@ -51,7 +51,7 @@ public final class LifecycleManager extends BeanScheduler implements BeanManager
     public boolean manage(final Object bean) {
         final BeanLifecycle lifecycle = lifecycleFor(bean);
         if (lifecycle.isStoppable()) {
-            pushStoppable(bean);
+            pushStoppable(new StoppableBean(bean, lifecycle));
         }
         if (lifecycle.isStartable()) {
             schedule(bean);
@@ -61,16 +61,17 @@ public final class LifecycleManager extends BeanScheduler implements BeanManager
 
     @Override
     public boolean unmanage(final Object bean) {
-        if (removeStoppable(bean)) {
-            lifecycleFor(bean).stop(bean);
+        final StoppableBean stoppable = removeStoppable(bean);
+        if (null != stoppable) {
+            stoppable.stop();
         }
         return true;
     }
 
     @Override
     public boolean unmanage() {
-        for (Object bean; (bean = popStoppable()) != null; ) {
-            lifecycleFor(bean).stop(bean);
+        for (StoppableBean stoppable; (stoppable = popStoppable()) != null; ) {
+            stoppable.stop();
         }
         return true;
     }
@@ -122,19 +123,26 @@ public final class LifecycleManager extends BeanScheduler implements BeanManager
         return BeanLifecycle.NO_OP;
     }
 
-    private void pushStoppable(final Object bean) {
+    private void pushStoppable(final StoppableBean stoppable) {
         synchronized (stoppableBeans) {
-            stoppableBeans.addLast(bean);
+            stoppableBeans.addLast(stoppable);
         }
     }
 
-    private boolean removeStoppable(final Object bean) {
+    private StoppableBean removeStoppable(final Object bean) {
         synchronized (stoppableBeans) {
-            return stoppableBeans.remove(bean);
+            for (Iterator<StoppableBean> itr = stoppableBeans.iterator(); itr.hasNext(); ) {
+                final StoppableBean stoppable = itr.next();
+                if (null != bean && bean.equals(stoppable.bean)) {
+                    itr.remove();
+                    return stoppable;
+                }
+            }
+            return null;
         }
     }
 
-    private Object popStoppable() {
+    private StoppableBean popStoppable() {
         synchronized (stoppableBeans) {
             return stoppableBeans.pollLast();
         }
@@ -152,6 +160,25 @@ public final class LifecycleManager extends BeanScheduler implements BeanManager
             if (remove.shouldFlush(iterator.next())) {
                 iterator.remove();
             }
+        }
+    }
+
+    /**
+     * Stoppable bean together with its lifecycle, so it can still be stopped after its type was flushed from the
+     * cache.
+     */
+    private static final class StoppableBean {
+        final Object bean;
+
+        private final BeanLifecycle lifecycle;
+
+        StoppableBean(final Object bean, final BeanLifecycle lifecycle) {
+            this.bean = bean;
+            this.lifecycle = lifecycle;
+        }
+
+        void stop() {
+            lifecycle.stop(bean);
         }
     }
 
