@@ -132,9 +132,9 @@
     <guiceVersion>4.2.3</guiceVersion>
     <!-- define empty, as jacoco is only conditionally executed (https://www.eclemma.org/jacoco/trunk/doc/prepare-agent-mojo.html) -->
     <argLine />
-    <njordVersion>0.9.10</njordVersion>
+    <njordVersion>0.10.0</njordVersion>
     <!-- Spotless versions -->
-    <spotlessMavenPluginVersion>3.10.4</spotlessMavenPluginVersion>
+    <spotlessMavenPluginVersion>3.11.0</spotlessMavenPluginVersion>
     <spotlessPalantirJavaFormatVersion>2.86.0</spotlessPalantirJavaFormatVersion>
   </properties>
 
@@ -184,7 +184,7 @@
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
-        <version>33.7.2-jre</version>
+        <version>33.8.0-jre</version>
       </dependency>
 
       <!-- To support latest Java versions -->
@@ -318,7 +318,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.6.3</version>
+          <version>3.7.0</version>
           <configuration>
             <rules>
               <enforceBytecodeVersion>
@@ -384,7 +384,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.5.6</version>
+          <version>3.6.1</version>
           <configuration>
             <failIfNoSpecifiedTests>false</failIfNoSpecifiedTests>
           </configuration>
@@ -392,7 +392,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>3.5.6</version>
+          <version>3.6.1</version>
         </plugin>
         <plugin>
           <groupId>biz.aQute.bnd</groupId>
@@ -448,7 +448,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.8.15</version>
+          <version>0.8.16</version>
           <configuration>
             <excludes>
               <exclude>Incomplete*</exclude>
@@ -568,7 +568,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
         <plugin>
           <groupId>org.eclipse.sisu</groupId>
           <artifactId>sisu-maven-plugin</artifactId>
-          <version>1.1.0</version>
+          <version>1.1.1</version>
           <executions>
             <execution>
               <id>index-project</id>
