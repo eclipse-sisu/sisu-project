@@ -8,6 +8,9 @@ Sisu is a modular JSR330-based container that supports classpath scanning, auto-
 
 # New and Noteworthy
 
+- _2026-10-20_
+  [1.1.1](https://github.com/eclipse-sisu/sisu-project/releases/tag/releases%2F1.1.1)
+
 - _2026-07-27_
   [1.1.0](https://github.com/eclipse-sisu/sisu-project/releases/tag/releases%2F1.1.0)
 
@@ -48,4 +51,4 @@ Sisu is a modular JSR330-based container that supports classpath scanning, auto-
 <sub>From <https://en.wikipedia.org/w/index.php?title=Sisu&oldid=371994592></sub>
 
 > Sisu is a Finnish term loosely translated into English as strength of will, determination, perseverance, and acting rationally in the face of adversity. However, the word is widely considered to lack a proper translation into any language. Sisu has been described as being integral to understanding Finnish culture. The literal meaning is equivalent in English to "having guts", and the word derives from sisus, which means something inner or interior. However sisu is defined by a long-term element in it; it is not momentary courage, but the ability to sustain an action against the odds. Deciding on a course of action and the sticking to that decision against repeated failures is sisu. It is similar to equanimity, except the forbearance of sisu has a grimmer quality of stress management than the latter. The noun sisu is related to the adjective sisukas, one having the quality of sisu.
-  
+
