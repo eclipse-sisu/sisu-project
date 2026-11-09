@@ -22,4 +22,16 @@ public class StringConverter extends AbstractBasicConverter {
     public Object fromString(final String value) {
         return value;
     }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>Returns {@code true}: an explicitly empty value (for example {@code <foo></foo>}) is itself a valid
+     * {@code String}, so it overrides {@code default-value} and, without one, overrides a field's own
+     * initializer with {@code ""}. An omitted or self-closing element ({@code <foo/>}) still means "not set".
+     */
+    @Override
+    protected boolean isEmptyValueMeaningful() {
+        return true;
+    }
 }

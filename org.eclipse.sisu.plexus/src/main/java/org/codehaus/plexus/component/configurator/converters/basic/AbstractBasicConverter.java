@@ -75,7 +75,10 @@ public abstract class AbstractBasicConverter extends AbstractConfigurationConver
         String value = configuration.getValue();
         try {
             Object result = null;
-            if (null != value && value.length() > 0) {
+            // an explicitly empty value (e.g. <foo></foo>) is a value in its own right and must not fall
+            // back to default-value when it is meaningful for this type; otherwise, like a genuinely
+            // absent (null) value, it falls through to default-value below.
+            if (null != value && (!value.isEmpty() || isEmptyValueMeaningful())) {
                 if (evaluator instanceof TypeAwareExpressionEvaluator) {
                     result = ((TypeAwareExpressionEvaluator) evaluator).evaluate(value, type);
                 } else {
