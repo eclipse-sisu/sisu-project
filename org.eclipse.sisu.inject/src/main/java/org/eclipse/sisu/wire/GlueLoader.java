@@ -20,6 +20,7 @@ import java.security.PrivilegedAction;
 import java.util.concurrent.ConcurrentMap;
 import javax.inject.Provider;
 import org.eclipse.sisu.inject.Weak;
+import org.eclipse.sisu.inject.classfile.ClassFileSupport;
 
 /**
  * Weak cache of {@link ClassLoader}s that can generate proxy classes on-demand.
@@ -96,7 +97,7 @@ final class GlueLoader extends ClassLoader {
     protected Class<?> findClass(final String name) throws ClassNotFoundException {
         if (name.endsWith(GLUE_SUFFIX + DYNAMIC)) {
             final Class<?> facade = loadClass(unwrap(name));
-            final byte[] code = DynamicGlue.generateProxyClass(name.replace('.', '/'), facade);
+            final byte[] code = ClassFileSupport.proxyGenerator().generateProviderProxy(name.replace('.', '/'), facade);
             return defineClass(name, code, 0, code.length);
         }
         throw new ClassNotFoundException(name);

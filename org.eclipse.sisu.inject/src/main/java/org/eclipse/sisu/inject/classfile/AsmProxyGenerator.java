@@ -10,13 +10,10 @@
  * Contributors:
  *   Stuart McCulloch (Sonatype, Inc.) - initial API and implementation
  */
-package org.eclipse.sisu.wire;
+package org.eclipse.sisu.inject.classfile;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import javax.inject.Provider;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
@@ -25,9 +22,9 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 /**
- * Utility methods for generating dynamic {@link Provider}-based proxies.
+ * {@link ProxyGenerator} implementation based on the ASM library.
  */
-final class DynamicGlue {
+final class AsmProxyGenerator implements ProxyGenerator {
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
@@ -36,54 +33,39 @@ final class DynamicGlue {
 
     private static final String PROVIDER_DESC = Type.getDescriptor(Provider.class);
 
-    private static final String PROVIDER_HANDLE = "__sisu__";
-
     private static final String OBJECT_NAME = Type.getInternalName(Object.class);
 
     private static final String OBJECT_DESC = Type.getDescriptor(Object.class);
 
     private static final String ILLEGAL_STATE_NAME = Type.getInternalName(IllegalStateException.class);
 
-    private static final Map<String, Method> OBJECT_METHOD_MAP;
-
     // ----------------------------------------------------------------------
-    // Static initialization
+    // Operations
     // ----------------------------------------------------------------------
 
-    static {
-        // pre-seed common methods that should be wrapped
-        OBJECT_METHOD_MAP = new HashMap<>();
-        for (final Method m : Object.class.getMethods()) {
-            if (isWrappable(m)) {
-                OBJECT_METHOD_MAP.put(signatureKey(m), m);
-            }
-        }
+    @Override
+    public byte[] generateClone(String proxyName, String superName) {
+        ClassWriter cw = new ClassWriter(0);
+        cw.visit(Opcodes.V1_6, Modifier.PUBLIC, proxyName, null, superName, null);
+        MethodVisitor mv = cw.visitMethod(Modifier.PUBLIC, "<init>", "()V", null, null);
+
+        mv.visitCode();
+        mv.visitVarInsn(Opcodes.ALOAD, 0);
+        mv.visitMethodInsn(Opcodes.INVOKESPECIAL, superName, "<init>", "()V", false);
+        mv.visitInsn(Opcodes.RETURN);
+        mv.visitMaxs(1, 1);
+        mv.visitEnd();
+        cw.visitEnd();
+
+        return cw.toByteArray();
     }
 
-    // ----------------------------------------------------------------------
-    // Constructors
-    // ----------------------------------------------------------------------
+    @Override
+    public byte[] generateProviderProxy(String proxyName, Class<?> facade) {
+        String facadeName = Type.getInternalName(facade);
 
-    private DynamicGlue() {
-        // static utility class, not allowed to create instances
-    }
-
-    // ----------------------------------------------------------------------
-    // Utility methods
-    // ----------------------------------------------------------------------
-
-    /**
-     * Generates a dynamic {@link Provider}-based proxy that reflects the given facade.
-     *
-     * @param proxyName The proxy name
-     * @param facade The expected facade
-     * @return Generated proxy bytes
-     */
-    public static byte[] generateProxyClass(final String proxyName, final Class<?> facade) {
-        final String facadeName = Type.getInternalName(facade);
-
-        final String superName;
-        final String[] apiNames;
+        String superName;
+        String[] apiNames;
 
         if (facade.isInterface()) {
             superName = OBJECT_NAME;
@@ -93,11 +75,11 @@ final class DynamicGlue {
             apiNames = getInternalNames(facade.getInterfaces());
         }
 
-        final ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+        ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         cw.visit(Opcodes.V1_6, Modifier.PUBLIC | Modifier.FINAL, proxyName, null, superName, apiNames);
         init(cw, superName, proxyName);
 
-        for (final Method m : getWrappableMethods(facade)) {
+        for (final Method m : WrappableMethods.getWrappableMethods(facade)) {
             wrap(cw, proxyName, m);
         }
 
@@ -148,7 +130,7 @@ final class DynamicGlue {
         final Class<?> declaringClazz = method.getDeclaringClass();
         final String declaringName = Type.getInternalName(declaringClazz);
 
-        final boolean isObjectMethod = OBJECT_METHOD_MAP.containsKey(signatureKey(method));
+        final boolean isObjectMethod = WrappableMethods.isObjectMethod(method);
 
         // delegate all non-Object methods as well as 'toString'
         if (!isObjectMethod || "toString".equals(methodName)) {
@@ -216,36 +198,5 @@ final class DynamicGlue {
             names[i] = Type.getInternalName(clazzes[i]);
         }
         return names;
-    }
-
-    /**
-     * Returns the methods that should be wrapped for delegation in the given class.
-     */
-    private static Collection<Method> getWrappableMethods(final Class<?> clazz) {
-        final Map<String, Method> methodMap = new HashMap<>(OBJECT_METHOD_MAP);
-        for (final Method m : clazz.getMethods()) {
-            if (isWrappable(m)) {
-                methodMap.put(signatureKey(m), m);
-            }
-        }
-        return methodMap.values();
-    }
-
-    /**
-     * Returns {@code true} if the given method should be wrapped; otherwise {@code false}.
-     */
-    private static boolean isWrappable(final Method method) {
-        return (method.getModifiers() & (Modifier.STATIC | Modifier.FINAL)) == 0;
-    }
-
-    /**
-     * Returns a signature-based key that identifies the given method in the current class.
-     */
-    private static String signatureKey(final Method method) {
-        final StringBuilder buf = new StringBuilder(method.getName());
-        for (final Class<?> t : method.getParameterTypes()) {
-            buf.append(':').append(t);
-        }
-        return buf.toString();
     }
 }

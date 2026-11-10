@@ -41,6 +41,14 @@
       <artifactId>org.eclipse.sisu.inject</artifactId>
     </dependency>
     <!--
+     | ASM is required by the Sisu-Inject class file backends on JDK 8 to 24
+     | (and when sisu.classfile=asm is selected)
+    -->
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm</artifactId>
+    </dependency>
+    <!--
      | Avoid internal log spam; use -Dsisu.debug to get detailed logging
     -->
     <dependency>

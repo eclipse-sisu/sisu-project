@@ -111,6 +111,9 @@
   </distributionManagement>
 
   <properties>
+    <!-- Java 8 baseline for all main source sets; the Sisu-Inject module
+         additionally compiles a Multi-Release JAR layer (src/main/java25)
+         at release 25 with the java.lang.classfile based backends -->
     <maven.compiler.release>8</maven.compiler.release>
     <!-- Set to same version as release target for consistency -->
     <maven.compiler.source>${maven.compiler.release}</maven.compiler.source>
@@ -125,7 +128,8 @@
     <!-- Versions -->
     <mavenRuntimeVersion>3.3.1</mavenRuntimeVersion>
     <mavenBuildVersion>3.9.16</mavenBuildVersion>
-    <javaBuildVersion>17</javaBuildVersion>
+    <!-- JDK 25 is required to build the Multi-Release JAR layer of Sisu-Inject -->
+    <javaBuildVersion>25</javaBuildVersion>
     <mavenPluginToolsVersion>3.16.0</mavenPluginToolsVersion>
     <asmVersion>9.11.1</asmVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
@@ -528,7 +532,7 @@ Bundle-DocURL: http://www.eclipse.org/sisu/
           <version>3.12.0</version>
           <configuration>
             <overview>${basedir}/overview.html</overview>
-            <excludePackageNames>*.internal,*.asm</excludePackageNames>
+            <excludePackageNames>*.internal,*.asm,*.classfile</excludePackageNames>
             <additionalJOption>-Xdoclint:all,-missing</additionalJOption>
             <detectOfflineLinks>false</detectOfflineLinks>
             <quiet>true</quiet>
