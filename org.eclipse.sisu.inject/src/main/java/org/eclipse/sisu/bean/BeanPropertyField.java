@@ -16,13 +16,14 @@ import com.google.inject.ProvisionException;
 import com.google.inject.TypeLiteral;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 
 /**
- * {@link BeanProperty} backed by a {@link Field}.
+ * {@link BeanPropertyGetter} backed by a {@link Field}.
  */
-final class BeanPropertyField<T> implements BeanProperty<T>, PrivilegedAction<Void> {
+final class BeanPropertyField<T> implements BeanPropertyGetter<T>, PrivilegedAction<Void> {
     // ----------------------------------------------------------------------
     // Implementation fields
     // ----------------------------------------------------------------------
@@ -68,6 +69,26 @@ final class BeanPropertyField<T> implements BeanProperty<T>, PrivilegedAction<Vo
 
         try {
             field.set(bean, value);
+        } catch (final LinkageError | Exception e) {
+            throw new ProvisionException("Error injecting: " + field, e);
+        }
+    }
+
+    @Override
+    public boolean isFinal() {
+        return Modifier.isFinal(field.getModifiers());
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <B> T get(final B bean) {
+        if (!field.isAccessible()) {
+            // make sure we can get existing value
+            AccessController.doPrivileged(this); // NOSONAR
+        }
+
+        try {
+            return (T) field.get(bean);
         } catch (final LinkageError | Exception e) {
             throw new ProvisionException("Error injecting: " + field, e);
         }
