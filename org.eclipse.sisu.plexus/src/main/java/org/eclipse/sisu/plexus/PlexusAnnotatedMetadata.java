@@ -12,14 +12,9 @@
  */
 package org.eclipse.sisu.plexus;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
 import java.util.Map;
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.InterpolationFilterReader;
 import org.eclipse.sisu.bean.BeanProperty;
 
 /**
@@ -83,10 +78,6 @@ public final class PlexusAnnotatedMetadata implements PlexusBeanMetadata {
             return text;
         }
         // use same interpolation method as XML for sake of consistency
-        try (Reader r = new InterpolationFilterReader(new StringReader(text), variables)) {
-            return IOUtil.toString(r);
-        } catch (IOException e) {
-            return text; // should never actually happen, as no actual I/O involved
-        }
+        return Interpolations.interpolate(text, variables);
     }
 }

@@ -24,9 +24,6 @@ import java.util.Map;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.InterpolationFilterReader;
-import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.xml.pull.MXParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -102,9 +99,9 @@ final class PlexusXmlScanner {
      */
     private static Reader filteredXmlReader(final InputStream in, @SuppressWarnings("rawtypes") final Map variables)
             throws IOException {
-        final Reader reader = ReaderFactory.newXmlReader(in);
+        final Reader reader = Interpolations.xmlReader(in);
         if (null != variables) {
-            return new InterpolationFilterReader(reader, variables);
+            return Interpolations.interpolatingReader(reader, variables);
         }
         return reader;
     }
@@ -140,7 +137,7 @@ final class PlexusXmlScanner {
                     }
                 }
             } finally {
-                IOUtil.close(in);
+                Interpolations.close(in);
             }
         } catch (final Exception e) {
             Logs.trace("Problem parsing: {}", url, e);
@@ -169,7 +166,7 @@ final class PlexusXmlScanner {
                     parseComponent(parser, registry);
                 }
             } finally {
-                IOUtil.close(in);
+                Interpolations.close(in);
             }
         } catch (final Exception e) {
             Logs.trace("Problem parsing: {}", url, e);
