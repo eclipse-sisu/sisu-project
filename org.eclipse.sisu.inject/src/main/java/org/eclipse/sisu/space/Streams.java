@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Locale;
 
 /**
  * Utility methods for dealing with streams.
@@ -30,14 +29,12 @@ public final class Streams {
         boolean useCaches;
         try {
             String urlCaches = System.getProperty("sisu.url.caches");
-            if (null != urlCaches && !urlCaches.isEmpty()) {
-                useCaches = Boolean.parseBoolean(urlCaches);
-            } else {
-                String osName = System.getProperty("os.name").toLowerCase(Locale.US);
-                useCaches = !osName.contains("windows");
-            }
+            // Cached jar: URLs keep the JarFile open for the lifetime of the JVM (JDK-8239054),
+            // so streams are uncached by default on every platform; set the property to true
+            // to restore the old behaviour.
+            useCaches = null != urlCaches && !urlCaches.isEmpty() && Boolean.parseBoolean(urlCaches);
         } catch (final RuntimeException e) {
-            useCaches = true;
+            useCaches = false;
         }
         USE_CACHES = useCaches;
     }
@@ -61,8 +58,9 @@ public final class Streams {
     // ----------------------------------------------------------------------
 
     /**
-     * Opens an input stream to the given URL; disables JAR caching on Windows
-     * or when the 'sisu.url.caches' system property is set to {@code false}.
+     * Opens an input stream to the given URL with caches disabled by default, so that
+     * closing the stream closes the underlying JAR file (JDK-8239054). Caches can be
+     * enabled by setting the 'sisu.url.caches' system property to {@code true}.
      */
     public static InputStream open(final URL url) throws IOException {
         if (USE_CACHES) {
